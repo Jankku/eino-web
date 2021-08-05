@@ -1,7 +1,8 @@
 import * as axios from 'axios';
+import env from 'react-dotenv';
 
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:5000',
+  baseURL: env.BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
