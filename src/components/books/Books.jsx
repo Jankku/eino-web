@@ -62,6 +62,7 @@ export default function Books() {
 
   useEffect(() => {
     fetchBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookSortStatus]);
 
   const bookSortStatusChangeHandler = (e) => {
@@ -106,20 +107,17 @@ export default function Books() {
             </Select>
           </Grid>
         </Grid>
-        {
-          // TODO: Fix this mess
-          isFetchingBooks ? (
-            <Grid container justifyContent="center">
-              <CircularProgress />
-            </Grid>
-          ) : books.length > 0 ? (
-            <BookList books={books} fetchBooks={fetchBooks} />
-          ) : (
-            <Grid container justifyContent="center">
-              <p className={classes.noBooks}>No books</p>
-            </Grid>
-          )
-        }
+        {isFetchingBooks ? (
+          <Grid container justifyContent="center">
+            <CircularProgress />
+          </Grid>
+        ) : books.length > 0 ? (
+          <BookList books={books} fetchBooks={fetchBooks} />
+        ) : (
+          <Grid container justifyContent="center">
+            <p className={classes.noBooks}>No books</p>
+          </Grid>
+        )}
         <AddBookDialog
           visible={addDialogVisible}
           closeDialog={handleDialogCancel}

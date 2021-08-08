@@ -7,14 +7,13 @@ import { useHistory } from 'react-router-dom';
 import useToken from '../utils/useToken';
 import Error from '../models/error';
 import Header from '../components/Header';
-import { Fragment } from 'react-is';
 
 const useStyles = makeStyles({
   title: {
     textAlign: 'center',
   },
   textField: {
-    margin: '1em 0em',
+    margin: '1.5em 0em',
   },
   error: {
     fontWeight: 700,
@@ -26,42 +25,14 @@ const useStyles = makeStyles({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-
   const { setToken } = useToken();
 
-  // Error states
-  const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setpasswordError] = useState(false);
   const [responseError, setResponseError] = useState(Error);
 
-  const [credentials, setCredentials, credRef] = useState({
+  const [credentials, setCredentials] = useState({
     username: '',
     password: '',
   });
-
-  const validateForm = () => {
-    const { username, password } = credRef.current;
-
-    let isValid = false;
-
-    if (username.length >= 3) {
-      setUsernameError(false);
-      isValid = true;
-    } else {
-      setUsernameError(true);
-      isValid = false;
-    }
-
-    if (password.length >= 8 && password.length <= 255) {
-      setpasswordError(false);
-      isValid = true;
-    } else {
-      setpasswordError(true);
-      isValid = false;
-    }
-
-    return isValid;
-  };
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -70,21 +41,18 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, password } = credRef.current;
-    if (!validateForm(username, password)) return;
-
-    await axios({
-      method: 'post',
-      url: '/api/auth/login',
-      data: credentials,
-    })
-      .then((res) => {
-        setToken(res.data.token);
-        history.push('/books');
-      })
-      .catch((err) => {
-        if (err.response) setResponseError(err.response.data.errors);
+    try {
+      const res = await axios({
+        method: 'post',
+        url: '/api/auth/login',
+        data: credentials,
       });
+
+      setToken(res.data.token);
+      history.push('/books');
+    } catch (err) {
+      if (err.response) setResponseError(err.response.data.errors);
+    }
   };
 
   return (
@@ -114,7 +82,6 @@ export default function Login() {
                   fullWidth={true}
                   required={true}
                   inputProps={{ minLength: 3, maxLength: 255 }}
-                  error={usernameError}
                 />
               </Box>
               <TextField
@@ -129,7 +96,6 @@ export default function Login() {
                 onChange={handleChange}
                 fullWidth={true}
                 required={true}
-                error={passwordError}
               />
               <Box className={classes.error}>
                 <span>{responseError[0].message}</span>

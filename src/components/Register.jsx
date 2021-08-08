@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   textField: {
-    margin: '1em 0em',
+    margin: '1.5em 0em',
   },
 });
 
@@ -161,13 +161,8 @@ export default function Register() {
                   required={true}
                   error={passwordMatchError}
                 />
-                <FormHelperText>Repeat password</FormHelperText>
               </Grid>
-              <Grid
-                container
-                justifyContent="space-between"
-                className={classes.btn}
-              >
+              <Grid container justifyContent="space-between">
                 <Button type="submit" variant="contained" color="primary">
                   Register
                 </Button>

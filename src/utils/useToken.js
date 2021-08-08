@@ -9,18 +9,25 @@ export default function useToken() {
   const [token, setToken] = useState(getToken());
 
   const saveToken = (token) => {
-    setToken(token);
-
-    const { userId, username } = jwt_decode(token);
-    localStorage.setItem('accessToken', token);
-    localStorage.setItem('user_id', userId);
-    localStorage.setItem('username', username);
+    try {
+      setToken(token);
+      const { userId, username } = jwt_decode(token);
+      localStorage.setItem('accessToken', token);
+      localStorage.setItem('user_id', userId);
+      localStorage.setItem('username', username);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const removeToken = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('username');
+    try {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('username');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return {
