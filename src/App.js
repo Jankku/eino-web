@@ -8,21 +8,8 @@ import Login from './components/Login';
 import Books from './components/books/Books';
 import BookDetail from './components/books/BookDetail';
 import PrivateRoute from './components/PrivateRoute';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, makeStyles } from '@material-ui/styles';
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      height: '100vh',
-      backgroundColor: theme.palette.background.paper,
-    },
-  })
-);
 
 const App = () => {
-  const classes = useStyles();
-
   return (
     <main className="App">
       <Switch>
