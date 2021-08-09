@@ -9,13 +9,13 @@ export const useThemeContext = () => useContext(ThemeContext);
 
 const getThemeValue = () => {
   if (
-    localStorage.getItem('darkTheme') === undefined ||
-    localStorage.getItem('darkTheme') === 'false'
+    localStorage.getItem('dark_theme') === undefined ||
+    localStorage.getItem('dark_theme') === 'false'
   ) {
     return false;
   }
 
-  if (localStorage.getItem('darkTheme') === 'true') return true;
+  if (localStorage.getItem('dark_theme') === 'true') return true;
 };
 
 export function EinoThemeProvider(props) {
@@ -23,7 +23,7 @@ export function EinoThemeProvider(props) {
 
   const toggleTheme = () => {
     setDarkTheme(!darkTheme);
-    localStorage.setItem('darkTheme', !darkTheme);
+    localStorage.setItem('dark_theme', !darkTheme);
   };
 
   return (
