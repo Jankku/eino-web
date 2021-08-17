@@ -6,13 +6,10 @@ import {
   Grid,
   Paper,
 } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import CreateIcon from '@material-ui/icons/Create';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { useHistory } from 'react-router-dom';
 import axios from '../../axios';
@@ -20,30 +17,6 @@ import useToken from '../../utils/useToken';
 import Header from '../common/Header';
 import EditBookDialog from './EditBookDialog';
 import BookDetailItem from './BookDetailItem';
-import { useCallback } from 'react';
-
-const PREFIX = 'BookDetail';
-
-const classes = {
-  items: `${PREFIX}-items`,
-  btn: `${PREFIX}-btn`,
-  btnGroup: `${PREFIX}-btnGroup`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.items}`]: {
-    marginTop: '1em',
-    padding: '1em 0em 2em 0em',
-  },
-
-  [`& .${classes.btn}`]: {
-    marginLeft: '1em',
-  },
-
-  [`& .${classes.btnGroup}`]: {
-    marginTop: '1em',
-  },
-}));
 
 export default function BookDetail(props) {
   const history = useHistory();
@@ -109,63 +82,57 @@ export default function BookDetail(props) {
   const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
-    <Root>
+    <>
       <Header />
       <Container maxWidth="md">
         {book.hasOwnProperty('book_id') ? (
-          <Paper className={classes.items}>
-            <Grid container justifyContent="center">
-              <Grid>
-                <BookDetailItem title="Title" text={book.title} />
-                <BookDetailItem title="Author" text={book.author} />
-                <BookDetailItem title="Publisher" text={book.publisher} />
-                <BookDetailItem title="ISBN" text={book.isbn} />
-              </Grid>
-              <Grid>
-                <BookDetailItem title="Pages" text={book.pages} />
-                <BookDetailItem title="Year" text={book.year} />
-                <BookDetailItem title="Status" text={capitalize(book.status)} />
-              </Grid>
-              <Grid>
-                <BookDetailItem title="Score" text={book.score} />
-                <BookDetailItem
-                  title="Start date"
-                  text={DateTime.fromISO(book.start_date).toLocaleString()}
-                />
-                <BookDetailItem
-                  title="End date"
-                  text={DateTime.fromISO(book.end_date).toLocaleString()}
-                />
-              </Grid>
+          <Paper sx={{ mt: 1.5, p: 2.5 }}>
+            <Grid container columns={3} justifyContent="flex-start">
+              <BookDetailItem title="Title" text={book.title} />
+              <BookDetailItem title="Author" text={book.author} />
+              <BookDetailItem title="Publisher" text={book.publisher} />
+              <BookDetailItem title="ISBN" text={book.isbn} />
+
+              <BookDetailItem title="Pages" text={book.pages} />
+              <BookDetailItem title="Year" text={book.year} />
+              <BookDetailItem title="Status" text={capitalize(book.status)} />
+
+              <BookDetailItem title="Score" text={book.score} />
+              <BookDetailItem
+                title="Start date"
+                text={DateTime.fromISO(book.start_date).toLocaleString()}
+              />
+              <BookDetailItem
+                title="End date"
+                text={DateTime.fromISO(book.end_date).toLocaleString()}
+              />
             </Grid>
-            <Grid
-              container
-              justifyContent="center"
-              className={classes.btnGroup}
-            >
+            <Grid container justifyContent="flex-start">
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleEditDialogOpen}
                 startIcon={<CreateIcon />}
+                sx={{ margin: '0.5em' }}
               >
                 Edit
               </Button>
+
               <Button
                 variant="contained"
                 color="primary"
-                className={classes.btn}
                 onClick={saveBook}
                 startIcon={<SaveIcon />}
+                sx={{ margin: '0.5em' }}
               >
                 Save
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
-                className={classes.btn}
                 onClick={deleteBook}
                 startIcon={<DeleteIcon />}
+                sx={{ margin: '0.5em' }}
               >
                 Delete
               </Button>
@@ -184,6 +151,6 @@ export default function BookDetail(props) {
           </Grid>
         )}
       </Container>
-    </Root>
+    </>
   );
 }

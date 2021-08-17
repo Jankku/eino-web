@@ -1,48 +1,37 @@
 import { Grid, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
-const PREFIX = 'BookDetailItem';
-
-const classes = {
-  item: `${PREFIX}-item`,
-  title: `${PREFIX}-title`,
-  text: `${PREFIX}-text`
-};
-
-const Root = styled('div')({
-  [`&.${classes.item}`]: {
-    padding: '0.5rem',
-    margin: '0.1em',
-  },
-  [`& .${classes.title}`]: {
-    fontWeight: 700,
-  },
-  [`& .${classes.text}`]: {
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    width: '15em',
-  },
-});
+import { Box } from '@material-ui/system';
 
 export default function BookDetailItem({ title, text }) {
-
-
   return (
-    <Root className={classes.item}>
-      <Grid item justifyContent="center">
+    <Box sx={{ padding: '0.3em' }}>
+      <Grid item>
         <Grid item>
           <Typography
             variant="body1"
-            className={classes.title}
+            sx={{ fontWeight: 700 }}
           >{`${title}`}</Typography>
         </Grid>
-        <Grid item>
+        <Grid
+          item
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}
+        >
           <Typography
             variant="body2"
-            className={classes.text}
+            noWrap={true}
+            paragraph={true}
+            sx={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              width: '20em',
+            }}
           >{`${text}`}</Typography>
         </Grid>
       </Grid>
-    </Root>
+    </Box>
   );
 }
