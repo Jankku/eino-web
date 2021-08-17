@@ -1,67 +1,93 @@
 import {
   Button,
-  Card,
-  CardActions,
-  CardContent,
+  capitalize,
   CircularProgress,
   Container,
   Grid,
-  Typography,
+  Paper,
 } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/styles';
+import { styled } from '@material-ui/core/styles';
+import CreateIcon from '@material-ui/icons/Create';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { DateTime } from 'luxon';
 import { useHistory } from 'react-router-dom';
 import axios from '../../axios';
 import useToken from '../../utils/useToken';
-import Header from '../Header';
+import Header from '../common/Header';
+import EditBookDialog from './EditBookDialog';
+import BookDetailItem from './BookDetailItem';
+import { useCallback } from 'react';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    item: {
-      backgroundColor: theme.palette.background.paper,
-    },
-    itemText: {
-      padding: '0.5em 0em 0em 0.5em',
-      color: theme.palette.text.primary,
-    },
-    cardActionsContainer: {
-      padding: '1em 0em 0em 0em',
-      color: theme.palette.text.primary,
-    },
-    cardActions: {
-      color: theme.palette.text.primary,
-    },
-  })
-);
+const PREFIX = 'BookDetail';
+
+const classes = {
+  items: `${PREFIX}-items`,
+  btn: `${PREFIX}-btn`,
+  btnGroup: `${PREFIX}-btnGroup`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.items}`]: {
+    marginTop: '1em',
+    padding: '1em 0em 2em 0em',
+  },
+
+  [`& .${classes.btn}`]: {
+    marginLeft: '1em',
+  },
+
+  [`& .${classes.btnGroup}`]: {
+    marginTop: '1em',
+  },
+}));
 
 export default function BookDetail(props) {
-  const classes = useStyles();
   const history = useHistory();
   const { token } = useToken();
+  const [editDialogVisible, setEditDialogVisible] = useState(false);
 
-  const [book, setBook] = useState([]);
+  const [book, setBook] = useState({});
+
+  const fetchBookDetails = useCallback(async () => {
+    try {
+      const res = await axios({
+        method: 'get',
+        url: `/api/list/books/book/${props.computedMatch.params.bookId}`,
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
+
+      setBook(res.data.results[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [props.computedMatch.params.bookId, token]);
 
   useEffect(() => {
-    const fetchBookDetails = async () => {
-      try {
-        const res = await axios({
-          method: 'get',
-          url: `/api/list/books/book/${props.computedMatch.params.bookId}`,
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
-        });
-
-        setBook(res.data.results);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
     fetchBookDetails();
-  }, [props.computedMatch.params.bookId, token]);
+  }, [props.computedMatch.params.bookId, setBook, token, fetchBookDetails]);
+
+  const saveBook = async () => {
+    try {
+      await axios({
+        method: 'put',
+        url: `/api/list/books/update/${props.computedMatch.params.bookId}`,
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+        data: book,
+      });
+
+      history.goBack();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const deleteBook = async () => {
     try {
@@ -79,59 +105,85 @@ export default function BookDetail(props) {
     }
   };
 
+  const handleEditDialogOpen = () => setEditDialogVisible(true);
+  const handleEditDialogCancel = () => setEditDialogVisible(false);
+
   return (
-    <>
+    <Root>
       <Header />
       <Container maxWidth="md">
-        {book.length !== 0 ? (
-          book.map((book, bookIdx) => (
-            <div key={bookIdx}>
-              <h1>{book.title}</h1>
-              <Card className={classes.item}>
-                <CardContent>
-                  <Typography variant="subtitle2" component="div">
-                    ISBN: {book.isbn}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Author: {book.author}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Publisher: {book.publisher}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Year: {book.year}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Pages: {book.pages}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Status: {book.status}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Score: {book.score}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Start date: {book.start_date}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    End date: {book.end_date}
-                  </Typography>
-                  <Typography variant="subtitle2" component="div">
-                    Item created on: {book.created_on}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button onClick={deleteBook}>Delete</Button>
-                </CardActions>
-              </Card>
-            </div>
-          ))
+        {book.hasOwnProperty('book_id') ? (
+          <Paper className={classes.items}>
+            <Grid container justifyContent="center">
+              <Grid>
+                <BookDetailItem title="Title" text={book.title} />
+                <BookDetailItem title="Author" text={book.author} />
+                <BookDetailItem title="Publisher" text={book.publisher} />
+                <BookDetailItem title="ISBN" text={book.isbn} />
+              </Grid>
+              <Grid>
+                <BookDetailItem title="Pages" text={book.pages} />
+                <BookDetailItem title="Year" text={book.year} />
+                <BookDetailItem title="Status" text={capitalize(book.status)} />
+              </Grid>
+              <Grid>
+                <BookDetailItem title="Score" text={book.score} />
+                <BookDetailItem
+                  title="Start date"
+                  text={DateTime.fromISO(book.start_date).toLocaleString()}
+                />
+                <BookDetailItem
+                  title="End date"
+                  text={DateTime.fromISO(book.end_date).toLocaleString()}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              justifyContent="center"
+              className={classes.btnGroup}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleEditDialogOpen}
+                startIcon={<CreateIcon />}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+                onClick={saveBook}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.btn}
+                onClick={deleteBook}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+            </Grid>
+
+            <EditBookDialog
+              visible={editDialogVisible}
+              closeDialog={handleEditDialogCancel}
+              bookId={book.book_id}
+              submitAction={fetchBookDetails}
+            />
+          </Paper>
         ) : (
           <Grid container justifyContent="center">
             <CircularProgress />
           </Grid>
         )}
       </Container>
-    </>
+    </Root>
   );
 }

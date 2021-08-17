@@ -5,14 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { EinoThemeProvider } from './utils/theme';
+import { StyledEngineProvider } from '@material-ui/system';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import AdapterLuxon from '@material-ui/lab/AdapterLuxon';
 
 ReactDOM.render(
   <React.StrictMode>
-    <EinoThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </EinoThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <StyledEngineProvider injectFirst>
+        <EinoThemeProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </EinoThemeProvider>
+      </StyledEngineProvider>
+    </LocalizationProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

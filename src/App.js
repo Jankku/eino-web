@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Footer from './components/Footer';
+import Footer from './components/common/Footer';
 import Error404 from './components/errors/Error404';
 import Home from './components/Home';
 import Register from './components/Register';

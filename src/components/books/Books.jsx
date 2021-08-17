@@ -1,6 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
+import { styled } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import Header from '../Header';
+import Header from '../common/Header';
 import axios from '../../axios';
 import {
   CircularProgress,
@@ -9,28 +10,34 @@ import {
   Grid,
   Select,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import AddBookDialog from './AddBookDialog';
 import BookList from './BookList';
-import bookStatus from '../../models/bookStatus';
+import bookSortOptions from '../../models/bookSortOptions';
 import useToken from '../../utils/useToken';
 
-const useStyles = makeStyles({
-  title: {
+const PREFIX = 'Books';
+
+const classes = {
+  title: `${PREFIX}-title`,
+  fab: `${PREFIX}-fab`,
+  noBooks: `${PREFIX}-noBooks`,
+};
+
+const Root = styled('div')({
+  [`& .${classes.title}`]: {
     marginBottom: '1em',
   },
-  fab: {
+  [`& .${classes.fab}`]: {
     position: 'fixed',
     bottom: '16px',
     right: '16px',
   },
-  noBooks: {
+  [`& .${classes.noBooks}`]: {
     fontWeight: 700,
   },
 });
 
 export default function Books() {
-  const classes = useStyles();
   const { token } = useToken();
 
   const [books, setBooks] = useState([]);
@@ -52,7 +59,6 @@ export default function Books() {
       });
 
       setBooks(res.data.results);
-
       setisFetchingBooks(false);
     } catch (err) {
       console.error(err);
@@ -69,16 +75,16 @@ export default function Books() {
     setBookSortStatus(e.target.value);
   };
 
-  const handleDialogOpen = () => {
+  const handleAddDialogOpen = () => {
     setAddDialogVisible(true);
   };
 
-  const handleDialogCancel = () => {
+  const handleAddDialogCancel = () => {
     setAddDialogVisible(false);
   };
 
   return (
-    <>
+    <Root>
       <Header />
       <Container maxWidth="md">
         <Grid
@@ -97,7 +103,7 @@ export default function Books() {
               inputProps={{ name: 'bookSortStatus', id: 'bookSortStatus' }}
               onChange={bookSortStatusChangeHandler}
             >
-              {bookStatus.map((item, itemIdx) => {
+              {bookSortOptions.map((item, itemIdx) => {
                 return (
                   <option key={itemIdx} value={item.value}>
                     {item.name}
@@ -120,17 +126,18 @@ export default function Books() {
         )}
         <AddBookDialog
           visible={addDialogVisible}
-          closeDialog={handleDialogCancel}
+          closeDialog={handleAddDialogCancel}
+          fetchBooks={fetchBooks}
         />
         <Fab
           color="primary"
           aria-label="create"
           className={classes.fab}
-          onClick={handleDialogOpen}
+          onClick={handleAddDialogOpen}
         >
           <AddIcon />
         </Fab>
       </Container>
-    </>
+    </Root>
   );
 }

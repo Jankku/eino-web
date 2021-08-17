@@ -5,25 +5,44 @@ import {
   Grid,
   TextField,
 } from '@material-ui/core';
-import React, { Fragment } from 'react';
+import { styled } from '@material-ui/core/styles';
+import React from 'react';
 import useState from 'react-usestateref';
 import axios from '../axios';
-import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from './common/Header';
 
-const useStyles = makeStyles({
-  title: {
+const PREFIX = 'Register';
+
+const classes = {
+  title: `${PREFIX}-title`,
+  textField: `${PREFIX}-textField`,
+  error: `${PREFIX}-error`,
+  link: `${PREFIX}-link`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.title}`]: {
     textAlign: 'center',
   },
-  textField: {
-    margin: '1.5em 0em',
+
+  [`& .${classes.textField}`]: {
+    marginBottom: '1.3em',
   },
-});
+
+  [`& .${classes.error}`]: {
+    fontWeight: 700,
+    color: 'red',
+    margin: '1em 0em 1em 0em',
+  },
+
+  [`& .${classes.link}`]: {
+    color: theme.palette.text.secondary,
+    textDecoration: 'underline',
+  },
+}));
 
 export default function Register() {
-  const classes = useStyles();
-
   // Error states
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
@@ -94,9 +113,8 @@ export default function Register() {
   };
 
   return (
-    <>
+    <Root>
       <Header />
-
       <Container maxWidth="md">
         <form method="post" onSubmit={handleSubmit} encType="application/json">
           <h1 className={classes.title}>Register</h1>
@@ -162,12 +180,19 @@ export default function Register() {
                   error={passwordMatchError}
                 />
               </Grid>
-              <Grid container justifyContent="space-between">
-                <Button type="submit" variant="contained" color="primary">
+              <Grid
+                container
+                alignItems="flex-start"
+                justifyContent="space-between"
+              >
+                <Button type="submit" variant="contained">
                   Register
                 </Button>
                 <p>
-                  Already have an account? <Link to="/login">Login</Link>
+                  Already have an account?{' '}
+                  <Link to="/login" className={classes.link}>
+                    Login
+                  </Link>
                   {''}
                 </p>
               </Grid>
@@ -175,6 +200,6 @@ export default function Register() {
           </Grid>
         </form>
       </Container>
-    </>
+    </Root>
   );
 }

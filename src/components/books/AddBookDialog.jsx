@@ -10,28 +10,25 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import DatePicker from '@material-ui/lab/DatePicker';
 import axios from '../../axios';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import initialBookFormState from '../../models/initialBookFormState';
 import useToken from '../../utils/useToken';
+import { Box } from '@material-ui/system';
 
-const useStyles = makeStyles({
-  select: {
-    marginTop: '1em',
-    marginLeft: '1em',
-  },
-});
-
-export default function AddBookDialog({ visible, closeDialog }) {
-  const classes = useStyles();
+export default function AddBookDialog({ visible, closeDialog, fetchBooks }) {
   const { token } = useToken();
 
   const [formData, setFormData] = useState(initialBookFormState);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleDateChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   const clearForm = () => {
@@ -50,6 +47,7 @@ export default function AddBookDialog({ visible, closeDialog }) {
       });
 
       // TODO: show success snackbar
+      fetchBooks();
     } catch (err) {
       console.error(err);
     }
@@ -59,73 +57,83 @@ export default function AddBookDialog({ visible, closeDialog }) {
     <Dialog open={visible}>
       <DialogTitle>Add new book</DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          fullWidth
-          margin="dense"
-          name="title"
-          label="Title"
-          value={formData.title}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="author"
-          label="Author"
-          value={formData.author}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="publisher"
-          label="Publisher"
-          value={formData.publisher}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="pages"
-          label="Pages"
-          value={formData.pages}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="year"
-          label="Year"
-          value={formData.year}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="isbn"
-          label="ISBN"
-          value={formData.isbn}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="start_date"
-          label="Start date"
-          value={formData.start_date}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="end_date"
-          label="End date"
-          value={formData.end_date}
-          onChange={handleChange}
-        />
-        <Grid container={true}>
-          <Grid item className={classes.select}>
+        <Grid container>
+          <TextField
+            autoFocus
+            fullWidth
+            margin="dense"
+            name="title"
+            label="Title"
+            value={formData.title}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            name="author"
+            label="Author"
+            value={formData.author}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            name="publisher"
+            label="Publisher"
+            value={formData.publisher}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            name="pages"
+            label="Pages"
+            value={formData.pages}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            name="isbn"
+            label="ISBN"
+            value={formData.isbn}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            name="year"
+            label="Year"
+            value={formData.year}
+            onChange={handleChange}
+          />
+          <Grid container>
+            <Box sx={{ margin: '1em 0em 1em 0em' }}>
+              <DatePicker
+                name="start_date"
+                label="Start date"
+                value={formData.start_date}
+                onChange={(date) =>
+                  handleDateChange('start_date', new Date(date))
+                }
+                renderInput={(props) => <TextField {...props} />}
+              />
+            </Box>
+            <Box sx={{ margin: '1em 0em 0em 1em' }}>
+              <DatePicker
+                name="end_date"
+                label="End date"
+                value={formData.end_date}
+                onChange={(date) =>
+                  handleDateChange('end_date', new Date(date))
+                }
+                renderInput={(props) => <TextField {...props} />}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item>
             <InputLabel htmlFor="score">Score</InputLabel>
             <Select
               native
@@ -140,22 +148,24 @@ export default function AddBookDialog({ visible, closeDialog }) {
               ))}
             </Select>
           </Grid>
-          <Grid item={true} className={classes.select}>
-            <InputLabel htmlFor="status">Status</InputLabel>
-            <Select
-              native
-              value={formData.status}
-              inputProps={{ name: 'status', id: 'status' }}
-              onChange={handleChange}
-            >
-              {bookStatus.map((item, itemIdx) => {
-                return (
-                  <option key={itemIdx} value={item.value}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </Select>
+          <Grid item>
+            <Box sx={{ marginLeft: '1em' }}>
+              <InputLabel htmlFor="status">Status</InputLabel>
+              <Select
+                native
+                value={formData.status}
+                inputProps={{ name: 'status', id: 'status' }}
+                onChange={handleChange}
+              >
+                {bookStatus.map((item, itemIdx) => {
+                  return (
+                    <option key={itemIdx} value={item.value}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </Select>
+            </Box>
           </Grid>
         </Grid>
       </DialogContent>

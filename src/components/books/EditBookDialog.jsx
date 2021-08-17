@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { styled } from '@material-ui/core/styles';
 import {
   Button,
   CircularProgress,
@@ -11,16 +12,22 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import axios from '../../axios';
 import bookStatus from '../../models/bookStatus';
 import score from '../../models/score';
 import initialBookFormState from '../../models/initialBookFormState';
 import useToken from '../../utils/useToken';
-import { useEffect } from 'react';
+import { Box } from '@material-ui/system';
+import DatePicker from '@material-ui/lab/DatePicker';
 
-const useStyles = makeStyles({
-  select: {
+const PREFIX = 'EditBookDialog';
+
+const classes = {
+  select: `${PREFIX}-select`,
+};
+
+const StyledDialog = styled(Dialog)({
+  [`& .${classes.select}`]: {
     marginTop: '1em',
     paddingLeft: '0.5em',
   },
@@ -30,9 +37,8 @@ export default function EditBookDialog({
   visible,
   closeDialog,
   bookId,
-  fetchBooks,
+  submitAction,
 }) {
-  const classes = useStyles();
   const { token } = useToken();
 
   const [formData, setFormData] = useState(initialBookFormState);
@@ -65,6 +71,10 @@ export default function EditBookDialog({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleDateChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
   const clearForm = () => {
     setFormData(initialBookFormState);
   };
@@ -80,14 +90,14 @@ export default function EditBookDialog({
         data: formData,
       });
 
-      fetchBooks();
+      submitAction();
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Dialog open={visible}>
+    <StyledDialog open={visible}>
       <DialogTitle>Edit book</DialogTitle>
       {!isLoading ? (
         <DialogContent>
@@ -127,14 +137,6 @@ export default function EditBookDialog({
           <TextField
             fullWidth
             margin="dense"
-            name="year"
-            label="Year"
-            value={formData.year}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="dense"
             name="isbn"
             label="ISBN"
             value={formData.isbn}
@@ -143,21 +145,37 @@ export default function EditBookDialog({
           <TextField
             fullWidth
             margin="dense"
-            name="Start date"
-            label="Start date"
-            value={formData.start_date}
+            name="year"
+            label="Year"
+            value={formData.year}
             onChange={handleChange}
           />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="end_date"
-            label="End date"
-            value={formData.end_date}
-            onChange={handleChange}
-          />
-          <Grid container={true}>
-            <Grid item={true} className={classes.select}>
+          <Grid container>
+            <Box sx={{ margin: '1em 0em 1em 0em' }}>
+              <DatePicker
+                name="start_date"
+                label="Start date"
+                value={formData.start_date}
+                onChange={(date) =>
+                  handleDateChange('start_date', new Date(date))
+                }
+                renderInput={(props) => <TextField {...props} />}
+              />
+            </Box>
+            <Box sx={{ margin: '1em 0em 0em 1em' }}>
+              <DatePicker
+                name="end_date"
+                label="End date"
+                value={formData.end_date}
+                onChange={(date) =>
+                  handleDateChange('end_date', new Date(date))
+                }
+                renderInput={(props) => <TextField {...props} />}
+              />
+            </Box>
+          </Grid>
+          <Grid container>
+            <Grid item>
               <InputLabel htmlFor="score">Score</InputLabel>
               <Select
                 native
@@ -172,22 +190,24 @@ export default function EditBookDialog({
                 ))}
               </Select>
             </Grid>
-            <Grid item={true} className={classes.select}>
-              <InputLabel htmlFor="status">Status</InputLabel>
-              <Select
-                native
-                value={formData.status}
-                inputProps={{ name: 'status', id: 'status' }}
-                onChange={handleChange}
-              >
-                {bookStatus.map((item, itemIdx) => {
-                  return (
-                    <option key={itemIdx} value={item.value}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </Select>
+            <Grid item>
+              <Box sx={{ marginLeft: '1em' }}>
+                <InputLabel htmlFor="status">Status</InputLabel>
+                <Select
+                  native
+                  value={formData.status}
+                  inputProps={{ name: 'status', id: 'status' }}
+                  onChange={handleChange}
+                >
+                  {bookStatus.map((item, itemIdx) => {
+                    return (
+                      <option key={itemIdx} value={item.value}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </Box>
             </Grid>
           </Grid>
         </DialogContent>
@@ -206,29 +226,32 @@ export default function EditBookDialog({
         >
           Cancel
         </Button>
-        {!isLoading ? (
-          <Button
-            color="primary"
-            onClick={() => {
-              submitForm();
-              closeDialog();
-            }}
-          >
-            Submit changes
-          </Button>
-        ) : (
-          <Button
-            disabled
-            color="primary"
-            onClick={() => {
-              submitForm();
-              closeDialog();
-            }}
-          >
-            Submit changes
-          </Button>
-        )}
+        {
+          // Disable button while loading
+          !isLoading ? (
+            <Button
+              color="primary"
+              onClick={() => {
+                submitForm();
+                closeDialog();
+              }}
+            >
+              Submit changes
+            </Button>
+          ) : (
+            <Button
+              disabled
+              color="primary"
+              onClick={() => {
+                submitForm();
+                closeDialog();
+              }}
+            >
+              Submit changes
+            </Button>
+          )
+        }
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
   );
 }

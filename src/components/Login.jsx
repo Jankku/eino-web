@@ -1,29 +1,43 @@
 import { Box, Button, Container, Grid, TextField } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import React from 'react';
 import useState from 'react-usestateref';
 import axios from '../axios';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import useToken from '../utils/useToken';
 import Error from '../models/error';
-import Header from '../components/Header';
+import Header from './common/Header';
 
-const useStyles = makeStyles({
-  title: {
+const PREFIX = 'Login';
+const classes = {
+  title: `${PREFIX}-title`,
+  textField: `${PREFIX}-textField`,
+  error: `${PREFIX}-error`,
+  link: `${PREFIX}-link`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.title}`]: {
     textAlign: 'center',
   },
-  textField: {
-    margin: '1.5em 0em',
+
+  [`& .${classes.textField}`]: {
+    marginBottom: '1.3em',
   },
-  error: {
+
+  [`& .${classes.error}`]: {
     fontWeight: 700,
     color: 'red',
     margin: '1em 0em 1em 0em',
   },
-});
+
+  [`& .${classes.link}`]: {
+    color: theme.palette.text.secondary,
+    textDecoration: 'underline',
+  },
+}));
 
 export default function Login() {
-  const classes = useStyles();
   const history = useHistory();
   const { setToken } = useToken();
 
@@ -56,7 +70,7 @@ export default function Login() {
   };
 
   return (
-    <>
+    <Root>
       <Header />
       <Container maxWidth="md">
         <form method="post" onSubmit={handleSubmit} encType="application/json">
@@ -100,15 +114,25 @@ export default function Login() {
               <Box className={classes.error}>
                 <span>{responseError[0].message}</span>
               </Box>
-              <Grid>
+              <Grid
+                container
+                alignItems="flex-start"
+                justifyContent="space-between"
+              >
                 <Button type="submit" variant="contained" color="primary">
                   Login
                 </Button>
+                <p>
+                  Don't have an account yet?{' '}
+                  <Link to="/register" className={classes.link}>
+                    Register
+                  </Link>
+                </p>
               </Grid>
             </Grid>
           </Grid>
         </form>
       </Container>
-    </>
+    </Root>
   );
 }

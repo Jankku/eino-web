@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { styled } from '@material-ui/core/styles';
 import {
   Button,
   Card,
@@ -10,47 +11,54 @@ import {
   ImageListItem,
   Typography,
 } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/styles';
 import { useHistory } from 'react-router-dom';
 import EditBookDialog from './EditBookDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    item: {
-      backgroundColor: theme.palette.background.paper,
-    },
-    itemText: {
-      padding: '0.5em 0em 0em 0.5em',
-      color: theme.palette.text.primary,
-    },
-    cardActionsContainer: {
-      padding: '1em 0em 0em 0em',
-      color: theme.palette.text.primary,
-    },
-    cardActions: {
-      color: theme.palette.text.primary,
-    },
-  })
-);
+const PREFIX = 'BookList';
+
+const classes = {
+  item: `${PREFIX}-item`,
+  itemText: `${PREFIX}-itemText`,
+  cardActionsContainer: `${PREFIX}-cardActionsContainer`,
+  cardActions: `${PREFIX}-cardActions`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.item}`]: {
+    backgroundColor: theme.palette.background.paper,
+  },
+
+  [`& .${classes.itemText}`]: {
+    padding: '0.5em 0em 0em 0.5em',
+    color: theme.palette.text.primary,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    width: '12em',
+  },
+
+  [`& .${classes.cardActionsContainer}`]: {
+    padding: '1em 0em 0em 0em',
+    color: theme.palette.text.primary,
+  },
+
+  [`& .${classes.cardActions}`]: {
+    color: theme.palette.text.primary,
+  },
+}));
 
 export default function BookList({ books, fetchBooks }) {
-  const classes = useStyles();
   const history = useHistory();
 
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedBookId, seteditedBookId] = useState('');
 
-  const handleEditDialogOpen = () => {
-    setEditDialogVisible(true);
-  };
-
-  const handleEditDialogCancel = () => {
-    setEditDialogVisible(false);
-  };
+  const handleEditDialogOpen = () => setEditDialogVisible(true);
+  const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
-    <div>
+    <Root>
       <ImageList cols={ColumnCalculator()} rowHeight={155}>
         {books.map((book, bookIdx) => (
           <ImageListItem key={bookIdx}>
@@ -85,11 +93,12 @@ export default function BookList({ books, fetchBooks }) {
                   </Grid>
                   <CardActions className={classes.cardActionsContainer}>
                     <Button
-                      onClick={() => history.push(`/books/${book.book_id}`)}
                       className={classes.cardActions}
+                      onClick={() => history.push(`/books/${book.book_id}`)}
                     >
                       Details
                     </Button>
+
                     <Button
                       onClick={() => {
                         handleEditDialogOpen();
@@ -111,8 +120,8 @@ export default function BookList({ books, fetchBooks }) {
         visible={editDialogVisible}
         closeDialog={handleEditDialogCancel}
         bookId={editedBookId}
-        fetchBooks={fetchBooks}
+        submitAction={fetchBooks}
       />
-    </div>
+    </Root>
   );
 }

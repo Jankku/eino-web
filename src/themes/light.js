@@ -1,8 +1,9 @@
-import { blue } from '@material-ui/core/colors';
+import { blue, red } from '@material-ui/core/colors';
+import { createTheme } from '@material-ui/system';
 
-const light = {
+const light = createTheme({
   palette: {
-    type: 'light',
+    mode: 'light',
     background: {
       default: '#DDD',
       paper: '#EEE',
@@ -11,9 +12,12 @@ const light = {
       main: blue[500],
     },
     secondary: {
-      main: blue[300],
+      main: red[500],
+    },
+    text: {
+      link: blue[700],
     },
   },
-};
+});
 
 export default light;

@@ -7,8 +7,8 @@ const initialMovieFormState = {
   year: 2021,
   status: 'watching',
   score: 0,
-  start_date: '',
-  end_date: '',
+  start_date: new Date().toISOString(),
+  end_date: new Date().toISOString(),
 };
 
 export default initialMovieFormState;

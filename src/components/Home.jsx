@@ -1,25 +1,12 @@
 import { Container } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import Header from './Header';
-
-const useStyles = makeStyles({
-  root: {
-    textAlign: 'center',
-  },
-  link: {
-    padding: '0.5em',
-    fontWeight: '700',
-  },
-});
+import Header from './common/Header';
 
 export default function Home() {
-  const classes = useStyles();
-
   return (
     <>
       <Header />
-      <Container maxWidth="md" className={classes.root}>
+      <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <h1>eino</h1>
       </Container>
     </>

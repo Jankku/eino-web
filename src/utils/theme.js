@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
-import { createTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 import light from '../themes/light';
 import dark from '../themes/dark';
 
@@ -28,10 +33,14 @@ export function EinoThemeProvider(props) {
 
   return (
     <ThemeContext.Provider value={{ darkTheme, toggleTheme }}>
-      <ThemeProvider theme={darkTheme ? createTheme(dark) : createTheme(light)}>
-        <CssBaseline />
-        {props.children}
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider
+          theme={darkTheme ? createTheme(dark) : createTheme(light)}
+        >
+          <CssBaseline />
+          {props.children}
+        </ThemeProvider>
+      </StyledEngineProvider>
     </ThemeContext.Provider>
   );
 }

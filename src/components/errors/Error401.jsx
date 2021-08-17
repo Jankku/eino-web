@@ -1,6 +1,6 @@
 import { Button, Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import Header from '../Header';
+import Header from '../common/Header';
 
 export default function Error401() {
   const history = useHistory();

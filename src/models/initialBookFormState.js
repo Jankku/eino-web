@@ -4,11 +4,11 @@ const initialBookFormState = {
   author: '',
   publisher: '',
   pages: 0,
-  year: 2021,
+  year: new Date().getFullYear(),
   status: 'reading',
   score: 0,
-  start_date: '',
-  end_date: '',
+  start_date: new Date().toISOString(),
+  end_date: new Date().toISOString(),
 };
 
 export default initialBookFormState;

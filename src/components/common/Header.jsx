@@ -1,4 +1,5 @@
 import React from 'react';
+import { styled } from '@material-ui/core/styles';
 import {
   AppBar,
   Button,
@@ -11,19 +12,76 @@ import {
   MenuList,
   Toolbar,
 } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/styles';
 import { Link, NavLink, useHistory } from 'react-router-dom';
-import useToken from '../utils/useToken';
-import { getOtherThemeName, useThemeContext } from '../utils/theme';
+import useToken from '../../utils/useToken';
+import { useThemeContext } from '../../utils/theme';
 import MenuIcon from '@material-ui/icons/Menu';
 import WbSunnyRounded from '@material-ui/icons/WbSunnyRounded';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
 import { useState } from 'react';
+import { Box } from '@material-ui/system';
+
+const PREFIX = 'Header';
+
+const classes = {
+  logo: `${PREFIX}-logo`,
+  menuButton: `${PREFIX}-menuButton`,
+  themeIcon: `${PREFIX}-themeIcon`,
+  drawerPaper: `${PREFIX}-drawerPaper`,
+  item: `${PREFIX}-item`,
+  root: `${PREFIX}-root`,
+  drawer: `${PREFIX}-drawer`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  toolbar: theme.mixins.toolbar,
+
+  [`& .${classes.logo}`]: {
+    margin: '0em 0em 0.2em 0em',
+    fontFamily: 'Pacifico, cursive',
+    fontSize: '32px',
+    letterSpacing: '0.03em',
+    color: '#FFFFFF',
+    textDecoration: 'none',
+    '&:hover': {
+      color: '#DDDDDD',
+    },
+  },
+
+  [`& .${classes.item}`]: {
+    color: '#FFFFFF',
+    textDecoration: 'none',
+    '&': {
+      textDecoration: 'none',
+      color: '#DDDDDD',
+    },
+  },
+
+  a: {
+    '&:link': {
+      textDecoration: 'none',
+      color: '#DDDDDD',
+    },
+  },
+
+  [`& .${classes.menuButton}`]: {
+    marginRight: '0.2em',
+  },
+
+  [`& .${classes.themeIcon}`]: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  [`& .${classes.root}`]: {
+    display: 'flex',
+  },
+}));
 
 const routeArray = [
   { name: 'Home', path: '' },
-  { name: 'Books', path: 'books' },
-  { name: 'Movies', path: 'movies' },
+  { name: 'Books', path: '/books' },
+  { name: 'Movies', path: '/movies' },
 ];
 
 const authRouteArray = [
@@ -31,51 +89,7 @@ const authRouteArray = [
   { name: 'Login', path: 'login' },
 ];
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    toolbar: theme.mixins.toolbar,
-    logo: {
-      margin: '0em 0em 0.2em 0em',
-      fontFamily: 'Pacifico, cursive',
-      fontSize: '32px',
-      letterSpacing: '0.03em',
-      color: '#FFFFFF',
-      textDecoration: 'none',
-      '&:hover': {
-        color: '#DDDDDD',
-      },
-    },
-    menuButton: {
-      marginRight: '0.2em',
-    },
-    themeIcon: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    item: {
-      textDecoration: 'none',
-      color: theme.palette.text.primary,
-    },
-    root: {
-      display: 'flex',
-    },
-    drawer: {
-      [theme.breakpoints.up('md')]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
-  })
-);
-
 export default function Header(props) {
-  const classes = useStyles();
   const history = useHistory();
   const { window } = props;
   const { token, removeToken } = useToken();
@@ -90,13 +104,18 @@ export default function Header(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   const items = (
-    <div>
+    <Box role="presentation" sx={{ width: 250 }}>
       <div className={classes.toolbar} />
       <Divider />
       <MenuList>
         {routeArray.map((item, index) => (
-          <NavLink to={item.path} key={index} className={classes.item}>
-            <MenuItem>
+          <NavLink to={item.path} key={index}>
+            <MenuItem
+              sx={{
+                color: (theme) => theme.palette.text.primary,
+                textDecoration: 'none',
+              }}
+            >
               <ListItemText primary={item.name} />
             </MenuItem>
           </NavLink>
@@ -104,19 +123,24 @@ export default function Header(props) {
         <Divider />
         {!token
           ? authRouteArray.map((item, index) => (
-              <NavLink to={item.path} key={index} className={classes.item}>
-                <MenuItem>
+              <NavLink to={item.path} key={index}>
+                <MenuItem
+                  sx={{
+                    color: (theme) => theme.palette.text.primary,
+                    textDecoration: 'none',
+                  }}
+                >
                   <ListItemText primary={item.name} />
                 </MenuItem>
               </NavLink>
             ))
           : []}
       </MenuList>
-    </div>
+    </Box>
   );
 
   return (
-    <>
+    <Root>
       <AppBar position="sticky" className={classes.appBar}>
         <Toolbar>
           <IconButton
@@ -124,6 +148,7 @@ export default function Header(props) {
             edge="start"
             className={classes.menuButton}
             onClick={handleDrawerToggle}
+            size="large"
           >
             <MenuIcon />
           </IconButton>
@@ -135,7 +160,7 @@ export default function Header(props) {
             </Grid>
 
             <Grid item className={classes.themeIcon}>
-              <IconButton onClick={() => toggleTheme()}>
+              <IconButton onClick={() => toggleTheme()} size="large">
                 {darkTheme === true ? (
                   <WbSunnyRounded color="action" />
                 ) : (
@@ -145,7 +170,7 @@ export default function Header(props) {
 
               {token ? (
                 <Button
-                  color="default"
+                  sx={{ color: 'text.primary' }}
                   onClick={() => {
                     removeToken();
                     history.replace('/');
@@ -160,16 +185,13 @@ export default function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer}>
+      <nav>
         <Drawer
           container={container}
           variant="temporary"
           anchor="left"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
           ModalProps={{
             keepMounted: true,
           }}
@@ -177,6 +199,6 @@ export default function Header(props) {
           {items}
         </Drawer>
       </nav>
-    </>
+    </Root>
   );
 }
