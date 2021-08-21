@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import EditBookDialog from './EditBookDialog';
+import EditMovieDialog from './EditMovieDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';
 
-const PREFIX = 'BookList';
+const PREFIX = 'MovieList';
 
 const classes = {
   item: `${PREFIX}-item`,
@@ -49,11 +49,11 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export default function BookList({ books, fetchBooks }) {
+export default function MovieList({ movies, fetchMovies }) {
   const history = useHistory();
 
   const [editDialogVisible, setEditDialogVisible] = useState(false);
-  const [editedBookId, seteditedBookId] = useState('');
+  const [editedMovieId, seteditedMovieId] = useState('');
 
   const handleEditDialogOpen = () => setEditDialogVisible(true);
   const handleEditDialogCancel = () => setEditDialogVisible(false);
@@ -61,8 +61,8 @@ export default function BookList({ books, fetchBooks }) {
   return (
     <Root>
       <ImageList cols={ColumnCalculator()} rowHeight={155}>
-        {books.map((book, bookIdx) => (
-          <ImageListItem key={bookIdx}>
+        {movies.map((movie, movieIdx) => (
+          <ImageListItem key={movieIdx}>
             <Fade in={true}>
               <Card className={classes.item}>
                 <CardContent>
@@ -73,29 +73,29 @@ export default function BookList({ books, fetchBooks }) {
                         component="div"
                         className={classes.itemText}
                       >
-                        {book.title}
+                        {movie.title}
                       </Typography>
                       <Typography
                         variant="body2"
                         component="div"
                         className={classes.itemText}
                       >
-                        {book.author}
+                        {movie.studio}
                       </Typography>
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle2" component="div">
-                        {book.score}
+                        {movie.score}
                       </Typography>
                       <Typography variant="subtitle2" component="div">
-                        {capitalize(book.status)}
+                        {capitalize(movie.status)}
                       </Typography>
                     </Grid>
                   </Grid>
                   <CardActions className={classes.cardActionsContainer}>
                     <Button
                       className={classes.cardActions}
-                      onClick={() => history.push(`/books/${book.book_id}`)}
+                      onClick={() => history.push(`/movies/${movie.movie_id}`)}
                     >
                       Details
                     </Button>
@@ -103,7 +103,7 @@ export default function BookList({ books, fetchBooks }) {
                     <Button
                       onClick={() => {
                         handleEditDialogOpen();
-                        seteditedBookId(book.book_id);
+                        seteditedMovieId(movie.movie_id);
                       }}
                       className={classes.cardActions}
                     >
@@ -117,11 +117,11 @@ export default function BookList({ books, fetchBooks }) {
         ))}
       </ImageList>
 
-      <EditBookDialog
+      <EditMovieDialog
         visible={editDialogVisible}
         closeDialog={handleEditDialogCancel}
-        bookId={editedBookId}
-        submitAction={fetchBooks}
+        movieId={editedMovieId}
+        submitAction={fetchMovies}
       />
     </Root>
   );

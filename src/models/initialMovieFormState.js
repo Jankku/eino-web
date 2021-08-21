@@ -4,7 +4,7 @@ const initialMovieFormState = {
   director: '',
   writer: '',
   duration: 0,
-  year: 2021,
+  year: new Date().getFullYear(),
   status: 'watching',
   score: 0,
   start_date: new Date().toISOString(),

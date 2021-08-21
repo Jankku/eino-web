@@ -7,6 +7,8 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Books from './components/books/Books';
 import BookDetail from './components/books/BookDetail';
+import Movies from './components/movies/Movies';
+import MovieDetail from './components/movies/MovieDetail';
 import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
@@ -18,6 +20,8 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <PrivateRoute exact path="/books" comp={Books} />
         <PrivateRoute exact path="/books/:bookId" comp={BookDetail} />
+        <PrivateRoute exact path="/movies" comp={Movies} />
+        <PrivateRoute exact path="/movies/:movieId" comp={MovieDetail} />
         <Route path="/" component={Error404} />
       </Switch>
       <Footer />

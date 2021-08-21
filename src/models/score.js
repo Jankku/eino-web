@@ -1,5 +1,5 @@
 const score = [
-  { value: 0, name: 'Select score' },
+  { value: 0, name: 'Select' },
   { value: 1, name: '(1) Appalling' },
   { value: 2, name: '(2) Horrible' },
   { value: 3, name: '(3) Very bad' },
