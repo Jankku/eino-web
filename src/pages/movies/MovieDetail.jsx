@@ -71,7 +71,10 @@ export default function MovieDetail() {
               <MovieDetailItem title="Studio" text={movie.studio} />
               <MovieDetailItem title="Director" text={movie.director} />
               <MovieDetailItem title="Writer" text={movie.writer} />
-              <MovieDetailItem title="Duration" text={movie.duration} />
+              <MovieDetailItem
+                title="Duration"
+                text={`${movie.duration} minutes`}
+              />
               <MovieDetailItem title="Year" text={movie.year} />
               <MovieDetailItem title="Status" text={capitalize(movie.status)} />
               <MovieDetailItem title="Score" text={movie.score} />
