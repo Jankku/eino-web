@@ -74,7 +74,7 @@ export default function EditBookDialog({
 
   const submitForm = async () => {
     try {
-      BookController.updateBook(bookId, token, formData);
+      await BookController.updateBook(bookId, token, formData);
       submitAction();
     } catch (err) {
       console.error(err);
