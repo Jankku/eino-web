@@ -25,16 +25,16 @@ export default function BookDetail() {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [book, setBook] = useState({});
 
-  useEffect(() => {
-    const fetchBookDetails = async () => {
-      try {
-        const res = await BookController.getBookDetails(bookId, token);
-        setBook(res.data.results[0]);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  const fetchBookDetails = async () => {
+    try {
+      const res = await BookController.getBookDetails(bookId, token);
+      setBook(res.data.results[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+  useEffect(() => {
     fetchBookDetails();
   }, [bookId, token]);
 
@@ -118,6 +118,7 @@ export default function BookDetail() {
               visible={editDialogVisible}
               closeDialog={handleEditDialogCancel}
               bookId={book.book_id}
+              submitAction={fetchBookDetails}
             />
           </Paper>
         ) : (
