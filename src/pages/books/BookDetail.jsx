@@ -17,6 +17,7 @@ import Header from '../../components/common/Header';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import BookDetailItem from '../../components/books/BookDetailItem';
 import BookController from '../../data/BookController';
+import { useCallback } from 'react';
 
 export default function BookDetail() {
   const history = useHistory();
@@ -25,18 +26,18 @@ export default function BookDetail() {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [book, setBook] = useState({});
 
-  const fetchBookDetails = async () => {
+  const fetchBookDetails = useCallback(async () => {
     try {
       const res = await BookController.getBookDetails(bookId, token);
       setBook(res.data.results[0]);
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [bookId, token]);
 
   useEffect(() => {
     fetchBookDetails();
-  }, [bookId, token]);
+  }, [bookId, fetchBookDetails, token]);
 
   const saveBook = async () => {
     try {
