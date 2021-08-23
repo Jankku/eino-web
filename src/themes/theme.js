@@ -5,8 +5,8 @@ import {
   StyledEngineProvider,
 } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
-import light from '../themes/light';
-import dark from '../themes/dark';
+import light from './light';
+import dark from './dark';
 
 const ThemeContext = createContext({});
 

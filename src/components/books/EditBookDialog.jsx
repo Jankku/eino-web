@@ -12,13 +12,13 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import axios from '../../axios';
 import bookStatus from '../../models/bookStatus';
 import score from '../../models/score';
 import initialBookFormState from '../../models/initialBookFormState';
 import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import DatePicker from '@material-ui/lab/DatePicker';
+import BookController from '../../data/BookController';
 
 const PREFIX = 'EditBookDialog';
 
@@ -40,7 +40,6 @@ export default function EditBookDialog({
   submitAction,
 }) {
   const { token } = useToken();
-
   const [formData, setFormData] = useState(initialBookFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -49,15 +48,9 @@ export default function EditBookDialog({
       try {
         setLoading(true);
 
-        const res = await axios({
-          method: 'get',
-          url: `/api/list/books/book/${bookId}`,
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
-        });
-
+        const res = await BookController.getBookDetails(bookId, token);
         setFormData(res.data.results[0]);
+
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -81,15 +74,7 @@ export default function EditBookDialog({
 
   const submitForm = async () => {
     try {
-      await axios({
-        method: 'put',
-        url: `/api/list/books/update/${bookId}`,
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-        data: formData,
-      });
-
+      BookController.updateBook(bookId, token, formData);
       submitAction();
     } catch (err) {
       console.error(err);

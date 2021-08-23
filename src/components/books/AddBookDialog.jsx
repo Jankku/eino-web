@@ -11,16 +11,15 @@ import {
   TextField,
 } from '@material-ui/core';
 import DatePicker from '@material-ui/lab/DatePicker';
-import axios from '../../axios';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import initialBookFormState from '../../models/initialBookFormState';
 import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
+import BookController from '../../data/BookController';
 
-export default function AddBookDialog({ visible, closeDialog, fetchBooks }) {
+export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   const { token } = useToken();
-
   const [formData, setFormData] = useState(initialBookFormState);
 
   const handleChange = (e) => {
@@ -37,17 +36,8 @@ export default function AddBookDialog({ visible, closeDialog, fetchBooks }) {
 
   const submitForm = async () => {
     try {
-      await axios({
-        method: 'post',
-        url: '/api/list/books/add',
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-        data: formData,
-      });
-
-      // TODO: show success snackbar
-      fetchBooks();
+      await BookController.addBook(token, formData);
+      submitAction();
     } catch (err) {
       console.error(err);
     }

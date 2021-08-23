@@ -2,13 +2,13 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Footer from './components/common/Footer';
 import Error404 from './components/errors/Error404';
-import Home from './components/Home';
-import Register from './components/Register';
-import Login from './components/Login';
-import Books from './components/books/Books';
-import BookDetail from './components/books/BookDetail';
-import Movies from './components/movies/Movies';
-import MovieDetail from './components/movies/MovieDetail';
+import Home from './pages/Home';
+import Register from './pages/authentication/Register';
+import Login from './pages/authentication/Login';
+import Books from './pages/books/Books';
+import BookDetail from './pages/books/BookDetail';
+import Movies from './pages/movies/Movies';
+import MovieDetail from './pages/movies/MovieDetail';
 import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {

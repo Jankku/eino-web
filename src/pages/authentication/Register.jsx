@@ -8,9 +8,9 @@ import {
 import { styled } from '@material-ui/core/styles';
 import React from 'react';
 import useState from 'react-usestateref';
-import axios from '../axios';
-import { Link, Redirect } from 'react-router-dom';
-import Header from './common/Header';
+import { Link, useHistory } from 'react-router-dom';
+import Header from '../../components/common/Header';
+import AuthController from '../../data/AuthController';
 
 const PREFIX = 'Register';
 
@@ -43,6 +43,8 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function Register() {
+  const history = useHistory();
+
   // Error states
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
@@ -97,16 +99,8 @@ export default function Register() {
     if (!validateForm()) return console.error('Form validation failed');
 
     try {
-      await axios({
-        method: 'post',
-        url: '/api/auth/register',
-        data: {
-          username: credentials.username,
-          password: credentials.password,
-          password2: credentials.password2,
-        },
-      });
-      <Redirect to="/login" />;
+      await AuthController.register(credentials);
+      history.push('/login');
     } catch (err) {
       console.error(err);
     }

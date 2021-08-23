@@ -51,7 +51,6 @@ const Root = styled('div')(({ theme }) => ({
 
 export default function BookList({ books, fetchBooks }) {
   const history = useHistory();
-
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedBookId, seteditedBookId] = useState('');
 

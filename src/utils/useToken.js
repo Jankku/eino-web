@@ -6,13 +6,18 @@ export default function useToken() {
     return localStorage.getItem('accessToken');
   };
 
-  const [token, setToken] = useState(getToken());
+  const getRefreshToken = () => {
+    return localStorage.getItem('refreshToken');
+  };
 
-  const saveToken = (token) => {
+  const [token, setToken] = useState(getToken());
+  const [refreshToken, setRefreshToken] = useState(getRefreshToken());
+
+  const saveToken = (accessToken) => {
     try {
-      setToken(token);
-      const { userId, username } = jwt_decode(token);
-      localStorage.setItem('accessToken', token);
+      setToken(accessToken);
+      const { userId, username } = jwt_decode(accessToken);
+      localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('user_id', userId);
       localStorage.setItem('username', username);
     } catch (err) {
@@ -21,18 +26,30 @@ export default function useToken() {
   };
 
   const removeToken = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
+  };
+
+  const saveRefreshToken = (refreshToken) => {
     try {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('user_id');
-      localStorage.removeItem('username');
+      setRefreshToken(refreshToken);
+      localStorage.setItem('refreshToken', refreshToken);
     } catch (err) {
       console.error(err);
     }
   };
 
+  const removeRefreshToken = () => {
+    localStorage.removeItem('refreshToken');
+  };
+
   return {
     token,
+    refreshToken,
     setToken: saveToken,
+    setRefreshToken: saveRefreshToken,
     removeToken,
+    removeRefreshToken,
   };
 }

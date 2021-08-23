@@ -2,11 +2,11 @@ import { Box, Button, Container, Grid, TextField } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import React from 'react';
 import useState from 'react-usestateref';
-import axios from '../axios';
 import { Link, useHistory } from 'react-router-dom';
-import useToken from '../utils/useToken';
-import Error from '../models/error';
-import Header from './common/Header';
+import useToken from '../../utils/useToken';
+import Error from '../../models/error';
+import Header from '../../components/common/Header';
+import AuthController from '../../data/AuthController';
 
 const PREFIX = 'Login';
 const classes = {
@@ -39,7 +39,7 @@ const Root = styled('div')(({ theme }) => ({
 
 export default function Login() {
   const history = useHistory();
-  const { setToken } = useToken();
+  const { setToken, setRefreshToken } = useToken();
 
   const [responseError, setResponseError] = useState(Error);
 
@@ -56,13 +56,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios({
-        method: 'post',
-        url: '/api/auth/login',
-        data: credentials,
-      });
+      const res = await AuthController.login(credentials);
+      setToken(res.data.accessToken);
+      setRefreshToken(res.data.refreshToken);
 
-      setToken(res.data.token);
       history.push('/books');
     } catch (err) {
       if (err.response) setResponseError(err.response.data.errors);

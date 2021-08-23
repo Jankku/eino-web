@@ -12,13 +12,13 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import axios from '../../axios';
 import movieStatus from '../../models/movieStatus';
 import score from '../../models/score';
 import initialMovieFormState from '../../models/initialMovieFormState';
 import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import DatePicker from '@material-ui/lab/DatePicker';
+import MovieController from '../../data/MovieController';
 
 const PREFIX = 'EditMovieDialog';
 
@@ -40,7 +40,6 @@ export default function EditMovieDialog({
   submitAction,
 }) {
   const { token } = useToken();
-
   const [formData, setFormData] = useState(initialMovieFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -49,15 +48,9 @@ export default function EditMovieDialog({
       try {
         setLoading(true);
 
-        const res = await axios({
-          method: 'get',
-          url: `/api/list/movies/movie/${movieId}`,
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
-        });
-
+        const res = await MovieController.getMovieDetails(movieId, token);
         setFormData(res.data.results[0]);
+
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -81,15 +74,7 @@ export default function EditMovieDialog({
 
   const submitForm = async () => {
     try {
-      await axios({
-        method: 'put',
-        url: `/api/list/movies/update/${movieId}`,
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-        data: formData,
-      });
-
+      await MovieController.updateMovie(movieId, token, formData);
       submitAction();
     } catch (err) {
       console.error(err);

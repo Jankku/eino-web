@@ -11,16 +11,15 @@ import {
   TextField,
 } from '@material-ui/core';
 import DatePicker from '@material-ui/lab/DatePicker';
-import axios from '../../axios';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import initialMovieFormState from '../../models/initialMovieFormState';
 import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
+import MovieController from '../../data/MovieController';
 
-export default function AddMovieDialog({ visible, closeDialog, fetchMovies }) {
+export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   const { token } = useToken();
-
   const [formData, setFormData] = useState(initialMovieFormState);
 
   const handleChange = (e) => {
@@ -37,17 +36,8 @@ export default function AddMovieDialog({ visible, closeDialog, fetchMovies }) {
 
   const submitForm = async () => {
     try {
-      await axios({
-        method: 'post',
-        url: '/api/list/movies/add',
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-        data: formData,
-      });
-
-      // TODO: show success snackbar
-      fetchMovies();
+      await MovieController.addMovie(token, formData);
+      submitAction();
     } catch (err) {
       console.error(err);
     }

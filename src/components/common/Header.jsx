@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import useToken from '../../utils/useToken';
-import { useThemeContext } from '../../utils/theme';
+import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@material-ui/icons/Menu';
 import WbSunnyRounded from '@material-ui/icons/WbSunnyRounded';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
@@ -92,7 +92,7 @@ const authRouteArray = [
 export default function Header(props) {
   const history = useHistory();
   const { window } = props;
-  const { token, removeToken } = useToken();
+  const { token, removeToken, removeRefreshToken } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -173,6 +173,7 @@ export default function Header(props) {
                   sx={{ color: 'text.primary' }}
                   onClick={() => {
                     removeToken();
+                    removeRefreshToken();
                     history.replace('/');
                   }}
                 >

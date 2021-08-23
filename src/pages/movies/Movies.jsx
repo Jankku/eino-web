@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import Header from '../common/Header';
-import axios from '../../axios';
+import Header from '../../components/common/Header';
 import {
   CircularProgress,
   Container,
@@ -10,17 +9,18 @@ import {
   Grid,
   Select,
 } from '@material-ui/core';
-import AddBookDialog from './AddBookDialog';
-import BookList from './BookList';
-import bookSortOptions from '../../models/bookSortOptions';
+import AddMovieDialog from '../../components/movies/AddMovieDialog';
+import MovieList from '../../components/movies/MovieList';
+import movieSortOptions from '../../models/movieSortOptions';
 import useToken from '../../utils/useToken';
+import MovieController from '../../data/MovieController';
 
-const PREFIX = 'Books';
+const PREFIX = 'Movies';
 
 const classes = {
   title: `${PREFIX}-title`,
   fab: `${PREFIX}-fab`,
-  noBooks: `${PREFIX}-noBooks`,
+  noMovies: `${PREFIX}-noMovies`,
 };
 
 const Root = styled('div')({
@@ -32,56 +32,47 @@ const Root = styled('div')({
     bottom: '16px',
     right: '16px',
   },
-  [`& .${classes.noBooks}`]: {
+  [`& .${classes.noMovies}`]: {
     fontWeight: 700,
   },
 });
 
-export default function Books() {
+export default function Movies() {
   const { token } = useToken();
-
-  const [books, setBooks] = useState([]);
-  const [bookSortStatus, setBookSortStatus] = useState('all');
+  const [movies, setMovies] = useState([]);
+  const [movieSortStatus, setMovieSortStatus] = useState('all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
-  const [isFetchingBooks, setisFetchingBooks] = useState(false);
+  const [isFetchingMovies, setisFetchingMovies] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchBooks = async () => {
-    setisFetchingBooks(true);
-
+  const fetchMovies = async () => {
     try {
-      const res = await axios({
-        method: 'get',
-        url: `/api/list/books/${bookSortStatus}`,
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      });
+      setisFetchingMovies(true);
 
-      setBooks(res.data.results);
-      setisFetchingBooks(false);
+      const res = await MovieController.getMoviesByStatus(
+        movieSortStatus,
+        token
+      );
+      setMovies(res.data.results);
+
+      setisFetchingMovies(false);
     } catch (err) {
       console.error(err);
-      setisFetchingBooks(false);
+      setisFetchingMovies(false);
     }
   };
 
   useEffect(() => {
-    fetchBooks();
+    fetchMovies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bookSortStatus]);
+  }, [movieSortStatus]);
 
-  const bookSortStatusChangeHandler = (e) => {
-    setBookSortStatus(e.target.value);
+  const movieSortStatusChangeHandler = (e) => {
+    setMovieSortStatus(e.target.value);
   };
 
-  const handleAddDialogOpen = () => {
-    setAddDialogVisible(true);
-  };
-
-  const handleAddDialogCancel = () => {
-    setAddDialogVisible(false);
-  };
+  const handleAddDialogOpen = () => setAddDialogVisible(true);
+  const handleAddDialogCancel = () => setAddDialogVisible(false);
 
   return (
     <Root>
@@ -94,16 +85,16 @@ export default function Books() {
           className={classes.title}
         >
           <Grid item>
-            <h1>Books</h1>
+            <h1>Movies</h1>
           </Grid>
           <Grid item>
             <Select
               native
-              value={bookSortStatus}
-              inputProps={{ name: 'bookSortStatus', id: 'bookSortStatus' }}
-              onChange={bookSortStatusChangeHandler}
+              value={movieSortStatus}
+              inputProps={{ name: 'movieSortStatus', id: 'movieSortStatus' }}
+              onChange={movieSortStatusChangeHandler}
             >
-              {bookSortOptions.map((item, itemIdx) => {
+              {movieSortOptions.map((item, itemIdx) => {
                 return (
                   <option key={itemIdx} value={item.value}>
                     {item.name}
@@ -113,22 +104,25 @@ export default function Books() {
             </Select>
           </Grid>
         </Grid>
-        {isFetchingBooks ? (
+
+        {isFetchingMovies ? (
           <Grid container justifyContent="center">
             <CircularProgress />
           </Grid>
-        ) : books.length > 0 ? (
-          <BookList books={books} fetchBooks={fetchBooks} />
+        ) : movies.length > 0 ? (
+          <MovieList movies={movies} fetchMovies={fetchMovies} />
         ) : (
           <Grid container justifyContent="center">
-            <p className={classes.noBooks}>No books</p>
+            <p className={classes.noMovies}>No movies</p>
           </Grid>
         )}
-        <AddBookDialog
+
+        <AddMovieDialog
           visible={addDialogVisible}
           closeDialog={handleAddDialogCancel}
-          fetchBooks={fetchBooks}
+          submitAction={fetchMovies}
         />
+
         <Fab
           color="primary"
           aria-label="create"
