@@ -94,10 +94,10 @@ export default function Header(props) {
   const { window } = props;
   const { token, removeToken, removeRefreshToken } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setOpen(!open);
   };
 
   const container =
@@ -191,7 +191,7 @@ export default function Header(props) {
           container={container}
           variant="temporary"
           anchor="left"
-          open={mobileOpen}
+          open={open}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true,
