@@ -57,6 +57,7 @@ export default function Login() {
 
     try {
       const res = await AuthController.login(credentials);
+
       setToken(res.data.accessToken);
       setRefreshToken(res.data.refreshToken);
 

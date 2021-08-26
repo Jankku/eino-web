@@ -46,14 +46,14 @@ export default function Books() {
   const [isFetchingBooks, setisFetchingBooks] = useState(false);
 
   const fetchBooks = async () => {
-    setisFetchingBooks(true);
-
     try {
+      setisFetchingBooks(true);
+
       const res = await BookController.getBooksByStatus(bookSortStatus, token);
       setBooks(res.data.results);
+
       setisFetchingBooks(false);
     } catch (err) {
-      FetchNewRefreshToken(err);
       setisFetchingBooks(false);
     }
   };

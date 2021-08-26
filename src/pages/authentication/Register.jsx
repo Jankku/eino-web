@@ -11,6 +11,7 @@ import useState from 'react-usestateref';
 import { Link, useHistory } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import AuthController from '../../data/AuthController';
+import Error from '../../models/error';
 
 const PREFIX = 'Register';
 
@@ -49,6 +50,7 @@ export default function Register() {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
   const [passwordMatchError, setpasswordMatchError] = useState(false);
+  const [responseError, setResponseError] = useState(Error);
 
   const [credentials, setCredentials, credRef] = useState({
     username: '',
@@ -57,7 +59,7 @@ export default function Register() {
   });
 
   const validateForm = () => {
-    let isValid = false;
+    let isValid = true;
 
     const { username, password, password2 } = credRef.current;
 
@@ -102,7 +104,7 @@ export default function Register() {
       await AuthController.register(credentials);
       history.push('/login');
     } catch (err) {
-      console.error(err);
+      if (err.response) setResponseError(err.response.data.errors);
     }
   };
 
@@ -173,6 +175,9 @@ export default function Register() {
                   required={true}
                   error={passwordMatchError}
                 />
+              </Grid>
+              <Grid className={classes.error}>
+                <span>{responseError[0].message}</span>
               </Grid>
               <Grid
                 container

@@ -2,13 +2,8 @@ import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 
 export default function useToken() {
-  const getToken = () => {
-    return localStorage.getItem('accessToken');
-  };
-
-  const getRefreshToken = () => {
-    return localStorage.getItem('refreshToken');
-  };
+  const getToken = () => localStorage.getItem('accessToken');
+  const getRefreshToken = () => localStorage.getItem('refreshToken');
 
   const [token, setToken] = useState(getToken());
   const [refreshToken, setRefreshToken] = useState(getRefreshToken());
