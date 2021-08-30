@@ -35,9 +35,9 @@ export default function useToken() {
     }
   };
 
-  const removeRefreshToken = () => {
-    localStorage.removeItem('refreshToken');
-  };
+  const removeRefreshToken = () => localStorage.removeItem('refreshToken');
+
+  const getUsername = () => localStorage.getItem('username');
 
   return {
     token,
@@ -46,5 +46,6 @@ export default function useToken() {
     setRefreshToken: saveRefreshToken,
     removeToken,
     removeRefreshToken,
+    getUsername,
   };
 }

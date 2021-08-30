@@ -26,7 +26,6 @@ const PREFIX = 'Header';
 const classes = {
   logo: `${PREFIX}-logo`,
   menuButton: `${PREFIX}-menuButton`,
-  themeIcon: `${PREFIX}-themeIcon`,
   drawerPaper: `${PREFIX}-drawerPaper`,
   item: `${PREFIX}-item`,
   root: `${PREFIX}-root`,
@@ -68,11 +67,6 @@ const Root = styled('div')(({ theme }) => ({
     marginRight: '0.2em',
   },
 
-  [`& .${classes.themeIcon}`]: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-
   [`& .${classes.root}`]: {
     display: 'flex',
   },
@@ -92,7 +86,7 @@ const authRouteArray = [
 export default function Header(props) {
   const history = useHistory();
   const { window } = props;
-  const { token, removeToken, removeRefreshToken } = useToken();
+  const { token, removeToken, removeRefreshToken, getUsername } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
 
@@ -120,7 +114,9 @@ export default function Header(props) {
             </MenuItem>
           </NavLink>
         ))}
+
         <Divider />
+
         {!token
           ? authRouteArray.map((item, index) => (
               <NavLink to={item.path} key={index}>
@@ -135,6 +131,29 @@ export default function Header(props) {
               </NavLink>
             ))
           : []}
+
+        {!token ? (
+          []
+        ) : (
+          <Grid justifyContent="space-between">
+            <Grid item>
+              <MenuItem>{getUsername()}</MenuItem>
+            </Grid>
+
+            <Grid item>
+              <Button
+                sx={{ color: 'text.primary', pl: '1em' }}
+                onClick={() => {
+                  removeToken();
+                  removeRefreshToken();
+                  history.replace('/');
+                }}
+              >
+                Log out
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </MenuList>
     </Box>
   );
@@ -159,7 +178,7 @@ export default function Header(props) {
               </Link>
             </Grid>
 
-            <Grid item className={classes.themeIcon}>
+            <Grid item>
               <IconButton onClick={() => toggleTheme()} size="large">
                 {darkTheme === true ? (
                   <WbSunnyRounded color="action" />
@@ -167,21 +186,6 @@ export default function Header(props) {
                   <Brightness2Icon />
                 )}
               </IconButton>
-
-              {token ? (
-                <Button
-                  sx={{ color: 'text.primary' }}
-                  onClick={() => {
-                    removeToken();
-                    removeRefreshToken();
-                    history.replace('/');
-                  }}
-                >
-                  Log out
-                </Button>
-              ) : (
-                <></>
-              )}
             </Grid>
           </Grid>
         </Toolbar>
