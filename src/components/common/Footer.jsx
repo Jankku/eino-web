@@ -23,7 +23,7 @@ export default function Footer() {
           textAlign: 'center',
         }}
       >
-        <p>Made by Jankku</p>
+        <p>Made by Jankku ✨</p>
         <Link
           href="https://github.com/Jankku/eino-web"
           target="_blank"

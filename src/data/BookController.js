@@ -1,55 +1,40 @@
 import axios from './axios';
 
 const BookController = {
-  async getBooksByStatus(bookSortStatus, token) {
+  async getBooksByStatus(bookSortStatus) {
     return await axios({
       method: 'get',
       url: `/api/list/books/${bookSortStatus}`,
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
     });
   },
 
-  async getBookDetails(bookId, token) {
+  async getBookDetails(bookId) {
     return await axios({
       method: 'get',
       url: `/api/list/books/book/${bookId}`,
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
     });
   },
 
-  async addBook(token, formData) {
+  async addBook(formData) {
     await axios({
       method: 'post',
       url: '/api/list/books/add',
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
       data: formData,
     });
   },
 
-  async updateBook(bookId, token, book) {
+  async updateBook(bookId, book) {
     await axios({
       method: 'put',
       url: `/api/list/books/update/${bookId}`,
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
       data: book,
     });
   },
 
-  async deleteBook(bookId, token) {
+  async deleteBook(bookId) {
     await axios({
       method: 'delete',
       url: `/api/list/books/delete/${bookId}`,
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
     });
   },
 };

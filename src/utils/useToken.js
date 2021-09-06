@@ -2,15 +2,11 @@ import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 
 export default function useToken() {
-  const getToken = () => localStorage.getItem('accessToken');
-  const getRefreshToken = () => localStorage.getItem('refreshToken');
-
-  const [token, setToken] = useState(getToken());
-  const [refreshToken, setRefreshToken] = useState(getRefreshToken());
+  const [token] = useState(localStorage.getItem('accessToken'));
+  const [refreshToken] = useState(localStorage.getItem('refreshToken'));
 
   const saveToken = (accessToken) => {
     try {
-      setToken(accessToken);
       const { userId, username } = jwt_decode(accessToken);
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('user_id', userId);
@@ -28,7 +24,6 @@ export default function useToken() {
 
   const saveRefreshToken = (refreshToken) => {
     try {
-      setRefreshToken(refreshToken);
       localStorage.setItem('refreshToken', refreshToken);
     } catch (err) {
       console.error(err);

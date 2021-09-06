@@ -12,7 +12,6 @@ import {
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
-import useToken from '../../utils/useToken';
 import MovieController from '../../data/MovieController';
 
 const PREFIX = 'Movies';
@@ -38,7 +37,6 @@ const Root = styled('div')({
 });
 
 export default function Movies() {
-  const { token } = useToken();
   const [movies, setMovies] = useState([]);
   const [movieSortStatus, setMovieSortStatus] = useState('all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
@@ -49,10 +47,7 @@ export default function Movies() {
     try {
       setisFetchingMovies(true);
 
-      const res = await MovieController.getMoviesByStatus(
-        movieSortStatus,
-        token
-      );
+      const res = await MovieController.getMoviesByStatus(movieSortStatus);
       setMovies(res.data.results);
 
       setisFetchingMovies(false);

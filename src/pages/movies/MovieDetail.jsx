@@ -12,7 +12,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState, useCallback, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { useHistory, useParams } from 'react-router-dom';
-import useToken from '../../utils/useToken';
 import Header from '../../components/common/Header';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import MovieDetailItem from '../../components/movies/MovieDetailItem';
@@ -20,7 +19,6 @@ import MovieController from '../../data/MovieController';
 
 export default function MovieDetail() {
   const history = useHistory();
-  const { token } = useToken();
   const { movieId } = useParams();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
 
@@ -28,20 +26,20 @@ export default function MovieDetail() {
 
   const fetchMovieDetails = useCallback(async () => {
     try {
-      const res = await MovieController.getMovieDetails(movieId, token);
+      const res = await MovieController.getMovieDetails(movieId);
       setMovie(res.data.results[0]);
     } catch (err) {
       console.error(err);
     }
-  }, [movieId, token]);
+  }, [movieId]);
 
   useEffect(() => {
     fetchMovieDetails();
-  }, [movieId, setMovie, token, fetchMovieDetails]);
+  }, [movieId, setMovie, fetchMovieDetails]);
 
   const saveMovie = async () => {
     try {
-      await MovieController.updateMovie(movieId, token, movie);
+      await MovieController.updateMovie(movieId, movie);
       history.goBack();
     } catch (err) {
       console.error(err);
@@ -50,7 +48,7 @@ export default function MovieDetail() {
 
   const deleteMovie = async () => {
     try {
-      await MovieController.deleteMovie(movieId, token);
+      await MovieController.deleteMovie(movieId);
       history.goBack();
     } catch (err) {
       console.error(err);

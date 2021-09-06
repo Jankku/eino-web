@@ -12,8 +12,6 @@ import {
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
-import useToken from '../../utils/useToken';
-import FetchNewRefreshToken from '../../data/FetchNewRefreshToken';
 import BookController from '../../data/BookController';
 
 const PREFIX = 'Books';
@@ -39,7 +37,6 @@ const Root = styled('div')({
 });
 
 export default function Books() {
-  const { token } = useToken();
   const [books, setBooks] = useState([]);
   const [bookSortStatus, setBookSortStatus] = useState('all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
@@ -49,7 +46,7 @@ export default function Books() {
     try {
       setisFetchingBooks(true);
 
-      const res = await BookController.getBooksByStatus(bookSortStatus, token);
+      const res = await BookController.getBooksByStatus(bookSortStatus);
       setBooks(res.data.results);
 
       setisFetchingBooks(false);

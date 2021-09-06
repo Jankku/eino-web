@@ -12,7 +12,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { useHistory, useParams } from 'react-router-dom';
-import useToken from '../../utils/useToken';
 import Header from '../../components/common/Header';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import BookDetailItem from '../../components/books/BookDetailItem';
@@ -22,26 +21,25 @@ import { useCallback } from 'react';
 export default function BookDetail() {
   const history = useHistory();
   const { bookId } = useParams();
-  const { token } = useToken();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [book, setBook] = useState({});
 
   const fetchBookDetails = useCallback(async () => {
     try {
-      const res = await BookController.getBookDetails(bookId, token);
+      const res = await BookController.getBookDetails(bookId);
       setBook(res.data.results[0]);
     } catch (err) {
       console.error(err);
     }
-  }, [bookId, token]);
+  }, [bookId]);
 
   useEffect(() => {
     fetchBookDetails();
-  }, [bookId, fetchBookDetails, token]);
+  }, [bookId, fetchBookDetails]);
 
   const saveBook = async () => {
     try {
-      await BookController.updateBook(bookId, token, book);
+      await BookController.updateBook(bookId, book);
       history.goBack();
     } catch (err) {
       console.error(err);
@@ -50,7 +48,7 @@ export default function BookDetail() {
 
   const deleteBook = async () => {
     try {
-      BookController.deleteBook(bookId, token);
+      BookController.deleteBook(bookId);
       history.goBack();
     } catch (err) {
       console.error(err);
