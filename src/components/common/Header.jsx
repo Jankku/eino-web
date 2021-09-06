@@ -25,11 +25,6 @@ const PREFIX = 'Header';
 
 const classes = {
   logo: `${PREFIX}-logo`,
-  menuButton: `${PREFIX}-menuButton`,
-  drawerPaper: `${PREFIX}-drawerPaper`,
-  item: `${PREFIX}-item`,
-  root: `${PREFIX}-root`,
-  drawer: `${PREFIX}-drawer`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -45,30 +40,6 @@ const Root = styled('div')(({ theme }) => ({
     '&:hover': {
       color: '#DDDDDD',
     },
-  },
-
-  [`& .${classes.item}`]: {
-    color: '#FFFFFF',
-    textDecoration: 'none',
-    '&': {
-      textDecoration: 'none',
-      color: '#DDDDDD',
-    },
-  },
-
-  a: {
-    '&:link': {
-      textDecoration: 'none',
-      color: '#DDDDDD',
-    },
-  },
-
-  [`& .${classes.menuButton}`]: {
-    marginRight: '0.2em',
-  },
-
-  [`& .${classes.root}`]: {
-    display: 'flex',
   },
 }));
 
@@ -86,7 +57,7 @@ const authRouteArray = [
 export default function Header(props) {
   const history = useHistory();
   const { window } = props;
-  const { token, removeToken, removeRefreshToken, getUsername } = useToken();
+  const { token, getUsername } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
 
@@ -143,11 +114,7 @@ export default function Header(props) {
             <Grid item>
               <Button
                 sx={{ color: 'text.primary', pl: '1em' }}
-                onClick={() => {
-                  removeToken();
-                  removeRefreshToken();
-                  history.replace('/');
-                }}
+                onClick={() => history.push('/logout')}
               >
                 Log out
               </Button>
@@ -165,7 +132,7 @@ export default function Header(props) {
           <IconButton
             color="default"
             edge="start"
-            className={classes.menuButton}
+            sx={{ marginRight: '0.2em' }}
             onClick={handleDrawerToggle}
             size="large"
           >

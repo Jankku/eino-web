@@ -10,6 +10,7 @@ import BookDetail from './pages/books/BookDetail';
 import Movies from './pages/movies/Movies';
 import MovieDetail from './pages/movies/MovieDetail';
 import PrivateRoute from './components/PrivateRoute';
+import Logout from './pages/authentication/Logout';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/logout" component={Logout} />
         <PrivateRoute exact path="/books" comp={Books} />
         <PrivateRoute exact path="/books/:bookId" comp={BookDetail} />
         <PrivateRoute exact path="/movies" comp={Movies} />
