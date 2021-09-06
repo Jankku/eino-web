@@ -14,12 +14,10 @@ import DatePicker from '@material-ui/lab/DatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import initialBookFormState from '../../models/initialBookFormState';
-import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import BookController from '../../data/BookController';
 
 export default function AddBookDialog({ visible, closeDialog, submitAction }) {
-  const { token } = useToken();
   const [formData, setFormData] = useState(initialBookFormState);
 
   const handleChange = (e) => {
@@ -36,7 +34,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
 
   const submitForm = async () => {
     try {
-      await BookController.addBook(token, formData);
+      await BookController.addBook(formData);
       submitAction();
     } catch (err) {
       console.error(err);

@@ -15,7 +15,6 @@ import {
 import bookStatus from '../../models/bookStatus';
 import score from '../../models/score';
 import initialBookFormState from '../../models/initialBookFormState';
-import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import DatePicker from '@material-ui/lab/DatePicker';
 import BookController from '../../data/BookController';
@@ -39,7 +38,6 @@ export default function EditBookDialog({
   bookId,
   submitAction,
 }) {
-  const { token } = useToken();
   const [formData, setFormData] = useState(initialBookFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -48,7 +46,7 @@ export default function EditBookDialog({
       try {
         setLoading(true);
 
-        const res = await BookController.getBookDetails(bookId, token);
+        const res = await BookController.getBookDetails(bookId);
         setFormData(res.data.results[0]);
 
         setLoading(false);
@@ -58,7 +56,7 @@ export default function EditBookDialog({
     };
 
     if (visible === true) getFormData();
-  }, [bookId, visible, token]);
+  }, [bookId, visible]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -74,7 +72,7 @@ export default function EditBookDialog({
 
   const submitForm = async () => {
     try {
-      await BookController.updateBook(bookId, token, formData);
+      await BookController.updateBook(bookId, formData);
       submitAction();
     } catch (err) {
       console.error(err);

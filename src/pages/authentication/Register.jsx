@@ -136,6 +136,7 @@ export default function Register() {
                   required={true}
                   inputProps={{ minLength: 3, maxLength: 255 }}
                   error={usernameError}
+                  autoFocus={true}
                 />
                 <FormHelperText>
                   Username should be 3-255 characters long

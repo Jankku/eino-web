@@ -14,12 +14,10 @@ import DatePicker from '@material-ui/lab/DatePicker';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import initialMovieFormState from '../../models/initialMovieFormState';
-import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import MovieController from '../../data/MovieController';
 
 export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
-  const { token } = useToken();
   const [formData, setFormData] = useState(initialMovieFormState);
 
   const handleChange = (e) => {
@@ -36,7 +34,7 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
 
   const submitForm = async () => {
     try {
-      await MovieController.addMovie(token, formData);
+      await MovieController.addMovie(formData);
       submitAction();
     } catch (err) {
       console.error(err);

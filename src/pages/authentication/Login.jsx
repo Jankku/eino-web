@@ -94,6 +94,7 @@ export default function Login() {
                   fullWidth={true}
                   required={true}
                   inputProps={{ minLength: 3, maxLength: 255 }}
+                  autoFocus={true}
                 />
               </Box>
               <TextField

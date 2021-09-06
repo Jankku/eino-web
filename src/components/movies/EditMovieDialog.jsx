@@ -15,7 +15,6 @@ import {
 import movieStatus from '../../models/movieStatus';
 import score from '../../models/score';
 import initialMovieFormState from '../../models/initialMovieFormState';
-import useToken from '../../utils/useToken';
 import { Box } from '@material-ui/system';
 import DatePicker from '@material-ui/lab/DatePicker';
 import MovieController from '../../data/MovieController';
@@ -39,7 +38,6 @@ export default function EditMovieDialog({
   movieId,
   submitAction,
 }) {
-  const { token } = useToken();
   const [formData, setFormData] = useState(initialMovieFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -48,7 +46,7 @@ export default function EditMovieDialog({
       try {
         setLoading(true);
 
-        const res = await MovieController.getMovieDetails(movieId, token);
+        const res = await MovieController.getMovieDetails(movieId);
         setFormData(res.data.results[0]);
 
         setLoading(false);
@@ -58,7 +56,7 @@ export default function EditMovieDialog({
     };
 
     if (visible === true) getFormData();
-  }, [movieId, visible, token]);
+  }, [movieId, visible]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -74,7 +72,7 @@ export default function EditMovieDialog({
 
   const submitForm = async () => {
     try {
-      await MovieController.updateMovie(movieId, token, formData);
+      await MovieController.updateMovie(movieId, formData);
       submitAction();
     } catch (err) {
       console.error(err);
