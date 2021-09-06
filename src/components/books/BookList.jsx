@@ -72,14 +72,14 @@ export default function BookList({ books, fetchBooks }) {
                         component="div"
                         className={classes.itemText}
                       >
-                        {book.title}
+                        {book.title.length > 0 ? book.title : '-'}
                       </Typography>
                       <Typography
                         variant="body2"
                         component="div"
                         className={classes.itemText}
                       >
-                        {book.author}
+                        {book.author.length > 0 ? book.author : '-'}
                       </Typography>
                     </Grid>
                     <Grid item>

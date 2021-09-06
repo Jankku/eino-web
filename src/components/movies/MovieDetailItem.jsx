@@ -29,7 +29,7 @@ export default function MovieDetailItem({ title, text }) {
               whiteSpace: 'nowrap',
               width: '20em',
             }}
-          >{`${text}`}</Typography>
+          >{`${text.length > 0 ? text : '-'}`}</Typography>
         </Grid>
       </Grid>
     </Box>

@@ -73,14 +73,14 @@ export default function MovieList({ movies, fetchMovies }) {
                         component="div"
                         className={classes.itemText}
                       >
-                        {movie.title}
+                        {movie.title.length > 0 ? movie.title : '-'}
                       </Typography>
                       <Typography
                         variant="body2"
                         component="div"
                         className={classes.itemText}
                       >
-                        {movie.studio}
+                        {movie.studio.length > 0 ? movie.studio : '-'}
                       </Typography>
                     </Grid>
                     <Grid item>
