@@ -18,6 +18,7 @@ import initialBookFormState from '../../models/initialBookFormState';
 import { Box } from '@material-ui/system';
 import DatePicker from '@material-ui/lab/DatePicker';
 import BookController from '../../data/BookController';
+import { DateTime } from 'luxon';
 
 const PREFIX = 'EditBookDialog';
 
@@ -140,7 +141,7 @@ export default function EditBookDialog({
                 label="Start date"
                 value={formData.start_date}
                 onChange={(date) =>
-                  handleDateChange('start_date', new Date(date))
+                  handleDateChange('start_date', DateTime.utc().toISODate())
                 }
                 renderInput={(props) => <TextField {...props} />}
               />
@@ -151,7 +152,7 @@ export default function EditBookDialog({
                 label="End date"
                 value={formData.end_date}
                 onChange={(date) =>
-                  handleDateChange('end_date', new Date(date))
+                  handleDateChange('end_date', DateTime.utc().toISODate())
                 }
                 renderInput={(props) => <TextField {...props} />}
               />
