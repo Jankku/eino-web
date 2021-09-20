@@ -31,6 +31,7 @@ instance.interceptors.response.use(
   (res) => res,
   async (err) => {
     fetchNewToken(instance, err);
+    return Promise.reject(err);
   }
 );
 
