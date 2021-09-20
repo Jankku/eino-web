@@ -64,7 +64,6 @@ export default function EditBookDialog({
   };
 
   const handleDateChange = (name, value) => {
-    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 

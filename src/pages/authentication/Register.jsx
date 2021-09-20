@@ -98,7 +98,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return console.error('Form validation failed');
+    if (!validateForm()) return setResponseError('Form validation failed');
 
     try {
       await AuthController.register(credentials);
