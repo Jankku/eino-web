@@ -29,7 +29,7 @@ export default function BookDetailItem({ title, text }) {
               whiteSpace: 'nowrap',
               width: '20em',
             }}
-          >{`${text.length > 0 ? text : '-'}`}</Typography>
+          >{`${text ?? '-'}`}</Typography>
         </Grid>
       </Grid>
     </Box>
