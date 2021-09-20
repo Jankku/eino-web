@@ -1,3 +1,4 @@
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Button,
   capitalize,
@@ -5,11 +6,10 @@ import {
   Container,
   Grid,
   Paper,
-} from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
-import SaveIcon from '@material-ui/icons/Save';
-import DeleteIcon from '@material-ui/icons/Delete';
-import React, { useState, useCallback, useEffect } from 'react';
+} from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
 import { useHistory, useParams } from 'react-router-dom';
 import Header from '../../components/common/Header';

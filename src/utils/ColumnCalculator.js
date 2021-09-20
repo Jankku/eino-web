@@ -1,5 +1,5 @@
-import { useTheme } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@mui/system';
+import { useMediaQuery } from '@mui/material';
 
 const ColumnCalculator = () => {
   const theme = useTheme();

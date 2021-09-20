@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box } from '@material-ui/system';
-import { Link } from '@material-ui/core';
-import { styled } from '@material-ui/styles';
+import { Box, Link } from '@mui/material';
+import { styled } from '@mui/system';
 
 const PREFIX = 'Footer';
 const classes = {

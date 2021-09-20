@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import {
   Button,
   CircularProgress,
@@ -11,12 +11,12 @@ import {
   InputLabel,
   Select,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import bookStatus from '../../models/bookStatus';
 import score from '../../models/score';
 import initialBookFormState from '../../models/initialBookFormState';
-import { Box } from '@material-ui/system';
-import DatePicker from '@material-ui/lab/DatePicker';
+import { Box } from '@mui/system';
+import DatePicker from '@mui/lab/DatePicker';
 import BookController from '../../data/BookController';
 import { DateTime } from 'luxon';
 
@@ -64,6 +64,7 @@ export default function EditBookDialog({
   };
 
   const handleDateChange = (name, value) => {
+    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -141,7 +142,10 @@ export default function EditBookDialog({
                 label="Start date"
                 value={formData.start_date}
                 onChange={(date) =>
-                  handleDateChange('start_date', DateTime.utc().toISODate())
+                  handleDateChange(
+                    'start_date',
+                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
+                  )
                 }
                 renderInput={(props) => <TextField {...props} />}
               />
@@ -152,7 +156,10 @@ export default function EditBookDialog({
                 label="End date"
                 value={formData.end_date}
                 onChange={(date) =>
-                  handleDateChange('end_date', DateTime.utc().toISODate())
+                  handleDateChange(
+                    'end_date',
+                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
+                  )
                 }
                 renderInput={(props) => <TextField {...props} />}
               />

@@ -1,5 +1,5 @@
-import { Grid, Typography } from '@material-ui/core';
-import { Box } from '@material-ui/system';
+import { Grid, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 export default function BookDetailItem({ title, text }) {
   return (
@@ -29,7 +29,7 @@ export default function BookDetailItem({ title, text }) {
               whiteSpace: 'nowrap',
               width: '20em',
             }}
-          >{`${text ?? '-'}`}</Typography>
+          >{`${String(text).length > 0 ? text : '-'}`}</Typography>
         </Grid>
       </Grid>
     </Box>

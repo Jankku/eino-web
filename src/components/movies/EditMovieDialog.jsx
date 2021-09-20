@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import {
   Button,
   CircularProgress,
@@ -11,12 +11,12 @@ import {
   InputLabel,
   Select,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import movieStatus from '../../models/movieStatus';
 import score from '../../models/score';
 import initialMovieFormState from '../../models/initialMovieFormState';
-import { Box } from '@material-ui/system';
-import DatePicker from '@material-ui/lab/DatePicker';
+import { Box } from '@mui/system';
+import DatePicker from '@mui/lab/DatePicker';
 import MovieController from '../../data/MovieController';
 import { DateTime } from 'luxon';
 
@@ -141,7 +141,10 @@ export default function EditMovieDialog({
                 label="Start date"
                 value={formData.start_date}
                 onChange={(date) =>
-                  handleDateChange('start_date', DateTime.utc().toISODate())
+                  handleDateChange(
+                    'start_date',
+                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
+                  )
                 }
                 renderInput={(props) => <TextField {...props} />}
               />
@@ -152,7 +155,10 @@ export default function EditMovieDialog({
                 label="End date"
                 value={formData.end_date}
                 onChange={(date) =>
-                  handleDateChange('end_date', DateTime.utc().toISODate())
+                  handleDateChange(
+                    'end_date',
+                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
+                  )
                 }
                 renderInput={(props) => <TextField {...props} />}
               />

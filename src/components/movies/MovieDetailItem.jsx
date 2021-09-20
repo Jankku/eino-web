@@ -1,5 +1,4 @@
-import { Grid, Typography } from '@material-ui/core';
-import { Box } from '@material-ui/system';
+import { Grid, Typography, Box } from '@mui/material';
 
 export default function MovieDetailItem({ title, text }) {
   return (
@@ -29,7 +28,7 @@ export default function MovieDetailItem({ title, text }) {
               whiteSpace: 'nowrap',
               width: '20em',
             }}
-          >{`${text ?? '-'}`}</Typography>
+          >{`${String(text).length > 0 ? text : '-'}`}</Typography>
         </Grid>
       </Grid>
     </Box>

@@ -1,12 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
-import {
-  createTheme,
-  ThemeProvider,
-  StyledEngineProvider,
-} from '@material-ui/core/styles';
-import { CssBaseline } from '@material-ui/core';
 import light from './light';
 import dark from './dark';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { StyledEngineProvider } from '@mui/system';
 
 const ThemeContext = createContext({});
 

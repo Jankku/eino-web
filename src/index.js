@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { EinoThemeProvider } from './themes/theme';
-import { StyledEngineProvider } from '@material-ui/system';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import AdapterLuxon from '@material-ui/lab/AdapterLuxon';
+import { StyledEngineProvider } from '@mui/system';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterLuxon from '@mui/lab/AdapterLuxon';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 import Header from '../common/Header';
 
 export default function Error404() {

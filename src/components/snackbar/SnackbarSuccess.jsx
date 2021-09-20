@@ -1,8 +1,8 @@
-import { Fade, IconButton, Snackbar } from '@material-ui/core';
+import { Fade, IconButton, Snackbar } from '@mui/system';
 import { useState } from 'react';
-import Alert from '@material-ui/core/Alert';
-import { CheckCircleOutline } from '@material-ui/icons';
-import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@mui/system/Alert';
+import { CheckCircleOutline } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEffect } from 'react';
 
 export default function SnackbarSuccess({ open, message }) {

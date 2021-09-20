@@ -5,10 +5,10 @@ import {
   Container,
   Grid,
   Paper,
-} from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
-import SaveIcon from '@material-ui/icons/Save';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { useHistory, useParams } from 'react-router-dom';

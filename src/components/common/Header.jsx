@@ -1,7 +1,6 @@
 import React from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import {
-  AppBar,
   Button,
   Divider,
   Drawer,
@@ -11,15 +10,16 @@ import {
   MenuItem,
   MenuList,
   Toolbar,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import { useThemeContext } from '../../themes/theme';
-import MenuIcon from '@material-ui/icons/Menu';
-import WbSunnyRounded from '@material-ui/icons/WbSunnyRounded';
-import Brightness2Icon from '@material-ui/icons/Brightness2';
+import MenuIcon from '@mui/icons-material/Menu';
+import WbSunnyRounded from '@mui/icons-material/WbSunnyRounded';
+import Brightness2Icon from '@mui/icons-material/Brightness2';
 import { useState } from 'react';
-import { Box } from '@material-ui/system';
+import { Box } from '@mui/system';
+import { AppBar } from '@mui/material';
 
 const PREFIX = 'Header';
 

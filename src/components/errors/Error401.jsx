@@ -1,4 +1,4 @@
-import { Button, Container } from '@material-ui/core';
+import { Button, Container } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Header from '../common/Header';
 

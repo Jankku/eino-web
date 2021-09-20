@@ -9,12 +9,12 @@ import {
   InputLabel,
   Select,
   TextField,
-} from '@material-ui/core';
-import DatePicker from '@material-ui/lab/DatePicker';
+} from '@mui/material';
+import DatePicker from '@mui/lab/DatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import initialBookFormState from '../../models/initialBookFormState';
-import { Box } from '@material-ui/system';
+import { Box } from '@mui/system';
 import BookController from '../../data/BookController';
 
 export default function AddBookDialog({ visible, closeDialog, submitAction }) {

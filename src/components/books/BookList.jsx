@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import {
   Button,
   capitalize,
@@ -11,7 +11,7 @@ import {
   ImageList,
   ImageListItem,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import EditBookDialog from './EditBookDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';
