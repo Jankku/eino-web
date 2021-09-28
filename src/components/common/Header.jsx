@@ -164,6 +164,7 @@ export default function Header(props) {
           anchor="left"
           open={open}
           onClose={handleDrawerToggle}
+          elevation={4}
           ModalProps={{
             keepMounted: true,
           }}

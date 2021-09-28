@@ -9,7 +9,7 @@ import Books from './pages/books/Books';
 import BookDetail from './pages/books/BookDetail';
 import Movies from './pages/movies/Movies';
 import MovieDetail from './pages/movies/MovieDetail';
-import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/common/PrivateRoute';
 import Logout from './pages/authentication/Logout';
 
 const App = () => {
