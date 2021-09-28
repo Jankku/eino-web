@@ -1,10 +1,11 @@
 import {
   Button,
   capitalize,
+  Card,
+  CardContent,
   CircularProgress,
   Container,
   Grid,
-  Paper,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import SaveIcon from '@mui/icons-material/Save';
@@ -63,63 +64,72 @@ export default function BookDetail() {
       <Header />
       <Container maxWidth="md">
         {book.hasOwnProperty('book_id') ? (
-          <Paper sx={{ mt: 1.5, p: 2.5 }}>
-            <Grid container columns={3} justifyContent="flex-start">
-              <BookDetailItem title="Title" text={book.title} />
-              <BookDetailItem title="Author" text={book.author} />
-              <BookDetailItem title="Publisher" text={book.publisher} />
-              <BookDetailItem title="ISBN" text={book.isbn} />
-              <BookDetailItem title="Pages" text={book.pages} />
-              <BookDetailItem title="Year" text={book.year} />
-              <BookDetailItem title="Status" text={capitalize(book.status)} />
-              <BookDetailItem title="Score" text={book.score} />
-              <BookDetailItem
-                title="Start date"
-                text={DateTime.fromISO(book.start_date).toLocaleString()}
-              />
-              <BookDetailItem
-                title="End date"
-                text={DateTime.fromISO(book.end_date).toLocaleString()}
-              />
-            </Grid>
-            <Grid container justifyContent="flex-start">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleEditDialogOpen}
-                startIcon={<CreateIcon />}
-                sx={{ margin: '0.5em' }}
-              >
-                Edit
-              </Button>
+          <Card
+            sx={{
+              mt: 3,
+              border: 1,
+              borderColor: 'primary.main',
+              borderRadius: 2,
+            }}
+          >
+            <CardContent>
+              <Grid container columns={3} justifyContent="flex-start">
+                <BookDetailItem title="Title" text={book.title} />
+                <BookDetailItem title="Author" text={book.author} />
+                <BookDetailItem title="Publisher" text={book.publisher} />
+                <BookDetailItem title="ISBN" text={book.isbn} />
+                <BookDetailItem title="Pages" text={book.pages} />
+                <BookDetailItem title="Year" text={book.year} />
+                <BookDetailItem title="Status" text={capitalize(book.status)} />
+                <BookDetailItem title="Score" text={book.score} />
+                <BookDetailItem
+                  title="Start date"
+                  text={DateTime.fromISO(book.start_date).toLocaleString()}
+                />
+                <BookDetailItem
+                  title="End date"
+                  text={DateTime.fromISO(book.end_date).toLocaleString()}
+                />
+              </Grid>
+              <Grid container justifyContent="flex-start">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleEditDialogOpen}
+                  startIcon={<CreateIcon />}
+                  sx={{ margin: '0.5em' }}
+                >
+                  Edit
+                </Button>
 
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={saveBook}
-                startIcon={<SaveIcon />}
-                sx={{ margin: '0.5em' }}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={deleteBook}
-                startIcon={<DeleteIcon />}
-                sx={{ margin: '0.5em' }}
-              >
-                Delete
-              </Button>
-            </Grid>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={saveBook}
+                  startIcon={<SaveIcon />}
+                  sx={{ margin: '0.5em' }}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={deleteBook}
+                  startIcon={<DeleteIcon />}
+                  sx={{ margin: '0.5em' }}
+                >
+                  Delete
+                </Button>
+              </Grid>
 
-            <EditBookDialog
-              visible={editDialogVisible}
-              closeDialog={handleEditDialogCancel}
-              bookId={book.book_id}
-              submitAction={fetchBookDetails}
-            />
-          </Paper>
+              <EditBookDialog
+                visible={editDialogVisible}
+                closeDialog={handleEditDialogCancel}
+                bookId={book.book_id}
+                submitAction={fetchBookDetails}
+              />
+            </CardContent>
+          </Card>
         ) : (
           <Grid container justifyContent="center">
             <CircularProgress />
