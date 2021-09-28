@@ -5,8 +5,8 @@ const light = createTheme({
   palette: {
     mode: 'light',
     background: {
-      default: '#DDD',
-      paper: '#EEE',
+      default: '#fff',
+      paper: '#eee',
     },
     primary: {
       main: blue[500],

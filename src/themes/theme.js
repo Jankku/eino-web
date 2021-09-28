@@ -19,7 +19,7 @@ const getThemeValue = () => {
   if (localStorage.getItem('dark_theme') === 'true') return true;
 };
 
-export function EinoThemeProvider(props) {
+export function EinoThemeProvider({ children }) {
   const [darkTheme, setDarkTheme] = useState(getThemeValue());
 
   const toggleTheme = () => {
@@ -34,7 +34,7 @@ export function EinoThemeProvider(props) {
           theme={darkTheme ? createTheme(dark) : createTheme(light)}
         >
           <CssBaseline />
-          {props.children}
+          {children}
         </ThemeProvider>
       </StyledEngineProvider>
     </ThemeContext.Provider>

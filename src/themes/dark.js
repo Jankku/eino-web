@@ -5,8 +5,8 @@ const dark = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#303030',
-      paper: '#353535',
+      default: '#212121',
+      paper: '#2d2d2d',
     },
     primary: {
       main: blue[300],
@@ -15,6 +15,7 @@ const dark = createTheme({
       main: red[300],
     },
     text: {
+      primary: '#DDD',
       link: blue[300],
     },
   },
