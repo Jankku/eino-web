@@ -134,8 +134,12 @@ export default function EditMovieDialog({
             value={formData.year}
             onChange={handleChange}
           />
-          <Grid container>
-            <Box sx={{ margin: '1em 0em 1em 0em' }}>
+          <Grid
+            container
+            sx={{ marginTop: '1em' }}
+            justifyContent="space-between"
+          >
+            <Box sx={{ marginBottom: '1em' }}>
               <DatePicker
                 name="start_date"
                 label="Start date"
@@ -149,7 +153,7 @@ export default function EditMovieDialog({
                 renderInput={(props) => <TextField {...props} />}
               />
             </Box>
-            <Box sx={{ margin: '1em 0em 0em 1em' }}>
+            <Box>
               <DatePicker
                 name="end_date"
                 label="End date"
@@ -164,7 +168,7 @@ export default function EditMovieDialog({
               />
             </Box>
           </Grid>
-          <Grid container>
+          <Grid container justifyContent="space-between">
             <Grid item>
               <InputLabel htmlFor="score">Score</InputLabel>
               <Select
@@ -181,7 +185,7 @@ export default function EditMovieDialog({
               </Select>
             </Grid>
             <Grid item>
-              <Box sx={{ marginLeft: '1em' }}>
+              <Box>
                 <InputLabel htmlFor="status">Status</InputLabel>
                 <Select
                   native

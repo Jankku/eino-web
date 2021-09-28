@@ -95,8 +95,12 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
             value={formData.year}
             onChange={handleChange}
           />
-          <Grid container>
-            <Box sx={{ margin: '1em 0em 1em 0em' }}>
+          <Grid
+            container
+            sx={{ marginTop: '1em' }}
+            justifyContent="space-between"
+          >
+            <Box sx={{ marginBottom: '1em' }}>
               <DatePicker
                 name="start_date"
                 label="Start date"
@@ -107,7 +111,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
                 renderInput={(props) => <TextField {...props} />}
               />
             </Box>
-            <Box sx={{ margin: '1em 0em 0em 1em' }}>
+            <Box>
               <DatePicker
                 name="end_date"
                 label="End date"
@@ -120,8 +124,8 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
             </Box>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item>
+        <Grid container justifyContent="space-between">
+          <Grid item sx={{ marginBottom: '0.5em' }}>
             <InputLabel htmlFor="score">Score</InputLabel>
             <Select
               native
@@ -137,7 +141,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
             </Select>
           </Grid>
           <Grid item>
-            <Box sx={{ marginLeft: '1em' }}>
+            <Box>
               <InputLabel htmlFor="status">Status</InputLabel>
               <Select
                 native
