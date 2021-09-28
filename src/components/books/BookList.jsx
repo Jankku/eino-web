@@ -59,11 +59,23 @@ export default function BookList({ books, fetchBooks }) {
 
   return (
     <Root>
-      <ImageList cols={ColumnCalculator()} rowHeight={155}>
+      <ImageList cols={ColumnCalculator()} rowHeight={155} gap={4}>
         {books.map((book, bookIdx) => (
           <ImageListItem key={bookIdx}>
             <Fade in={true}>
-              <Card className={classes.item}>
+              <Card
+                className={classes.item}
+                sx={{
+                  border: 1,
+                  borderColor: 'transparent',
+                  borderRadius: 2,
+                  ':hover': {
+                    border: 1,
+                    borderColor: 'primary.main',
+                    borderRadius: 2,
+                  },
+                }}
+              >
                 <CardContent>
                   <Grid container justifyContent="space-between">
                     <Grid item>
