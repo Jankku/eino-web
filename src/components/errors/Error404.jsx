@@ -1,13 +1,16 @@
 import { Container } from '@mui/material';
+import { Box } from '@mui/system';
 import Header from '../common/Header';
 
 export default function Error404() {
   return (
     <>
       <Header />
-      <Container maxWidth="md" style={{ textAlign: 'center' }}>
-        <h1>404 Not Found</h1>
-        <p>I can't find the page... 😭</p>
+      <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+        <Box sx={{ marginTop: '0.5em', typography: 'h3' }}>404 Not Found</Box>
+        <Box sx={{ padding: '0.5em 0em 0em 0em', typography: 'body1' }}>
+          I can't find the page... 😭
+        </Box>
       </Container>
     </>
   );
