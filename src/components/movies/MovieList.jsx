@@ -12,7 +12,7 @@ import {
   ImageListItem,
   Typography,
 } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import EditMovieDialog from './EditMovieDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';
 
@@ -50,7 +50,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function MovieList({ movies, fetchMovies }) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedMovieId, seteditedMovieId] = useState('');
@@ -107,7 +107,7 @@ export default function MovieList({ movies, fetchMovies }) {
                   <CardActions className={classes.cardActionsContainer}>
                     <Button
                       className={classes.cardActions}
-                      onClick={() => history.push(`/movies/${movie.movie_id}`)}
+                      onClick={() => navigate(`/movies/${movie.movie_id}`)}
                     >
                       Details
                     </Button>

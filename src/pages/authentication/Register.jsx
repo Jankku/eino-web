@@ -8,7 +8,7 @@ import {
 import { styled } from '@mui/system';
 import React from 'react';
 import useState from 'react-usestateref';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import AuthController from '../../data/AuthController';
 import Error from '../../models/error';
@@ -44,7 +44,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function Register() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Error states
   const [usernameError, setUsernameError] = useState(false);
@@ -102,7 +102,7 @@ export default function Register() {
 
     try {
       await AuthController.register(credentials);
-      history.push('/login');
+      navigate('/login');
     } catch (err) {
       if (err.response) setResponseError(err.response.data.errors);
     }

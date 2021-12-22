@@ -2,7 +2,7 @@ import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import { styled } from '@mui/system';
 import React from 'react';
 import useState from 'react-usestateref';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import Error from '../../models/error';
 import Header from '../../components/common/Header';
@@ -38,7 +38,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function Login() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
 
   const [responseError, setResponseError] = useState(Error);
@@ -61,7 +61,7 @@ export default function Login() {
       setToken(res.data.accessToken);
       setRefreshToken(res.data.refreshToken);
 
-      history.push('/books');
+      navigate('/books');
     } catch (err) {
       if (err.response) setResponseError(err.response.data.errors);
     }

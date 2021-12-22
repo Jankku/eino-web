@@ -12,14 +12,14 @@ import CreateIcon from '@mui/icons-material/Create';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import MovieDetailItem from '../../components/movies/MovieDetailItem';
 import MovieController from '../../data/MovieController';
 
 export default function MovieDetail() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { movieId } = useParams();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
 
@@ -41,7 +41,7 @@ export default function MovieDetail() {
   const saveMovie = async () => {
     try {
       await MovieController.updateMovie(movieId, movie);
-      history.goBack();
+      navigate(-1);
     } catch (err) {
       console.error(err);
     }
@@ -50,7 +50,7 @@ export default function MovieDetail() {
   const deleteMovie = async () => {
     try {
       await MovieController.deleteMovie(movieId);
-      history.goBack();
+      navigate(-1);
     } catch (err) {
       console.error(err);
     }

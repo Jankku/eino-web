@@ -1,14 +1,10 @@
 import { Button, Container } from '@mui/material';
 import { Box } from '@mui/system';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../common/Header';
 
 export default function Error401() {
-  const history = useHistory();
-
-  const redirectToLoginPage = () => {
-    history.replace('/login');
-  };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -23,7 +19,7 @@ export default function Error401() {
         <Button
           variant="contained"
           color="primary"
-          onClick={redirectToLoginPage}
+          onClick={() => navigate('/login')}
         >
           Login
         </Button>

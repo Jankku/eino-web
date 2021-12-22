@@ -11,7 +11,7 @@ import {
   MenuList,
   Toolbar,
 } from '@mui/material';
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -44,19 +44,18 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 const routeArray = [
-  { name: 'Home', path: '' },
+  { name: 'Home', path: '/' },
   { name: 'Books', path: '/books' },
   { name: 'Movies', path: '/movies' },
 ];
 
 const authRouteArray = [
-  { name: 'Register', path: 'register' },
-  { name: 'Login', path: 'login' },
+  { name: 'Register', path: '/register' },
+  { name: 'Login', path: '/login' },
 ];
 
-export default function Header(props) {
-  const history = useHistory();
-  const { window } = props;
+export default function Header({ window }) {
+  const navigate = useNavigate();
   const { token, getUsername } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
@@ -114,7 +113,7 @@ export default function Header(props) {
             <Grid item>
               <Button
                 sx={{ color: 'text.primary', pl: '1em' }}
-                onClick={() => history.push('/logout')}
+                onClick={() => navigate('/logout')}
               >
                 Log out
               </Button>

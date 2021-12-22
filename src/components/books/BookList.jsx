@@ -12,7 +12,7 @@ import {
   ImageListItem,
   Typography,
 } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import EditBookDialog from './EditBookDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';
 
@@ -50,7 +50,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function BookList({ books, fetchBooks }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedBookId, seteditedBookId] = useState('');
 
@@ -106,7 +106,7 @@ export default function BookList({ books, fetchBooks }) {
                   <CardActions className={classes.cardActionsContainer}>
                     <Button
                       className={classes.cardActions}
-                      onClick={() => history.push(`/books/${book.book_id}`)}
+                      onClick={() => navigate(`/books/${book.book_id}`)}
                     >
                       Details
                     </Button>

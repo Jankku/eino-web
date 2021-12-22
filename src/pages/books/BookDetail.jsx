@@ -12,7 +12,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import BookDetailItem from '../../components/books/BookDetailItem';
@@ -20,7 +20,7 @@ import BookController from '../../data/BookController';
 import { useCallback } from 'react';
 
 export default function BookDetail() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { bookId } = useParams();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [book, setBook] = useState({});
@@ -41,7 +41,7 @@ export default function BookDetail() {
   const saveBook = async () => {
     try {
       await BookController.updateBook(bookId, book);
-      history.goBack();
+      navigate(-1);
     } catch (err) {
       console.error(err);
     }
@@ -50,7 +50,7 @@ export default function BookDetail() {
   const deleteBook = async () => {
     try {
       BookController.deleteBook(bookId);
-      history.goBack();
+      navigate(-1);
     } catch (err) {
       console.error(err);
     }
