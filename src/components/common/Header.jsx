@@ -6,20 +6,22 @@ import {
   Drawer,
   Grid,
   IconButton,
-  ListItemText,
   MenuItem,
   MenuList,
   Toolbar,
 } from '@mui/material';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
 import WbSunnyRounded from '@mui/icons-material/WbSunnyRounded';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
 import { useState } from 'react';
 import { Box } from '@mui/system';
 import { AppBar } from '@mui/material';
+import CustomNavLink from './CustomNavLink';
 
 const PREFIX = 'Header';
 
@@ -60,6 +62,8 @@ export default function Header({ window }) {
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
 
+  const drawerWidth = 240;
+
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
@@ -67,52 +71,38 @@ export default function Header({ window }) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  const items = (
-    <Box role="presentation" sx={{ width: 250 }}>
+  const drawerItems = (
+    <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
       <div className={classes.toolbar} />
-      <Divider />
       <MenuList>
         {routeArray.map((item, index) => (
-          <NavLink to={item.path} key={index}>
-            <MenuItem
-              sx={{
-                color: (theme) => theme.palette.text.primary,
-                textDecoration: 'none',
-              }}
-            >
-              <ListItemText primary={item.name} />
-            </MenuItem>
-          </NavLink>
+          <CustomNavLink item={item} key={index} />
         ))}
-
         <Divider />
-
         {!token
           ? authRouteArray.map((item, index) => (
-              <NavLink to={item.path} key={index}>
-                <MenuItem
-                  sx={{
-                    color: (theme) => theme.palette.text.primary,
-                    textDecoration: 'none',
-                  }}
-                >
-                  <ListItemText primary={item.name} />
-                </MenuItem>
-              </NavLink>
+              <CustomNavLink item={item} key={index} />
             ))
           : []}
-
         {!token ? (
           []
         ) : (
           <Grid justifyContent="space-between">
             <Grid item>
-              <MenuItem>{getUsername()}</MenuItem>
+              <MenuItem sx={{ mt: 1 }}>
+                <PersonIcon sx={{ mr: 1 }} />
+                {getUsername()}
+              </MenuItem>
             </Grid>
 
             <Grid item>
               <Button
-                sx={{ color: 'text.primary', pl: '1em' }}
+                fullWidth
+                size="small"
+                variant="contained"
+                color="secondary"
+                startIcon={<LogoutIcon />}
+                sx={{ mt: 1 }}
                 onClick={() => navigate('/logout')}
               >
                 Log out
@@ -124,53 +114,77 @@ export default function Header({ window }) {
     </Box>
   );
 
+  const MyAppBar = (
+    <AppBar
+      className={classes.appBar}
+      position="sticky"
+      sx={{
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+      }}
+    >
+      <Toolbar>
+        <IconButton
+          color="default"
+          edge="start"
+          sx={{ mr: 2, display: { sm: 'none' } }}
+          onClick={handleDrawerToggle}
+          size="large"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item className={classes.logo}>
+            <Link to="/" className={classes.logo}>
+              eino
+            </Link>
+          </Grid>
+
+          <Grid item>
+            <IconButton onClick={() => toggleTheme()} size="large">
+              {darkTheme === true ? (
+                <WbSunnyRounded color="action" />
+              ) : (
+                <Brightness2Icon />
+              )}
+            </IconButton>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  );
+
   return (
     <Root>
-      <AppBar position="sticky" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="default"
-            edge="start"
-            sx={{ marginRight: '0.2em' }}
-            onClick={handleDrawerToggle}
-            size="large"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item className={classes.logo}>
-              <Link to="/" className={classes.logo}>
-                eino
-              </Link>
-            </Grid>
-
-            <Grid item>
-              <IconButton onClick={() => toggleTheme()} size="large">
-                {darkTheme === true ? (
-                  <WbSunnyRounded color="action" />
-                ) : (
-                  <Brightness2Icon />
-                )}
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          anchor="left"
-          open={open}
-          onClose={handleDrawerToggle}
-          elevation={4}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-          {items}
-        </Drawer>
-      </nav>
+      {MyAppBar}
+      <Drawer
+        container={container}
+        variant="temporary"
+        elevation={0}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+        anchor="left"
+        open={open}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+      >
+        {drawerItems}
+      </Drawer>
+      <Drawer
+        container={container}
+        variant="permanent"
+        anchor="left"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+      >
+        {drawerItems}
+      </Drawer>
     </Root>
   );
 }
