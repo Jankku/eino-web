@@ -18,13 +18,13 @@ const infoBoxData = [
     icon: <LockOutlinedIcon />,
     button: {
       linkText: 'Register',
-      link: '/register',
+      path: '/register',
       target: '_self',
       icon: <VpnKeyIcon />,
     },
     button2: {
       linkText: 'Login',
-      link: '/login',
+      path: '/login',
       target: '_self',
       icon: <LoginIcon />,
     },

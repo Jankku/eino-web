@@ -1,6 +1,7 @@
 import { Box } from '@mui/system';
 import React from 'react';
 import { Button, Card, CardContent, Fade, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function InfoBox({ children }) {
   return (
@@ -47,31 +48,36 @@ export default function InfoBox({ children }) {
           </Grid>
           {children.button ? (
             <Grid item>
-              <a
-                href={children.button.link}
-                target={children.button.target}
-                rel="noreferrer"
-              >
-                <Button
-                  variant="contained"
-                  startIcon={children.button.icon}
-                  sx={{ marginTop: '1em' }}
-                  fullWidth
-                >
-                  {children.button.linkText}
-                </Button>
-              </a>
+              {children.button.path ? (
+                <Link to={children.button.path} reloadDocument>
+                  <Button
+                    variant="contained"
+                    startIcon={children.button.icon}
+                    sx={{ marginTop: '1em' }}
+                    fullWidth
+                  >
+                    {children.button.linkText}
+                  </Button>
+                </Link>
+              ) : (
+                <a href={children.button.link} target="_blank" rel="noreferrer">
+                  <Button
+                    variant="contained"
+                    startIcon={children.button.icon}
+                    sx={{ marginTop: '1em' }}
+                    fullWidth
+                  >
+                    {children.button.linkText}
+                  </Button>
+                </a>
+              )}
             </Grid>
           ) : (
             <></>
           )}
           {children.button2 ? (
             <Grid item>
-              <a
-                href={children.button2.link}
-                target={children.button2.target}
-                rel="noreferrer"
-              >
+              <Link to={children.button2.path} reloadDocument>
                 <Button
                   variant="contained"
                   startIcon={children.button2.icon}
@@ -80,7 +86,7 @@ export default function InfoBox({ children }) {
                 >
                   {children.button2.linkText}
                 </Button>
-              </a>
+              </Link>
             </Grid>
           ) : (
             <></>
