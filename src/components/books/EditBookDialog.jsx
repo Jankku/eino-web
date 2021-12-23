@@ -8,17 +8,10 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputLabel,
-  Select,
-  TextField,
 } from '@mui/material';
-import bookStatus from '../../models/bookStatus';
-import score from '../../models/score';
 import initialBookFormState from '../../models/initialBookFormState';
-import { Box } from '@mui/system';
-import DatePicker from '@mui/lab/DatePicker';
 import BookController from '../../data/BookController';
-import { DateTime } from 'luxon';
+import BookForm from './BookForm';
 
 const PREFIX = 'EditBookDialog';
 
@@ -85,125 +78,11 @@ export default function EditBookDialog({
       <DialogTitle>Edit book</DialogTitle>
       {!isLoading ? (
         <DialogContent>
-          <TextField
-            autoFocus
-            fullWidth
-            margin="dense"
-            name="title"
-            label="Title"
-            value={formData.title}
-            onChange={handleChange}
+          <BookForm
+            formData={formData}
+            handleChange={handleChange}
+            handleDateChange={handleDateChange}
           />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="author"
-            label="Author"
-            value={formData.author}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="publisher"
-            label="Publisher"
-            value={formData.publisher}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="pages"
-            label="Pages"
-            value={formData.pages}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="isbn"
-            label="ISBN"
-            value={formData.isbn}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="dense"
-            name="year"
-            label="Year"
-            value={formData.year}
-            onChange={handleChange}
-          />
-          <Grid
-            container
-            sx={{ marginTop: '1em' }}
-            justifyContent="space-between"
-          >
-            <Box sx={{ marginBottom: '1em' }}>
-              <DatePicker
-                name="start_date"
-                label="Start date"
-                value={formData.start_date}
-                onChange={(date) =>
-                  handleDateChange(
-                    'start_date',
-                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
-                  )
-                }
-                renderInput={(props) => <TextField {...props} />}
-              />
-            </Box>
-            <Box>
-              <DatePicker
-                name="end_date"
-                label="End date"
-                value={formData.end_date}
-                onChange={(date) =>
-                  handleDateChange(
-                    'end_date',
-                    DateTime.fromMillis(Number(date)).toUTC().toISODate()
-                  )
-                }
-                renderInput={(props) => <TextField {...props} />}
-              />
-            </Box>
-          </Grid>
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              <InputLabel htmlFor="score">Score</InputLabel>
-              <Select
-                native
-                value={formData.score}
-                inputProps={{ name: 'score', id: 'score' }}
-                onChange={handleChange}
-              >
-                {score.map((item, itemIdx) => (
-                  <option key={itemIdx} value={item.value}>
-                    {item.name}
-                  </option>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item>
-              <Box>
-                <InputLabel htmlFor="status">Status</InputLabel>
-                <Select
-                  native
-                  value={formData.status}
-                  inputProps={{ name: 'status', id: 'status' }}
-                  onChange={handleChange}
-                >
-                  {bookStatus.map((item, itemIdx) => {
-                    return (
-                      <option key={itemIdx} value={item.value}>
-                        {item.name}
-                      </option>
-                    );
-                  })}
-                </Select>
-              </Box>
-            </Grid>
-          </Grid>
         </DialogContent>
       ) : (
         <Grid container justifyContent="center">
@@ -222,8 +101,9 @@ export default function EditBookDialog({
         </Button>
         {
           // Disable button while loading
-          !isLoading ? (
+          isLoading ? (
             <Button
+              disabled
               color="primary"
               onClick={() => {
                 submitForm();
@@ -234,7 +114,6 @@ export default function EditBookDialog({
             </Button>
           ) : (
             <Button
-              disabled
               color="primary"
               onClick={() => {
                 submitForm();
