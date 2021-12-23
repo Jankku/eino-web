@@ -15,7 +15,7 @@ import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
-import MovieDetailItem from '../../components/movies/MovieDetailItem';
+import DetailItem from '../../components/common/DetailItem';
 import MovieController from '../../data/MovieController';
 
 export default function MovieDetail() {
@@ -74,25 +74,22 @@ export default function MovieDetail() {
           >
             <CardContent>
               <Grid container columns={3} justifyContent="flex-start">
-                <MovieDetailItem title="Title" text={movie.title} />
-                <MovieDetailItem title="Studio" text={movie.studio} />
-                <MovieDetailItem title="Director" text={movie.director} />
-                <MovieDetailItem title="Writer" text={movie.writer} />
-                <MovieDetailItem
+                <DetailItem title="Title" text={movie.title} />
+                <DetailItem title="Studio" text={movie.studio} />
+                <DetailItem title="Director" text={movie.director} />
+                <DetailItem title="Writer" text={movie.writer} />
+                <DetailItem
                   title="Duration"
                   text={`${movie.duration} minutes`}
                 />
-                <MovieDetailItem title="Year" text={movie.year} />
-                <MovieDetailItem
-                  title="Status"
-                  text={capitalize(movie.status)}
-                />
-                <MovieDetailItem title="Score" text={movie.score} />
-                <MovieDetailItem
+                <DetailItem title="Year" text={movie.year} />
+                <DetailItem title="Status" text={capitalize(movie.status)} />
+                <DetailItem title="Score" text={movie.score} />
+                <DetailItem
                   title="Start date"
                   text={DateTime.fromISO(movie.start_date).toLocaleString()}
                 />
-                <MovieDetailItem
+                <DetailItem
                   title="End date"
                   text={DateTime.fromISO(movie.end_date).toLocaleString()}
                 />

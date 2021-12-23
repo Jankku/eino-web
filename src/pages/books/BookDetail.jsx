@@ -15,7 +15,7 @@ import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import EditBookDialog from '../../components/books/EditBookDialog';
-import BookDetailItem from '../../components/books/BookDetailItem';
+import DetailItem from '../../components/common/DetailItem';
 import BookController from '../../data/BookController';
 import { useCallback } from 'react';
 
@@ -74,19 +74,19 @@ export default function BookDetail() {
           >
             <CardContent>
               <Grid container columns={3} justifyContent="flex-start">
-                <BookDetailItem title="Title" text={book.title} />
-                <BookDetailItem title="Author" text={book.author} />
-                <BookDetailItem title="Publisher" text={book.publisher} />
-                <BookDetailItem title="ISBN" text={book.isbn} />
-                <BookDetailItem title="Pages" text={book.pages} />
-                <BookDetailItem title="Year" text={book.year} />
-                <BookDetailItem title="Status" text={capitalize(book.status)} />
-                <BookDetailItem title="Score" text={book.score} />
-                <BookDetailItem
+                <DetailItem title="Title" text={book.title} />
+                <DetailItem title="Author" text={book.author} />
+                <DetailItem title="Publisher" text={book.publisher} />
+                <DetailItem title="ISBN" text={book.isbn} />
+                <DetailItem title="Pages" text={book.pages} />
+                <DetailItem title="Year" text={book.year} />
+                <DetailItem title="Status" text={capitalize(book.status)} />
+                <DetailItem title="Score" text={book.score} />
+                <DetailItem
                   title="Start date"
                   text={DateTime.fromISO(book.start_date).toLocaleString()}
                 />
-                <BookDetailItem
+                <DetailItem
                   title="End date"
                   text={DateTime.fromISO(book.end_date).toLocaleString()}
                 />
