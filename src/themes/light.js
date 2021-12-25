@@ -1,12 +1,12 @@
 import { createTheme } from '@mui/material';
-import { blue, red } from '@mui/material/colors';
+import { blue, blueGrey, red } from '@mui/material/colors';
 
 const light = createTheme({
   palette: {
     mode: 'light',
     background: {
-      default: '#fff',
-      paper: '#eee',
+      default: '#edf8ff',
+      paper: '#FFF',
     },
     primary: {
       main: blue[500],
@@ -14,8 +14,24 @@ const light = createTheme({
     secondary: {
       main: red[500],
     },
-    text: {
-      link: blue[700],
+  },
+  components: {
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          margin: '0.3em 0em',
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'none',
+          color: '#000',
+          margin: '0.5em 0em',
+          borderRadius: 6,
+        },
+      },
     },
   },
 });
