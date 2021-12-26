@@ -5,7 +5,6 @@ import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import Error from '../../models/error';
-import Header from '../../components/common/Header';
 import AuthController from '../../data/AuthController';
 
 const PREFIX = 'Login';
@@ -69,7 +68,6 @@ export default function Login() {
 
   return (
     <Root>
-      <Header />
       <Container maxWidth="md">
         <form method="post" onSubmit={handleSubmit} encType="application/json">
           <h1 className={classes.title}>Login</h1>

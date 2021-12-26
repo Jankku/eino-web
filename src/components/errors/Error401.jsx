@@ -1,14 +1,12 @@
 import { Button, Container } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import Header from '../common/Header';
 
 export default function Error401() {
   const navigate = useNavigate();
 
   return (
     <>
-      <Header />
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <Box sx={{ marginTop: '0.5em', typography: 'h3' }}>
           401 Unauthorized

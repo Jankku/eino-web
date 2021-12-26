@@ -9,7 +9,6 @@ import { styled } from '@mui/system';
 import React from 'react';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../../components/common/Header';
 import AuthController from '../../data/AuthController';
 import Error from '../../models/error';
 
@@ -110,7 +109,6 @@ export default function Register() {
 
   return (
     <Root>
-      <Header />
       <Container maxWidth="md">
         <form method="post" onSubmit={handleSubmit} encType="application/json">
           <h1 className={classes.title}>Register</h1>

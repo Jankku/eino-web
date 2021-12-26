@@ -5,25 +5,22 @@ function CustomNavLink({ item }) {
   const theme = useTheme();
   const resolved = useResolvedPath(item.path);
   const match = useMatch({ path: resolved.pathname, end: true });
+
   return (
     <>
       <NavLink to={item.path}>
         <MenuItem
           selected={match ? true : false}
           sx={
-            match
-              ? {
-                  bgcolor: `${theme.palette.primary.light} !important`,
-                  color: `${theme.palette.primary.contrastText} !important`,
-                }
-              : undefined
+            match && {
+              bgcolor: `${theme.palette.primary.light} !important`,
+              color: `${theme.palette.primary.contrastText} !important`,
+            }
           }
         >
           <ListItemText
             primary={item.name}
-            primaryTypographyProps={{
-              fontWeight: 500,
-            }}
+            primaryTypographyProps={{ fontWeight: 500 }}
           />
         </MenuItem>
       </NavLink>

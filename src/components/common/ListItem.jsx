@@ -1,10 +1,8 @@
 import {
-  Button,
   capitalize,
   Card,
   CardActions,
   CardContent,
-  Divider,
   Grid,
   ImageListItem,
   Typography,

@@ -13,7 +13,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
-import Header from '../../components/common/Header';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import BookController from '../../data/BookController';
@@ -22,8 +21,8 @@ import { useCallback } from 'react';
 export default function BookDetail() {
   const navigate = useNavigate();
   const { bookId } = useParams();
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [book, setBook] = useState({});
+  const [editDialogVisible, setEditDialogVisible] = useState(false);
 
   const fetchBookDetails = useCallback(async () => {
     try {
@@ -61,7 +60,6 @@ export default function BookDetail() {
 
   return (
     <>
-      <Header />
       <Container maxWidth="md">
         {book.hasOwnProperty('book_id') ? (
           <Card

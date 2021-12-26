@@ -1,25 +1,27 @@
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { stringOrPlaceholder } from '../../utils/stringutil';
 
 export default function DetailItem({ title, text }) {
   return (
     <Box sx={{ padding: '0.3em' }}>
       <Grid item>
         <Grid item>
-          <Typography
-            variant="body1"
-            sx={{ fontWeight: 700 }}
-          >{`${title}`}</Typography>
+          <Typography variant="body1" sx={{ fontWeight: 700 }}>
+            {stringOrPlaceholder(title)}
+          </Typography>
         </Grid>
         <Grid item>
           <Typography
             variant="body2"
-            noWrap={true}
-            paragraph={true}
+            noWrap
+            paragraph
             sx={{
               width: '20em',
             }}
-          >{`${String(text).length > 0 ? text : '-'}`}</Typography>
+          >
+            {stringOrPlaceholder(text)}
+          </Typography>
         </Grid>
       </Grid>
     </Box>

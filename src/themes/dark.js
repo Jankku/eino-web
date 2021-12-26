@@ -16,6 +16,15 @@ const dark = createTheme({
     },
   },
   components: {
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          position: 'fixed',
+          bottom: '16px',
+          right: '16px',
+        },
+      },
+    },
     MuiDivider: {
       styleOverrides: {
         root: {

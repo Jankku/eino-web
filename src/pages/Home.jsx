@@ -1,7 +1,6 @@
 import { Container, ImageList } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import Header from '../components/common/Header';
 import InfoBox from '../components/home/InfoBox';
 import ColumnCalculator from '../utils/ColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
@@ -50,7 +49,6 @@ const infoBoxData = [
 export default function Home() {
   return (
     <>
-      <Header />
       <Container maxWidth="md">
         <Box
           sx={{

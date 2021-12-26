@@ -13,7 +13,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
-import Header from '../../components/common/Header';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import MovieController from '../../data/MovieController';
@@ -21,9 +20,8 @@ import MovieController from '../../data/MovieController';
 export default function MovieDetail() {
   const navigate = useNavigate();
   const { movieId } = useParams();
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
-
   const [movie, setMovie] = useState({});
+  const [editDialogVisible, setEditDialogVisible] = useState(false);
 
   const fetchMovieDetails = useCallback(async () => {
     try {
@@ -61,7 +59,6 @@ export default function MovieDetail() {
 
   return (
     <>
-      <Header />
       <Container maxWidth="md">
         {movie.hasOwnProperty('movie_id') ? (
           <Card
