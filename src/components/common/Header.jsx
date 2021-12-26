@@ -196,7 +196,7 @@ export default function Header({ window, children }) {
             width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
-          <Container maxWidth="lg">{children}</Container>
+          {children}
         </Box>
       </Box>
     </>

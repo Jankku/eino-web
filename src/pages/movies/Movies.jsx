@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress, Fab, Grid, Select, Typography } from '@mui/material';
+import {
+  CircularProgress,
+  Container,
+  Fab,
+  Grid,
+  Select,
+  Typography,
+} from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
@@ -39,7 +46,7 @@ export default function Movies() {
   const handleAddDialogCancel = () => setAddDialogVisible(false);
 
   return (
-    <>
+    <Container maxWidth="lg">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
           <h1>Movies</h1>
@@ -85,6 +92,6 @@ export default function Movies() {
       <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
         <AddIcon />
       </Fab>
-    </>
+    </Container>
   );
 }

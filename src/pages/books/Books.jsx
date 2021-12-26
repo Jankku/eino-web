@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress, Fab, Grid, Select, Typography } from '@mui/material';
+import {
+  CircularProgress,
+  Container,
+  Fab,
+  Grid,
+  Select,
+  Typography,
+} from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
@@ -43,7 +50,7 @@ export default function Books() {
   };
 
   return (
-    <>
+    <Container maxWidth="lg">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
           <h1>Books</h1>
@@ -86,6 +93,6 @@ export default function Books() {
       <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
         <AddIcon />
       </Fab>
-    </>
+    </Container>
   );
 }
