@@ -10,24 +10,17 @@ import BookDetail from './pages/books/BookDetail';
 import Movies from './pages/movies/Movies';
 import MovieDetail from './pages/movies/MovieDetail';
 import Logout from './pages/authentication/Logout';
-import useToken from './utils/useToken';
-import Error401 from './components/errors/Error401';
+import RequireAuth from './components/common/RequireAuth';
 
 const App = () => {
-  function RequireAuth({ children }) {
-    const { token } = useToken();
-    return token ? children : <Error401 />;
-  }
-
   return (
     <main className="App">
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/register" element={<Register />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/logout" element={<Logout />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route
-          exact
           path="/books"
           element={
             <RequireAuth>
@@ -36,7 +29,6 @@ const App = () => {
           }
         />
         <Route
-          exact
           path="/books/:bookId"
           element={
             <RequireAuth>
@@ -45,7 +37,6 @@ const App = () => {
           }
         />
         <Route
-          exact
           path="/movies"
           element={
             <RequireAuth>
@@ -54,7 +45,6 @@ const App = () => {
           }
         />
         <Route
-          exact
           path="/movies/:movieId"
           element={
             <RequireAuth>
