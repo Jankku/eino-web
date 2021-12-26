@@ -11,9 +11,17 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { stringOrPlaceholder } from '../../utils/stringutil';
-import CardActionButton from '../common/CardActionButton';
+import CardActionButton from './CardActionButton';
 
-function BookListItem({ book, seteditedBookId, handleEditDialogOpen }) {
+function BookListItem({
+  title,
+  detailText,
+  status,
+  score,
+  itemId,
+  setEditedItemId,
+  handleEditDialogOpen,
+}) {
   const navigate = useNavigate();
 
   return (
@@ -35,7 +43,7 @@ function BookListItem({ book, seteditedBookId, handleEditDialogOpen }) {
                   width: '10em',
                 }}
               >
-                {stringOrPlaceholder(book.title)}
+                {stringOrPlaceholder(title)}
               </Typography>
               <Typography
                 variant="body2"
@@ -45,15 +53,15 @@ function BookListItem({ book, seteditedBookId, handleEditDialogOpen }) {
                   width: '10em',
                 }}
               >
-                {stringOrPlaceholder(book.author)}
+                {stringOrPlaceholder(detailText)}
               </Typography>
             </Grid>
             <Grid item wrap="nowrap">
               <Typography variant="body2" component="div">
-                {book.score}
+                {score}
               </Typography>
               <Typography variant="body2" component="div">
-                {capitalize(book.status)}
+                {capitalize(status)}
               </Typography>
             </Grid>
           </Grid>
@@ -63,13 +71,13 @@ function BookListItem({ book, seteditedBookId, handleEditDialogOpen }) {
               p: 0,
             }}
           >
-            <CardActionButton onClick={() => navigate(`./${book.book_id}`)}>
+            <CardActionButton onClick={() => navigate(`./${itemId}`)}>
               Details
             </CardActionButton>
             <CardActionButton
               onClick={() => {
                 handleEditDialogOpen();
-                seteditedBookId(book.book_id);
+                setEditedItemId(itemId);
               }}
             >
               Edit
