@@ -1,3 +1,4 @@
+import { treeItemClasses } from '@mui/lab';
 import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 
@@ -16,8 +17,9 @@ export default function useToken() {
     }
   };
 
-  const removeToken = () => {
+  const removeTokens = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user_id');
     localStorage.removeItem('username');
   };
@@ -30,7 +32,18 @@ export default function useToken() {
     }
   };
 
-  const removeRefreshToken = () => localStorage.removeItem('refreshToken');
+  const isAccessTokenValid = () => {
+    try {
+      const decoded = jwt_decode(token, { header: true });
+      if (decoded) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
 
   const getUsername = () => localStorage.getItem('username');
 
@@ -39,8 +52,8 @@ export default function useToken() {
     refreshToken,
     setToken: saveToken,
     setRefreshToken: saveRefreshToken,
-    removeToken,
-    removeRefreshToken,
+    removeTokens,
     getUsername,
+    isAccessTokenValid,
   };
 }

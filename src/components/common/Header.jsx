@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  Container,
   Divider,
   Drawer,
   Grid,
@@ -22,9 +21,9 @@ import { useState } from 'react';
 import { Box } from '@mui/system';
 import { AppBar } from '@mui/material';
 import CustomNavLink from './CustomNavLink';
+import { useAuthContext } from '../../utils/auth';
 
 const routeArray = [
-  { name: 'Home', path: '/' },
   { name: 'Books', path: '/books' },
   { name: 'Movies', path: '/movies' },
 ];
@@ -36,7 +35,8 @@ const authRouteArray = [
 
 export default function Header({ window, children }) {
   const navigate = useNavigate();
-  const { token, getUsername } = useToken();
+  const { isLoggedIn } = useAuthContext();
+  const { getUsername } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
 
@@ -52,18 +52,17 @@ export default function Header({ window, children }) {
   const drawerItems = (
     <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
       <MenuList>
-        {routeArray.map((item, index) => (
-          <CustomNavLink item={item} key={index} />
-        ))}
+        <CustomNavLink item={{ name: 'Home', path: '/' }} />
+        {isLoggedIn &&
+          routeArray.map((item, index) => (
+            <CustomNavLink item={item} key={index} />
+          ))}
         <Divider />
-        {!token
-          ? authRouteArray.map((item, index) => (
-              <CustomNavLink item={item} key={index} />
-            ))
-          : []}
-        {!token ? (
-          []
-        ) : (
+        {!isLoggedIn &&
+          authRouteArray.map((item, index) => (
+            <CustomNavLink item={item} key={index} />
+          ))}
+        {isLoggedIn && (
           <Grid justifyContent="space-between">
             <Grid item>
               <MenuItem sx={{ mt: 1 }}>
