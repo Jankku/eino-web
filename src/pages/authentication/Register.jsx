@@ -4,48 +4,17 @@ import {
   FormHelperText,
   Grid,
   TextField,
+  Typography,
 } from '@mui/material';
-import { styled } from '@mui/system';
 import React from 'react';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthController from '../../data/AuthController';
 import Error from '../../models/error';
 
-const PREFIX = 'Register';
-
-const classes = {
-  title: `${PREFIX}-title`,
-  textField: `${PREFIX}-textField`,
-  error: `${PREFIX}-error`,
-  link: `${PREFIX}-link`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.title}`]: {
-    textAlign: 'center',
-  },
-
-  [`& .${classes.textField}`]: {
-    marginBottom: '1.3em',
-  },
-
-  [`& .${classes.error}`]: {
-    fontWeight: 700,
-    color: 'red',
-    margin: '1em 0em 1em 0em',
-  },
-
-  [`& .${classes.link}`]: {
-    color: theme.palette.text.secondary,
-    textDecoration: 'underline',
-  },
-}));
-
 export default function Register() {
   const navigate = useNavigate();
 
-  // Error states
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
   const [passwordMatchError, setpasswordMatchError] = useState(false);
@@ -108,96 +77,103 @@ export default function Register() {
   };
 
   return (
-    <Root>
-      <Container maxWidth="md">
-        <form method="post" onSubmit={handleSubmit} encType="application/json">
-          <h1 className={classes.title}>Register</h1>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            className={classes.root}
-          >
-            <Grid item xs={12} sm={10} md={8}>
-              <Grid item className={classes.textField}>
-                <TextField
-                  id="username"
-                  name="username"
-                  type="text"
-                  autoComplete="username"
-                  variant="outlined"
-                  label="Username"
-                  color="primary"
-                  value={credentials.username}
-                  onChange={handleChange}
-                  fullWidth={true}
-                  required={true}
-                  inputProps={{ minLength: 3, maxLength: 255 }}
-                  error={usernameError}
-                  autoFocus={true}
-                />
-                <FormHelperText>
-                  Username should be 3-255 characters long
-                </FormHelperText>
-              </Grid>
-              <Grid className={classes.textField}>
-                <TextField
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  variant="outlined"
-                  label="Password"
-                  color="primary"
-                  value={credentials.password}
-                  onChange={handleChange}
-                  fullWidth={true}
-                  required={true}
-                  error={passwordError}
-                />
-                <FormHelperText>
-                  Password should be 8-255 characters long
-                </FormHelperText>
-              </Grid>
-              <Grid className={classes.textField}>
-                <TextField
-                  id="password2"
-                  name="password2"
-                  type="password"
-                  autoComplete="new-password"
-                  variant="outlined"
-                  label="Confirm password"
-                  color="primary"
-                  value={credentials.password2}
-                  onChange={handleChange}
-                  fullWidth={true}
-                  required={true}
-                  error={passwordMatchError}
-                />
-              </Grid>
-              <Grid className={classes.error}>
-                <span>{responseError[0].message}</span>
-              </Grid>
-              <Grid
-                container
-                alignItems="flex-start"
-                justifyContent="space-between"
-              >
-                <Button type="submit" variant="contained">
-                  Register
-                </Button>
-                <p>
-                  Already have an account?{' '}
-                  <Link to="/login" className={classes.link}>
+    <Container maxWidth="md">
+      <form method="post" onSubmit={handleSubmit} encType="application/json">
+        <Typography variant="h4" sx={{ textAlign: 'center', my: 3 }}>
+          Register
+        </Typography>
+        <Grid container justifyContent="center">
+          <Grid item xs={12} sm={10} md={8}>
+            <Grid item sx={{ mb: 2 }}>
+              <TextField
+                id="username"
+                name="username"
+                type="text"
+                autoComplete="username"
+                variant="outlined"
+                label="Username"
+                color="primary"
+                value={credentials.username}
+                onChange={handleChange}
+                fullWidth={true}
+                required={true}
+                inputProps={{ minLength: 3, maxLength: 255 }}
+                error={usernameError}
+                autoFocus={true}
+              />
+              <FormHelperText>
+                Username should be 3-255 characters long
+              </FormHelperText>
+            </Grid>
+            <Grid item sx={{ mb: 2 }}>
+              <TextField
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                variant="outlined"
+                label="Password"
+                color="primary"
+                value={credentials.password}
+                onChange={handleChange}
+                fullWidth={true}
+                required={true}
+                error={passwordError}
+              />
+              <FormHelperText>
+                Password should be 8-255 characters long
+              </FormHelperText>
+            </Grid>
+            <Grid item sx={{ mb: 2 }}>
+              <TextField
+                id="password2"
+                name="password2"
+                type="password"
+                autoComplete="new-password"
+                variant="outlined"
+                label="Confirm password"
+                color="primary"
+                value={credentials.password2}
+                onChange={handleChange}
+                fullWidth={true}
+                required={true}
+                error={passwordMatchError}
+              />
+            </Grid>
+            <Grid
+              sx={{
+                fontWeight: 700,
+                color: 'red',
+                margin: '0 0 1em 0',
+              }}
+            >
+              <span>{responseError[0].message}</span>
+            </Grid>
+            <Grid
+              container
+              alignItems="flex-start"
+              justifyContent="space-between"
+            >
+              <Button type="submit" variant="contained">
+                Register
+              </Button>
+              <Typography align="left" paragraph>
+                Already have an account?{' '}
+                <Link to="/register">
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                      textDecoration: 'underline',
+                    }}
+                  >
                     Login
-                  </Link>
-                  {''}
-                </p>
-              </Grid>
+                  </Typography>
+                </Link>
+              </Typography>
             </Grid>
           </Grid>
-        </form>
-      </Container>
-    </Root>
+        </Grid>
+      </form>
+    </Container>
   );
 }

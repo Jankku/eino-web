@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/system';
 import {
   Button,
   CircularProgress,
@@ -12,19 +11,6 @@ import {
 import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
-
-const PREFIX = 'EditMovieDialog';
-
-const classes = {
-  select: `${PREFIX}-select`,
-};
-
-const StyledDialog = styled(Dialog)({
-  [`& .${classes.select}`]: {
-    marginTop: '1em',
-    paddingLeft: '0.5em',
-  },
-});
 
 export default function EditMovieDialog({
   visible,
@@ -74,7 +60,7 @@ export default function EditMovieDialog({
   };
 
   return (
-    <StyledDialog open={visible}>
+    <Dialog open={visible}>
       <DialogTitle>Edit movie</DialogTitle>
       {!isLoading ? (
         <DialogContent>
@@ -125,6 +111,6 @@ export default function EditMovieDialog({
           )
         }
       </DialogActions>
-    </StyledDialog>
+    </Dialog>
   );
 }

@@ -1,7 +1,7 @@
 const Error = [
   {
     name: '',
-    mesage: '',
+    message: '',
   },
 ];
 

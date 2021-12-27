@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/system';
 import {
   Button,
   CircularProgress,
@@ -12,19 +11,6 @@ import {
 import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
-
-const PREFIX = 'EditBookDialog';
-
-const classes = {
-  select: `${PREFIX}-select`,
-};
-
-const StyledDialog = styled(Dialog)({
-  [`& .${classes.select}`]: {
-    marginTop: '1em',
-    paddingLeft: '0.5em',
-  },
-});
 
 export default function EditBookDialog({
   visible,
@@ -74,7 +60,7 @@ export default function EditBookDialog({
   };
 
   return (
-    <StyledDialog open={visible}>
+    <Dialog open={visible}>
       <DialogTitle>Edit book</DialogTitle>
       {!isLoading ? (
         <DialogContent>
@@ -125,6 +111,6 @@ export default function EditBookDialog({
           )
         }
       </DialogActions>
-    </StyledDialog>
+    </Dialog>
   );
 }

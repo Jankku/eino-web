@@ -26,13 +26,8 @@ function BookListItem({
     <ImageListItem>
       <Card variant="outlined">
         <CardContent>
-          <Grid
-            container
-            wrap="nowrap"
-            justifyContent="space-between"
-            sx={{ mb: 1.5 }}
-          >
-            <Grid item wrap="nowrap">
+          <Grid container justifyContent="space-between" sx={{ mb: 1.5 }}>
+            <Grid item>
               <Typography
                 variant="body1"
                 component="div"
@@ -54,7 +49,7 @@ function BookListItem({
                 {stringOrPlaceholder(detailText)}
               </Typography>
             </Grid>
-            <Grid item wrap="nowrap">
+            <Grid item>
               <Typography variant="body2" component="div">
                 {score}
               </Typography>
