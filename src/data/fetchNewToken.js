@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode';
 
-export default async function fetchNewToken(instance, err) {
+export default async function fetchNewToken(axios, err) {
   const originalRequest = err.config;
 
   if (
@@ -22,14 +22,14 @@ export default async function fetchNewToken(instance, err) {
     }
 
     if (refreshTokenExp > Date.now()) {
-      const res = await instance.post('/api/auth/refreshtoken', {
+      const res = await axios.post('/api/auth/refreshtoken', {
         withCredentials: true,
         refreshToken,
       });
 
       localStorage.setItem('accessToken', res.data.accessToken);
 
-      return await instance(originalRequest);
+      return await axios(originalRequest);
     }
   } else {
     return Promise.reject(err);

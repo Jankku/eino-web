@@ -37,6 +37,13 @@ const BookController = {
       url: `/api/list/books/delete/${bookId}`,
     });
   },
+
+  async searchBooks(query) {
+    return await axios({
+      method: 'get',
+      url: `/api/list/books/search?query=${query}`
+    });
+  }
 };
 
 export default BookController;

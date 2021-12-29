@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  AppBar,
   Button,
   Divider,
   Drawer,
@@ -9,7 +10,7 @@ import {
   MenuList,
   Toolbar,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
 import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,11 +18,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import WbSunnyRounded from '@mui/icons-material/WbSunnyRounded';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
-import { useState } from 'react';
 import { Box } from '@mui/system';
-import { AppBar } from '@mui/material';
 import CustomNavLink from './CustomNavLink';
 import { useAuthContext } from '../../utils/auth';
+import BookSearch from '../books/BookSearch';
+import MovieSearch from '../movies/MovieSearch';
 
 const routeArray = [
   { name: 'Books', path: '/books' },
@@ -34,13 +35,16 @@ const authRouteArray = [
 ];
 
 export default function Header({ window, children }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthContext();
   const { getUsername } = useToken();
   const { darkTheme, toggleTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
-
   const drawerWidth = 240;
+
+  const isBookPath = () => location.pathname.includes('/books');
+  const isMoviePath = () => location.pathname.includes('/movies');
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -129,14 +133,22 @@ export default function Header({ window, children }) {
               eino
             </Grid>
           </Link>
-          <Grid item>
-            <IconButton onClick={() => toggleTheme()} size="large">
-              {darkTheme === true ? (
-                <WbSunnyRounded color="action" />
-              ) : (
-                <Brightness2Icon />
-              )}
-            </IconButton>
+          <Grid>
+            <Grid container alignItems="center" gap={2}>
+              <Grid item>
+                {isBookPath() ? <BookSearch /> : null}
+                {isMoviePath() ? <MovieSearch /> : null}
+              </Grid>
+              <Grid item>
+                <IconButton onClick={() => toggleTheme()} size="large">
+                  {darkTheme === true ? (
+                    <WbSunnyRounded color="action" />
+                  ) : (
+                    <Brightness2Icon />
+                  )}
+                </IconButton>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Toolbar>

@@ -37,6 +37,13 @@ const MovieController = {
       url: `/api/list/movies/delete/${movieId}`,
     });
   },
+
+  async searchMovies(query) {
+    return await axios({
+      method: 'get',
+      url: `/api/list/movies/search?query=${query}`,
+    });
+  },
 };
 
 export default MovieController;

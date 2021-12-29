@@ -9,6 +9,7 @@
     "@mui/lab": "^5.0.0-alpha.61",
     "@mui/material": "^5.2.5",
     "@mui/styled-engine": "^5.2.5",
+    "@mui/system": "^5.2.6",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -21,6 +22,9 @@
     "react-scripts": "5.0.0",
     "react-usestateref": "^1.0.8",
     "web-vitals": "^2.1.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
