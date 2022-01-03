@@ -106,7 +106,7 @@ export default function Header({ window, children }) {
     >
       <Toolbar>
         <IconButton
-          color="default"
+          color="inherit"
           edge="start"
           sx={{ mr: 2, display: { md: 'none' } }}
           onClick={handleDrawerToggle}
@@ -142,9 +142,15 @@ export default function Header({ window, children }) {
               <Grid item>
                 <IconButton onClick={() => toggleTheme()} size="large">
                   {darkTheme === true ? (
-                    <WbSunnyRounded color="action" />
+                    <WbSunnyRounded />
                   ) : (
-                    <Brightness2Icon />
+                    <Brightness2Icon
+                      sx={(theme) =>
+                        theme.palette.mode === 'light' && {
+                          color: 'white',
+                        }
+                      }
+                    />
                   )}
                 </IconButton>
               </Grid>
