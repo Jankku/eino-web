@@ -1,16 +1,22 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 
 export default function Footer() {
   return (
-    <Box
+    <Typography
       sx={{
-        typography: 'subtitle2',
         textAlign: 'center',
         margin: '2em 0em',
+        color: 'text.secondary',
       }}
+      variant="subtitle2"
+      paragraph
     >
-      Made by Jankku ✨
-    </Box>
+      Made by{' '}
+      <Link href="https://github.com/Jankku" target="_blank">
+        Jankku
+      </Link>{' '}
+      ✨
+    </Typography>
   );
 }

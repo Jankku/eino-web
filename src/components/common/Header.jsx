@@ -23,6 +23,7 @@ import CustomNavLink from './CustomNavLink';
 import { useAuthContext } from '../../utils/auth';
 import BookSearch from '../books/BookSearch';
 import MovieSearch from '../movies/MovieSearch';
+import Footer from './Footer';
 
 const routeArray = [
   { name: 'Books', path: '/books' },
@@ -54,44 +55,51 @@ export default function Header({ window, children }) {
     window !== undefined ? () => window().document.body : undefined;
 
   const drawerItems = (
-    <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
-      <MenuList>
-        <CustomNavLink item={{ name: 'Home', path: '/' }} />
-        {isLoggedIn &&
-          routeArray.map((item, index) => (
-            <CustomNavLink item={item} key={index} />
-          ))}
-        <Divider />
-        {!isLoggedIn &&
-          authRouteArray.map((item, index) => (
-            <CustomNavLink item={item} key={index} />
-          ))}
-        {isLoggedIn && (
-          <Grid justifyContent="space-between">
-            <Grid item>
-              <MenuItem sx={{ mt: 1 }}>
-                <PersonIcon sx={{ mr: 1 }} />
-                {getUsername()}
-              </MenuItem>
-            </Grid>
+    <>
+      <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
+        <MenuList>
+          <CustomNavLink item={{ name: 'Home', path: '/' }} />
+          {isLoggedIn &&
+            routeArray.map((item, index) => (
+              <CustomNavLink item={item} key={index} />
+            ))}
+          <Divider />
+          {!isLoggedIn &&
+            authRouteArray.map((item, index) => (
+              <CustomNavLink item={item} key={index} />
+            ))}
+          {isLoggedIn && (
+            <Grid justifyContent="space-between">
+              <Grid item>
+                <MenuItem sx={{ mt: 1 }}>
+                  <PersonIcon sx={{ mr: 1 }} />
+                  {getUsername()}
+                </MenuItem>
+              </Grid>
 
-            <Grid item>
-              <Button
-                fullWidth
-                size="small"
-                variant="contained"
-                color="secondary"
-                startIcon={<LogoutIcon />}
-                sx={{ mt: 1 }}
-                onClick={() => navigate('/logout')}
-              >
-                Log out
-              </Button>
+              <Grid item>
+                <Button
+                  fullWidth
+                  size="small"
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<LogoutIcon />}
+                  sx={{ mt: 1 }}
+                  onClick={() => navigate('/logout')}
+                >
+                  Log out
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        )}
-      </MenuList>
-    </Box>
+          )}
+        </MenuList>
+      </Box>
+      <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>
+        <Grid item sx={{ alignSelf: 'flex-end' }}>
+          <Footer />
+        </Grid>
+      </Grid>
+    </>
   );
 
   const MyAppBar = (
@@ -188,7 +196,10 @@ export default function Header({ window, children }) {
       anchor="left"
       sx={{
         display: { xs: 'none', md: 'block' },
-        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        '& .MuiDrawer-paper': {
+          boxSizing: 'border-box',
+          width: drawerWidth,
+        },
       }}
     >
       {drawerItems}
@@ -201,7 +212,11 @@ export default function Header({ window, children }) {
       <Box sx={{ display: 'flex' }}>
         <Box
           component="nav"
-          sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+          sx={{
+            height: '100%',
+            width: { md: drawerWidth },
+            flexShrink: { md: 0 },
+          }}
         >
           {mobileDrawer}
           {permanentDrawer}

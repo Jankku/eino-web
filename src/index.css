@@ -6,6 +6,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 a:link {
   text-decoration: none;
 }

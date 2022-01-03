@@ -1,9 +1,4 @@
-import {
-  Autocomplete,
-  createFilterOptions,
-  ListItem,
-  TextField,
-} from '@mui/material';
+import { Autocomplete, createFilterOptions, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieController from '../../data/MovieController';
