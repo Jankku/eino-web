@@ -49,7 +49,7 @@ export default function BookDetail() {
 
   const deleteBook = async () => {
     try {
-      BookController.deleteBook(bookId);
+      await BookController.deleteBook(bookId);
       navigate(-1);
     } catch (err) {
       console.error(err);
