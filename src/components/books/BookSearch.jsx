@@ -27,7 +27,8 @@ function BookSearch() {
   };
 
   useEffect(() => {
-    if (isOpen && debouncedSearchTerm.length > 0) search(debouncedSearchTerm);
+    if (isOpen && debouncedSearchTerm.trim().length > 0)
+      search(debouncedSearchTerm);
   }, [debouncedSearchTerm, isOpen]);
 
   useEffect(() => {
