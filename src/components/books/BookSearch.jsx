@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookController from '../../data/BookController';
 import useDebounce from '../../utils/useDebounce';
+import SearchTextField from '../common/SearchTextField';
 
 function BookSearch() {
   const navigate = useNavigate();
@@ -72,7 +73,9 @@ function BookSearch() {
         const value = e?.target?.value ?? '';
         setSearchTerm(value);
       }}
-      renderInput={(params) => <TextField {...params} label="Search books" />}
+      renderInput={(params) => (
+        <SearchTextField params={{ ...params }} label="Search books" />
+      )}
       renderOption={(props, option) => (
         <ListItem {...props} key={option.book_id}>
           {option.title}

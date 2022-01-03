@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieController from '../../data/MovieController';
 import useDebounce from '../../utils/useDebounce';
+import SearchTextField from '../common/SearchTextField';
 
 function MovieSearch() {
   const navigate = useNavigate();
@@ -74,7 +75,9 @@ function MovieSearch() {
         const value = e?.target?.value ?? '';
         setSearchTerm(value);
       }}
-      renderInput={(params) => <TextField {...params} label="Search movies" />}
+      renderInput={(params) => (
+        <SearchTextField params={{ ...params }} label="Search movies" />
+      )}
       renderOption={(props, option) => (
         <ListItem {...props} key={option.movie_id}>
           {option.title}
