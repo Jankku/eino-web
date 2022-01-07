@@ -52,7 +52,7 @@ function BookSearch() {
       blurOnSelect
       clearOnBlur
       size="small"
-      sx={{ width: { xs: '10em', sm: '15em', md: '20em' } }}
+      sx={{ width: '100%' }}
       open={isOpen}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}

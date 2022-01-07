@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   Toolbar,
+  Typography,
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
@@ -53,6 +54,94 @@ export default function Header({ window, children }) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const MyAppBar = (
+    <AppBar
+      position="sticky"
+      sx={{
+        width: {
+          md: `calc(100% - ${drawerWidth}px)`,
+        },
+        ml: { md: `${drawerWidth}px` },
+      }}
+    >
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          edge="start"
+          sx={{ mr: 2, display: { md: 'none' } }}
+          onClick={handleDrawerToggle}
+          size="large"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Grid
+          container
+          alignItems="center"
+          gap={{ sm: 2 }}
+          justifyContent={{
+            sm: 'space-between',
+          }}
+        >
+          <Link to="/">
+            <Typography
+              item
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'block',
+                },
+                margin: '0em 0em 0.2em 0em',
+                fontFamily: 'Pacifico, cursive',
+                fontSize: '32px',
+                letterSpacing: '0.03em',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                '&:hover': {
+                  color: '#DDDDDD',
+                },
+              }}
+            >
+              eino
+            </Typography>
+          </Link>
+          <Grid item>
+            <Grid
+              container
+              alignItems="center"
+              sx={{
+                width: { xs: '80vw', sm: '60vw', md: '50vw' },
+              }}
+              justifyContent={{
+                sm: 'flex-end',
+              }}
+              gap={2}
+            >
+              <Grid item sx={{ flexGrow: 1, maxWidth: '25em' }}>
+                {isBookPath() ? <BookSearch /> : null}
+                {isMoviePath() ? <MovieSearch /> : null}
+              </Grid>
+              <Grid item>
+                <IconButton onClick={() => toggleTheme()} size="large">
+                  {darkTheme === true ? (
+                    <WbSunnyRounded />
+                  ) : (
+                    <Brightness2Icon
+                      sx={(theme) =>
+                        theme.palette.mode === 'light' && {
+                          color: 'white',
+                        }
+                      }
+                    />
+                  )}
+                </IconButton>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  );
 
   const drawerItems = (
     <>
@@ -100,73 +189,6 @@ export default function Header({ window, children }) {
         </Grid>
       </Grid>
     </>
-  );
-
-  const MyAppBar = (
-    <AppBar
-      position="sticky"
-      sx={{
-        width: {
-          md: `calc(100% - ${drawerWidth}px)`,
-        },
-        ml: { md: `${drawerWidth}px` },
-      }}
-    >
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          edge="start"
-          sx={{ mr: 2, display: { md: 'none' } }}
-          onClick={handleDrawerToggle}
-          size="large"
-        >
-          <MenuIcon />
-        </IconButton>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Link to="/">
-            <Grid
-              item
-              sx={{
-                margin: '0em 0em 0.2em 0em',
-                fontFamily: 'Pacifico, cursive',
-                fontSize: '32px',
-                letterSpacing: '0.03em',
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                '&:hover': {
-                  color: '#DDDDDD',
-                },
-              }}
-            >
-              eino
-            </Grid>
-          </Link>
-          <Grid>
-            <Grid container alignItems="center" gap={2}>
-              <Grid item>
-                {isBookPath() ? <BookSearch /> : null}
-                {isMoviePath() ? <MovieSearch /> : null}
-              </Grid>
-              <Grid item>
-                <IconButton onClick={() => toggleTheme()} size="large">
-                  {darkTheme === true ? (
-                    <WbSunnyRounded />
-                  ) : (
-                    <Brightness2Icon
-                      sx={(theme) =>
-                        theme.palette.mode === 'light' && {
-                          color: 'white',
-                        }
-                      }
-                    />
-                  )}
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
   );
 
   const mobileDrawer = (
