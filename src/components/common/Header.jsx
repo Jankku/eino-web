@@ -85,7 +85,6 @@ export default function Header({ window, children }) {
         >
           <Link to="/">
             <Typography
-              item
               sx={{
                 display: {
                   xs: 'none',

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -9,6 +8,7 @@ import {
 import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
+import BaseDialog from '../common/BaseDialog';
 
 export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   const [formData, setFormData] = useState(initialBookFormState);
@@ -35,7 +35,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   };
 
   return (
-    <Dialog open={visible}>
+    <BaseDialog open={visible}>
       <DialogTitle>Add new book</DialogTitle>
       <DialogContent>
         <BookForm
@@ -65,6 +65,6 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
           Create
         </Button>
       </DialogActions>
-    </Dialog>
+    </BaseDialog>
   );
 }

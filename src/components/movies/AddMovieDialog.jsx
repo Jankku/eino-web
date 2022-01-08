@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -9,6 +8,7 @@ import {
 import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
+import BaseDialog from '../common/BaseDialog';
 
 export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   const [formData, setFormData] = useState(initialMovieFormState);
@@ -35,7 +35,7 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   };
 
   return (
-    <Dialog open={visible}>
+    <BaseDialog open={visible}>
       <DialogTitle>Add new movie</DialogTitle>
       <DialogContent>
         <MovieForm
@@ -65,6 +65,6 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
           Create
         </Button>
       </DialogActions>
-    </Dialog>
+    </BaseDialog>
   );
 }

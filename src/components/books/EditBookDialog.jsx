@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Button,
   CircularProgress,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -11,6 +10,7 @@ import {
 import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
+import BaseDialog from '../common/BaseDialog';
 
 export default function EditBookDialog({
   visible,
@@ -60,7 +60,7 @@ export default function EditBookDialog({
   };
 
   return (
-    <Dialog open={visible}>
+    <BaseDialog open={visible}>
       <DialogTitle>Edit book</DialogTitle>
       {!isLoading ? (
         <DialogContent>
@@ -111,6 +111,6 @@ export default function EditBookDialog({
           )
         }
       </DialogActions>
-    </Dialog>
+    </BaseDialog>
   );
 }

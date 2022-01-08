@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Button,
   CircularProgress,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -11,6 +10,7 @@ import {
 import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
+import BaseDialog from '../common/BaseDialog';
 
 export default function EditMovieDialog({
   visible,
@@ -60,7 +60,7 @@ export default function EditMovieDialog({
   };
 
   return (
-    <Dialog open={visible}>
+    <BaseDialog open={visible}>
       <DialogTitle>Edit movie</DialogTitle>
       {!isLoading ? (
         <DialogContent>
@@ -111,6 +111,6 @@ export default function EditMovieDialog({
           )
         }
       </DialogActions>
-    </Dialog>
+    </BaseDialog>
   );
 }
