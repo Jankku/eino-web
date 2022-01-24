@@ -159,7 +159,7 @@ export default function Header({ window, children }) {
           {isLoggedIn && (
             <Grid justifyContent="space-between">
               <Grid item>
-                <MenuItem sx={{ mt: 1 }}>
+                <MenuItem sx={{ mt: 1 }} onClick={() => navigate('/profile')}>
                   <PersonIcon sx={{ mr: 1 }} />
                   {getUsername()}
                 </MenuItem>

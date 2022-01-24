@@ -11,6 +11,7 @@ import MovieDetail from './pages/movies/MovieDetail';
 import Logout from './pages/authentication/Logout';
 import RequireAuth from './components/common/RequireAuth';
 import Layout from './components/common/Layout';
+import Profile from './pages/profile/Profile';
 
 const App = () => {
   return (
@@ -21,6 +22,14 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/books"
             element={
