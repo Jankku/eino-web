@@ -50,11 +50,11 @@ export default function Login() {
   return (
     <Container maxWidth="md">
       <form method="post" onSubmit={handleSubmit} encType="application/json">
-        <Typography variant="h4" sx={{ textAlign: 'center', my: 3 }}>
-          Login
-        </Typography>
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={10} md={8}>
+            <Grid item sx={{ textAlign: 'center' }}>
+              <h1>Login</h1>
+            </Grid>
             <TextField
               id="username"
               name="username"

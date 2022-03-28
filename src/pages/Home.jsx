@@ -35,7 +35,7 @@ const infoBoxData = [
   },
   {
     title: 'Source code',
-    text: 'Frontend and backend code of the project is on GitHub.',
+    text: 'Source code of all platforms of the project is on GitHub.',
     icon: <CodeIcon />,
     button: {
       linkText: 'GitHub',

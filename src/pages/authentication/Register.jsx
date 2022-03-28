@@ -79,11 +79,11 @@ export default function Register() {
   return (
     <Container maxWidth="md">
       <form method="post" onSubmit={handleSubmit} encType="application/json">
-        <Typography variant="h4" sx={{ textAlign: 'center', my: 3 }}>
-          Register
-        </Typography>
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={10} md={8}>
+            <Grid item sx={{ textAlign: 'center' }}>
+              <h1>Register</h1>
+            </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
                 id="username"
