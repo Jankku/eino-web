@@ -19,6 +19,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import WbSunnyRounded from '@mui/icons-material/WbSunnyRounded';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
+import Home from '@mui/icons-material/Home';
+import MenuBook from '@mui/icons-material/MenuBook';
+import LocalMovies from '@mui/icons-material/LocalMovies';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import LoginIcon from '@mui/icons-material/Login';
 import { Box } from '@mui/system';
 import CustomNavLink from './CustomNavLink';
 import { useAuthContext } from '../../utils/auth';
@@ -27,14 +32,14 @@ import MovieSearch from '../movies/MovieSearch';
 import Footer from './Footer';
 
 const routeArray = [
-  { name: 'Books', path: '/books' },
-  { name: 'Movies', path: '/movies' },
-  { name: 'Profile', path: '/profile' },
+  { name: 'Books', path: '/books', icon: <MenuBook sx={{ mr: 1 }} /> },
+  { name: 'Movies', path: '/movies', icon: <LocalMovies sx={{ mr: 1 }} /> },
+  { name: 'Profile', path: '/profile', icon: <PersonIcon sx={{ mr: 1 }} /> },
 ];
 
 const authRouteArray = [
-  { name: 'Register', path: '/register' },
-  { name: 'Login', path: '/login' },
+  { name: 'Register', path: '/register', icon: <VpnKeyIcon sx={{ mr: 1 }} /> },
+  { name: 'Login', path: '/login', icon: <LoginIcon sx={{ mr: 1 }} /> },
 ];
 
 export default function Header({ window, children }) {
@@ -147,7 +152,9 @@ export default function Header({ window, children }) {
     <>
       <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
         <MenuList>
-          <CustomNavLink item={{ name: 'Home', path: '/' }} />
+          <CustomNavLink
+            item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }}
+          />
           {isLoggedIn &&
             routeArray.map((item, index) => (
               <CustomNavLink item={item} key={index} />
@@ -160,10 +167,7 @@ export default function Header({ window, children }) {
           {isLoggedIn && (
             <Grid justifyContent="space-between">
               <Grid item>
-                <MenuItem sx={{ mt: 1 }}>
-                  <PersonIcon sx={{ mr: 1 }} />
-                  {getUsername()}
-                </MenuItem>
+                <MenuItem sx={{ mt: 1 }}>{getUsername()}</MenuItem>
               </Grid>
 
               <Grid item>

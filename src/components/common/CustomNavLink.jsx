@@ -18,6 +18,7 @@ function CustomNavLink({ item }) {
             }
           }
         >
+          {item.icon}
           <ListItemText
             primary={item.name}
             primaryTypographyProps={{ fontWeight: 500 }}
