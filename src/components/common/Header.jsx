@@ -29,6 +29,7 @@ import Footer from './Footer';
 const routeArray = [
   { name: 'Books', path: '/books' },
   { name: 'Movies', path: '/movies' },
+  { name: 'Profile', path: '/profile' },
 ];
 
 const authRouteArray = [
@@ -159,7 +160,7 @@ export default function Header({ window, children }) {
           {isLoggedIn && (
             <Grid justifyContent="space-between">
               <Grid item>
-                <MenuItem sx={{ mt: 1 }} onClick={() => navigate('/profile')}>
+                <MenuItem sx={{ mt: 1 }}>
                   <PersonIcon sx={{ mr: 1 }} />
                   {getUsername()}
                 </MenuItem>

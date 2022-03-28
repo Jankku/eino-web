@@ -6,7 +6,7 @@ function UserInfo({ data }) {
   return (
     <Card variant="outlined">
       <CardContent>
-        <ProfileDetailItem title={'username'} text={data.username} />
+        <ProfileDetailItem title={'Username'} text={data.username} />
         <ProfileDetailItem
           title={'Registration date'}
           text={DateTime.fromISO(data.registration_date).toLocaleString()}
