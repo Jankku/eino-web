@@ -108,15 +108,6 @@ export default function BookDetail() {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
-                onClick={saveBook}
-                startIcon={<SaveIcon />}
-                sx={{ margin: '0.5em' }}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
                 color="secondary"
                 onClick={deleteBook}
                 startIcon={<DeleteIcon />}

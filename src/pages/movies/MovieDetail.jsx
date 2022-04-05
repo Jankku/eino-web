@@ -108,15 +108,6 @@ export default function MovieDetail() {
               </Button>
               <Button
                 variant="contained"
-                color="primary"
-                onClick={saveMovie}
-                startIcon={<SaveIcon />}
-                sx={{ margin: '0.5em' }}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
                 color="secondary"
                 onClick={deleteMovie}
                 startIcon={<DeleteIcon />}
