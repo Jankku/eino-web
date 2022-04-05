@@ -8,6 +8,7 @@ import { EinoAuthenticationProvider } from './utils/auth';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import { SnackbarProvider } from 'notistack';
+import Fade from '@mui/material/Fade';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,6 +17,10 @@ ReactDOM.render(
         <EinoAuthenticationProvider>
           <BrowserRouter>
             <SnackbarProvider
+              TransitionComponent={Fade}
+              sx={{
+                mt: '3em',
+              }}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'center',
