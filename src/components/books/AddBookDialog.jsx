@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function AddBookDialog({ visible, closeDialog, submitAction }) {
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialBookFormState);
 
   const handleChange = (e) => {
@@ -28,9 +25,11 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   const submitForm = async () => {
     try {
       await BookController.addBook(formData);
+      showSuccessSnackbar('Book created.');
       submitAction();
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to create book.');
     }
   };
 

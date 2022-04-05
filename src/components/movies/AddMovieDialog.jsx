@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialMovieFormState);
 
   const handleChange = (e) => {
@@ -28,9 +25,11 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   const submitForm = async () => {
     try {
       await MovieController.addMovie(formData);
+      showSuccessSnackbar('Movie created.');
       submitAction();
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to create movie.');
     }
   };
 

@@ -11,17 +11,18 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import BookController from '../../data/BookController';
-import { useCallback } from 'react';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function BookDetail() {
   const navigate = useNavigate();
   const { bookId } = useParams();
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [book, setBook] = useState({});
   const [editDialogVisible, setEditDialogVisible] = useState(false);
 
@@ -41,18 +42,22 @@ export default function BookDetail() {
   const saveBook = async () => {
     try {
       await BookController.updateBook(bookId, book);
+      showSuccessSnackbar('Book saved.');
       navigate(-1);
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to save book.');
     }
   };
 
   const deleteBook = async () => {
     try {
       await BookController.deleteBook(bookId);
+      showSuccessSnackbar('Book deleted.');
       navigate(-1);
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to delete book.');
     }
   };
 

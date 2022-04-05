@@ -11,13 +11,10 @@ import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
-export default function EditMovieDialog({
-  visible,
-  closeDialog,
-  movieId,
-  submitAction,
-}) {
+export default function EditMovieDialog({ visible, closeDialog, movieId, submitAction }) {
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialMovieFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -25,13 +22,12 @@ export default function EditMovieDialog({
     const getFormData = async () => {
       try {
         setLoading(true);
-
         const res = await MovieController.getMovieDetails(movieId);
         setFormData(res.data.results[0]);
-
         setLoading(false);
       } catch (err) {
         console.error(err);
+        showErrorSnackbar('Failed to fetch movie.');
       }
     };
 
@@ -53,9 +49,11 @@ export default function EditMovieDialog({
   const submitForm = async () => {
     try {
       await MovieController.updateMovie(movieId, formData);
+      showSuccessSnackbar('Movie saved.');
       submitAction();
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to save movie.');
     }
   };
 

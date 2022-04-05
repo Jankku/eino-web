@@ -7,6 +7,7 @@ import { EinoThemeProvider } from './themes/theme';
 import { EinoAuthenticationProvider } from './utils/auth';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterLuxon from '@mui/lab/AdapterLuxon';
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +15,14 @@ ReactDOM.render(
       <EinoThemeProvider>
         <EinoAuthenticationProvider>
           <BrowserRouter>
-            <App />
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <App />
+            </SnackbarProvider>
           </BrowserRouter>
         </EinoAuthenticationProvider>
       </EinoThemeProvider>

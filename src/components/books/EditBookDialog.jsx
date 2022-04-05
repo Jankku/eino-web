@@ -11,13 +11,10 @@ import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
-export default function EditBookDialog({
-  visible,
-  closeDialog,
-  bookId,
-  submitAction,
-}) {
+export default function EditBookDialog({ visible, closeDialog, bookId, submitAction }) {
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialBookFormState);
   const [isLoading, setLoading] = useState(false);
 
@@ -25,13 +22,12 @@ export default function EditBookDialog({
     const getFormData = async () => {
       try {
         setLoading(true);
-
         const res = await BookController.getBookDetails(bookId);
         setFormData(res.data.results[0]);
-
         setLoading(false);
       } catch (err) {
         console.error(err);
+        showErrorSnackbar('Failed to fetch book.');
       }
     };
 
@@ -53,9 +49,11 @@ export default function EditBookDialog({
   const submitForm = async () => {
     try {
       await BookController.updateBook(bookId, formData);
+      showSuccessSnackbar('Book saved.');
       submitAction();
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to save book.');
     }
   };
 

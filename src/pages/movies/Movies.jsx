@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  CircularProgress,
-  Container,
-  Fab,
-  Grid,
-  Select,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
 import MovieController from '../../data/MovieController';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function Movies() {
+  const { showErrorSnackbar } = useCustomSnackbar();
   const [movies, setMovies] = useState([]);
   const [movieSortStatus, setMovieSortStatus] = useState('all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
@@ -22,15 +17,12 @@ export default function Movies() {
   const fetchMovies = async () => {
     try {
       setIsFetching(true);
-
       const res = await MovieController.getMoviesByStatus(movieSortStatus);
       setMovies(res.data.results);
-
-      setIsFetching(false);
     } catch (err) {
-      console.error(err);
-      setIsFetching(false);
+      showErrorSnackbar('Failed to fetch movies.');
     }
+    setIsFetching(false);
   };
 
   useEffect(() => {

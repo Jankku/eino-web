@@ -17,10 +17,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import MovieController from '../../data/MovieController';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function MovieDetail() {
   const navigate = useNavigate();
   const { movieId } = useParams();
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [movie, setMovie] = useState({});
   const [editDialogVisible, setEditDialogVisible] = useState(false);
 
@@ -40,18 +42,22 @@ export default function MovieDetail() {
   const saveMovie = async () => {
     try {
       await MovieController.updateMovie(movieId, movie);
+      showSuccessSnackbar('Movie saved.');
       navigate(-1);
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to save movie.');
     }
   };
 
   const deleteMovie = async () => {
     try {
       await MovieController.deleteMovie(movieId);
+      showSuccessSnackbar('Movie deleted.');
       navigate(-1);
     } catch (err) {
       console.error(err);
+      showErrorSnackbar('Failed to delete movie.');
     }
   };
 

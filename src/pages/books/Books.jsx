@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  CircularProgress,
-  Container,
-  Fab,
-  Grid,
-  Select,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
 import BookController from '../../data/BookController';
+import useCustomSnackbar from '../../utils/useCustomSnackbar';
 
 export default function Books() {
+  const { showErrorSnackbar } = useCustomSnackbar();
   const [books, setBooks] = useState([]);
   const [bookSortStatus, setBookSortStatus] = useState('all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
@@ -22,19 +17,16 @@ export default function Books() {
   const fetchBooks = async () => {
     try {
       setIsFetching(true);
-
       const res = await BookController.getBooksByStatus(bookSortStatus);
       setBooks(res.data.results);
-
-      setIsFetching(false);
     } catch (err) {
-      setIsFetching(false);
+      showErrorSnackbar('Failed to fetch books.');
     }
+    setIsFetching(false);
   };
 
   useEffect(() => {
     fetchBooks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookSortStatus]);
 
   const bookSortStatusChangeHandler = (e) => {
