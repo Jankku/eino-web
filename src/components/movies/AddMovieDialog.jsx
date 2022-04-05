@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   Button,
   capitalize,
@@ -10,7 +10,6 @@ import {
   Grid,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -39,17 +38,6 @@ export default function MovieDetail() {
     fetchMovieDetails();
   }, [movieId, setMovie, fetchMovieDetails]);
 
-  const saveMovie = async () => {
-    try {
-      await MovieController.updateMovie(movieId, movie);
-      showSuccessSnackbar('Movie saved.');
-      navigate(-1);
-    } catch (err) {
-      console.error(err);
-      showErrorSnackbar('Failed to save movie.');
-    }
-  };
-
   const deleteMovie = async () => {
     try {
       await MovieController.deleteMovie(movieId);
@@ -66,7 +54,7 @@ export default function MovieDetail() {
 
   return (
     <Container maxWidth="md">
-      {movie.hasOwnProperty('movie_id') ? (
+      {Object.prototype.hasOwnProperty.call(movie, 'movie_id') ? (
         <Card
           sx={{
             mt: 3,

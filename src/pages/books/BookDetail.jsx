@@ -9,9 +9,8 @@ import {
   Grid,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
@@ -39,17 +38,6 @@ export default function BookDetail() {
     fetchBookDetails();
   }, [bookId, fetchBookDetails]);
 
-  const saveBook = async () => {
-    try {
-      await BookController.updateBook(bookId, book);
-      showSuccessSnackbar('Book saved.');
-      navigate(-1);
-    } catch (err) {
-      console.error(err);
-      showErrorSnackbar('Failed to save book.');
-    }
-  };
-
   const deleteBook = async () => {
     try {
       await BookController.deleteBook(bookId);
@@ -66,7 +54,7 @@ export default function BookDetail() {
 
   return (
     <Container maxWidth="md">
-      {book.hasOwnProperty('book_id') ? (
+      {Object.prototype.hasOwnProperty.call(book, 'book_id') ? (
         <Card
           sx={{
             mt: 3,

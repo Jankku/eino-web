@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ImageList } from '@mui/material';
 import EditMovieDialog from './EditMovieDialog';
 import ColumnCalculator from '../../utils/ColumnCalculator';

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import light from './light';
 import dark from './dark';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
@@ -30,9 +30,7 @@ export function EinoThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ darkTheme, toggleTheme }}>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider
-          theme={darkTheme ? createTheme(dark) : createTheme(light)}
-        >
+        <ThemeProvider theme={darkTheme ? createTheme(dark) : createTheme(light)}>
           <CssBaseline />
           {children}
         </ThemeProvider>

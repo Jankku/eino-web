@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
@@ -14,7 +14,7 @@ export default function Movies() {
   const [addDialogVisible, setAddDialogVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchMovies = async () => {
+  const fetchMovies = useCallback(async () => {
     try {
       setIsFetching(true);
       const res = await MovieController.getMoviesByStatus(movieSortStatus);
@@ -23,7 +23,7 @@ export default function Movies() {
       showErrorSnackbar('Failed to fetch movies.');
     }
     setIsFetching(false);
-  };
+  }, [movieSortStatus, showErrorSnackbar]);
 
   useEffect(() => {
     fetchMovies();

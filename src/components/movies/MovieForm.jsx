@@ -57,19 +57,13 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
           value={formData.year}
           onChange={handleChange}
         />
-        <Grid
-          container
-          sx={{ marginTop: '1em' }}
-          justifyContent="space-between"
-        >
+        <Grid container sx={{ marginTop: '1em' }} justifyContent="space-between">
           <Box sx={{ marginBottom: '1em' }}>
             <DatePicker
               name="start_date"
               label="Start date"
               value={formData.start_date}
-              onChange={(date) =>
-                handleDateChange('start_date', new Date(date))
-              }
+              onChange={(date) => handleDateChange('start_date', new Date(date))}
               renderInput={(props) => <TextField {...props} />}
             />
           </Box>

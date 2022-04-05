@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React from 'react';
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../utils/useToken';
@@ -94,16 +86,12 @@ export default function Login() {
             >
               <span>{responseError[0].message}</span>
             </Box>
-            <Grid
-              container
-              alignItems="flex-start"
-              justifyContent="space-between"
-            >
+            <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button type="submit" variant="contained" color="primary">
                 Login
               </Button>
               <Typography align="left" paragraph>
-                Don't have an account yet?{' '}
+                Don&apos;t have an account yet?{' '}
                 <Link to="/register">
                   <Typography
                     sx={{

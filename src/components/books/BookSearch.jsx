@@ -16,8 +16,7 @@ function BookSearch() {
 
   const filterOptions = createFilterOptions({
     matchFrom: 'any',
-    stringify: (option) =>
-      `${option.title} ${option.author} ${option.publisher}`,
+    stringify: (option) => `${option.title} ${option.author} ${option.publisher}`,
     trim: true,
   });
 
@@ -27,8 +26,7 @@ function BookSearch() {
   };
 
   useEffect(() => {
-    if (isOpen && debouncedSearchTerm.trim().length > 0)
-      search(debouncedSearchTerm);
+    if (isOpen && debouncedSearchTerm.trim().length > 0) search(debouncedSearchTerm);
   }, [debouncedSearchTerm, isOpen]);
 
   useEffect(() => {
@@ -69,9 +67,7 @@ function BookSearch() {
         const value = e?.target?.value ?? '';
         setSearchTerm(value);
       }}
-      renderInput={(params) => (
-        <SearchTextField params={{ ...params }} label="Search books" />
-      )}
+      renderInput={(params) => <SearchTextField params={{ ...params }} label="Search books" />}
       renderOption={(props, option) => (
         <ListItem {...props} key={option.book_id}>
           {option.title}

@@ -64,9 +64,7 @@ function BookListItem({
               p: 0,
             }}
           >
-            <CardActionButton onClick={() => navigate(`./${itemId}`)}>
-              Details
-            </CardActionButton>
+            <CardActionButton onClick={() => navigate(`./${itemId}`)}>Details</CardActionButton>
             <CardActionButton
               onClick={() => {
                 handleEditDialogOpen();

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
 import useToken from './useToken';
 
 const AuthContext = createContext(false);
@@ -10,9 +10,7 @@ export function EinoAuthenticationProvider({ children }) {
   const checkLoginStatus = () => (token && isAccessTokenValid()) || false;
   const [isLoggedIn, setIsLoggedIn] = useState(checkLoginStatus());
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = useMemo(() => ({ isLoggedIn, setIsLoggedIn }), [isLoggedIn]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

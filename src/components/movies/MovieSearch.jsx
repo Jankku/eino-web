@@ -16,8 +16,7 @@ function MovieSearch() {
 
   const filterOptions = createFilterOptions({
     matchFrom: 'any',
-    stringify: (option) =>
-      `${option.title} ${option.studio} ${option.director} ${option.writer}`,
+    stringify: (option) => `${option.title} ${option.studio} ${option.director} ${option.writer}`,
     trim: true,
   });
 
@@ -27,8 +26,7 @@ function MovieSearch() {
   };
 
   useEffect(() => {
-    if (isOpen && debouncedSearchTerm.trim().length > 0)
-      search(debouncedSearchTerm);
+    if (isOpen && debouncedSearchTerm.trim().length > 0) search(debouncedSearchTerm);
   }, [debouncedSearchTerm, isOpen]);
 
   useEffect(() => {
@@ -57,9 +55,7 @@ function MovieSearch() {
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       options={searchResults}
-      isOptionEqualToValue={(option, value) =>
-        option.movie_id === value.movie_id
-      }
+      isOptionEqualToValue={(option, value) => option.movie_id === value.movie_id}
       value={selectedMovie}
       onChange={(_event, newValue) => {
         setSelectedMovie(newValue);
@@ -71,9 +67,7 @@ function MovieSearch() {
         const value = e?.target?.value ?? '';
         setSearchTerm(value);
       }}
-      renderInput={(params) => (
-        <SearchTextField params={{ ...params }} label="Search movies" />
-      )}
+      renderInput={(params) => <SearchTextField params={{ ...params }} label="Search movies" />}
       renderOption={(props, option) => (
         <ListItem {...props} key={option.movie_id}>
           {option.title}

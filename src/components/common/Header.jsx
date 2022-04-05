@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   AppBar,
   Button,
@@ -58,8 +58,7 @@ export default function Header({ window, children }) {
     setOpen(!open);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   const MyAppBar = (
     <AppBar
@@ -152,18 +151,11 @@ export default function Header({ window, children }) {
     <>
       <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
         <MenuList>
-          <CustomNavLink
-            item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }}
-          />
-          {isLoggedIn &&
-            routeArray.map((item, index) => (
-              <CustomNavLink item={item} key={index} />
-            ))}
+          <CustomNavLink item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }} />
+          {isLoggedIn && routeArray.map((item, index) => <CustomNavLink item={item} key={index} />)}
           <Divider />
           {!isLoggedIn &&
-            authRouteArray.map((item, index) => (
-              <CustomNavLink item={item} key={index} />
-            ))}
+            authRouteArray.map((item, index) => <CustomNavLink item={item} key={index} />)}
           {isLoggedIn && (
             <Grid justifyContent="space-between">
               <Grid item>

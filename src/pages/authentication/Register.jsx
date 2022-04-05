@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  FormHelperText,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React from 'react';
+import { Button, Container, FormHelperText, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthController from '../../data/AuthController';
@@ -101,9 +93,7 @@ export default function Register() {
                 error={usernameError}
                 autoFocus={true}
               />
-              <FormHelperText>
-                Username should be 3-255 characters long
-              </FormHelperText>
+              <FormHelperText>Username should be 3-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
@@ -120,9 +110,7 @@ export default function Register() {
                 required={true}
                 error={passwordError}
               />
-              <FormHelperText>
-                Password should be 8-255 characters long
-              </FormHelperText>
+              <FormHelperText>Password should be 8-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
@@ -149,11 +137,7 @@ export default function Register() {
             >
               <span>{responseError[0].message}</span>
             </Grid>
-            <Grid
-              container
-              alignItems="flex-start"
-              justifyContent="space-between"
-            >
+            <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button type="submit" variant="contained">
                 Register
               </Button>

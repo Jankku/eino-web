@@ -9,17 +9,16 @@ function Profile() {
   const { showErrorSnackbar } = useCustomSnackbar();
   const [userData, setUserData] = useState();
 
-  const fetchUserData = async () => {
-    try {
-      const { data } = await ProfileController.getProfile();
-      setUserData(data);
-    } catch (error) {
-      showErrorSnackbar('Failed to fetch profile.');
-    }
-  };
-
   useEffect(() => {
-    fetchUserData();
+    (async () => {
+      try {
+        const { data } = await ProfileController.getProfile();
+        setUserData(data);
+      } catch (error) {
+        showErrorSnackbar('Failed to fetch profile.');
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

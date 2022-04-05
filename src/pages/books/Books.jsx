@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
@@ -14,7 +14,7 @@ export default function Books() {
   const [addDialogVisible, setAddDialogVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       setIsFetching(true);
       const res = await BookController.getBooksByStatus(bookSortStatus);
@@ -23,10 +23,11 @@ export default function Books() {
       showErrorSnackbar('Failed to fetch books.');
     }
     setIsFetching(false);
-  };
+  }, [bookSortStatus, showErrorSnackbar]);
 
   useEffect(() => {
     fetchBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookSortStatus]);
 
   const bookSortStatusChangeHandler = (e) => {

@@ -4,13 +4,7 @@ import { Box } from '@mui/system';
 import ProfileDetailItem from './ProfileDetailItem';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
@@ -89,15 +83,9 @@ function Stats({ title, stats }) {
           {isBookStats ? (
             <ProfileDetailItem title={'Pages read'} text={stats.pages_read} />
           ) : (
-            <ProfileDetailItem
-              title={'Watch time'}
-              text={`${stats.watch_time} hours`}
-            />
+            <ProfileDetailItem title={'Watch time'} text={`${stats.watch_time} hours`} />
           )}
-          <ProfileDetailItem
-            title={'Average score'}
-            text={stats.score_average}
-          />
+          <ProfileDetailItem title={'Average score'} text={stats.score_average} />
         </Box>
         <Bar data={data} options={options} plugins={[ChartDataLabels]} />
       </CardContent>

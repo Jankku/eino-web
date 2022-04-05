@@ -16,14 +16,8 @@ instance.interceptors.request.use(
     if (req.url.includes('/login')) return req;
 
     // Add Authorization header to routes
-    if (
-      req.url.includes('books') ||
-      req.url.includes('movies') ||
-      req.url.includes('profile')
-    ) {
-      req.headers['Authorization'] = `Bearer ${localStorage.getItem(
-        'accessToken'
-      )}`;
+    if (req.url.includes('books') || req.url.includes('movies') || req.url.includes('profile')) {
+      req.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
     }
 
     return req;

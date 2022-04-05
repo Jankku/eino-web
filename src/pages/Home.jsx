@@ -1,6 +1,5 @@
 import { Container, ImageList } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
 import InfoBox from '../components/home/InfoBox';
 import ColumnCalculator from '../utils/ColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';

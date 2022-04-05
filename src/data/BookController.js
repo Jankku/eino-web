@@ -41,9 +41,9 @@ const BookController = {
   async searchBooks(query) {
     return await axios({
       method: 'get',
-      url: `/api/list/books/search?query=${query}`
+      url: `/api/list/books/search?query=${query}`,
     });
-  }
+  },
 };
 
 export default BookController;

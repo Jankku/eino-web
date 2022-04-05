@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   CircularProgress,
@@ -32,6 +32,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId, submitA
     };
 
     if (visible === true) getFormData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId, visible]);
 
   const handleChange = (e) => {
