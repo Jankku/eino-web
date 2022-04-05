@@ -143,7 +143,7 @@ export default function Register() {
               </Button>
               <Typography align="left" paragraph>
                 Already have an account?{' '}
-                <Link to="/register">
+                <Link to="/login">
                   <Typography
                     sx={{
                       color: 'text.secondary',
