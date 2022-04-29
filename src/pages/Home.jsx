@@ -1,13 +1,14 @@
-import { Container, ImageList } from '@mui/material';
-import { Box } from '@mui/system';
+import { Container, ImageList, Typography } from '@mui/material';
 import InfoBox from '../components/home/InfoBox';
 import ColumnCalculator from '../utils/ColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import LoginIcon from '@mui/icons-material/Login';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import CodeIcon from '@mui/icons-material/Code';
+import AndroidRounded from '@mui/icons-material/AndroidRounded';
+import StorageIcon from '@mui/icons-material/Storage';
+import WebIcon from '@mui/icons-material/Web';
 
 const infoBoxData = [
   {
@@ -34,38 +35,48 @@ const infoBoxData = [
   },
   {
     title: 'Source code',
-    text: 'Source code of all platforms of the project is on GitHub.',
     icon: <CodeIcon />,
     button: {
-      linkText: 'GitHub',
+      linkText: 'Backend',
+      link: 'https://github.com/jankku/eino-backend/',
+      target: '_blank',
+      icon: <StorageIcon />,
+    },
+    button2: {
+      linkText: 'Frontend',
       link: 'https://github.com/jankku/eino-web/',
       target: '_blank',
-      icon: <GitHubIcon />,
+      icon: <WebIcon />,
+    },
+    button3: {
+      linkText: 'Android',
+      link: 'https://github.com/jankku/eino-android/',
+      target: '_blank',
+      icon: <AndroidRounded />,
     },
   },
 ];
 
 export default function Home() {
   return (
-    <>
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            typography: 'h3',
-            margin: '0.3em 0em',
-            fontFamily: 'Pacifico, cursive',
-            letterSpacing: '0.03em',
-          }}
-        >
-          eino
-        </Box>
-        <Box sx={{ typography: 'h6' }}>Book and movie tracker</Box>
-        <ImageList cols={ColumnCalculator()} gap={12}>
-          {infoBoxData.map((box, boxIdx) => (
-            <InfoBox key={boxIdx}>{box}</InfoBox>
-          ))}
-        </ImageList>
-      </Container>
-    </>
+    <Container maxWidth="md">
+      <Typography
+        variant="h1"
+        sx={{
+          typography: 'h3',
+          margin: '0.3em 0em',
+          fontFamily: 'Pacifico, cursive',
+          letterSpacing: '0.03em',
+        }}
+      >
+        eino
+      </Typography>
+      <Typography variant="h6">Book and movie tracker</Typography>
+      <ImageList cols={ColumnCalculator()} gap={12}>
+        {infoBoxData.map((box, boxIdx) => (
+          <InfoBox key={boxIdx}>{box}</InfoBox>
+        ))}
+      </ImageList>
+    </Container>
   );
 }
