@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
 import './index.css';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { EinoThemeProvider } from './themes/theme';
@@ -10,8 +10,10 @@ import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import { SnackbarProvider } from 'notistack';
 import Fade from '@mui/material/Fade';
 
-ReactDOM.render(
-  <React.StrictMode>
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <StrictMode>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <EinoThemeProvider>
         <EinoAuthenticationProvider>
@@ -32,6 +34,5 @@ ReactDOM.render(
         </EinoAuthenticationProvider>
       </EinoThemeProvider>
     </LocalizationProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 );
