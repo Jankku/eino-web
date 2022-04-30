@@ -11,6 +11,7 @@ import Logout from './pages/authentication/Logout';
 import RequireAuth from './components/common/RequireAuth';
 import Layout from './components/common/Layout';
 import Profile from './pages/profile/Profile';
+import Privacy from './pages/Privacy';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route
             path="/profile"
             element={
