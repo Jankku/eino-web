@@ -30,7 +30,7 @@ const infoBoxData = [
   },
   {
     title: 'Features',
-    text: 'Keep track of books and movies you have enjoyed, save information about them and give scores.',
+    text: 'Keep track of books and movies you have enjoyed, save information about them and give scores. On profile page see statistics like average score and hours watched.',
     icon: <LibraryBooksIcon />,
   },
   {
