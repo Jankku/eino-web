@@ -15,7 +15,13 @@ const light = createTheme({
       main: red[500],
     },
   },
+  typography: {
+    fontFamily: 'Roboto',
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: 'fonts.css',
+    },
     MuiFab: {
       styleOverrides: {
         root: {

@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material';
 import { blue, red } from '@mui/material/colors';
+import '../css/fonts.css';
 
 const dark = createTheme({
   palette: {
@@ -15,7 +16,13 @@ const dark = createTheme({
       main: red[300],
     },
   },
+  typography: {
+    fontFamily: 'Roboto',
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: 'fonts.css',
+    },
     MuiFab: {
       styleOverrides: {
         root: {
