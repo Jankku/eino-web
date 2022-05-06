@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { Button, Card, CardContent, Grid } from '@mui/material';
+import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export default function InfoBox({ children }) {
@@ -31,19 +31,11 @@ export default function InfoBox({ children }) {
             </Box>
           </Grid>
           <Grid item>
-            <Box
-              sx={{
-                fontFamily: 'Source Sans Pro, sans-serif',
-                fontWeight: 600,
-                fontSize: 'h6.fontSize',
-              }}
-            >
-              {children.title}
-            </Box>
+            <Typography variant="h6">{children.title}</Typography>
           </Grid>
         </Grid>
         <Grid item>
-          <Box sx={{ typography: 'body1' }}>{children.text}</Box>
+          <Typography variant="body1">{children.text}</Typography>
         </Grid>
 
         {children.button ? (

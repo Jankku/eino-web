@@ -31,7 +31,7 @@ export function EinoThemeProvider({ children }) {
     <ThemeContext.Provider value={{ darkTheme, toggleTheme }}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={darkTheme ? createTheme(dark) : createTheme(light)}>
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
           {children}
         </ThemeProvider>
       </StyledEngineProvider>

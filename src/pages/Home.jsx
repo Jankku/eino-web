@@ -71,7 +71,9 @@ export default function Home() {
       >
         eino
       </Typography>
-      <Typography variant="h6">Book and movie tracker</Typography>
+      <Typography variant="h6" sx={{ fontWeight: '700' }}>
+        Book and movie tracker
+      </Typography>
       <ImageList cols={ColumnCalculator()} gap={12}>
         {infoBoxData.map((box, boxIdx) => (
           <InfoBox key={boxIdx}>{box}</InfoBox>
