@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useToken from '../../utils/useToken';
+import useToken from '../../hooks/useToken';
 import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';

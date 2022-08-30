@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import MovieController from '../../data/MovieController';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function MovieDetail() {
   const navigate = useNavigate();

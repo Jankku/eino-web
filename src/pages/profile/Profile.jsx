@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
 import ProfileController from '../../data/ProfileController';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 function Profile() {
   const { showErrorSnackbar } = useCustomSnackbar();

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageList } from '@mui/material';
 import EditMovieDialog from './EditMovieDialog';
-import ColumnCalculator from '../../utils/ColumnCalculator';
+import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
 export default function MovieList({ movies, fetchMovies }) {
@@ -13,7 +13,7 @@ export default function MovieList({ movies, fetchMovies }) {
 
   return (
     <>
-      <ImageList cols={ColumnCalculator()} gap={6}>
+      <ImageList cols={useColumnCalculator()} gap={6}>
         {movies.map((movie) => (
           <ListItem
             title={movie.title}

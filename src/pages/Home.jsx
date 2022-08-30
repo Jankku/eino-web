@@ -1,6 +1,6 @@
 import { Container, ImageList, Typography } from '@mui/material';
 import InfoBox from '../components/home/InfoBox';
-import ColumnCalculator from '../utils/ColumnCalculator';
+import useColumnCalculator from '../hooks/useColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LoginIcon from '@mui/icons-material/Login';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -74,7 +74,7 @@ export default function Home() {
       <Typography variant="h6" sx={{ fontWeight: '700' }}>
         Book and movie tracker
       </Typography>
-      <ImageList cols={ColumnCalculator()} gap={12}>
+      <ImageList cols={useColumnCalculator()} gap={12}>
         {infoBoxData.map((box, boxIdx) => (
           <InfoBox key={boxIdx}>{box}</InfoBox>
         ))}

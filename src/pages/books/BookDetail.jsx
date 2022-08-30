@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import BookController from '../../data/BookController';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function BookDetail() {
   const navigate = useNavigate();

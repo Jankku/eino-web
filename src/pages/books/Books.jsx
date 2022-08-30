@@ -5,7 +5,7 @@ import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
 import BookController from '../../data/BookController';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function Books() {
   const { showErrorSnackbar } = useCustomSnackbar();

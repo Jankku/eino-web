@@ -4,7 +4,7 @@ import initialBookFormState from '../../models/initialBookFormState';
 import BookController from '../../data/BookController';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();

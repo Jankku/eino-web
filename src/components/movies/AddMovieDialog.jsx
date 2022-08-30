@@ -4,7 +4,7 @@ import initialMovieFormState from '../../models/initialMovieFormState';
 import MovieController from '../../data/MovieController';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();

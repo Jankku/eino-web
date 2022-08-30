@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { stringOrPlaceholder } from '../../utils/stringutil';
+import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 export default function DetailItem({ title, text }) {
   return (

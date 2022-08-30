@@ -5,7 +5,7 @@ import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
 import MovieController from '../../data/MovieController';
-import useCustomSnackbar from '../../utils/useCustomSnackbar';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 export default function Movies() {
   const { showErrorSnackbar } = useCustomSnackbar();

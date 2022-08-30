@@ -1,4 +1,4 @@
-import useToken from '../../utils/useToken';
+import useToken from '../../hooks/useToken';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../utils/auth';
 

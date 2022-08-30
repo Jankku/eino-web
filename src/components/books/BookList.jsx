@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageList } from '@mui/material';
 import EditBookDialog from './EditBookDialog';
-import ColumnCalculator from '../../utils/ColumnCalculator';
+import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
 export default function BookList({ books, fetchBooks }) {
@@ -13,7 +13,7 @@ export default function BookList({ books, fetchBooks }) {
 
   return (
     <>
-      <ImageList cols={ColumnCalculator()} gap={6}>
+      <ImageList cols={useColumnCalculator()} gap={6}>
         {books.map((book) => (
           <ListItem
             title={book.title}

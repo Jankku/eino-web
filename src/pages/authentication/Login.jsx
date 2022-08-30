@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
-import useToken from '../../utils/useToken';
+import useToken from '../../hooks/useToken';
 import Error from '../../models/error';
 import AuthController from '../../data/AuthController';
 import { useAuthContext } from '../../utils/auth';

@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/system';
 import { useMediaQuery } from '@mui/material';
 
-const ColumnCalculator = () => {
+const useColumnCalculator = () => {
   const theme = useTheme();
 
   const matchesLg = useMediaQuery(theme.breakpoints.up('lg'));
@@ -15,4 +15,4 @@ const ColumnCalculator = () => {
   else if (matchesXs) return 1;
 };
 
-export default ColumnCalculator;
+export default useColumnCalculator;
