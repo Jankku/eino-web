@@ -1,7 +1,3 @@
 export function stringOrPlaceholder(value) {
-  if (typeof value === 'string') {
-    return value.length > 0 ? value : '-';
-  } else {
-    return '-';
-  }
+  return String(value).length > 0 ? String(value) : '-';
 }
