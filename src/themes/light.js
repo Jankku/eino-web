@@ -48,6 +48,13 @@ const light = createTheme({
         },
       },
     },
+    MuiChip: {
+      styleOverrides: {
+        filled: {
+          alignSelf: 'end',
+        },
+      },
+    },
   },
 });
 

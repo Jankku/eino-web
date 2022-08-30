@@ -3,13 +3,18 @@ import {
   Card,
   CardActions,
   CardContent,
+  Chip,
   Grid,
   ImageListItem,
+  Stack,
   Typography,
 } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
-import { stringOrPlaceholder } from '../../utils/stringutil';
+import { stringOrPlaceholder } from '../../utils/stringUtil';
 import CardActionButton from './CardActionButton';
+import getStatusIcon from '../../utils/statusIcon';
+import { useThemeContext } from '../../themes/theme';
 
 function BookListItem({
   title,
@@ -21,12 +26,13 @@ function BookListItem({
   handleEditDialogOpen,
 }) {
   const navigate = useNavigate();
+  const { darkTheme } = useThemeContext();
 
   return (
     <ImageListItem>
       <Card variant="outlined">
-        <CardContent>
-          <Grid container justifyContent="space-between" sx={{ mb: 1.5 }}>
+        <CardContent sx={{ px: 1.5, py: 2 }}>
+          <Grid container justifyContent="space-between">
             <Grid item>
               <Typography
                 variant="body1"
@@ -49,18 +55,29 @@ function BookListItem({
                 {stringOrPlaceholder(detailText)}
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid item alignSelf="end">
               <Typography variant="body2" component="div">
-                {score}
-              </Typography>
-              <Typography variant="body2" component="div">
-                {capitalize(status)}
+                <Stack spacing={0.5}>
+                  <Chip
+                    icon={<StarIcon />}
+                    variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
+                    color={darkTheme === 'dark' ? 'default' : 'primary'}
+                    size="small"
+                    label={score}
+                  />
+                  <Chip
+                    icon={getStatusIcon(status)}
+                    variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
+                    size="small"
+                    label={capitalize(status)}
+                  />
+                </Stack>
               </Typography>
             </Grid>
           </Grid>
           <CardActions
             sx={{
-              m: '1em 0 0 0',
+              m: '0.5em 0 0 0',
               p: 0,
             }}
           >

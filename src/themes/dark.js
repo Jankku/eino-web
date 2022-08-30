@@ -56,6 +56,16 @@ const dark = createTheme({
         },
       },
     },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          border: 0,
+          alignSelf: 'end',
+          backgroundColor: 'transparent',
+          color: 'white',
+        },
+      },
+    },
   },
 });
 
