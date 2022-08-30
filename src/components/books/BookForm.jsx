@@ -1,10 +1,14 @@
-import { Grid, InputLabel, Select, TextField } from '@mui/material';
+import { Grid, InputLabel, Select, TextField, useTheme } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import { Box } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function BookForm({ formData, handleChange, handleDateChange }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <>
       <Grid container>
@@ -58,24 +62,22 @@ function BookForm({ formData, handleChange, handleDateChange }) {
           onChange={handleChange}
         />
         <Grid container sx={{ marginTop: '1em' }} justifyContent="space-between">
-          <Box sx={{ marginBottom: '1em' }}>
-            <DatePicker
-              name="start_date"
-              label="Start date"
-              value={formData.start_date}
-              onChange={(date) => handleDateChange('start_date', new Date(date))}
-              renderInput={(props) => <TextField {...props} />}
-            />
-          </Box>
-          <Box>
-            <DatePicker
-              name="end_date"
-              label="End date"
-              value={formData.end_date}
-              onChange={(date) => handleDateChange('end_date', new Date(date))}
-              renderInput={(props) => <TextField {...props} />}
-            />
-          </Box>
+          <DatePicker
+            name="start_date"
+            label="Start date"
+            value={formData.start_date}
+            onChange={(date) => handleDateChange('start_date', new Date(date))}
+            renderInput={(props) => (
+              <TextField fullWidth={isMobile} sx={{ mb: '1em' }} {...props} />
+            )}
+          />
+          <DatePicker
+            name="end_date"
+            label="End date"
+            value={formData.end_date}
+            onChange={(date) => handleDateChange('end_date', new Date(date))}
+            renderInput={(props) => <TextField fullWidth={isMobile} {...props} />}
+          />
         </Grid>
       </Grid>
       <Grid container justifyContent="space-between">
