@@ -7,6 +7,14 @@ const ProfileController = {
       url: '/api/profile',
     });
   },
+
+  async deleteAccount(password) {
+    return await axios({
+      method: 'POST',
+      url: '/api/profile/deleteaccount',
+      data: { password },
+    });
+  },
 };
 
 export default ProfileController;

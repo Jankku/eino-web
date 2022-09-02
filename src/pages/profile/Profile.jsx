@@ -1,11 +1,14 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
 import ProfileController from '../../data/ProfileController';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 
 function Profile() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { showErrorSnackbar } = useCustomSnackbar();
   const [userData, setUserData] = useState();
 
@@ -26,8 +29,9 @@ function Profile() {
       <h1>Profile</h1>
       {userData !== undefined ? (
         <>
-          <Grid item>
+          <Grid container={!isMobile}>
             <UserInfo data={userData} />
+            <AccountActions />
           </Grid>
           <Grid item mt={2}>
             <Stats title="Book stats" stats={userData.stats.book} />

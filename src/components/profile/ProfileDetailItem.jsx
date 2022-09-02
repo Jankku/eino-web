@@ -4,7 +4,7 @@ import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 export default function ProfileDetailItem({ title, text }) {
   return (
-    <Box sx={{ pb: 2 }}>
+    <Box sx={{ pb: 1 }}>
       <Grid item>
         <Grid item>
           <Typography variant="body1" sx={{ fontWeight: 700 }}>
@@ -12,7 +12,7 @@ export default function ProfileDetailItem({ title, text }) {
           </Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body1" noWrap>
+          <Typography paragraph variant="body1">
             {stringOrPlaceholder(text)}
           </Typography>
         </Grid>
