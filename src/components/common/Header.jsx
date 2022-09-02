@@ -159,7 +159,11 @@ export default function Header({ window, children }) {
           {isLoggedIn && (
             <Grid justifyContent="space-between">
               <Grid item>
-                <MenuItem sx={{ mt: 1 }}>{getUsername()}</MenuItem>
+                <MenuItem sx={{ mt: 0.5 }}>
+                  <Typography fontWeight={500} noWrap>
+                    {getUsername()}
+                  </Typography>
+                </MenuItem>
               </Grid>
 
               <Grid item>
