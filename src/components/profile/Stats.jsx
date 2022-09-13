@@ -39,18 +39,41 @@ function Stats({ title, stats }) {
         align: 'end',
         anchor: 'end',
         font: { size: '14' },
+        formatter: (value) => {
+          return Number(value) === 0 ? null : value;
+        },
       },
     },
     scales: {
       y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Count',
+          align: 'center',
+          font: {
+            weight: 'bold',
+            size: 12,
+          },
+        },
+        grace: 4,
         ticks: {
           color: theme.palette.text.secondary,
+          stepSize: 1,
         },
         grid: {
           color: theme.palette.divider,
         },
       },
       x: {
+        title: {
+          display: true,
+          text: 'Score',
+          font: {
+            weight: 'bold',
+            size: 12,
+          },
+        },
         ticks: {
           color: theme.palette.text.secondary,
         },
