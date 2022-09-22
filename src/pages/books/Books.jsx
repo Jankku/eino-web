@@ -6,11 +6,12 @@ import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
 import BookController from '../../data/BookController';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 export default function Books() {
   const { showErrorSnackbar } = useCustomSnackbar();
   const [books, setBooks] = useState([]);
-  const [bookSortStatus, setBookSortStatus] = useState('all');
+  const [bookSortStatus, setBookSortStatus] = useLocalStorage('bookSort', 'all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 

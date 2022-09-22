@@ -6,11 +6,12 @@ import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
 import MovieController from '../../data/MovieController';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 export default function Movies() {
   const { showErrorSnackbar } = useCustomSnackbar();
   const [movies, setMovies] = useState([]);
-  const [movieSortStatus, setMovieSortStatus] = useState('all');
+  const [movieSortStatus, setMovieSortStatus] = useLocalStorage('movieSort', 'all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
