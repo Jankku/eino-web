@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 export default async function fetchNewToken(axios, err) {
   const originalRequest = err.config;
@@ -8,30 +8,27 @@ export default async function fetchNewToken(axios, err) {
     err.response.data.errors[0].name === 'authorization_error' &&
     !originalRequest._retry
   ) {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) return;
-
     originalRequest._retry = true;
 
-    let refreshTokenExp;
-
-    try {
-      refreshTokenExp = jwt_decode(refreshToken).exp * 1000;
-    } catch (err) {
-      return console.error(err);
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken || isExpired(refreshToken)) {
+      return Promise.reject(err);
     }
 
-    if (refreshTokenExp > Date.now()) {
+    try {
       const res = await axios.post('/api/auth/refreshtoken', {
         withCredentials: true,
         refreshToken,
       });
-
       localStorage.setItem('accessToken', res.data.accessToken);
 
-      return await axios(originalRequest);
+      return axios(originalRequest);
+    } catch (err) {
+      return Promise.reject(err);
     }
   } else {
     return Promise.reject(err);
   }
 }
+
+const isExpired = (token) => jwtDecode(token).exp * 1000 < Date.now();

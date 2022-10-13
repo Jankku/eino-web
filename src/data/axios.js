@@ -12,14 +12,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (req) => {
-    if (req.url.includes('/register')) return req;
-    if (req.url.includes('/login')) return req;
-
-    // Add Authorization header to routes
     if (req.url.includes('books') || req.url.includes('movies') || req.url.includes('profile')) {
       req.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
     }
-
     return req;
   },
   (err) => Promise.reject(err)
@@ -28,8 +23,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (res) => res,
   async (err) => {
-    fetchNewToken(instance, err);
-    return Promise.reject(err);
+    return fetchNewToken(instance, err);
   }
 );
 
