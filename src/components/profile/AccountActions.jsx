@@ -1,10 +1,8 @@
 import { Button, Card, CardContent } from '@mui/material';
 import { useState } from 'react';
 import DeleteAccountModal from './DeleteAccountModal';
-import { useNavigate } from 'react-router-dom';
 
 function AccountActions() {
-  const navigate = useNavigate();
   const [deleteAccountDialogVisible, setDeleteAccountDialogVisible] = useState(false);
 
   const handleDeleteAccountDialogOpen = () => setDeleteAccountDialogVisible(true);
@@ -24,7 +22,6 @@ function AccountActions() {
       <DeleteAccountModal
         visible={deleteAccountDialogVisible}
         closeDialog={handleDeleteAccountDialogCancel}
-        submitAction={() => navigate('/logout')}
       />
     </>
   );

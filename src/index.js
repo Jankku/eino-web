@@ -9,9 +9,15 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterLuxon from '@mui/lab/AdapterLuxon';
 import { SnackbarProvider } from 'notistack';
 import Fade from '@mui/material/Fade';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient({
+  staleTime: 5 * 60 * 1000,
+});
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+
 root.render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
@@ -28,7 +34,9 @@ root.render(
                 horizontal: 'center',
               }}
             >
-              <App />
+              <QueryClientProvider client={queryClient}>
+                <App />
+              </QueryClientProvider>
             </SnackbarProvider>
           </BrowserRouter>
         </EinoAuthenticationProvider>

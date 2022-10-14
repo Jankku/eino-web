@@ -4,39 +4,47 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
+  LinearProgress,
   TextField,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import ProfileController from '../../data/ProfileController';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { deleteAccount } from '../../data/Profile';
 import BaseDialog from '../common/BaseDialog';
 
-function DeleteAccountModal({ visible, closeDialog, submitAction }) {
-  const [userPassword, setUserPassword] = useState('');
-  const [formError, setFormError] = useState({ isError: false, text: '' });
+const initialFormErrorState = { isError: false, text: ' ' };
 
-  const clearFormError = () => setFormError({ isError: false, text: '' });
+function DeleteAccountModal({ visible, closeDialog }) {
+  const navigate = useNavigate();
+  const [userPassword, setUserPassword] = useState('');
+  const [formError, setFormError] = useState(initialFormErrorState);
+  const { isLoading, mutate } = useMutation(() => deleteAccount(userPassword), {
+    onSuccess: () => {
+      closeDialog();
+      navigate('/logout');
+    },
+    onError: (err) => {
+      setFormError({ ...formError, isError: true, text: err.response.data.errors[0].message });
+    },
+  });
+
+  const clearFormError = () => setFormError(initialFormErrorState);
 
   const handleChange = (e) => {
     setUserPassword(e.target.value);
   };
 
-  const submitForm = async (e) => {
-    e.preventDefault();
-
-    try {
-      await ProfileController.deleteAccount(userPassword);
-      closeDialog();
-      submitAction();
-    } catch (err) {
-      setFormError({ ...formError, isError: true, text: err.response.data.errors[0].message });
-    }
-  };
-
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Delete account</DialogTitle>
-      <form method="post" onSubmit={submitForm} encType="application/json">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutate();
+        }}
+      >
         <DialogContent sx={{ pt: 0 }}>
           <Typography paragraph fontWeight={700} color="error">
             NOTE: THIS ACTION IS IRREVERSIBLE!
@@ -57,14 +65,23 @@ function DeleteAccountModal({ visible, closeDialog, submitAction }) {
             onFocus={clearFormError}
             value={userPassword}
             onChange={handleChange}
+            disabled={isLoading}
           />
-          <FormHelperText error>{formError.text}</FormHelperText>
+          <FormHelperText error sx={{ fontSize: 14 }}>
+            {formError.text}
+          </FormHelperText>
+          <LinearProgress sx={{ display: isLoading ? 'block' : 'none' }} />
         </DialogContent>
         <DialogActions>
-          <Button color="secondary" onClick={() => closeDialog()}>
+          <Button
+            color="secondary"
+            onClick={() => {
+              closeDialog();
+            }}
+          >
             Cancel
           </Button>
-          <Button color="primary" type="submit">
+          <Button color="primary" disabled={isLoading} type="submit">
             Delete account
           </Button>
         </DialogActions>

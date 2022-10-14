@@ -20,7 +20,8 @@ module.exports = {
   rules: {
     'react/prop-types': 'off',
     'no-undef': 'off',
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'no-unused-vars': 'warn',
+    'prettier/prettier': ['warn', { endOfLine: 'auto' }],
   },
   settings: {
     react: {
