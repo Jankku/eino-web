@@ -1,4 +1,4 @@
-const initialBookFormState = {
+const initialBookState = {
   isbn: '',
   title: '',
   author: '',
@@ -11,4 +11,4 @@ const initialBookFormState = {
   end_date: new Date().toISOString(),
 };
 
-export default initialBookFormState;
+export default initialBookState;

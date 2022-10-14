@@ -1,14 +1,25 @@
 import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import initialBookFormState from '../../models/initialBookFormState';
-import BookController from '../../data/BookController';
+import initialBookState from '../../models/initialBookState';
+import { addBook } from '../../data/Book';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useMutation, useQueryClient } from 'react-query';
 
-export default function AddBookDialog({ visible, closeDialog, submitAction }) {
+export default function AddBookDialog({ visible, closeDialog }) {
+  const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [formData, setFormData] = useState(initialBookFormState);
+  const [formData, setFormData] = useState(initialBookState);
+  const mutation = useMutation((newBook) => addBook(newBook), {
+    onSuccess: () => {
+      showSuccessSnackbar('Book created.');
+      queryClient.invalidateQueries(['books']);
+    },
+    onError: () => {
+      showErrorSnackbar('Failed to create book.');
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,18 +30,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
   };
 
   const clearForm = () => {
-    setFormData(initialBookFormState);
-  };
-
-  const submitForm = async () => {
-    try {
-      await BookController.addBook(formData);
-      showSuccessSnackbar('Book created.');
-      submitAction();
-    } catch (err) {
-      console.error(err);
-      showErrorSnackbar('Failed to create book.');
-    }
+    setFormData(initialBookState);
   };
 
   return (
@@ -56,7 +56,7 @@ export default function AddBookDialog({ visible, closeDialog, submitAction }) {
         <Button
           color="primary"
           onClick={() => {
-            submitForm();
+            mutation.mutate(formData);
             closeDialog();
             clearForm();
           }}

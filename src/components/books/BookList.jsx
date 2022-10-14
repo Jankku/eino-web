@@ -4,7 +4,7 @@ import EditBookDialog from './EditBookDialog';
 import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
-export default function BookList({ books, fetchBooks }) {
+export default function BookList({ books }) {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedBookId, seteditedBookId] = useState('');
 
@@ -32,7 +32,6 @@ export default function BookList({ books, fetchBooks }) {
         visible={editDialogVisible}
         closeDialog={handleEditDialogCancel}
         bookId={editedBookId}
-        submitAction={fetchBooks}
       />
     </>
   );

@@ -1,35 +1,28 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
-import BookController from '../../data/BookController';
+import { getBooks } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useQuery, useQueryClient } from 'react-query';
 
 export default function Books() {
   const { showErrorSnackbar } = useCustomSnackbar();
-  const [books, setBooks] = useState([]);
   const [bookSortStatus, setBookSortStatus] = useLocalStorage('bookSort', 'all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
-
-  const fetchBooks = useCallback(async () => {
-    try {
-      setIsFetching(true);
-      const res = await BookController.getBooksByStatus(bookSortStatus);
-      setBooks(res.data.results);
-    } catch (err) {
-      showErrorSnackbar('Failed to fetch books.');
-    }
-    setIsFetching(false);
-  }, [bookSortStatus, showErrorSnackbar]);
-
-  useEffect(() => {
-    fetchBooks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bookSortStatus]);
+  const queryClient = useQueryClient();
+  const { isLoading, data } = useQuery(['books', bookSortStatus], () => getBooks(bookSortStatus), {
+    placeholderData: () => {
+      const cachedBooks = queryClient
+        .getQueryData(['books', 'all'])
+        ?.filter(({ status }) => status === bookSortStatus);
+      return cachedBooks;
+    },
+    onError: () => showErrorSnackbar("Couldn't fetch books"),
+  });
 
   const bookSortStatusChangeHandler = (e) => {
     setBookSortStatus(e.target.value);
@@ -66,24 +59,20 @@ export default function Books() {
           </Select>
         </Grid>
       </Grid>
-      {isFetching ? (
+
+      {isLoading ? (
         <Grid container justifyContent="center">
           <CircularProgress />
         </Grid>
-      ) : books.length > 0 ? (
-        <BookList books={books} fetchBooks={fetchBooks} />
+      ) : data?.length > 0 ? (
+        <BookList books={data} />
       ) : (
         <Grid container justifyContent="center">
-          <Typography paragraph sx={{ fontWeight: 700 }}>
-            No books
-          </Typography>
+          <Typography variant="h6">No books found</Typography>
         </Grid>
       )}
-      <AddBookDialog
-        visible={addDialogVisible}
-        closeDialog={handleAddDialogCancel}
-        submitAction={fetchBooks}
-      />
+
+      <AddBookDialog visible={addDialogVisible} closeDialog={handleAddDialogCancel} />
       <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
         <AddIcon />
       </Fab>

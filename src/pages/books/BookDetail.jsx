@@ -7,54 +7,60 @@ import {
   CircularProgress,
   Container,
   Grid,
+  Typography,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
-import BookController from '../../data/BookController';
+import { getBookDetails, deleteBook } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export default function BookDetail() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { bookId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [book, setBook] = useState({});
   const [editDialogVisible, setEditDialogVisible] = useState(false);
-
-  const fetchBookDetails = useCallback(async () => {
-    try {
-      const res = await BookController.getBookDetails(bookId);
-      setBook(res.data.results[0]);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [bookId]);
-
-  useEffect(() => {
-    fetchBookDetails();
-  }, [bookId, fetchBookDetails]);
-
-  const deleteBook = async () => {
-    try {
-      await BookController.deleteBook(bookId);
+  const { isLoading, isError, data } = useQuery(['book', bookId], () => getBookDetails(bookId), {
+    staleTime: Infinity,
+    placeholderData: () => {
+      const cachedBook = queryClient
+        .getQueryData(['books', 'all'], { exact: true })
+        ?.find((b) => b.book_id === bookId);
+      return cachedBook;
+    },
+    visible: bookId,
+  });
+  const mutation = useMutation((bookId) => deleteBook(bookId), {
+    onSuccess: () => {
       showSuccessSnackbar('Book deleted.');
       navigate(-1);
-    } catch (err) {
-      console.error(err);
+    },
+    onError: () => {
       showErrorSnackbar('Failed to delete book.');
-    }
-  };
+    },
+  });
 
   const handleEditDialogOpen = () => setEditDialogVisible(true);
   const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
     <Container maxWidth="md">
-      {Object.prototype.hasOwnProperty.call(book, 'book_id') ? (
+      {isError ? (
+        <Grid container justifyContent="center" pt={8}>
+          <Typography variant={'h6'}>Couldn&apos;t find book</Typography>
+        </Grid>
+      ) : null}
+      {isLoading ? (
+        <Grid container justifyContent="center" pt={8}>
+          <CircularProgress />
+        </Grid>
+      ) : data ? (
         <Card
           sx={{
             mt: 3,
@@ -65,21 +71,21 @@ export default function BookDetail() {
         >
           <CardContent sx={{ pb: 0 }}>
             <Grid container columns={3} justifyContent="flex-start">
-              <DetailItem title="Title" text={book.title} />
-              <DetailItem title="Author" text={book.author} />
-              <DetailItem title="Publisher" text={book.publisher} />
-              <DetailItem title="ISBN" text={book.isbn} />
-              <DetailItem title="Pages" text={book.pages} />
-              <DetailItem title="Year" text={book.year} />
-              <DetailItem title="Status" text={capitalize(book.status)} />
-              <DetailItem title="Score" text={book.score} />
+              <DetailItem title="Title" text={data.title} />
+              <DetailItem title="Author" text={data.author} />
+              <DetailItem title="Publisher" text={data.publisher} />
+              <DetailItem title="ISBN" text={data.isbn} />
+              <DetailItem title="Pages" text={data.pages} />
+              <DetailItem title="Year" text={data.year} />
+              <DetailItem title="Status" text={capitalize(data.status)} />
+              <DetailItem title="Score" text={data.score} />
               <DetailItem
                 title="Start date"
-                text={DateTime.fromISO(book.start_date).toLocaleString()}
+                text={DateTime.fromISO(data.start_date).toLocaleString()}
               />
               <DetailItem
                 title="End date"
-                text={DateTime.fromISO(book.end_date).toLocaleString()}
+                text={DateTime.fromISO(data.end_date).toLocaleString()}
               />
             </Grid>
           </CardContent>
@@ -97,7 +103,7 @@ export default function BookDetail() {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={deleteBook}
+                onClick={() => mutation.mutate(bookId)}
                 startIcon={<DeleteIcon />}
                 sx={{ margin: '0.5em' }}
               >
@@ -106,18 +112,15 @@ export default function BookDetail() {
             </Grid>
           </CardActions>
         </Card>
-      ) : (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      )}
+      ) : null}
 
-      <EditBookDialog
-        visible={editDialogVisible}
-        closeDialog={handleEditDialogCancel}
-        bookId={book.book_id}
-        submitAction={fetchBookDetails}
-      />
+      {data?.book_id ? (
+        <EditBookDialog
+          visible={editDialogVisible}
+          closeDialog={handleEditDialogCancel}
+          bookId={data.book_id}
+        />
+      ) : null}
     </Container>
   );
 }
