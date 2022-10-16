@@ -1,21 +1,24 @@
 import { Button, Container, FormHelperText, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthController from '../../data/AuthController';
 import Error from '../../models/error';
+import { useMutation } from 'react-query';
+import { registerUser } from '../../data/Auth';
 
 export default function Register() {
   const navigate = useNavigate();
-
-  const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setpasswordError] = useState(false);
-  const [passwordMatchError, setpasswordMatchError] = useState(false);
-  const [responseError, setResponseError] = useState(Error);
-
   const [credentials, setCredentials, credRef] = useState({
     username: '',
     password: '',
     password2: '',
+  });
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setpasswordError] = useState(false);
+  const [passwordMatchError, setpasswordMatchError] = useState(false);
+  const [responseError, setResponseError] = useState(Error);
+  const registerMutation = useMutation((userCredentials) => registerUser(userCredentials), {
+    onSuccess: () => navigate('/login'),
+    onError: (err) => setResponseError(err.response.data.errors),
   });
 
   const validateForm = () => {
@@ -59,13 +62,7 @@ export default function Register() {
     e.preventDefault();
 
     if (!validateForm()) return setResponseError('Form validation failed');
-
-    try {
-      await AuthController.register(credentials);
-      navigate('/login');
-    } catch (err) {
-      if (err.response) setResponseError(err.response.data.errors);
-    }
+    registerMutation.mutate(credentials);
   };
 
   return (
@@ -138,7 +135,7 @@ export default function Register() {
               <span>{responseError[0].message}</span>
             </Grid>
             <Grid container alignItems="flex-start" justifyContent="space-between">
-              <Button type="submit" variant="contained">
+              <Button disabled={registerMutation.isLoading} type="submit" variant="contained">
                 Register
               </Button>
               <Typography align="left" paragraph>

@@ -3,19 +3,27 @@ import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
 import Error from '../../models/error';
-import AuthController from '../../data/AuthController';
+import { loginUser } from '../../data/Auth';
 import { useAuthContext } from '../../utils/auth';
+import { useMutation } from 'react-query';
 
 export default function Login() {
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
   const { setIsLoggedIn } = useAuthContext();
-
   const [responseError, setResponseError] = useState(Error);
-
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
+  });
+  const loginMutation = useMutation((userCredentials) => loginUser(userCredentials), {
+    onSuccess: (data) => {
+      setToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
+      setIsLoggedIn(true);
+      navigate('/books');
+    },
+    onError: (err) => setResponseError(err.response.data.errors),
   });
 
   const handleChange = (e) => {
@@ -24,19 +32,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const {
-        data: { accessToken, refreshToken },
-      } = await AuthController.login(credentials);
-
-      setToken(accessToken);
-      setRefreshToken(refreshToken);
-      setIsLoggedIn(true);
-      navigate('/books');
-    } catch (err) {
-      if (err.response) setResponseError(err.response.data.errors);
-    }
+    loginMutation.mutate(credentials);
   };
 
   return (
@@ -87,7 +83,12 @@ export default function Login() {
               <span>{responseError[0].message}</span>
             </Box>
             <Grid container alignItems="flex-start" justifyContent="space-between">
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                disabled={loginMutation.isLoading}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Login
               </Button>
               <Typography align="left" paragraph>
