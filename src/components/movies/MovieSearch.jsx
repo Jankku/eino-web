@@ -14,7 +14,7 @@ function MovieSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  const { mutate } = useMutation((term) => searchMovies(term), {
+  const { mutate, isLoading } = useMutation((term) => searchMovies(term), {
     staleTime: Infinity,
     enabled: isOpen,
     onSuccess: (results) => setSearchResults(results),
@@ -47,6 +47,7 @@ function MovieSearch() {
       size="small"
       sx={{ width: '100%' }}
       open={isOpen}
+      loading={isLoading}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       options={searchResults}

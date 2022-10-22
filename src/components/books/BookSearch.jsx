@@ -14,7 +14,7 @@ function BookSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 200);
-  const { mutate } = useMutation((term) => searchBooks(term), {
+  const { mutate, isLoading } = useMutation((term) => searchBooks(term), {
     staleTime: Infinity,
     enabled: isOpen,
     onSuccess: (results) => setSearchResults(results),
@@ -47,6 +47,7 @@ function BookSearch() {
       size="small"
       sx={{ width: '100%' }}
       open={isOpen}
+      loading={isLoading}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       options={searchResults}
