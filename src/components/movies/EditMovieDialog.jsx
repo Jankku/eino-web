@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -6,34 +6,43 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  Typography,
 } from '@mui/material';
-import initialMovieFormState from '../../models/initialMovieFormState';
-import MovieController from '../../data/MovieController';
+import { getMovieDetails, updateMovie } from '../../data/Movie';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { formatItemDates } from '../../utils/itemDateUtil';
 
-export default function EditMovieDialog({ visible, closeDialog, movieId, submitAction }) {
+export default function EditMovieDialog({ visible, closeDialog, movieId }) {
+  const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [formData, setFormData] = useState(initialMovieFormState);
-  const [isLoading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getFormData = async () => {
-      try {
-        setLoading(true);
-        const res = await MovieController.getMovieDetails(movieId);
-        setFormData(res.data.results[0]);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        showErrorSnackbar('Failed to fetch movie.');
-      }
-    };
-
-    if (visible === true) getFormData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movieId, visible]);
+  const [formData, setFormData] = useState();
+  const loadMovie = useQuery(['movie', movieId], () => getMovieDetails(movieId), {
+    enabled: visible,
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      const movie = formatItemDates(data);
+      setFormData(movie);
+    },
+  });
+  const updateMovieMutation = useMutation(
+    (editedMovie) => {
+      const movie = formatItemDates(editedMovie);
+      updateMovie(movieId, movie);
+    },
+    {
+      onSuccess: () => {
+        showSuccessSnackbar('Movie saved.');
+        queryClient.invalidateQueries(['movie', movieId]);
+        queryClient.invalidateQueries(['movies']);
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to save movie.');
+      },
+    }
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,72 +52,42 @@ export default function EditMovieDialog({ visible, closeDialog, movieId, submitA
     setFormData({ ...formData, [name]: value });
   };
 
-  const clearForm = () => {
-    setFormData(initialMovieFormState);
-  };
-
-  const submitForm = async () => {
-    try {
-      await MovieController.updateMovie(movieId, formData);
-      showSuccessSnackbar('Movie saved.');
-      submitAction();
-    } catch (err) {
-      console.error(err);
-      showErrorSnackbar('Failed to save movie.');
-    }
-  };
-
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Edit movie</DialogTitle>
-      {!isLoading ? (
-        <DialogContent>
+      <DialogContent>
+        {loadMovie.isError ? (
+          <Grid container justifyContent="center">
+            <Typography paragraph>Failed to load movie</Typography>
+          </Grid>
+        ) : loadMovie.isFetching ? (
+          <Grid container justifyContent="center">
+            <CircularProgress />
+          </Grid>
+        ) : formData ? (
           <MovieForm
             formData={formData}
             handleChange={handleChange}
             handleDateChange={handleDateChange}
           />
-        </DialogContent>
-      ) : (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      )}
+        ) : null}
+      </DialogContent>
+
       <DialogActions>
-        <Button
-          color="secondary"
-          onClick={() => {
-            closeDialog();
-            clearForm();
-          }}
-        >
+        <Button color="secondary" onClick={() => closeDialog()}>
           Cancel
         </Button>
-        {
-          // Disable button while loading
-          !isLoading ? (
-            <Button
-              color="primary"
-              onClick={() => {
-                submitForm();
-                closeDialog();
-              }}
-            >
-              Submit changes
-            </Button>
-          ) : (
-            <Button
-              disabled
-              color="primary"
-              onClick={() => {
-                submitForm();
-                closeDialog();
-              }}
-            >
-              Submit changes
-            </Button>
-          )
-        }
+
+        <Button
+          disabled={loadMovie.isFetching || loadMovie.isError}
+          color="primary"
+          onClick={() => {
+            updateMovieMutation.mutate(formData);
+            closeDialog();
+          }}
+        >
+          Submit changes
+        </Button>
       </DialogActions>
     </BaseDialog>
   );

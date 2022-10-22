@@ -1,4 +1,4 @@
-const initialMovieFormState = {
+const initialMovieState = {
   title: '',
   studio: '',
   director: '',
@@ -11,4 +11,4 @@ const initialMovieFormState = {
   end_date: new Date().toISOString(),
 };
 
-export default initialMovieFormState;
+export default initialMovieState;

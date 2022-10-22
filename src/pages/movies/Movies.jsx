@@ -1,35 +1,32 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
-import MovieController from '../../data/MovieController';
+import { getMovies } from '../../data/Movie';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useQuery, useQueryClient } from 'react-query';
 
 export default function Movies() {
   const { showErrorSnackbar } = useCustomSnackbar();
-  const [movies, setMovies] = useState([]);
   const [movieSortStatus, setMovieSortStatus] = useLocalStorage('movieSort', 'all');
   const [addDialogVisible, setAddDialogVisible] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
-
-  const fetchMovies = useCallback(async () => {
-    try {
-      setIsFetching(true);
-      const res = await MovieController.getMoviesByStatus(movieSortStatus);
-      setMovies(res.data.results);
-    } catch (err) {
-      showErrorSnackbar('Failed to fetch movies.');
+  const queryClient = useQueryClient();
+  const { isLoading, data } = useQuery(
+    ['movies', movieSortStatus],
+    () => getMovies(movieSortStatus),
+    {
+      initialData: () => {
+        const cachedMovies = queryClient
+          .getQueryData(['movies', 'all'])
+          ?.filter(({ status }) => status === movieSortStatus);
+        return cachedMovies;
+      },
+      onError: () => showErrorSnackbar("Couldn't fetch movies"),
     }
-    setIsFetching(false);
-  }, [movieSortStatus, showErrorSnackbar]);
-
-  useEffect(() => {
-    fetchMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movieSortStatus]);
+  );
 
   const movieSortStatusChangeHandler = (e) => {
     setMovieSortStatus(e.target.value);
@@ -62,25 +59,19 @@ export default function Movies() {
         </Grid>
       </Grid>
 
-      {isFetching ? (
+      {isLoading ? (
         <Grid container justifyContent="center">
           <CircularProgress />
         </Grid>
-      ) : movies.length > 0 ? (
-        <MovieList movies={movies} fetchMovies={fetchMovies} />
+      ) : data?.length > 0 ? (
+        <MovieList movies={data} />
       ) : (
         <Grid container justifyContent="center">
-          <Typography paragraph sx={{ fontWeight: 700 }}>
-            No movies
-          </Typography>
+          <Typography variant="h6">No movies found</Typography>
         </Grid>
       )}
 
-      <AddMovieDialog
-        visible={addDialogVisible}
-        closeDialog={handleAddDialogCancel}
-        submitAction={fetchMovies}
-      />
+      <AddMovieDialog visible={addDialogVisible} closeDialog={handleAddDialogCancel} />
 
       <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
         <AddIcon />

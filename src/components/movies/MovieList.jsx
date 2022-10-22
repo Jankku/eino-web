@@ -4,7 +4,7 @@ import EditMovieDialog from './EditMovieDialog';
 import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
-export default function MovieList({ movies, fetchMovies }) {
+export default function MovieList({ movies }) {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editedMovieId, seteditedMovieId] = useState('');
 
@@ -17,7 +17,7 @@ export default function MovieList({ movies, fetchMovies }) {
         {movies.map((movie) => (
           <ListItem
             title={movie.title}
-            detailText={movie.studio}
+            detailText={movie.director}
             status={movie.status}
             score={movie.score}
             itemId={movie.movie_id}
@@ -32,7 +32,6 @@ export default function MovieList({ movies, fetchMovies }) {
         visible={editDialogVisible}
         closeDialog={handleEditDialogCancel}
         movieId={editedMovieId}
-        submitAction={fetchMovies}
       />
     </>
   );

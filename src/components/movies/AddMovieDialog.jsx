@@ -1,14 +1,25 @@
 import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import initialMovieFormState from '../../models/initialMovieFormState';
-import MovieController from '../../data/MovieController';
+import initialMovieState from '../../models/initialMovieState';
+import { addMovie } from '../../data/Movie';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useMutation, useQueryClient } from 'react-query';
 
-export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
+export default function AddMovieDialog({ visible, closeDialog }) {
+  const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [formData, setFormData] = useState(initialMovieFormState);
+  const [formData, setFormData] = useState(initialMovieState);
+  const mutation = useMutation((newMovie) => addMovie(newMovie), {
+    onSuccess: () => {
+      showSuccessSnackbar('Movie created.');
+      queryClient.invalidateQueries(['movies']);
+    },
+    onError: () => {
+      showErrorSnackbar('Failed to create movie.');
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,18 +30,7 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
   };
 
   const clearForm = () => {
-    setFormData(initialMovieFormState);
-  };
-
-  const submitForm = async () => {
-    try {
-      await MovieController.addMovie(formData);
-      showSuccessSnackbar('Movie created.');
-      submitAction();
-    } catch (err) {
-      console.error(err);
-      showErrorSnackbar('Failed to create movie.');
-    }
+    setFormData(initialMovieState);
   };
 
   return (
@@ -56,7 +56,7 @@ export default function AddMovieDialog({ visible, closeDialog, submitAction }) {
         <Button
           color="primary"
           onClick={() => {
-            submitForm();
+            mutation.mutate(formData);
             closeDialog();
             clearForm();
           }}

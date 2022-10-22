@@ -3,13 +3,13 @@ import DatePicker from '@mui/lab/DatePicker';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import { Box } from '@mui/system';
+import { DateTime } from 'luxon';
 
 function MovieForm({ formData, handleChange, handleDateChange }) {
   return (
     <>
       <Grid container>
         <TextField
-          autoFocus
           fullWidth
           margin="dense"
           name="title"
@@ -63,7 +63,9 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
               name="start_date"
               label="Start date"
               value={formData.start_date}
-              onChange={(date) => handleDateChange('start_date', new Date(date))}
+              onChange={(date) =>
+                handleDateChange('start_date', DateTime.fromISO(date).toISODate())
+              }
               renderInput={(props) => <TextField {...props} />}
             />
           </Box>
@@ -72,7 +74,7 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
               name="end_date"
               label="End date"
               value={formData.end_date}
-              onChange={(date) => handleDateChange('end_date', new Date(date))}
+              onChange={(date) => handleDateChange('end_date', DateTime.fromISO(date).toISODate())}
               renderInput={(props) => <TextField {...props} />}
             />
           </Box>
@@ -95,23 +97,21 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
           </Select>
         </Grid>
         <Grid item>
-          <Box>
-            <InputLabel htmlFor="status">Status</InputLabel>
-            <Select
-              native
-              value={formData.status}
-              inputProps={{ name: 'status', id: 'status' }}
-              onChange={handleChange}
-            >
-              {movieStatus.map((item, itemIdx) => {
-                return (
-                  <option key={itemIdx} value={item.value}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </Select>
-          </Box>
+          <InputLabel htmlFor="status">Status</InputLabel>
+          <Select
+            native
+            value={formData.status}
+            inputProps={{ name: 'status', id: 'status' }}
+            onChange={handleChange}
+          >
+            {movieStatus.map((item, itemIdx) => {
+              return (
+                <option key={itemIdx} value={item.value}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </Select>
         </Grid>
       </Grid>
     </>
