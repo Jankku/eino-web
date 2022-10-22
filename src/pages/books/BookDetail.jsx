@@ -27,14 +27,14 @@ export default function BookDetail() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const { isLoading, isError, data } = useQuery(['book', bookId], () => getBookDetails(bookId), {
+    visible: bookId,
     staleTime: Infinity,
+    onError: () => showErrorSnackbar('Failed to load book'),
     placeholderData: () => {
-      const cachedBook = queryClient
+      return queryClient
         .getQueryData(['books', 'all'], { exact: true })
         ?.find((b) => b.book_id === bookId);
-      return cachedBook;
     },
-    visible: bookId,
   });
   const mutation = useMutation((bookId) => deleteBook(bookId), {
     onSuccess: () => {
@@ -55,8 +55,7 @@ export default function BookDetail() {
         <Grid container justifyContent="center" pt={8}>
           <Typography variant={'h6'}>Couldn&apos;t find book</Typography>
         </Grid>
-      ) : null}
-      {isLoading ? (
+      ) : isLoading ? (
         <Grid container justifyContent="center" pt={8}>
           <CircularProgress />
         </Grid>
@@ -114,13 +113,11 @@ export default function BookDetail() {
         </Card>
       ) : null}
 
-      {data?.book_id ? (
-        <EditBookDialog
-          visible={editDialogVisible}
-          closeDialog={handleEditDialogCancel}
-          bookId={data.book_id}
-        />
-      ) : null}
+      <EditBookDialog
+        visible={editDialogVisible}
+        closeDialog={handleEditDialogCancel}
+        bookId={bookId}
+      />
     </Container>
   );
 }

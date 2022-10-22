@@ -15,7 +15,7 @@ export default function Books() {
   const [addDialogVisible, setAddDialogVisible] = useState(false);
   const queryClient = useQueryClient();
   const { isLoading, data } = useQuery(['books', bookSortStatus], () => getBooks(bookSortStatus), {
-    placeholderData: () => {
+    initialData: () => {
       const cachedBooks = queryClient
         .getQueryData(['books', 'all'])
         ?.filter(({ status }) => status === bookSortStatus);
@@ -73,6 +73,7 @@ export default function Books() {
       )}
 
       <AddBookDialog visible={addDialogVisible} closeDialog={handleAddDialogCancel} />
+
       <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
         <AddIcon />
       </Fab>

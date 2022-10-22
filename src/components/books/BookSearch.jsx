@@ -30,6 +30,7 @@ function BookSearch() {
     if (selectedBook !== null && shouldNavigate) {
       navigate(`./books/${selectedBook.book_id}`);
       setSelectedBook(null);
+      setSearchResults([]);
     }
 
     return () => setShouldNavigate(false);

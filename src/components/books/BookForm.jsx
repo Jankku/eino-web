@@ -2,8 +2,8 @@ import { Grid, InputLabel, Select, TextField, useTheme } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
-import { Box } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { DateTime } from 'luxon';
 
 function BookForm({ formData, handleChange, handleDateChange }) {
   const theme = useTheme();
@@ -13,7 +13,6 @@ function BookForm({ formData, handleChange, handleDateChange }) {
     <>
       <Grid container>
         <TextField
-          autoFocus
           fullWidth
           margin="dense"
           name="title"
@@ -66,7 +65,7 @@ function BookForm({ formData, handleChange, handleDateChange }) {
             name="start_date"
             label="Start date"
             value={formData.start_date}
-            onChange={(date) => handleDateChange('start_date', new Date(date))}
+            onChange={(date) => handleDateChange('start_date', DateTime.fromISO(date).toISODate())}
             renderInput={(props) => (
               <TextField fullWidth={isMobile} sx={{ mb: '1em' }} {...props} />
             )}
@@ -75,13 +74,13 @@ function BookForm({ formData, handleChange, handleDateChange }) {
             name="end_date"
             label="End date"
             value={formData.end_date}
-            onChange={(date) => handleDateChange('end_date', new Date(date))}
+            onChange={(date) => handleDateChange('end_date', DateTime.fromISO(date).toISODate())}
             renderInput={(props) => <TextField fullWidth={isMobile} {...props} />}
           />
         </Grid>
       </Grid>
       <Grid container justifyContent="space-between">
-        <Grid item sx={{ marginBottom: '0.5em' }}>
+        <Grid item>
           <InputLabel htmlFor="score">Score</InputLabel>
           <Select
             native
@@ -97,23 +96,21 @@ function BookForm({ formData, handleChange, handleDateChange }) {
           </Select>
         </Grid>
         <Grid item>
-          <Box>
-            <InputLabel htmlFor="status">Status</InputLabel>
-            <Select
-              native
-              value={formData.status}
-              inputProps={{ name: 'status', id: 'status' }}
-              onChange={handleChange}
-            >
-              {bookStatus.map((item, itemIdx) => {
-                return (
-                  <option key={itemIdx} value={item.value}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </Select>
-          </Box>
+          <InputLabel htmlFor="status">Status</InputLabel>
+          <Select
+            native
+            value={formData.status}
+            inputProps={{ name: 'status', id: 'status' }}
+            onChange={handleChange}
+          >
+            {bookStatus.map((item, itemIdx) => {
+              return (
+                <option key={itemIdx} value={item.value}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </Select>
         </Grid>
       </Grid>
     </>
