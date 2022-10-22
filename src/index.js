@@ -13,6 +13,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient({
   staleTime: 5 * 60 * 1000,
+  defaultOptions: {
+    queries: {
+      retry: 2,
+    },
+  },
 });
 
 const container = document.getElementById('root');
