@@ -1,5 +1,5 @@
 import { Grid, InputLabel, Select, TextField } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import { Box } from '@mui/system';
@@ -60,6 +60,7 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
         <Grid container sx={{ marginTop: '1em' }} justifyContent="space-between">
           <Box sx={{ marginBottom: '1em' }}>
             <DatePicker
+              disableMaskedInput
               name="start_date"
               label="Start date"
               value={formData.start_date}
@@ -71,6 +72,7 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
           </Box>
           <Box>
             <DatePicker
+              disableMaskedInput
               name="end_date"
               label="End date"
               value={formData.end_date}

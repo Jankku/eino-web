@@ -1,5 +1,5 @@
 import { Grid, InputLabel, Select, TextField, useTheme } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -62,6 +62,7 @@ function BookForm({ formData, handleChange, handleDateChange }) {
         />
         <Grid container sx={{ marginTop: '1em' }} justifyContent="space-between">
           <DatePicker
+            disableMaskedInput
             name="start_date"
             label="Start date"
             value={formData.start_date}
@@ -71,6 +72,7 @@ function BookForm({ formData, handleChange, handleDateChange }) {
             )}
           />
           <DatePicker
+            disableMaskedInput
             name="end_date"
             label="End date"
             value={formData.end_date}
