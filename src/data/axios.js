@@ -1,4 +1,4 @@
-import * as axios from 'axios';
+import axios from 'axios';
 import fetchNewToken from './fetchNewToken';
 
 const instance = axios.create({
@@ -7,7 +7,6 @@ const instance = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  responseType: 'json',
 });
 
 instance.interceptors.request.use(
