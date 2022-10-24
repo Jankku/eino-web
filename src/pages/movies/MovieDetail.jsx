@@ -31,24 +31,16 @@ export default function MovieDetail() {
     () => getMovieDetails(movieId),
     {
       visible: movieId,
-      staleTime: Infinity,
       onError: () => showErrorSnackbar('Failed to load movie'),
       placeholderData: () => {
-        const cachedMovie = queryClient
+        return queryClient
           .getQueryData(['movies', 'all'], { exact: true })
           ?.find((m) => m.movie_id === movieId);
-        return cachedMovie;
       },
     }
   );
-  const mutation = useMutation((movieId) => deleteMovie(movieId), {
-    onSuccess: () => {
-      showSuccessSnackbar('Movie deleted.');
-      navigate(-1);
-    },
-    onError: () => {
-      showErrorSnackbar('Failed to delete movie.');
-    },
+  const deleteMovieMutation = useMutation((movieId) => deleteMovie(movieId), {
+    onSuccess: () => queryClient.invalidateQueries(['movies']),
   });
 
   const handleEditDialogOpen = () => setEditDialogVisible(true);
@@ -108,7 +100,17 @@ export default function MovieDetail() {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => mutation.mutate(movieId)}
+                onClick={() =>
+                  deleteMovieMutation.mutate(movieId, {
+                    onSuccess: () => {
+                      showSuccessSnackbar('Movie deleted.');
+                      navigate(-1);
+                    },
+                    onError: () => {
+                      showErrorSnackbar('Failed to delete movie.');
+                    },
+                  })
+                }
                 startIcon={<DeleteIcon />}
                 sx={{ margin: '0.5em' }}
               >

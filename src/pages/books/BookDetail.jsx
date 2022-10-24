@@ -28,7 +28,6 @@ export default function BookDetail() {
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const { isLoading, isError, data } = useQuery(['book', bookId], () => getBookDetails(bookId), {
     visible: bookId,
-    staleTime: Infinity,
     onError: () => showErrorSnackbar('Failed to load book'),
     placeholderData: () => {
       return queryClient
@@ -36,14 +35,8 @@ export default function BookDetail() {
         ?.find((b) => b.book_id === bookId);
     },
   });
-  const mutation = useMutation((bookId) => deleteBook(bookId), {
-    onSuccess: () => {
-      showSuccessSnackbar('Book deleted.');
-      navigate(-1);
-    },
-    onError: () => {
-      showErrorSnackbar('Failed to delete book.');
-    },
+  const deleteBookMutation = useMutation((bookId) => deleteBook(bookId), {
+    onSuccess: () => queryClient.invalidateQueries(['books']),
   });
 
   const handleEditDialogOpen = () => setEditDialogVisible(true);
@@ -102,7 +95,17 @@ export default function BookDetail() {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => mutation.mutate(bookId)}
+                onClick={() =>
+                  deleteBookMutation.mutate(bookId, {
+                    onSuccess: () => {
+                      showSuccessSnackbar('Book deleted.');
+                      navigate(-1);
+                    },
+                    onError: () => {
+                      showErrorSnackbar('Failed to delete book.');
+                    },
+                  })
+                }
                 startIcon={<DeleteIcon />}
                 sx={{ margin: '0.5em' }}
               >
