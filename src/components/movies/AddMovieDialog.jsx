@@ -13,13 +13,23 @@ export default function AddMovieDialog({ visible, closeDialog }) {
   const [formData, setFormData] = useState(initialMovieState);
   const mutation = useMutation((newMovie) => addMovie(newMovie), {
     onSuccess: () => {
-      showSuccessSnackbar('Movie created.');
       queryClient.invalidateQueries(['movies']);
     },
-    onError: () => {
-      showErrorSnackbar('Failed to create movie.');
-    },
   });
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    mutation.mutate(formData, {
+      onSuccess: () => {
+        showSuccessSnackbar('Movie created.');
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to create movie.');
+      },
+    });
+    closeDialog();
+    clearForm();
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,34 +46,29 @@ export default function AddMovieDialog({ visible, closeDialog }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Add new movie</DialogTitle>
-      <DialogContent>
-        <MovieForm
-          formData={formData}
-          handleChange={handleChange}
-          handleDateChange={handleDateChange}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color="secondary"
-          onClick={() => {
-            closeDialog();
-            clearForm();
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          onClick={() => {
-            mutation.mutate(formData);
-            closeDialog();
-            clearForm();
-          }}
-        >
-          Create
-        </Button>
-      </DialogActions>
+      <form onSubmit={submitForm}>
+        <DialogContent sx={{ paddingTop: 0 }}>
+          <MovieForm
+            formData={formData}
+            handleChange={handleChange}
+            handleDateChange={handleDateChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="secondary"
+            onClick={() => {
+              closeDialog();
+              clearForm();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </form>
     </BaseDialog>
   );
 }

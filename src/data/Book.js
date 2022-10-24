@@ -31,7 +31,7 @@ const updateBook = async (bookId, book) => {
     url: `/api/list/books/update/${bookId}`,
     data: book,
   });
-  return res.data;
+  return res.data.results[0];
 };
 
 const deleteBook = async (bookId) => {

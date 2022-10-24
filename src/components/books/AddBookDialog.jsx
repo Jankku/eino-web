@@ -13,13 +13,23 @@ export default function AddBookDialog({ visible, closeDialog }) {
   const [formData, setFormData] = useState(initialBookState);
   const mutation = useMutation((newBook) => addBook(newBook), {
     onSuccess: () => {
-      showSuccessSnackbar('Book created.');
       queryClient.invalidateQueries(['books']);
     },
-    onError: () => {
-      showErrorSnackbar('Failed to create book.');
-    },
   });
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    mutation.mutate(formData, {
+      onSuccess: () => {
+        showSuccessSnackbar('Book created.');
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to create book.');
+      },
+    });
+    closeDialog();
+    clearForm();
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,34 +46,29 @@ export default function AddBookDialog({ visible, closeDialog }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Add new book</DialogTitle>
-      <DialogContent>
-        <BookForm
-          formData={formData}
-          handleChange={handleChange}
-          handleDateChange={handleDateChange}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color="secondary"
-          onClick={() => {
-            closeDialog();
-            clearForm();
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          onClick={() => {
-            mutation.mutate(formData);
-            closeDialog();
-            clearForm();
-          }}
-        >
-          Create
-        </Button>
-      </DialogActions>
+      <form onSubmit={submitForm}>
+        <DialogContent sx={{ paddingTop: 0 }}>
+          <BookForm
+            formData={formData}
+            handleChange={handleChange}
+            handleDateChange={handleDateChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="secondary"
+            onClick={() => {
+              closeDialog();
+              clearForm();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </form>
     </BaseDialog>
   );
 }

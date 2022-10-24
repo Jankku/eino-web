@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  LinearProgress,
   Typography,
 } from '@mui/material';
 import { getMovieDetails, updateMovie } from '../../data/Movie';
@@ -30,19 +31,24 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const updateMovieMutation = useMutation(
     (editedMovie) => {
       const movie = formatItemDates(editedMovie);
-      updateMovie(movieId, movie);
+      return updateMovie(movieId, movie);
     },
     {
-      onSuccess: () => {
-        showSuccessSnackbar('Movie saved.');
-        queryClient.invalidateQueries(['movie', movieId]);
-        queryClient.invalidateQueries(['movies']);
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to save movie.');
-      },
+      onSuccess: (updatedMovie) => queryClient.setQueryData(['movie', movieId], updatedMovie),
     }
   );
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    updateMovieMutation.mutate(formData, {
+      onSuccess: () => {
+        closeDialog();
+        showSuccessSnackbar('Movie saved.');
+        queryClient.invalidateQueries(['movies']);
+      },
+      onError: () => showErrorSnackbar('Failed to save movie.'),
+    });
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,40 +61,37 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Edit movie</DialogTitle>
-      <DialogContent>
-        {loadMovie.isError ? (
-          <Grid container justifyContent="center">
-            <Typography paragraph>Failed to load movie</Typography>
-          </Grid>
-        ) : loadMovie.isFetching ? (
-          <Grid container justifyContent="center">
-            <CircularProgress />
-          </Grid>
-        ) : formData ? (
-          <MovieForm
-            formData={formData}
-            handleChange={handleChange}
-            handleDateChange={handleDateChange}
-          />
-        ) : null}
-      </DialogContent>
+      <form onSubmit={submitForm}>
+        {loadMovie.isFetching && !loadMovie.isLoading ? <LinearProgress /> : null}
 
-      <DialogActions>
-        <Button color="secondary" onClick={() => closeDialog()}>
-          Cancel
-        </Button>
+        <DialogContent sx={{ paddingTop: 0 }}>
+          {loadMovie.isError ? (
+            <Grid container justifyContent="center">
+              <Typography paragraph>Failed to load movie</Typography>
+            </Grid>
+          ) : loadMovie.isLoading ? (
+            <Grid container justifyContent="center">
+              <CircularProgress />
+            </Grid>
+          ) : formData ? (
+            <MovieForm
+              formData={formData}
+              handleChange={handleChange}
+              handleDateChange={handleDateChange}
+            />
+          ) : null}
+        </DialogContent>
 
-        <Button
-          disabled={loadMovie.isFetching || loadMovie.isError}
-          color="primary"
-          onClick={() => {
-            updateMovieMutation.mutate(formData);
-            closeDialog();
-          }}
-        >
-          Submit changes
-        </Button>
-      </DialogActions>
+        <DialogActions>
+          <Button color="secondary" onClick={() => closeDialog()}>
+            Cancel
+          </Button>
+
+          <Button type="submit" disabled={loadMovie.isLoading || loadMovie.isError} color="primary">
+            Submit changes
+          </Button>
+        </DialogActions>
+      </form>
     </BaseDialog>
   );
 }

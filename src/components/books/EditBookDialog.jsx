@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  LinearProgress,
   Typography,
 } from '@mui/material';
 import { getBookDetails, updateBook } from '../../data/Book';
@@ -30,19 +31,24 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const updateBookMutation = useMutation(
     (editedBook) => {
       const book = formatItemDates(editedBook);
-      updateBook(bookId, book);
+      return updateBook(bookId, book);
     },
     {
-      onSuccess: () => {
-        showSuccessSnackbar('Book saved.');
-        queryClient.invalidateQueries(['book', bookId]);
-        queryClient.invalidateQueries(['books']);
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to save book.');
-      },
+      onSuccess: (updatedBook) => queryClient.setQueryData(['book', bookId], updatedBook),
     }
   );
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    updateBookMutation.mutate(formData, {
+      onSuccess: () => {
+        closeDialog();
+        showSuccessSnackbar('Book saved.');
+        queryClient.invalidateQueries(['books']);
+      },
+      onError: () => showErrorSnackbar('Failed to save book.'),
+    });
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,40 +61,37 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Edit book</DialogTitle>
-      <DialogContent>
-        {loadBook.isError ? (
-          <Grid container justifyContent="center">
-            <Typography paragraph>Failed to load book</Typography>
-          </Grid>
-        ) : loadBook.isFetching ? (
-          <Grid container justifyContent="center">
-            <CircularProgress />
-          </Grid>
-        ) : formData ? (
-          <BookForm
-            formData={formData}
-            handleChange={handleChange}
-            handleDateChange={handleDateChange}
-          />
-        ) : null}
-      </DialogContent>
+      <form onSubmit={submitForm}>
+        {loadBook.isFetching && !loadBook.isLoading ? <LinearProgress /> : null}
 
-      <DialogActions>
-        <Button color="secondary" onClick={() => closeDialog()}>
-          Cancel
-        </Button>
+        <DialogContent sx={{ paddingTop: 0 }}>
+          {loadBook.isError ? (
+            <Grid container justifyContent="center">
+              <Typography paragraph>Failed to load book</Typography>
+            </Grid>
+          ) : loadBook.isLoading ? (
+            <Grid container justifyContent="center">
+              <CircularProgress />
+            </Grid>
+          ) : formData ? (
+            <BookForm
+              formData={formData}
+              handleChange={handleChange}
+              handleDateChange={handleDateChange}
+            />
+          ) : null}
+        </DialogContent>
 
-        <Button
-          disabled={loadBook.isFetching || loadBook.isError}
-          color="primary"
-          onClick={() => {
-            updateBookMutation.mutate(formData);
-            closeDialog();
-          }}
-        >
-          Submit changes
-        </Button>
-      </DialogActions>
+        <DialogActions>
+          <Button color="secondary" onClick={() => closeDialog()}>
+            Cancel
+          </Button>
+
+          <Button type="submit" disabled={loadBook.isLoading || loadBook.isError} color="primary">
+            Submit changes
+          </Button>
+        </DialogActions>
+      </form>
     </BaseDialog>
   );
 }

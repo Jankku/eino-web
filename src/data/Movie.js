@@ -31,7 +31,7 @@ const updateMovie = async (movieId, movie) => {
     url: `/api/list/movies/update/${movieId}`,
     data: movie,
   });
-  return res.data;
+  return res.data.results[0];
 };
 
 const deleteMovie = async (movieId) => {
