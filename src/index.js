@@ -10,6 +10,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { SnackbarProvider } from 'notistack';
 import Fade from '@mui/material/Fade';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient({
   staleTime: 5 * 60 * 1000,
@@ -40,6 +41,7 @@ root.render(
               }}
             >
               <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtools />
                 <App />
               </QueryClientProvider>
             </SnackbarProvider>
