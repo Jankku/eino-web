@@ -5,9 +5,9 @@ const AuthContext = createContext(false);
 
 export const useAuthContext = () => useContext(AuthContext);
 
-export function EinoAuthenticationProvider({ children }) {
-  const { token, isAccessTokenValid } = useToken();
-  const checkLoginStatus = () => (token && isAccessTokenValid()) || false;
+export function AuthenticationProvider({ children }) {
+  const { isAccessTokenValid, isRefreshTokenValid } = useToken();
+  const checkLoginStatus = () => isAccessTokenValid() && isRefreshTokenValid();
   const [isLoggedIn, setIsLoggedIn] = useState(checkLoginStatus());
 
   const value = useMemo(() => ({ isLoggedIn, setIsLoggedIn }), [isLoggedIn]);

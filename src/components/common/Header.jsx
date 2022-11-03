@@ -26,7 +26,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LoginIcon from '@mui/icons-material/Login';
 import { Box } from '@mui/system';
 import CustomNavLink from './CustomNavLink';
-import { useAuthContext } from '../../utils/auth';
+import { useAuthContext } from '../../providers/AuthenticationProvider';
 import BookSearch from '../books/BookSearch';
 import MovieSearch from '../movies/MovieSearch';
 import Footer from './Footer';

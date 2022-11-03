@@ -1,4 +1,5 @@
 import jwt_decode from 'jwt-decode';
+import { DateTime } from 'luxon';
 import { useState } from 'react';
 
 export default function useToken() {
@@ -33,12 +34,18 @@ export default function useToken() {
 
   const isAccessTokenValid = () => {
     try {
-      const decoded = jwt_decode(token, { header: true });
-      if (decoded) {
-        return true;
-      } else {
-        return false;
-      }
+      jwt_decode(token, { header: true });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const isRefreshTokenValid = () => {
+    try {
+      const decoded = jwt_decode(refreshToken);
+      const expTime = DateTime.fromSeconds(decoded.exp);
+      if (expTime > DateTime.now()) return true;
     } catch (error) {
       return false;
     }
@@ -54,5 +61,6 @@ export default function useToken() {
     removeTokens,
     getUsername,
     isAccessTokenValid,
+    isRefreshTokenValid,
   };
 }

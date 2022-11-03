@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { EinoThemeProvider } from './themes/theme';
-import { EinoAuthenticationProvider } from './utils/auth';
+import { AuthenticationProvider } from './providers/AuthenticationProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { SnackbarProvider } from 'notistack';
@@ -13,9 +13,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient({
-  staleTime: 5 * 60 * 1000,
   defaultOptions: {
     queries: {
+      staleTime: 20 * 1000,
       retry: 2,
     },
   },
@@ -28,7 +28,7 @@ root.render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <EinoThemeProvider>
-        <EinoAuthenticationProvider>
+        <AuthenticationProvider>
           <BrowserRouter>
             <SnackbarProvider
               TransitionComponent={Fade}
@@ -46,7 +46,7 @@ root.render(
               </QueryClientProvider>
             </SnackbarProvider>
           </BrowserRouter>
-        </EinoAuthenticationProvider>
+        </AuthenticationProvider>
       </EinoThemeProvider>
     </LocalizationProvider>
   </StrictMode>

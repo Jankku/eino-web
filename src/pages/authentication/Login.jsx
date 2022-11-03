@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
 import Error from '../../models/error';
 import { loginUser } from '../../data/Auth';
-import { useAuthContext } from '../../utils/auth';
+import { useAuthContext } from '../../providers/AuthenticationProvider';
 import { useMutation } from 'react-query';
 
 export default function Login() {
