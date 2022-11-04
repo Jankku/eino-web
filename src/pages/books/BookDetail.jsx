@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
@@ -19,28 +18,25 @@ import DetailItem from '../../components/common/DetailItem';
 import { getBookDetails, deleteBook } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useReducer } from 'react';
 
 export default function BookDetail() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { bookId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
+  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const { isLoading, isError, data } = useQuery(['book', bookId], () => getBookDetails(bookId), {
     visible: bookId,
     onError: () => showErrorSnackbar('Failed to load book'),
-    placeholderData: () => {
-      return queryClient
+    initialData: () =>
+      queryClient
         .getQueryData(['books', 'all'], { exact: true })
-        ?.find((b) => b.book_id === bookId);
-    },
+        ?.find((b) => b.book_id === bookId),
   });
   const deleteBookMutation = useMutation((bookId) => deleteBook(bookId), {
     onSuccess: () => queryClient.invalidateQueries(['books']),
   });
-
-  const handleEditDialogOpen = () => setEditDialogVisible(true);
-  const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
     <Container maxWidth="md">
@@ -86,7 +82,7 @@ export default function BookDetail() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleEditDialogOpen}
+                onClick={toggleEditDialog}
                 startIcon={<CreateIcon />}
                 sx={{ margin: '0.5em' }}
               >
@@ -116,11 +112,7 @@ export default function BookDetail() {
         </Card>
       ) : null}
 
-      <EditBookDialog
-        visible={editDialogVisible}
-        closeDialog={handleEditDialogCancel}
-        bookId={bookId}
-      />
+      <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
     </Container>
   );
 }

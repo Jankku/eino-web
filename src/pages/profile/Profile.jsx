@@ -1,4 +1,11 @@
-import { CircularProgress, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
+import {
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useQuery } from 'react-query';
 import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
@@ -10,7 +17,7 @@ function Profile() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { showErrorSnackbar } = useCustomSnackbar();
-  const { isLoading, data } = useQuery('profile', getProfile, {
+  const { data, isError } = useQuery(['profile'], getProfile, {
     onError: () => {
       showErrorSnackbar('Failed to load profile');
     },
@@ -19,12 +26,6 @@ function Profile() {
   return (
     <Container maxWidth="md">
       <h1>Profile</h1>
-
-      {isLoading ? (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      ) : null}
 
       {data ? (
         <>
@@ -39,7 +40,15 @@ function Profile() {
             <Stats title="Movie stats" stats={data.stats.movie} />
           </Grid>
         </>
-      ) : null}
+      ) : isError ? (
+        <Grid container justifyContent="center">
+          <Typography paragraph>Failed to load profile</Typography>
+        </Grid>
+      ) : (
+        <Grid container justifyContent="center">
+          <CircularProgress />
+        </Grid>
+      )}
     </Container>
   );
 }

@@ -8,6 +8,24 @@ const getProfile = async () => {
   return res.data;
 };
 
+const shareProfile = async () => {
+  const res = await axios({
+    method: 'GET',
+    url: '/api/profile/share',
+  });
+  return res.data.results[0].share_id;
+};
+
+const getShareImage = async (shareId) => {
+  const res = await axios({
+    method: 'GET',
+    url: `/api/share/${shareId}`,
+    responseType: 'blob',
+    headers: { 'Content-Type': 'image/png' },
+  });
+  return res.data;
+};
+
 const deleteAccount = async (password) => {
   const res = await axios({
     method: 'POST',
@@ -17,4 +35,4 @@ const deleteAccount = async (password) => {
   return res.data;
 };
 
-export { getProfile, deleteAccount };
+export { getProfile, shareProfile, getShareImage, deleteAccount };

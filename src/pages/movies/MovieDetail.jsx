@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Button,
   capitalize,
@@ -19,32 +18,29 @@ import DetailItem from '../../components/common/DetailItem';
 import { deleteMovie, getMovieDetails } from '../../data/Movie';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useReducer } from 'react';
 
 export default function MovieDetail() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { movieId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
+  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const { isLoading, isError, data } = useQuery(
     ['movie', movieId],
     () => getMovieDetails(movieId),
     {
       visible: movieId,
       onError: () => showErrorSnackbar('Failed to load movie'),
-      placeholderData: () => {
-        return queryClient
+      initialData: () =>
+        queryClient
           .getQueryData(['movies', 'all'], { exact: true })
-          ?.find((m) => m.movie_id === movieId);
-      },
+          ?.find((m) => m.movie_id === movieId),
     }
   );
   const deleteMovieMutation = useMutation((movieId) => deleteMovie(movieId), {
     onSuccess: () => queryClient.invalidateQueries(['movies']),
   });
-
-  const handleEditDialogOpen = () => setEditDialogVisible(true);
-  const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
     <Container maxWidth="md">
@@ -90,7 +86,7 @@ export default function MovieDetail() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleEditDialogOpen}
+                onClick={toggleEditDialog}
                 startIcon={<CreateIcon />}
                 sx={{ margin: '0.5em' }}
               >
@@ -121,11 +117,7 @@ export default function MovieDetail() {
         </Card>
       ) : null}
 
-      <EditMovieDialog
-        visible={editDialogVisible}
-        closeDialog={handleEditDialogCancel}
-        movieId={movieId}
-      />
+      <EditMovieDialog visible={editDialogOpen} closeDialog={toggleEditDialog} movieId={movieId} />
     </Container>
   );
 }
