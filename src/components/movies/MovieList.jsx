@@ -1,15 +1,12 @@
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 import { ImageList } from '@mui/material';
 import EditMovieDialog from './EditMovieDialog';
 import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
 export default function MovieList({ movies }) {
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
+  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const [editedMovieId, seteditedMovieId] = useState('');
-
-  const handleEditDialogOpen = () => setEditDialogVisible(true);
-  const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
     <>
@@ -22,15 +19,15 @@ export default function MovieList({ movies }) {
             score={movie.score}
             itemId={movie.movie_id}
             setEditedItemId={seteditedMovieId}
-            handleEditDialogOpen={handleEditDialogOpen}
+            handleEditDialogOpen={toggleEditDialog}
             key={movie.movie_id}
           />
         ))}
       </ImageList>
 
       <EditMovieDialog
-        visible={editDialogVisible}
-        closeDialog={handleEditDialogCancel}
+        visible={editDialogOpen}
+        closeDialog={toggleEditDialog}
         movieId={editedMovieId}
       />
     </>

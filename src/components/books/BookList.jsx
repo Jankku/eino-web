@@ -1,15 +1,12 @@
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 import { ImageList } from '@mui/material';
 import EditBookDialog from './EditBookDialog';
 import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 
 export default function BookList({ books }) {
-  const [editDialogVisible, setEditDialogVisible] = useState(false);
+  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const [editedBookId, seteditedBookId] = useState('');
-
-  const handleEditDialogOpen = () => setEditDialogVisible(true);
-  const handleEditDialogCancel = () => setEditDialogVisible(false);
 
   return (
     <>
@@ -22,15 +19,15 @@ export default function BookList({ books }) {
             score={book.score}
             itemId={book.book_id}
             setEditedItemId={seteditedBookId}
-            handleEditDialogOpen={handleEditDialogOpen}
+            handleEditDialogOpen={toggleEditDialog}
             key={book.book_id}
           />
         ))}
       </ImageList>
 
       <EditBookDialog
-        visible={editDialogVisible}
-        closeDialog={handleEditDialogCancel}
+        visible={editDialogOpen}
+        closeDialog={toggleEditDialog}
         bookId={editedBookId}
       />
     </>

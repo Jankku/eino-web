@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress, Container, Fab, Grid, Select, Typography } from '@mui/material';
+import { CircularProgress, Container, Fab, Grid, Typography } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import bookSortOptions from '../../models/bookSortOptions';
@@ -8,33 +8,20 @@ import { getBooks } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { useQuery, useQueryClient } from 'react-query';
+import SortStatusSelect from '../../components/common/SortStatusSelect';
 
 export default function Books() {
   const { showErrorSnackbar } = useCustomSnackbar();
-  const [bookSortStatus, setBookSortStatus] = useLocalStorage('bookSort', 'all');
-  const [addDialogVisible, setAddDialogVisible] = useState(false);
+  const [sortStatus, setSortStatus] = useLocalStorage('bookSort', 'all');
+  const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const queryClient = useQueryClient();
-  const { isLoading, data } = useQuery(['books', bookSortStatus], () => getBooks(bookSortStatus), {
-    initialData: () => {
-      const cachedBooks = queryClient
-        .getQueryData(['books', 'all'])
-        ?.filter(({ status }) => status === bookSortStatus);
-      return cachedBooks;
-    },
+  const { isLoading, data } = useQuery(['books', sortStatus], () => getBooks(sortStatus), {
+    initialData: () =>
+      queryClient.getQueryData(['books', 'all'])?.filter(({ status }) => status === sortStatus),
     onError: () => showErrorSnackbar("Couldn't fetch books"),
   });
 
-  const bookSortStatusChangeHandler = (e) => {
-    setBookSortStatus(e.target.value);
-  };
-
-  const handleAddDialogOpen = () => {
-    setAddDialogVisible(true);
-  };
-
-  const handleAddDialogCancel = () => {
-    setAddDialogVisible(false);
-  };
+  const onSortStatusChange = (e) => setSortStatus(e.target.value);
 
   return (
     <Container maxWidth="lg">
@@ -43,12 +30,7 @@ export default function Books() {
           <h1>Books</h1>
         </Grid>
         <Grid item>
-          <Select
-            native
-            value={bookSortStatus}
-            inputProps={{ name: 'bookSortStatus', id: 'bookSortStatus' }}
-            onChange={bookSortStatusChangeHandler}
-          >
+          <SortStatusSelect status={sortStatus} onChange={onSortStatusChange}>
             {bookSortOptions.map((item, itemIdx) => {
               return (
                 <option key={itemIdx} value={item.value}>
@@ -56,7 +38,7 @@ export default function Books() {
                 </option>
               );
             })}
-          </Select>
+          </SortStatusSelect>
         </Grid>
       </Grid>
 
@@ -72,9 +54,9 @@ export default function Books() {
         </Grid>
       )}
 
-      <AddBookDialog visible={addDialogVisible} closeDialog={handleAddDialogCancel} />
+      <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-      <Fab color="primary" aria-label="create" onClick={handleAddDialogOpen}>
+      <Fab color="primary" aria-label="create" onClick={toggleAddDialog}>
         <AddIcon />
       </Fab>
     </Container>

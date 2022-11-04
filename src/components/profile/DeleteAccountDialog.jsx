@@ -16,7 +16,7 @@ import BaseDialog from '../common/BaseDialog';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
-function DeleteAccountModal({ visible, closeDialog }) {
+function DeleteAccountDialog({ visible, closeDialog }) {
   const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState('');
   const [formError, setFormError] = useState(initialFormErrorState);
@@ -90,4 +90,4 @@ function DeleteAccountModal({ visible, closeDialog }) {
   );
 }
 
-export default DeleteAccountModal;
+export default DeleteAccountDialog;
