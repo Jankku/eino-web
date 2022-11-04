@@ -1,4 +1,5 @@
 import axios from './axios';
+import { formatItemDates } from '../utils/itemDateUtil';
 
 const getMovies = async (status) => {
   const res = await axios({
@@ -13,7 +14,7 @@ const getMovieDetails = async (movieId) => {
     method: 'get',
     url: `/api/list/movies/movie/${movieId}`,
   });
-  return res.data.results[0];
+  return formatItemDates(res.data.results[0]);
 };
 
 const addMovie = async (movie) => {
@@ -29,7 +30,7 @@ const updateMovie = async (movieId, movie) => {
   const res = await axios({
     method: 'put',
     url: `/api/list/movies/update/${movieId}`,
-    data: movie,
+    data: formatItemDates(movie),
   });
   return res.data.results[0];
 };

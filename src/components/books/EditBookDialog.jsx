@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  LinearProgress,
   Typography,
 } from '@mui/material';
 import { getBookDetails, updateBook } from '../../data/Book';
@@ -14,31 +13,22 @@ import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { formatItemDates } from '../../utils/itemDateUtil';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState();
-  const loadBook = useQuery(['book', bookId], () => getBookDetails(bookId), {
+  const loadBook = useQuery(['bookEdit', bookId], () => getBookDetails(bookId), {
     enabled: visible,
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      const book = formatItemDates(data);
-      setFormData(book);
-    },
+    staleTime: 0,
+    onSuccess: (data) => setFormData(data),
   });
-  const updateBookMutation = useMutation(
-    (editedBook) => {
-      const book = formatItemDates(editedBook);
-      return updateBook(bookId, book);
-    },
-    {
-      onSuccess: (updatedBook) => queryClient.setQueryData(['book', bookId], updatedBook),
-    }
-  );
+  const updateBookMutation = useMutation((editedBook) => updateBook(bookId, editedBook), {
+    onSuccess: (updatedBook) => queryClient.setQueryData(['book', bookId], updatedBook),
+  });
 
-  const submitForm = (e) => {
+  const onSubmitForm = (e) => {
     e.preventDefault();
     updateBookMutation.mutate(formData, {
       onSuccess: () => {
@@ -49,6 +39,8 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
       onError: () => showErrorSnackbar('Failed to save book.'),
     });
   };
+
+  const onCancel = () => closeDialog();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,33 +53,31 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Edit book</DialogTitle>
-      <form onSubmit={submitForm}>
-        {loadBook.isFetching && !loadBook.isLoading ? <LinearProgress /> : null}
-
+      <form onSubmit={onSubmitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
-          {loadBook.isError ? (
-            <Grid container justifyContent="center">
-              <Typography paragraph>Failed to load book</Typography>
-            </Grid>
-          ) : loadBook.isLoading ? (
-            <Grid container justifyContent="center">
-              <CircularProgress />
-            </Grid>
-          ) : formData ? (
+          {formData ? (
             <BookForm
               formData={formData}
               handleChange={handleChange}
               handleDateChange={handleDateChange}
             />
-          ) : null}
+          ) : loadBook.isError ? (
+            <Grid container justifyContent="center">
+              <Typography paragraph>Failed to load book</Typography>
+            </Grid>
+          ) : (
+            <Grid container justifyContent="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </DialogContent>
 
         <DialogActions>
-          <Button color="secondary" onClick={() => closeDialog()}>
+          <Button color="secondary" onClick={onCancel}>
             Cancel
           </Button>
 
-          <Button type="submit" disabled={loadBook.isLoading || loadBook.isError} color="primary">
+          <Button type="submit" disabled={loadBook.isFetching || loadBook.isError} color="primary">
             Submit changes
           </Button>
         </DialogActions>

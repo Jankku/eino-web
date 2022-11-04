@@ -1,4 +1,5 @@
 import axios from './axios';
+import { formatItemDates } from '../utils/itemDateUtil';
 
 const getBooks = async (status) => {
   const res = await axios({
@@ -13,7 +14,7 @@ const getBookDetails = async (bookId) => {
     method: 'get',
     url: `/api/list/books/book/${bookId}`,
   });
-  return res.data.results[0];
+  return formatItemDates(res.data.results[0]);
 };
 
 const addBook = async (book) => {
@@ -29,7 +30,7 @@ const updateBook = async (bookId, book) => {
   const res = await axios({
     method: 'put',
     url: `/api/list/books/update/${bookId}`,
-    data: book,
+    data: formatItemDates(book),
   });
   return res.data.results[0];
 };

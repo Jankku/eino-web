@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  LinearProgress,
   Typography,
 } from '@mui/material';
 import { getMovieDetails, updateMovie } from '../../data/Movie';
@@ -14,31 +13,22 @@ import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { formatItemDates } from '../../utils/itemDateUtil';
 
 export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState();
-  const loadMovie = useQuery(['movie', movieId], () => getMovieDetails(movieId), {
+  const loadMovie = useQuery(['movieEdit', movieId], () => getMovieDetails(movieId), {
     enabled: visible,
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      const movie = formatItemDates(data);
-      setFormData(movie);
-    },
+    staleTime: 0,
+    onSuccess: (data) => setFormData(data),
   });
-  const updateMovieMutation = useMutation(
-    (editedMovie) => {
-      const movie = formatItemDates(editedMovie);
-      return updateMovie(movieId, movie);
-    },
-    {
-      onSuccess: (updatedMovie) => queryClient.setQueryData(['movie', movieId], updatedMovie),
-    }
-  );
+  const updateMovieMutation = useMutation((editedMovie) => updateMovie(movieId, editedMovie), {
+    onSuccess: (updatedMovie) => queryClient.setQueryData(['movie', movieId], updatedMovie),
+  });
 
-  const submitForm = (e) => {
+  const onSubmitForm = (e) => {
     e.preventDefault();
     updateMovieMutation.mutate(formData, {
       onSuccess: () => {
@@ -49,6 +39,8 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
       onError: () => showErrorSnackbar('Failed to save movie.'),
     });
   };
+
+  const onCancel = () => closeDialog();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,29 +53,27 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   return (
     <BaseDialog open={visible}>
       <DialogTitle>Edit movie</DialogTitle>
-      <form onSubmit={submitForm}>
-        {loadMovie.isFetching && !loadMovie.isLoading ? <LinearProgress /> : null}
-
+      <form onSubmit={onSubmitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
-          {loadMovie.isError ? (
-            <Grid container justifyContent="center">
-              <Typography paragraph>Failed to load movie</Typography>
-            </Grid>
-          ) : loadMovie.isLoading ? (
-            <Grid container justifyContent="center">
-              <CircularProgress />
-            </Grid>
-          ) : formData ? (
+          {formData ? (
             <MovieForm
               formData={formData}
               handleChange={handleChange}
               handleDateChange={handleDateChange}
             />
-          ) : null}
+          ) : loadMovie.isError ? (
+            <Grid container justifyContent="center">
+              <Typography paragraph>Failed to load movie</Typography>
+            </Grid>
+          ) : (
+            <Grid container justifyContent="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </DialogContent>
 
         <DialogActions>
-          <Button color="secondary" onClick={() => closeDialog()}>
+          <Button color="secondary" onClick={onCancel}>
             Cancel
           </Button>
 
