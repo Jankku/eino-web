@@ -20,6 +20,7 @@ export default function Books() {
       queryClient.getQueryData(['books', 'all'])?.filter(({ status }) => status === sortStatus),
     onError: () => showErrorSnackbar("Couldn't fetch books"),
   });
+  const bookCount = data?.length ?? 0;
 
   const onSortStatusChange = (e) => setSortStatus(e.target.value);
 
@@ -27,17 +28,15 @@ export default function Books() {
     <Container maxWidth="lg">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <h1>Books</h1>
+          <h1>Books ({bookCount})</h1>
         </Grid>
         <Grid item>
           <SortStatusSelect status={sortStatus} onChange={onSortStatusChange}>
-            {bookSortOptions.map((item, itemIdx) => {
-              return (
-                <option key={itemIdx} value={item.value}>
-                  {item.name}
-                </option>
-              );
-            })}
+            {bookSortOptions.map((item, itemIdx) => (
+              <option key={itemIdx} value={item.value}>
+                {item.name}
+              </option>
+            ))}
           </SortStatusSelect>
         </Grid>
       </Grid>

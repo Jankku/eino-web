@@ -20,6 +20,7 @@ export default function Movies() {
       queryClient.getQueryData(['movies', 'all'])?.filter(({ status }) => status === sortStatus),
     onError: () => showErrorSnackbar("Couldn't fetch movies"),
   });
+  const movieCount = data?.length ?? 0;
 
   const onSortStatusChange = (e) => setSortStatus(e.target.value);
 
@@ -27,17 +28,15 @@ export default function Movies() {
     <Container maxWidth="lg">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <h1>Movies</h1>
+          <h1>Movies ({movieCount})</h1>
         </Grid>
         <Grid item>
           <SortStatusSelect status={sortStatus} onChange={onSortStatusChange}>
-            {movieSortOptions.map((item, itemIdx) => {
-              return (
-                <option key={itemIdx} value={item.value}>
-                  {item.name}
-                </option>
-              );
-            })}
+            {movieSortOptions.map((item, itemIdx) => (
+              <option key={itemIdx} value={item.value}>
+                {item.name}
+              </option>
+            ))}
           </SortStatusSelect>
         </Grid>
       </Grid>
