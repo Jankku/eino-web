@@ -8,6 +8,11 @@ export default function MovieList({ movies }) {
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const [editedMovieId, seteditedMovieId] = useState('');
 
+  const onEditClick = (itemId) => {
+    toggleEditDialog();
+    seteditedMovieId(itemId);
+  };
+
   return (
     <>
       <ImageList cols={useColumnCalculator()} gap={6}>
@@ -18,8 +23,7 @@ export default function MovieList({ movies }) {
             status={movie.status}
             score={movie.score}
             itemId={movie.movie_id}
-            setEditedItemId={seteditedMovieId}
-            handleEditDialogOpen={toggleEditDialog}
+            onEditClick={onEditClick}
             key={movie.movie_id}
           />
         ))}

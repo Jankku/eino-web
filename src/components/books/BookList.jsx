@@ -8,6 +8,11 @@ export default function BookList({ books }) {
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const [editedBookId, seteditedBookId] = useState('');
 
+  const onEditClick = (itemId) => {
+    toggleEditDialog();
+    seteditedBookId(itemId);
+  };
+
   return (
     <>
       <ImageList cols={useColumnCalculator()} gap={6}>
@@ -18,8 +23,7 @@ export default function BookList({ books }) {
             status={book.status}
             score={book.score}
             itemId={book.book_id}
-            setEditedItemId={seteditedBookId}
-            handleEditDialogOpen={toggleEditDialog}
+            onEditClick={onEditClick}
             key={book.book_id}
           />
         ))}
