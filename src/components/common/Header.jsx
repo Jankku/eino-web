@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -126,19 +127,25 @@ export default function Header({ window, children }) {
                 {isMoviePath() ? <MovieSearch /> : null}
               </Grid>
               <Grid item>
-                <IconButton onClick={() => toggleTheme()} size="large">
-                  {darkTheme === true ? (
-                    <WbSunnyRounded />
-                  ) : (
-                    <Brightness2Icon
-                      sx={(theme) =>
-                        theme.palette.mode === 'light' && {
-                          color: 'white',
+                <Tooltip
+                  arrow
+                  title={`${darkTheme === true ? 'Light' : 'Dark'} theme`}
+                  enterTouchDelay={500}
+                >
+                  <IconButton onClick={() => toggleTheme()} size="large">
+                    {darkTheme === true ? (
+                      <WbSunnyRounded />
+                    ) : (
+                      <Brightness2Icon
+                        sx={(theme) =>
+                          theme.palette.mode === 'light' && {
+                            color: 'white',
+                          }
                         }
-                      }
-                    />
-                  )}
-                </IconButton>
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
