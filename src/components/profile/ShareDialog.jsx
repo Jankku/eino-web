@@ -21,7 +21,7 @@ function ShareDialog({ visible, closeDialog }) {
 
   const shareProfileQuery = useQuery(['shareProfile'], shareProfile, {
     enabled: visible,
-    staleTime: 1000 * 10,
+    staleTime: 0,
     refetchOnWindowFocus: false,
     onError: (err) => showErrorSnackbar(err.response.data.errors[0].message),
   });
@@ -70,7 +70,7 @@ function ShareDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible} maxWidth={'700'}>
+    <BaseDialog open={visible} maxWidth={700}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
@@ -78,7 +78,7 @@ function ShareDialog({ visible, closeDialog }) {
             <CircularProgress />
           </Grid>
         ) : imageBase64 ? (
-          <img src={imageBase64} />
+          <img src={imageBase64} style={{ width: '100%' }} />
         ) : (
           <Typography paragraph>Failed to load image</Typography>
         )}
