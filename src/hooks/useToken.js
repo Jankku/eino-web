@@ -45,7 +45,7 @@ export default function useToken() {
     try {
       const decoded = jwt_decode(refreshToken);
       const expTime = DateTime.fromSeconds(decoded.exp);
-      if (expTime > DateTime.now()) return true;
+      return expTime > DateTime.now();
     } catch (error) {
       return false;
     }
