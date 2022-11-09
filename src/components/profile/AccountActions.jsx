@@ -1,4 +1,5 @@
-import { ShareRounded } from '@mui/icons-material';
+import ShareRounded from '@mui/icons-material/ShareRounded';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { Button, Card, CardContent, Grid } from '@mui/material';
 import { useReducer } from 'react';
 import DeleteAccountDialog from './DeleteAccountDialog';
@@ -25,7 +26,12 @@ function AccountActions() {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary" onClick={toggleDeleteAccountDialog}>
+              <Button
+                startIcon={<PersonRemoveIcon />}
+                variant="contained"
+                color="secondary"
+                onClick={toggleDeleteAccountDialog}
+              >
                 Delete account
               </Button>
             </Grid>
