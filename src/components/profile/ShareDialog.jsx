@@ -16,7 +16,6 @@ import BaseDialog from '../common/BaseDialog';
 
 function ShareDialog({ visible, closeDialog }) {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
-  const [blob, setBlob] = useState();
   const [imageBase64, setImageBase64] = useState();
 
   const shareProfileQuery = useQuery(['shareProfile'], shareProfile, {
@@ -32,12 +31,12 @@ function ShareDialog({ visible, closeDialog }) {
     staleTime: 0,
     refetchOnWindowFocus: false,
     onSuccess: async (data) => {
-      setBlob(data);
       const base64 = await blobToBase64(data);
       return setImageBase64(base64);
     },
     onError: (err) => showErrorSnackbar(err.response.data.errors[0].message),
   });
+  const blob = imageQuery?.data;
 
   const isLoading = shareProfileQuery.isFetching || imageQuery.isFetching;
   const isActionDisabled =
@@ -57,6 +56,8 @@ function ShareDialog({ visible, closeDialog }) {
   };
 
   const onShare = async () => {
+    if (!blob) return showErrorSnackbar('Failed to share image');
+
     const imageFile = new File([blob], shareId, { type: 'image/png' });
     const shareData = { files: [imageFile] };
 
@@ -70,7 +71,7 @@ function ShareDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible} maxWidth={700}>
+    <BaseDialog open={visible} maxWidth={'700'}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
