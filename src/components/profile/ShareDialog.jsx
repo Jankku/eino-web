@@ -58,7 +58,7 @@ function ShareDialog({ visible, closeDialog }) {
   const onShare = async () => {
     if (!blob) return showErrorSnackbar('Failed to share image');
 
-    const imageFile = new File([blob], shareId, { type: 'image/png' });
+    const imageFile = new File([blob], `${shareId}.png`, { type: 'image/png' });
     const shareData = { files: [imageFile] };
 
     if (!navigator.canShare(shareData)) return showErrorSnackbar('Failed to share image');
