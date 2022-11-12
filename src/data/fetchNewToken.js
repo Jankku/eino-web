@@ -16,7 +16,7 @@ export default async function fetchNewToken(axios, err) {
     }
 
     try {
-      const res = await axios.post('/api/auth/refreshtoken', {
+      const res = await axios.post('/auth/refreshtoken', {
         withCredentials: true,
         refreshToken,
       });

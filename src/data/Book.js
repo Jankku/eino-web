@@ -4,7 +4,7 @@ import { formatItemDates } from '../utils/itemDateUtil';
 const getBooks = async (status) => {
   const res = await axios({
     method: 'get',
-    url: `/api/list/books/${status}`,
+    url: `/list/books/${status}`,
   });
   return res.data.results;
 };
@@ -12,7 +12,7 @@ const getBooks = async (status) => {
 const getBookDetails = async (bookId) => {
   const res = await axios({
     method: 'get',
-    url: `/api/list/books/book/${bookId}`,
+    url: `/list/books/book/${bookId}`,
   });
   return formatItemDates(res.data.results[0]);
 };
@@ -20,7 +20,7 @@ const getBookDetails = async (bookId) => {
 const addBook = async (book) => {
   const res = await axios({
     method: 'post',
-    url: '/api/list/books/add',
+    url: '/list/books/add',
     data: book,
   });
   return res.data;
@@ -29,7 +29,7 @@ const addBook = async (book) => {
 const updateBook = async (bookId, book) => {
   const res = await axios({
     method: 'put',
-    url: `/api/list/books/update/${bookId}`,
+    url: `/list/books/update/${bookId}`,
     data: formatItemDates(book),
   });
   return res.data.results[0];
@@ -38,7 +38,7 @@ const updateBook = async (bookId, book) => {
 const deleteBook = async (bookId) => {
   const res = await axios({
     method: 'delete',
-    url: `/api/list/books/delete/${bookId}`,
+    url: `/list/books/delete/${bookId}`,
   });
   return res.data;
 };
@@ -46,7 +46,7 @@ const deleteBook = async (bookId) => {
 const searchBooks = async (query) => {
   const res = await axios({
     method: 'get',
-    url: `/api/list/books/search?query=${query}`,
+    url: `/list/books/search?query=${query}`,
   });
   return res.data.results;
 };

@@ -3,7 +3,7 @@ import axios from './axios';
 const getProfile = async () => {
   const res = await axios({
     method: 'GET',
-    url: '/api/profile',
+    url: '/profile',
   });
   return res.data;
 };
@@ -11,7 +11,7 @@ const getProfile = async () => {
 const shareProfile = async () => {
   const res = await axios({
     method: 'GET',
-    url: '/api/profile/share',
+    url: '/profile/share',
   });
   return res.data.results[0].share_id;
 };
@@ -19,7 +19,7 @@ const shareProfile = async () => {
 const getShareImage = async (shareId) => {
   const res = await axios({
     method: 'GET',
-    url: `/api/share/${shareId}`,
+    url: `/share/${shareId}`,
     responseType: 'blob',
     headers: { 'Content-Type': 'image/png' },
   });
@@ -29,7 +29,7 @@ const getShareImage = async (shareId) => {
 const deleteAccount = async (password) => {
   const res = await axios({
     method: 'POST',
-    url: '/api/profile/deleteaccount',
+    url: '/profile/deleteaccount',
     data: { password },
   });
   return res.data;

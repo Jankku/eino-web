@@ -3,7 +3,7 @@ import axios from './axios';
 const registerUser = async (credentials) => {
   const res = await axios({
     method: 'post',
-    url: '/api/auth/register',
+    url: '/auth/register',
     data: {
       username: credentials.username,
       password: credentials.password,
@@ -16,7 +16,7 @@ const registerUser = async (credentials) => {
 const loginUser = async (credentials) => {
   const res = await axios({
     method: 'post',
-    url: '/api/auth/login',
+    url: '/auth/login',
     data: credentials,
   });
   return res.data;
