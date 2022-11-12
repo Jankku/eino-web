@@ -27,3 +27,6 @@ Build production version with the following command:
 ```
 npm run build
 ```
+
+## License
+Licensed under the [MIT License](https://github.com/Jankku/eino-web/blob/master/LICENSE.md).
