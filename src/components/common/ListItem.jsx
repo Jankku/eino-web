@@ -14,7 +14,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import CardActionButton from './CardActionButton';
-import getStatusIcon from '../../utils/listItemIconUtil';
+import getStatusIcon from '../../utils/listItemUtil';
 import { useThemeContext } from '../../themes/theme';
 
 function BookListItem({ title, detailText, status, score, itemId, onEditClick }) {
