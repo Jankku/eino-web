@@ -25,11 +25,8 @@ export default function Books() {
 
   const onSortStatusChange = (e) => setSortStatus(e.target.value);
 
-  const onCopySuccess = () => showSuccessSnackbar('Items copied');
-  const onCopyFailure = () => showErrorSnackbar('Failed to copy');
-
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ paddingBottom: 4 }}>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
           <h1>Books ({bookCount})</h1>
@@ -38,8 +35,8 @@ export default function Books() {
           <CopyItemButton
             data={data}
             isDisabled={bookCount === 0}
-            onSuccess={onCopySuccess}
-            onFailure={onCopyFailure}
+            onSuccess={() => showSuccessSnackbar('Items copied')}
+            onFailure={() => showErrorSnackbar('Failed to copy')}
           />
           <SortStatusSelect status={sortStatus} onChange={onSortStatusChange}>
             {bookSortOptions.map((item, itemIdx) => (
