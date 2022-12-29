@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
-import { useThemeContext } from '../../themes/theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
@@ -31,6 +30,7 @@ import { useAuthContext } from '../../providers/AuthenticationProvider';
 import BookSearch from '../books/BookSearch';
 import MovieSearch from '../movies/MovieSearch';
 import Footer from './Footer';
+import { useThemeContext } from '../../providers/ThemeProvider';
 
 const routeArray = [
   { name: 'Books', path: '/books', icon: <MenuBook sx={{ mr: 1 }} /> },

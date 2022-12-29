@@ -3,7 +3,7 @@ import './index.css';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { EinoThemeProvider } from './themes/theme';
+import { ThemeProvider } from './providers/ThemeProvider';
 import { AuthenticationProvider } from './providers/AuthenticationProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
@@ -27,7 +27,7 @@ const root = createRoot(container);
 root.render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
-      <EinoThemeProvider>
+      <ThemeProvider>
         <AuthenticationProvider>
           <BrowserRouter>
             <SnackbarProvider
@@ -47,7 +47,7 @@ root.render(
             </SnackbarProvider>
           </BrowserRouter>
         </AuthenticationProvider>
-      </EinoThemeProvider>
+      </ThemeProvider>
     </LocalizationProvider>
   </StrictMode>
 );

@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import CardActionButton from './CardActionButton';
 import getStatusIcon from '../../utils/listItemUtil';
-import { useThemeContext } from '../../themes/theme';
+import { useThemeContext } from '../../providers/ThemeProvider';
 
 function BookListItem({ title, detailText, status, score, itemId, onEditClick }) {
   const navigate = useNavigate();

@@ -58,6 +58,8 @@ const infoBoxData = [
 ];
 
 export default function Home() {
+  const columnCount = useColumnCalculator();
+
   return (
     <Container maxWidth="md">
       <Typography
@@ -74,7 +76,7 @@ export default function Home() {
       <Typography variant="h6" sx={{ fontWeight: '700' }}>
         Book and movie tracker
       </Typography>
-      <ImageList cols={useColumnCalculator()} gap={12}>
+      <ImageList cols={columnCount} gap={12}>
         {infoBoxData.map((box, boxIdx) => (
           <InfoBox key={boxIdx}>{box}</InfoBox>
         ))}

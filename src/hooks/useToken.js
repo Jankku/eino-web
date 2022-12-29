@@ -1,27 +1,20 @@
 import jwt_decode from 'jwt-decode';
 import { DateTime } from 'luxon';
-import { useState } from 'react';
 
 export default function useToken() {
-  const [token] = useState(localStorage.getItem('accessToken'));
-  const [refreshToken] = useState(localStorage.getItem('refreshToken'));
+  const token = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  const getUsername = () => localStorage.getItem('username');
 
   const saveToken = (accessToken) => {
     try {
-      const { userId, username } = jwt_decode(accessToken);
+      const { username } = jwt_decode(accessToken);
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('user_id', userId);
       localStorage.setItem('username', username);
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const removeTokens = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('username');
   };
 
   const saveRefreshToken = (refreshToken) => {
@@ -51,7 +44,11 @@ export default function useToken() {
     }
   };
 
-  const getUsername = () => localStorage.getItem('username');
+  const removeTokens = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('username');
+  };
 
   return {
     token,
