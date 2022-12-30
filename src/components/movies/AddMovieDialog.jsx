@@ -6,6 +6,7 @@ import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQueryClient } from 'react-query';
+import Movie from '../../models/Movie';
 
 export default function AddMovieDialog({ visible, closeDialog }) {
   const queryClient = useQueryClient();
@@ -19,16 +20,21 @@ export default function AddMovieDialog({ visible, closeDialog }) {
 
   const submitForm = (e) => {
     e.preventDefault();
-    mutation.mutate(formData, {
-      onSuccess: () => {
-        showSuccessSnackbar('Movie created.');
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to create movie.');
-      },
-    });
-    closeDialog();
-    clearForm();
+    try {
+      const movie = Movie.parse(formData);
+      mutation.mutate(movie, {
+        onSuccess: () => {
+          showSuccessSnackbar('Movie created.');
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to create movie.');
+        },
+      });
+      closeDialog();
+      clearForm();
+    } catch (error) {
+      showErrorSnackbar('Failed to create movie.');
+    }
   };
 
   const handleChange = (e) => {

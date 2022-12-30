@@ -1,14 +1,10 @@
-import { Grid, InputLabel, Select, TextField, useTheme } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Grid, InputLabel, Select, TextField } from '@mui/material';
+import { Unstable_NextDatePicker as DatePicker } from '@mui/x-date-pickers/NextDatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { DateTime } from 'luxon';
 
 function BookForm({ formData, handleChange, handleDateChange }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   return (
     <>
       <Grid container>
@@ -39,45 +35,48 @@ function BookForm({ formData, handleChange, handleDateChange }) {
         <TextField
           fullWidth
           margin="dense"
-          name="pages"
-          label="Pages"
-          value={formData.pages}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
           name="isbn"
           label="ISBN"
           value={formData.isbn}
           onChange={handleChange}
         />
-        <TextField
-          fullWidth
-          margin="dense"
-          name="year"
-          label="Year"
-          value={formData.year}
-          onChange={handleChange}
-        />
-        <Grid container sx={{ marginTop: '1em' }} justifyContent="space-between">
+        <Grid container gap={1} justifyContent="space-between">
+          <TextField
+            type="number"
+            margin="dense"
+            name="pages"
+            label="Pages"
+            value={formData.pages}
+            onChange={handleChange}
+            sx={{ flexGrow: 1 }}
+          />
+
+          <TextField
+            type="number"
+            margin="dense"
+            name="year"
+            label="Year"
+            value={formData.year}
+            onChange={handleChange}
+            sx={{ flexGrow: 1 }}
+          />
+        </Grid>
+        <Grid container gap={1} justifyContent="space-between">
           <DatePicker
-            disableMaskedInput
             name="start_date"
             label="Start date"
-            value={formData.start_date}
+            value={DateTime.fromISO(formData.start_date)}
             onChange={(date) => handleDateChange('start_date', DateTime.fromISO(date).toISODate())}
-            renderInput={(props) => (
-              <TextField fullWidth={isMobile} sx={{ mb: '1em' }} {...props} />
-            )}
+            renderInput={(props) => <TextField {...props} />}
+            sx={{ marginTop: 1, flexGrow: 1 }}
           />
           <DatePicker
-            disableMaskedInput
             name="end_date"
             label="End date"
-            value={formData.end_date}
+            value={DateTime.fromISO(formData.end_date)}
             onChange={(date) => handleDateChange('end_date', DateTime.fromISO(date).toISODate())}
-            renderInput={(props) => <TextField fullWidth={isMobile} {...props} />}
+            renderInput={(props) => <TextField {...props} />}
+            sx={{ marginTop: 1, flexGrow: 1 }}
           />
         </Grid>
       </Grid>

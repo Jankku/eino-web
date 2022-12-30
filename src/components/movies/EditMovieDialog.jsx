@@ -13,6 +13,7 @@ import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import Movie from '../../models/Movie';
 
 export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const queryClient = useQueryClient();
@@ -30,14 +31,19 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    updateMovieMutation.mutate(formData, {
-      onSuccess: () => {
-        closeDialog();
-        showSuccessSnackbar('Movie saved.');
-        queryClient.invalidateQueries(['movies']);
-      },
-      onError: () => showErrorSnackbar('Failed to save movie.'),
-    });
+    try {
+      const movie = Movie.parse(formData);
+      updateMovieMutation.mutate(movie, {
+        onSuccess: () => {
+          closeDialog();
+          showSuccessSnackbar('Movie saved.');
+          queryClient.invalidateQueries(['movies']);
+        },
+        onError: () => showErrorSnackbar('Failed to save movie.'),
+      });
+    } catch (error) {
+      showErrorSnackbar('Failed to save movie.');
+    }
   };
 
   const onCancel = () => closeDialog();

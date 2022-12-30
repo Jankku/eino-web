@@ -6,12 +6,13 @@ import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQueryClient } from 'react-query';
+import Book from '../../models/Book';
 
 export default function AddBookDialog({ visible, closeDialog }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialBookState);
-  const mutation = useMutation((newBook) => addBook(newBook), {
+  const addBookMutation = useMutation((newBook) => addBook(newBook), {
     onSuccess: () => {
       queryClient.invalidateQueries(['books']);
     },
@@ -19,16 +20,21 @@ export default function AddBookDialog({ visible, closeDialog }) {
 
   const submitForm = (e) => {
     e.preventDefault();
-    mutation.mutate(formData, {
-      onSuccess: () => {
-        showSuccessSnackbar('Book created.');
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to create book.');
-      },
-    });
-    closeDialog();
-    clearForm();
+    try {
+      const book = Book.parse(formData);
+      addBookMutation.mutate(book, {
+        onSuccess: () => {
+          showSuccessSnackbar('Book created.');
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to create book.');
+        },
+      });
+      closeDialog();
+      clearForm();
+    } catch (error) {
+      showErrorSnackbar('Failed to create book.');
+    }
   };
 
   const handleChange = (e) => {

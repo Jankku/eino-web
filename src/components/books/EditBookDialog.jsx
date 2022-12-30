@@ -13,6 +13,7 @@ import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Book from '../../models/Book';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const queryClient = useQueryClient();
@@ -30,14 +31,20 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    updateBookMutation.mutate(formData, {
-      onSuccess: () => {
-        closeDialog();
-        showSuccessSnackbar('Book saved.');
-        queryClient.invalidateQueries(['books']);
-      },
-      onError: () => showErrorSnackbar('Failed to save book.'),
-    });
+    try {
+      const book = Book.parse(formData);
+      updateBookMutation.mutate(book, {
+        onSuccess: () => {
+          closeDialog();
+          showSuccessSnackbar('Book saved.');
+          queryClient.invalidateQueries(['books']);
+        },
+        onError: () => showErrorSnackbar('Failed to save book.'),
+      });
+    } catch (error) {
+      console.error(error);
+      showErrorSnackbar('Failed to save book.');
+    }
   };
 
   const onCancel = () => closeDialog();
