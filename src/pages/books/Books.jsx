@@ -62,7 +62,7 @@ export default function Books() {
 
       <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-      <Fab color="primary" aria-label="create" onClick={toggleAddDialog}>
+      <Fab color="primary" aria-label="Create book" onClick={toggleAddDialog}>
         <AddIcon />
       </Fab>
     </Container>
