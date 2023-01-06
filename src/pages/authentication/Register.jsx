@@ -75,6 +75,8 @@ export default function Register() {
             </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
+                required
+                fullWidth
                 id="username"
                 name="username"
                 type="text"
@@ -84,16 +86,16 @@ export default function Register() {
                 color="primary"
                 value={credentials.username}
                 onChange={handleChange}
-                fullWidth={true}
-                required={true}
                 inputProps={{ minLength: 3, maxLength: 255 }}
                 error={usernameError}
-                autoFocus={true}
+                autoFocus
               />
               <FormHelperText>Username should be 3-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
+                required
+                fullWidth
                 id="password"
                 name="password"
                 type="password"
@@ -103,14 +105,14 @@ export default function Register() {
                 color="primary"
                 value={credentials.password}
                 onChange={handleChange}
-                fullWidth={true}
-                required={true}
                 error={passwordError}
               />
               <FormHelperText>Password should be 8-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
               <TextField
+                required
+                fullWidth
                 id="password2"
                 name="password2"
                 type="password"
@@ -120,20 +122,20 @@ export default function Register() {
                 color="primary"
                 value={credentials.password2}
                 onChange={handleChange}
-                fullWidth={true}
-                required={true}
                 error={passwordMatchError}
               />
             </Grid>
-            <Grid
+            <Typography
+              paragraph
+              name="errorText"
               sx={{
                 fontWeight: 700,
                 color: 'red',
                 margin: '0 0 1em 0',
               }}
             >
-              <span>{responseError[0].message}</span>
-            </Grid>
+              {responseError[0].message}
+            </Typography>
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button disabled={registerMutation.isLoading} type="submit" variant="contained">
                 Register

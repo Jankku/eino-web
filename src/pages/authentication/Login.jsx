@@ -44,6 +44,9 @@ export default function Login() {
               <h1>Login</h1>
             </Grid>
             <TextField
+              required
+              fullWidth
+              autoFocus
               id="username"
               name="username"
               type="text"
@@ -53,13 +56,12 @@ export default function Login() {
               color="primary"
               value={credentials.username}
               onChange={handleChange}
-              fullWidth={true}
-              required={true}
               inputProps={{ minLength: 3, maxLength: 255 }}
-              autoFocus={true}
               sx={{ mb: 2 }}
             />
             <TextField
+              required
+              fullWidth
               id="password"
               name="password"
               type="password"
@@ -69,19 +71,19 @@ export default function Login() {
               color="primary"
               value={credentials.password}
               onChange={handleChange}
-              fullWidth={true}
-              required={true}
               sx={{ mb: 2 }}
             />
-            <Box
+            <Typography
+              paragraph
+              id="errorText"
               sx={{
                 fontWeight: 700,
                 color: 'red',
                 margin: '0 0 1em 0',
               }}
             >
-              <span>{responseError[0].message}</span>
-            </Box>
+              {responseError[0].message}
+            </Typography>
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button
                 disabled={loginMutation.isLoading}
