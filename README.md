@@ -23,10 +23,18 @@ npm start
 ```
 
 ## Build
-Build production version with the following command:
+Build minified production version with the following command:
 ```
 npm run build
 ```
+
+## Testing
+
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing.
+
+Before running the tests, make sure that backend is running and that `REACT_APP_BASE_URL` environment variable is set.
+
+To run the tests, execute `npm run e2e` in terminal.
 
 ## License
 Licensed under the [MIT License](https://github.com/Jankku/eino-web/blob/master/LICENSE.md).
