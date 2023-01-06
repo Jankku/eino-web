@@ -31,6 +31,8 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@playwright/test": "^1.28.1",
     "eslint": "^8.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
@@ -41,6 +43,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "e2e": "npx playwright test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js --ext .jsx ./src",
     "lint:fix": "eslint --fix --ext .js --ext .jsx ./src",
