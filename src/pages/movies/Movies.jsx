@@ -62,7 +62,7 @@ export default function Movies() {
 
       <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-      <Fab color="primary" aria-label="create" onClick={toggleAddDialog}>
+      <Fab color="primary" aria-label="create movie" onClick={toggleAddDialog}>
         <AddIcon />
       </Fab>
     </Container>
