@@ -1,4 +1,4 @@
-export default class EinoPage {
+export default class AuthPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -11,13 +11,13 @@ export default class EinoPage {
     await this.page.getByRole('textbox', { name: 'username' }).fill(username);
     await this.page.locator('#password').fill(password);
     await this.page.locator('#password2').fill(password);
-    await this.page.getByRole('button', { name: 'Register' }).click();
+    await this.page.locator('button[type=submit]').click();
   }
 
   async loginUser(username, password) {
     await this.page.goto('/login');
     await this.page.getByRole('textbox', { name: 'username' }).fill(username);
     await this.page.getByRole('textbox', { name: 'password' }).fill(password);
-    await this.page.getByRole('button', { name: 'Login' }).click();
+    await this.page.locator('button[type=submit]').click();
   }
 }

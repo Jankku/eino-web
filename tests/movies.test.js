@@ -1,37 +1,52 @@
 import { test, expect } from '@playwright/test';
-import { capitalize, generateMovie } from './util';
+import MoviePage from './pages/MoviePage';
+import { generateMovie } from './util';
 
-test.describe('Books', () => {
+test.describe('Movies', () => {
   test.describe.configure({ mode: 'serial' });
-  const movie = generateMovie();
+
+  let movie = generateMovie();
 
   test('Should create movie and have correct title and director on item', async ({ page }) => {
     await page.goto('/movies');
+    const moviePage = new MoviePage(page);
     await page.getByRole('button', { name: 'create' }).click();
-
-    await page.getByLabel('Title').fill(movie.title);
-    await page.getByLabel('Studio').fill(movie.studio);
-    await page.getByLabel('Director').fill(movie.director);
-    await page.getByLabel('Writer').fill(movie.writer);
-    await page.getByLabel('Duration').fill(movie.duration);
-    await page.getByLabel('Year').fill(movie.year);
-    await page.getByRole('combobox', { name: 'Score' }).selectOption(movie.score);
-    await page.getByRole('combobox', { name: 'Status' }).selectOption(movie.status);
-
-    await page.getByRole('button', { name: 'Create' }).click();
-
+    await moviePage.createMovie(movie);
     const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
-    await expect(listItem).toContainText(movie.title);
-    await expect(listItem).toContainText(movie.director);
-    await expect(listItem).toContainText(capitalize(movie.status));
-    await expect(listItem).toContainText(movie.score);
+    await moviePage.verifyListItem(listItem, movie);
   });
 
   test('Should navigate to movie details', async ({ page }) => {
     await page.goto('/movies');
+    const moviePage = new MoviePage(page);
     const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
+    await moviePage.navigateToDetail(listItem);
+  });
 
-    await listItem.getByRole('button', { name: 'Details' }).click();
-    await expect(page).toHaveURL(/\/movies\/[a-z0-9-]+/);
+  test('Should edit movie', async ({ page }) => {
+    await page.goto('/movies');
+    const moviePage = new MoviePage(page);
+
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
+    await moviePage.navigateToDetail(listItem);
+    await moviePage.verifyDetailContent(movie);
+
+    await page.getByRole('button', { name: 'Edit' }).click();
+
+    const editDialog = page.getByRole('dialog');
+    movie = generateMovie();
+    await moviePage.editMovie(editDialog, movie);
+    await moviePage.verifyDetailContent(movie);
+  });
+
+  test('Should delete movie', async ({ page }) => {
+    await page.goto('/movies');
+    const moviePage = new MoviePage(page);
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
+    await moviePage.navigateToDetail(listItem);
+
+    await page.getByRole('button', { name: 'Delete' }).click();
+    await expect(page).toHaveURL('/movies');
+    await expect(listItem).toHaveCount(0);
   });
 });
