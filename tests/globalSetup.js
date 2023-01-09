@@ -9,7 +9,7 @@ async function globalSetup(config) {
   const browser = await chromium.launch();
   const page = await browser.newPage({ baseURL: config.projects[0].use.baseURL });
   const authPage = new AuthPage(page);
-  const username = faker.internet.userName();
+  const username = faker.internet.password();
   const password = faker.internet.password();
 
   await authPage.registerUser(username, password);

@@ -7,7 +7,7 @@ test.describe('Register', () => {
 
   test('Should register new user', async ({ page }) => {
     const authPage = new AuthPage(page);
-    const username = faker.internet.userName();
+    const username = faker.internet.password();
     const password = faker.internet.password();
 
     await authPage.registerUser(username, password);
@@ -29,10 +29,11 @@ test.describe('Login', () => {
 
   test('Should successfully login and log-out user', async ({ page }) => {
     const authPage = new AuthPage(page);
-    const username = faker.internet.userName();
+    const username = faker.internet.password();
     const password = faker.internet.password();
 
     await authPage.registerUser(username, password);
+    await expect(page).toHaveURL('/login');
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/books');
     await page.getByRole('button', { name: 'Log out' }).click();
@@ -41,7 +42,7 @@ test.describe('Login', () => {
 
   test('Should not login user with incorrect credentials', async ({ page }) => {
     const authPage = new AuthPage(page);
-    const username = faker.internet.userName();
+    const username = faker.internet.password();
     const password = faker.internet.password();
 
     await authPage.loginUser(username, password);
