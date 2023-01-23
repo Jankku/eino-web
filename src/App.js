@@ -9,7 +9,7 @@ import Movies from './pages/movies/Movies';
 import MovieDetail from './pages/movies/MovieDetail';
 import Logout from './pages/authentication/Logout';
 import RequireAuth from './components/common/RequireAuth';
-import Layout from './components/common/Layout';
+import Layout from './components/layout/Layout';
 import Profile from './pages/profile/Profile';
 import Privacy from './pages/Privacy';
 
