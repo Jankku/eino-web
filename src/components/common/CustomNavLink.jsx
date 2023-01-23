@@ -4,7 +4,7 @@ import { NavLink, useMatch, useResolvedPath } from 'react-router-dom';
 function CustomNavLink({ item }) {
   const theme = useTheme();
   const resolved = useResolvedPath(item.path);
-  const match = useMatch({ path: resolved.pathname, end: true });
+  const match = useMatch({ path: resolved.pathname, end: item.path === '/' });
 
   return (
     <>
