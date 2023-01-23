@@ -10,10 +10,12 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import { useQuery, useQueryClient } from 'react-query';
 import SortStatusSelect from '../../components/common/SortStatusSelect';
 import CopyItemButton from '../../components/common/CopyItemButton';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [sortStatus, setSortStatus] = useLocalStorage('movieSort', 'all');
+  const [, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const queryClient = useQueryClient();
   const { isLoading, data } = useQuery(['movies', sortStatus], () => getMovies(sortStatus), {
@@ -23,7 +25,10 @@ export default function Movies() {
   });
   const movieCount = data?.length ?? 0;
 
-  const onSortStatusChange = (e) => setSortStatus(e.target.value);
+  const onSortStatusChange = (e) => {
+    setSortStatus(e.target.value);
+    setSearchParams((prevParams) => prevParams.delete('page'));
+  };
 
   return (
     <Container maxWidth="lg" sx={{ paddingBottom: 4 }}>

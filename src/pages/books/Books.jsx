@@ -10,9 +10,11 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import { useQuery, useQueryClient } from 'react-query';
 import SortStatusSelect from '../../components/common/SortStatusSelect';
 import CopyItemButton from '../../components/common/CopyItemButton';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Books() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
+  const [, setSearchParams] = useSearchParams();
   const [sortStatus, setSortStatus] = useLocalStorage('bookSort', 'all');
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const queryClient = useQueryClient();
@@ -23,7 +25,10 @@ export default function Books() {
   });
   const bookCount = data?.length ?? 0;
 
-  const onSortStatusChange = (e) => setSortStatus(e.target.value);
+  const onSortStatusChange = (e) => {
+    setSortStatus(e.target.value);
+    setSearchParams((prevParams) => prevParams.delete('page'));
+  };
 
   return (
     <Container maxWidth="lg" sx={{ paddingBottom: 4 }}>
