@@ -24,35 +24,21 @@ function BookListItem({ title, detailText, status, score, itemId, onEditClick })
   const navigateToDetail = () => navigate(`./${itemId}`);
 
   return (
-    <ImageListItem>
+    <ImageListItem sx={{ minWidth: 0 }}>
       <Card variant="outlined">
         <CardActionArea onClick={navigateToDetail}>
           <CardContent sx={{ px: 1.5, pt: 2, pb: 0 }}>
-            <Grid container justifyContent="space-between">
-              <Grid item>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  noWrap
-                  sx={{
-                    width: '10em',
-                  }}
-                >
+            <Grid container>
+              <Grid minWidth={0} flex={'1 1 0px'}>
+                <Typography noWrap variant="body1">
                   {stringOrPlaceholder(title)}
                 </Typography>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  noWrap
-                  sx={{
-                    width: '10em',
-                  }}
-                >
+                <Typography noWrap variant="body2">
                   {stringOrPlaceholder(detailText)}
                 </Typography>
               </Grid>
               <Grid item alignSelf="end">
-                <Typography variant="body2" component="div">
+                <Typography variant="body2">
                   <Stack spacing={0.5}>
                     <Chip
                       icon={<StarIcon />}
