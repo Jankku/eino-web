@@ -69,7 +69,7 @@ export default function MovieDetail() {
               <DetailItem title="Writer" text={data.writer} />
               <DetailItem title="Duration" text={`${data.duration} minutes`} />
               <DetailItem title="Year" text={data.year} />
-              <DetailItem title="Status" text={capitalize(data.status)} />
+              <DetailItem title="Status" text={capitalize(String(data.status))} />
               <DetailItem title="Score" text={data.score} />
               <DetailItem
                 title="Start date"
