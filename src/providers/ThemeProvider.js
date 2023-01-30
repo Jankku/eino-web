@@ -1,28 +1,40 @@
 import { createContext, useContext, useState } from 'react';
-import { createTheme, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import {
+  createTheme,
+  CssBaseline,
+  ThemeProvider as MuiThemeProvider,
+  useMediaQuery,
+} from '@mui/material';
 import { StyledEngineProvider } from '@mui/system';
 import { dark, light } from '../themes';
+import { useMemo } from 'react';
 
 const ThemeContext = createContext();
 
-const getCurrentTheme = () => {
-  return localStorage.getItem('dark_theme') === 'true';
-};
-
 export function ThemeProvider({ children }) {
-  const [darkTheme, setDarkTheme] = useState(() => getCurrentTheme());
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [isDark, setIsDark] = useState(() => {
+    const value = localStorage.getItem('dark_theme');
+    if (value !== null) {
+      return JSON.parse(value) === true;
+    } else {
+      return prefersDarkMode;
+    }
+  });
 
   const toggleTheme = () => {
-    setDarkTheme((prev) => {
+    setIsDark((prev) => {
       localStorage.setItem('dark_theme', !prev);
       return !prev;
     });
   };
 
+  const theme = useMemo(() => (isDark ? createTheme(dark) : createTheme(light)), [isDark]);
+
   return (
-    <ThemeContext.Provider value={{ darkTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ darkTheme: isDark, toggleTheme }}>
       <StyledEngineProvider injectFirst>
-        <MuiThemeProvider theme={darkTheme ? createTheme(dark) : createTheme(light)}>
+        <MuiThemeProvider theme={theme}>
           <CssBaseline enableColorScheme />
           {children}
         </MuiThemeProvider>
