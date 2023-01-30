@@ -27,7 +27,7 @@ const authRouteArray = [
 export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, children }) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthContext();
-  const { getUsername } = useToken();
+  const { username } = useToken();
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -45,7 +45,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
               <Grid item>
                 <MenuItem sx={{ mt: 0.5 }}>
                   <Typography fontWeight={500} noWrap>
-                    {getUsername()}
+                    {username}
                   </Typography>
                 </MenuItem>
               </Grid>

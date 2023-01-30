@@ -4,10 +4,9 @@ import { DateTime } from 'luxon';
 export default function useToken() {
   const token = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const username = localStorage.getItem('username');
 
-  const getUsername = () => localStorage.getItem('username');
-
-  const saveToken = (accessToken) => {
+  const setToken = (accessToken) => {
     try {
       const { username } = jwt_decode(accessToken);
       localStorage.setItem('accessToken', accessToken);
@@ -17,7 +16,7 @@ export default function useToken() {
     }
   };
 
-  const saveRefreshToken = (refreshToken) => {
+  const setRefreshToken = (refreshToken) => {
     try {
       localStorage.setItem('refreshToken', refreshToken);
     } catch (err) {
@@ -53,10 +52,10 @@ export default function useToken() {
   return {
     token,
     refreshToken,
-    setToken: saveToken,
-    setRefreshToken: saveRefreshToken,
+    username,
+    setToken,
+    setRefreshToken,
     removeTokens,
-    getUsername,
     isAccessTokenValid,
     isRefreshTokenValid,
   };

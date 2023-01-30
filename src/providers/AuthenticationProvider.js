@@ -5,8 +5,7 @@ const AuthContext = createContext();
 
 export function AuthenticationProvider({ children }) {
   const { isAccessTokenValid, isRefreshTokenValid } = useToken();
-  const checkLoginStatus = () => isAccessTokenValid() && isRefreshTokenValid();
-  const [isLoggedIn, setIsLoggedIn] = useState(() => checkLoginStatus());
+  const [isLoggedIn, setIsLoggedIn] = useState(() => isAccessTokenValid() && isRefreshTokenValid());
 
   const value = { isLoggedIn, setIsLoggedIn };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
