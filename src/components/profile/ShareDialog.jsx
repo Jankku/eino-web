@@ -66,6 +66,7 @@ function ShareDialog({ visible, closeDialog }) {
     try {
       await navigator.share(shareData);
     } catch (error) {
+      if (error.name === 'AbortError') return;
       showErrorSnackbar('Failed to share image');
     }
   };
