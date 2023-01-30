@@ -38,23 +38,21 @@ function BookListItem({ title, detailText, status, score, itemId, onEditClick })
                 </Typography>
               </Grid>
               <Grid item alignSelf="end">
-                <Typography variant="body2">
-                  <Stack spacing={0.5}>
-                    <Chip
-                      icon={<StarIcon />}
-                      variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
-                      color={darkTheme === 'dark' ? 'default' : 'primary'}
-                      size="small"
-                      label={score}
-                    />
-                    <Chip
-                      icon={getStatusIcon(status)}
-                      variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
-                      size="small"
-                      label={capitalize(status)}
-                    />
-                  </Stack>
-                </Typography>
+                <Stack spacing={0.5}>
+                  <Chip
+                    icon={<StarIcon />}
+                    variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
+                    color={darkTheme === 'dark' ? 'default' : 'primary'}
+                    size="small"
+                    label={score}
+                  />
+                  <Chip
+                    icon={getStatusIcon(status)}
+                    variant={darkTheme === 'dark' ? 'outlined' : 'filled'}
+                    size="small"
+                    label={capitalize(status)}
+                  />
+                </Stack>
               </Grid>
             </Grid>
           </CardContent>
