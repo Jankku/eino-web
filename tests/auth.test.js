@@ -47,6 +47,6 @@ test.describe('Login', () => {
 
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/login');
-    await expect(page.locator('[id=errorText]')).toContainText(/Incorrect username or password/);
+    await expect(page.locator('[name=errorText]')).toContainText(/Incorrect username or password/);
   });
 });
