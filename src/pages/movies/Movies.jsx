@@ -7,7 +7,7 @@ import movieSortOptions from '../../models/movieSortOptions';
 import { getMovies } from '../../data/Movie';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SortStatusSelect from '../../components/common/SortStatusSelect';
 import CopyItemButton from '../../components/common/CopyItemButton';
 import { useSearchParams } from 'react-router-dom';
@@ -18,7 +18,9 @@ export default function Movies() {
   const [, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const queryClient = useQueryClient();
-  const { isLoading, data } = useQuery(['movies', sortStatus], () => getMovies(sortStatus), {
+  const { isLoading, data } = useQuery({
+    queryKey: ['movies', sortStatus],
+    queryFn: () => getMovies(sortStatus),
     initialData: () =>
       queryClient.getQueryData(['movies', 'all'])?.filter(({ status }) => status === sortStatus),
     onError: () => showErrorSnackbar("Couldn't fetch movies"),

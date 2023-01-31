@@ -7,7 +7,7 @@ import bookSortOptions from '../../models/bookSortOptions';
 import { getBooks } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SortStatusSelect from '../../components/common/SortStatusSelect';
 import CopyItemButton from '../../components/common/CopyItemButton';
 import { useSearchParams } from 'react-router-dom';
@@ -18,7 +18,9 @@ export default function Books() {
   const [sortStatus, setSortStatus] = useLocalStorage('bookSort', 'all');
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const queryClient = useQueryClient();
-  const { isLoading, data } = useQuery(['books', sortStatus], () => getBooks(sortStatus), {
+  const { isLoading, data } = useQuery({
+    queryKey: ['books', sortStatus],
+    queryFn: () => getBooks(sortStatus),
     initialData: () =>
       queryClient.getQueryData(['books', 'all'])?.filter(({ status }) => status === sortStatus),
     onError: () => showErrorSnackbar("Couldn't fetch books"),

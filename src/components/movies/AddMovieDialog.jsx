@@ -5,14 +5,15 @@ import { addMovie } from '../../data/Movie';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Movie from '../../models/Movie';
 
 export default function AddMovieDialog({ visible, closeDialog }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialMovieState);
-  const mutation = useMutation((newMovie) => addMovie(newMovie), {
+  const addMovieMutation = useMutation({
+    mutationFn: (newMovie) => addMovie(newMovie),
     onSuccess: () => {
       queryClient.invalidateQueries(['movies']);
     },
@@ -22,7 +23,7 @@ export default function AddMovieDialog({ visible, closeDialog }) {
     e.preventDefault();
     try {
       const movie = Movie.parse(formData);
-      mutation.mutate(movie, {
+      addMovieMutation.mutate(movie, {
         onSuccess: () => {
           showSuccessSnackbar('Movie created.');
         },
@@ -70,7 +71,7 @@ export default function AddMovieDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={addMovieMutation.isLoading}>
             Create
           </Button>
         </DialogActions>

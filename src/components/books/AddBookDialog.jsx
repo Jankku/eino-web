@@ -5,14 +5,15 @@ import { addBook } from '../../data/Book';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Book from '../../models/Book';
 
 export default function AddBookDialog({ visible, closeDialog }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialBookState);
-  const addBookMutation = useMutation((newBook) => addBook(newBook), {
+  const addBookMutation = useMutation({
+    mutationFn: (newBook) => addBook(newBook),
     onSuccess: () => {
       queryClient.invalidateQueries(['books']);
     },
@@ -70,7 +71,7 @@ export default function AddBookDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={addBookMutation.isLoading}>
             Create
           </Button>
         </DialogActions>

@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
@@ -17,7 +17,9 @@ function Profile() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { showErrorSnackbar } = useCustomSnackbar();
-  const { data, isError } = useQuery(['profile'], getProfile, {
+  const { data, isError } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getProfile,
     onError: () => {
       showErrorSnackbar('Failed to load profile');
     },

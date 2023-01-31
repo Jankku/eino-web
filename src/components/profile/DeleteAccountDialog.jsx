@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { deleteAccount } from '../../data/Profile';
 import BaseDialog from '../common/BaseDialog';
@@ -20,7 +20,8 @@ function DeleteAccountDialog({ visible, closeDialog }) {
   const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState('');
   const [formError, setFormError] = useState(initialFormErrorState);
-  const { isLoading, mutate } = useMutation(() => deleteAccount(userPassword), {
+  const { isLoading, mutate } = useMutation({
+    mutationFn: () => deleteAccount(userPassword),
     onSuccess: () => {
       closeDialog();
       navigate('/logout');

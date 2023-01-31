@@ -17,7 +17,7 @@ import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { deleteMovie, getMovieDetails } from '../../data/Movie';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useReducer } from 'react';
 
 export default function MovieDetail() {
@@ -26,19 +26,18 @@ export default function MovieDetail() {
   const { movieId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
-  const { isLoading, isError, data } = useQuery(
-    ['movie', movieId],
-    () => getMovieDetails(movieId),
-    {
-      visible: movieId,
-      onError: () => showErrorSnackbar('Failed to load movie'),
-      initialData: () =>
-        queryClient
-          .getQueryData(['movies', 'all'], { exact: true })
-          ?.find((m) => m.movie_id === movieId),
-    }
-  );
-  const deleteMovieMutation = useMutation((movieId) => deleteMovie(movieId), {
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['movie', movieId],
+    queryFn: () => getMovieDetails(movieId),
+    visible: movieId,
+    onError: () => showErrorSnackbar('Failed to load movie'),
+    initialData: () =>
+      queryClient
+        .getQueryData(['movies', 'all'], { exact: true })
+        ?.find((m) => m.movie_id === movieId),
+  });
+  const deleteMovieMutation = useMutation({
+    mutationFn: (movieId) => deleteMovie(movieId),
     onSuccess: () => queryClient.invalidateQueries(['movies']),
   });
 

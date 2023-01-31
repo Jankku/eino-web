@@ -1,6 +1,6 @@
 import { Autocomplete, createFilterOptions, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../data/Movie';
 import useDebounce from '../../hooks/useDebounce';
@@ -14,7 +14,8 @@ function MovieSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  const { mutate, isLoading } = useMutation((term) => searchMovies(term), {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (term) => searchMovies(term),
     staleTime: Infinity,
     enabled: isOpen,
     onSuccess: (results) => setSearchResults(results),

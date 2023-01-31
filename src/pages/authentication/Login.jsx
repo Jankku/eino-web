@@ -1,22 +1,23 @@
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Button, Container, Grid, LinearProgress, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
-import Error from '../../models/error';
 import { loginUser } from '../../data/Auth';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
+import ErrorMessage from '../../components/authentication/ErrorMessage';
 
 export default function Login() {
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
   const { setIsLoggedIn } = useAuthContext();
-  const [responseError, setResponseError] = useState(Error);
+  const [responseError, setResponseError] = useState();
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
   });
-  const loginMutation = useMutation((userCredentials) => loginUser(userCredentials), {
+  const loginMutation = useMutation({
+    mutationFn: (userCredentials) => loginUser(userCredentials),
     onSuccess: (data) => {
       setToken(data.accessToken);
       setRefreshToken(data.refreshToken);
@@ -71,19 +72,11 @@ export default function Login() {
               color="primary"
               value={credentials.password}
               onChange={handleChange}
+              inputProps={{ minLength: 8, maxLength: 255 }}
               sx={{ mb: 2 }}
             />
-            <Typography
-              paragraph
-              id="errorText"
-              sx={{
-                fontWeight: 700,
-                color: 'red',
-                margin: '0 0 1em 0',
-              }}
-            >
-              {responseError[0].message}
-            </Typography>
+            {loginMutation.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
+            {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button
                 disabled={loginMutation.isLoading}

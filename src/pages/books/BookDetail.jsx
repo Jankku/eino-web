@@ -17,7 +17,7 @@ import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { getBookDetails, deleteBook } from '../../data/Book';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useReducer } from 'react';
 
 export default function BookDetail() {
@@ -26,7 +26,9 @@ export default function BookDetail() {
   const { bookId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
-  const { isLoading, isError, data } = useQuery(['book', bookId], () => getBookDetails(bookId), {
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['book', bookId],
+    queryFn: () => getBookDetails(bookId),
     visible: bookId,
     onError: () => showErrorSnackbar('Failed to load book'),
     initialData: () =>
@@ -34,7 +36,8 @@ export default function BookDetail() {
         .getQueryData(['books', 'all'], { exact: true })
         ?.find((b) => b.book_id === bookId),
   });
-  const deleteBookMutation = useMutation((bookId) => deleteBook(bookId), {
+  const deleteBookMutation = useMutation({
+    mutationFn: (bookId) => deleteBook(bookId),
     onSuccess: () => queryClient.invalidateQueries(['books']),
   });
 

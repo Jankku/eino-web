@@ -12,20 +12,23 @@ import { getMovieDetails, updateMovie } from '../../data/Movie';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Movie from '../../models/Movie';
 
 export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState();
-  const loadMovie = useQuery(['movieEdit', movieId], () => getMovieDetails(movieId), {
+  const loadMovie = useQuery({
+    queryKey: ['movieEdit', movieId],
+    queryFn: () => getMovieDetails(movieId),
     enabled: visible,
     refetchOnWindowFocus: false,
     staleTime: 0,
     onSuccess: (data) => setFormData(data),
   });
-  const updateMovieMutation = useMutation((editedMovie) => updateMovie(movieId, editedMovie), {
+  const updateMovieMutation = useMutation({
+    mutationFn: (editedMovie) => updateMovie(movieId, editedMovie),
     onSuccess: (updatedMovie) => queryClient.setQueryData(['movie', movieId], updatedMovie),
   });
 
@@ -83,7 +86,11 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
             Cancel
           </Button>
 
-          <Button type="submit" disabled={loadMovie.isLoading || loadMovie.isError} color="primary">
+          <Button
+            type="submit"
+            disabled={loadMovie.isLoading || loadMovie.isError | updateMovieMutation.isLoading}
+            color="primary"
+          >
             Submit changes
           </Button>
         </DialogActions>

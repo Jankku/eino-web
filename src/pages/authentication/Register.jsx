@@ -1,9 +1,17 @@
-import { Button, Container, FormHelperText, Grid, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  FormHelperText,
+  Grid,
+  LinearProgress,
+  TextField,
+  Typography,
+} from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
-import Error from '../../models/error';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../../data/Auth';
+import ErrorMessage from '../../components/authentication/ErrorMessage';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -15,8 +23,9 @@ export default function Register() {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setpasswordError] = useState(false);
   const [passwordMatchError, setpasswordMatchError] = useState(false);
-  const [responseError, setResponseError] = useState(Error);
-  const registerMutation = useMutation((userCredentials) => registerUser(userCredentials), {
+  const [responseError, setResponseError] = useState();
+  const registerMutation = useMutation({
+    mutationFn: (userCredentials) => registerUser(userCredentials),
     onSuccess: () => navigate('/login'),
     onError: (err) => setResponseError(err.response.data.errors),
   });
@@ -125,17 +134,8 @@ export default function Register() {
                 error={passwordMatchError}
               />
             </Grid>
-            <Typography
-              paragraph
-              name="errorText"
-              sx={{
-                fontWeight: 700,
-                color: 'red',
-                margin: '0 0 1em 0',
-              }}
-            >
-              {responseError[0].message}
-            </Typography>
+            {registerMutation.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
+            {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button disabled={registerMutation.isLoading} type="submit" variant="contained">
                 Register

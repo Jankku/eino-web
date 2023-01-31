@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getShareImage, shareProfile } from '../../data/Profile';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { getShareUrl, blobToBase64 } from '../../utils/shareUtil';
@@ -18,7 +18,9 @@ function ShareDialog({ visible, closeDialog }) {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [imageBase64, setImageBase64] = useState();
 
-  const shareProfileQuery = useQuery(['shareProfile'], shareProfile, {
+  const shareProfileQuery = useQuery({
+    queryKey: ['shareProfile'],
+    queryFn: shareProfile,
     enabled: visible,
     staleTime: 0,
     refetchOnWindowFocus: false,
@@ -26,7 +28,9 @@ function ShareDialog({ visible, closeDialog }) {
   });
 
   const shareId = shareProfileQuery?.data;
-  const imageQuery = useQuery(['shareImage', shareId], () => getShareImage(shareId), {
+  const imageQuery = useQuery({
+    queryKey: ['shareImage', shareId],
+    queryFn: () => getShareImage(shareId),
     enabled: visible && shareId !== undefined,
     staleTime: 0,
     refetchOnWindowFocus: false,
@@ -38,7 +42,8 @@ function ShareDialog({ visible, closeDialog }) {
   });
   const blob = imageQuery?.data;
 
-  const isLoading = shareProfileQuery.isFetching || imageQuery.isFetching;
+  const isError = shareProfileQuery.isError || imageQuery.isError;
+  const isLoading = shareProfileQuery.isLoading || imageQuery.isLoading;
   const isActionDisabled =
     shareProfileQuery.isFetching ||
     shareProfileQuery.isError ||
@@ -75,15 +80,13 @@ function ShareDialog({ visible, closeDialog }) {
     <BaseDialog open={visible} maxWidth={'700'}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
-        {isLoading ? (
+        {blob && imageBase64 && <img src={imageBase64} style={{ width: '100%' }} />}
+        {isLoading && (
           <Grid container justifyContent="center">
             <CircularProgress />
           </Grid>
-        ) : imageBase64 ? (
-          <img src={imageBase64} style={{ width: '100%' }} />
-        ) : (
-          <Typography paragraph>Failed to load image</Typography>
         )}
+        {isError && <Typography paragraph>Failed to load image</Typography>}
       </DialogContent>
       <DialogActions>
         <Button

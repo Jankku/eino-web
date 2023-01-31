@@ -1,7 +1,7 @@
 import useToken from '../../hooks/useToken';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Logout() {
   const { removeTokens } = useToken();

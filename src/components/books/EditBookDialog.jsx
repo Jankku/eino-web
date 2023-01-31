@@ -12,20 +12,23 @@ import { getBookDetails, updateBook } from '../../data/Book';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Book from '../../models/Book';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState();
-  const loadBook = useQuery(['bookEdit', bookId], () => getBookDetails(bookId), {
+  const loadBook = useQuery({
+    queryKey: ['bookEdit', bookId],
+    queryFn: () => getBookDetails(bookId),
     enabled: visible,
     refetchOnWindowFocus: false,
     staleTime: 0,
     onSuccess: (data) => setFormData(data),
   });
-  const updateBookMutation = useMutation((editedBook) => updateBook(bookId, editedBook), {
+  const updateBookMutation = useMutation({
+    mutationFn: (editedBook) => updateBook(bookId, editedBook),
     onSuccess: (updatedBook) => queryClient.setQueryData(['book', bookId], updatedBook),
   });
 
@@ -84,7 +87,11 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
             Cancel
           </Button>
 
-          <Button type="submit" disabled={loadBook.isFetching || loadBook.isError} color="primary">
+          <Button
+            type="submit"
+            disabled={loadBook.isLoading || loadBook.isError || updateBookMutation.isLoading}
+            color="primary"
+          >
             Submit changes
           </Button>
         </DialogActions>
