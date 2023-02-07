@@ -2,6 +2,7 @@ import { useCallback, useReducer } from 'react';
 import { Outlet } from 'react-router-dom';
 import Drawer from './Drawer';
 import Appbar from './Appbar';
+import OfflineAlert from '../common/OfflineAlert';
 
 const drawerWidth = 240;
 
@@ -12,6 +13,7 @@ function Layout() {
 
   return (
     <>
+      <OfflineAlert drawerWidth={drawerWidth} />
       <Appbar drawerWidth={drawerWidth} toggleDrawer={toggleDrawer} />
       <Drawer drawerWidth={drawerWidth} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer}>
         <Outlet />
