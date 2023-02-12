@@ -9,9 +9,8 @@ import {
 } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '../../data/Auth';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
+import { useRegisterUser } from '../../data/auth/useRegisterUser';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -24,11 +23,7 @@ export default function Register() {
   const [passwordError, setpasswordError] = useState(false);
   const [passwordMatchError, setpasswordMatchError] = useState(false);
   const [responseError, setResponseError] = useState();
-  const registerMutation = useMutation({
-    mutationFn: (userCredentials) => registerUser(userCredentials),
-    onSuccess: () => navigate('/login'),
-    onError: (err) => setResponseError(err.response.data.errors),
-  });
+  const registerUser = useRegisterUser();
 
   const validateForm = () => {
     let isValid = true;
@@ -71,7 +66,10 @@ export default function Register() {
     e.preventDefault();
 
     if (!validateForm()) return setResponseError('Form validation failed');
-    registerMutation.mutate(credentials);
+    registerUser.mutate(credentials, {
+      onSuccess: () => navigate('/login'),
+      onError: (err) => setResponseError(err.response.data.errors),
+    });
   };
 
   return (
@@ -134,10 +132,10 @@ export default function Register() {
                 error={passwordMatchError}
               />
             </Grid>
-            {registerMutation.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
+            {registerUser.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
             {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
             <Grid container alignItems="flex-start" justifyContent="space-between">
-              <Button disabled={registerMutation.isLoading} type="submit" variant="contained">
+              <Button disabled={registerUser.isLoading} type="submit" variant="contained">
                 Register
               </Button>
               <Typography align="left" paragraph>

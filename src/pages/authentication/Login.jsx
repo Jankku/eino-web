@@ -2,10 +2,9 @@ import { Button, Container, Grid, LinearProgress, TextField, Typography } from '
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
-import { loginUser } from '../../data/Auth';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
-import { useMutation } from '@tanstack/react-query';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
+import { useLoginUser } from '../../data/auth/useLoginUser';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,16 +15,7 @@ export default function Login() {
     username: '',
     password: '',
   });
-  const loginMutation = useMutation({
-    mutationFn: (userCredentials) => loginUser(userCredentials),
-    onSuccess: (data) => {
-      setToken(data.accessToken);
-      setRefreshToken(data.refreshToken);
-      setIsLoggedIn(true);
-      navigate('/books');
-    },
-    onError: (err) => setResponseError(err.response.data.errors),
-  });
+  const loginUser = useLoginUser();
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -33,7 +23,15 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    loginMutation.mutate(credentials);
+    loginUser.mutate(credentials, {
+      onSuccess: (data) => {
+        setToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        setIsLoggedIn(true);
+        navigate('/books');
+      },
+      onError: (err) => setResponseError(err.response.data.errors),
+    });
   };
 
   return (
@@ -75,11 +73,11 @@ export default function Login() {
               inputProps={{ minLength: 8, maxLength: 255 }}
               sx={{ mb: 2 }}
             />
-            {loginMutation.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
+            {loginUser.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
             {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button
-                disabled={loginMutation.isLoading}
+                disabled={loginUser.isLoading}
                 type="submit"
                 variant="contained"
                 color="primary"

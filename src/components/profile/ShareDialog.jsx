@@ -7,48 +7,27 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getShareImage, shareProfile } from '../../data/Profile';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { getShareUrl, blobToBase64 } from '../../utils/shareUtil';
+import { blobToBase64, getShareUrl } from '../../utils/shareUtil';
 import BaseDialog from '../common/BaseDialog';
+import { useShareprofile } from '../../data/profile/useShareProfile';
+import { useShareImage } from '../../data/profile/useShareImage';
+import { useState } from 'react';
 
 function ShareDialog({ visible, closeDialog }) {
+  const [base64, setBase64] = useState();
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
-  const [imageBase64, setImageBase64] = useState();
-
-  const shareProfileQuery = useQuery({
-    queryKey: ['shareProfile'],
-    queryFn: shareProfile,
-    enabled: visible,
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-    onError: (err) => showErrorSnackbar(err.response.data.errors[0].message),
-  });
-
+  const shareProfileQuery = useShareprofile(visible);
   const shareId = shareProfileQuery?.data;
-  const imageQuery = useQuery({
-    queryKey: ['shareImage', shareId],
-    queryFn: () => getShareImage(shareId),
-    enabled: visible && shareId !== undefined,
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-    onSuccess: async (data) => {
-      const base64 = await blobToBase64(data);
-      return setImageBase64(base64);
-    },
-    onError: (err) => showErrorSnackbar(err.response.data.errors[0].message),
+  const shareImage = useShareImage(visible, shareId, async (data) => {
+    const imageBase64 = await blobToBase64(data);
+    setBase64(imageBase64);
   });
-  const blob = imageQuery?.data;
+  const blob = shareImage?.data;
 
-  const isError = shareProfileQuery.isError || imageQuery.isError;
-  const isLoading = shareProfileQuery.isLoading || imageQuery.isLoading;
-  const isActionDisabled =
-    shareProfileQuery.isFetching ||
-    shareProfileQuery.isError ||
-    imageQuery.isFetching ||
-    imageQuery.isError;
+  const isError = shareProfileQuery.isError || shareImage.isError;
+  const isLoading = shareProfileQuery.isLoading || shareImage.isLoading;
+  const isActionDisabled = isError || isLoading;
 
   const onCopyUrl = async () => {
     try {
@@ -77,10 +56,10 @@ function ShareDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible} maxWidth={'700'}>
+    <BaseDialog open={visible} maxWidth={'700'} onClose={() => closeDialog()}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
-        {blob && imageBase64 && <img src={imageBase64} style={{ width: '100%' }} />}
+        {base64 && <img src={base64} style={{ width: '100%' }} />}
         {isLoading && (
           <Grid container justifyContent="center">
             <CircularProgress />
@@ -93,7 +72,7 @@ function ShareDialog({ visible, closeDialog }) {
           color="secondary"
           onClick={() => {
             closeDialog();
-            setImageBase64();
+            setBase64();
           }}
         >
           Cancel

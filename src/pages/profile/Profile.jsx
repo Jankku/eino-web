@@ -1,29 +1,13 @@
-import {
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
-import { getProfile } from '../../data/Profile';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useProfile } from '../../data/profile/useProfile';
 
 function Profile() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { showErrorSnackbar } = useCustomSnackbar();
-  const { data, isError } = useQuery({
-    queryKey: ['profile'],
-    queryFn: getProfile,
-    onError: () => {
-      showErrorSnackbar('Failed to load profile');
-    },
-  });
+  const { data } = useProfile();
 
   return (
     <Container maxWidth="md">
@@ -42,15 +26,7 @@ function Profile() {
             <Stats title="Movie stats" stats={data.stats.movie} />
           </Grid>
         </>
-      ) : isError ? (
-        <Grid container justifyContent="center">
-          <Typography paragraph>Failed to load profile</Typography>
-        </Grid>
-      ) : (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      )}
+      ) : null}
     </Container>
   );
 }

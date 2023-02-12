@@ -1,10 +1,9 @@
 import { Autocomplete, createFilterOptions, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { searchBooks } from '../../data/Book';
 import useDebounce from '../../hooks/useDebounce';
 import SearchTextField from '../common/SearchTextField';
+import { useBookSearch } from '../../data/books/useBookSearch';
 
 function BookSearch() {
   const navigate = useNavigate();
@@ -14,15 +13,11 @@ function BookSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 200);
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (term) => searchBooks(term),
-    staleTime: Infinity,
-    enabled: isOpen,
-    onSuccess: (results) => setSearchResults(results),
-  });
+  const { isLoading, mutate } = useBookSearch(isOpen);
 
   useEffect(() => {
-    if (debouncedSearchTerm) mutate(debouncedSearchTerm);
+    if (debouncedSearchTerm)
+      mutate(debouncedSearchTerm, { onSuccess: (results) => setSearchResults(results) });
   }, [debouncedSearchTerm, mutate]);
 
   useEffect(() => {

@@ -19,7 +19,7 @@ export default class ProfilePage {
   }
 
   async createRandomBook() {
-    const book = generateBook();
+    const book = generateBook('completed');
     const token = await this.#getAccessToken();
     const url = new URL('list/books/add', this.baseURL).toString();
     await this.page.request.post(url, {
@@ -33,7 +33,7 @@ export default class ProfilePage {
   }
 
   async createRandomMovie() {
-    const movie = generateMovie();
+    const movie = generateMovie('completed');
     const token = await this.#getAccessToken();
     const url = new URL('list/movies/add', this.baseURL).toString();
     await this.page.request.post(url, {

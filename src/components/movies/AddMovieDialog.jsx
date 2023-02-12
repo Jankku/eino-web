@@ -1,29 +1,22 @@
 import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import initialMovieState from '../../models/initialMovieState';
-import { addMovie } from '../../data/Movie';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Movie from '../../models/Movie';
+import { useAddMovie } from '../../data/movies/useAddMovie';
 
 export default function AddMovieDialog({ visible, closeDialog }) {
-  const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialMovieState);
-  const addMovieMutation = useMutation({
-    mutationFn: (newMovie) => addMovie(newMovie),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['movies']);
-    },
-  });
+  const addMovie = useAddMovie();
 
   const submitForm = (e) => {
     e.preventDefault();
     try {
       const movie = Movie.parse(formData);
-      addMovieMutation.mutate(movie, {
+      addMovie.mutate(movie, {
         onSuccess: () => {
           showSuccessSnackbar('Movie created.');
         },
@@ -71,7 +64,7 @@ export default function AddMovieDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button type="submit" color="primary" disabled={addMovieMutation.isLoading}>
+          <Button type="submit" color="primary" disabled={addMovie.isLoading}>
             Create
           </Button>
         </DialogActions>

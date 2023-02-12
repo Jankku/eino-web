@@ -9,10 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { deleteAccount } from '../../data/Profile';
 import BaseDialog from '../common/BaseDialog';
+import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
@@ -20,16 +19,7 @@ function DeleteAccountDialog({ visible, closeDialog }) {
   const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState('');
   const [formError, setFormError] = useState(initialFormErrorState);
-  const { isLoading, mutate } = useMutation({
-    mutationFn: () => deleteAccount(userPassword),
-    onSuccess: () => {
-      closeDialog();
-      navigate('/logout');
-    },
-    onError: (err) => {
-      setFormError({ ...formError, isError: true, text: err.response.data.errors[0].message });
-    },
-  });
+  const deleteAccount = useDeleteAccount();
 
   const clearFormError = () => setFormError(initialFormErrorState);
 
@@ -38,12 +28,23 @@ function DeleteAccountDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible}>
+    <BaseDialog open={visible} onClose={() => closeDialog()}>
       <DialogTitle>Delete account</DialogTitle>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          mutate();
+          deleteAccount.mutate(userPassword, {
+            onSuccess: () => {
+              closeDialog();
+              navigate('/logout');
+            },
+            onError: (err) => {
+              setFormError({
+                isError: true,
+                text: err.response.data.errors[0].message,
+              });
+            },
+          });
         }}
       >
         <DialogContent sx={{ pt: 0 }}>
@@ -66,12 +67,14 @@ function DeleteAccountDialog({ visible, closeDialog }) {
             onFocus={clearFormError}
             value={userPassword}
             onChange={handleChange}
-            disabled={isLoading}
+            disabled={deleteAccount.isLoading}
           />
-          <FormHelperText error sx={{ fontSize: 14 }}>
-            {formError.text}
-          </FormHelperText>
-          <LinearProgress sx={{ display: isLoading ? 'block' : 'none' }} />
+          {deleteAccount.isError && (
+            <FormHelperText error sx={{ fontSize: 14 }}>
+              {formError.text}
+            </FormHelperText>
+          )}
+          <LinearProgress sx={{ display: deleteAccount.isLoading ? 'block' : 'none' }} />
         </DialogContent>
         <DialogActions>
           <Button
@@ -82,7 +85,7 @@ function DeleteAccountDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button color="primary" disabled={isLoading} type="submit">
+          <Button color="primary" disabled={deleteAccount.isLoading} type="submit">
             Delete account
           </Button>
         </DialogActions>

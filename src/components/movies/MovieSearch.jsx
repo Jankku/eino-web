@@ -1,10 +1,9 @@
 import { Autocomplete, createFilterOptions, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { searchMovies } from '../../data/Movie';
 import useDebounce from '../../hooks/useDebounce';
 import SearchTextField from '../common/SearchTextField';
+import { useMovieSearch } from '../../data/movies/useMovieSearch';
 
 function MovieSearch() {
   const navigate = useNavigate();
@@ -14,15 +13,11 @@ function MovieSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (term) => searchMovies(term),
-    staleTime: Infinity,
-    enabled: isOpen,
-    onSuccess: (results) => setSearchResults(results),
-  });
+  const { isLoading, mutate } = useMovieSearch(isOpen);
 
   useEffect(() => {
-    if (debouncedSearchTerm) mutate(debouncedSearchTerm);
+    if (debouncedSearchTerm)
+      mutate(debouncedSearchTerm, { onSuccess: (results) => setSearchResults(results) });
   }, [debouncedSearchTerm, mutate]);
 
   useEffect(() => {

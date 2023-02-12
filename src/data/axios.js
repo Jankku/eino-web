@@ -12,18 +12,20 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (req) => {
     if (req.url.includes('books') || req.url.includes('movies') || req.url.includes('profile')) {
-      req.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) return req;
+
+      req.headers['Authorization'] = `Bearer ${accessToken}`;
     }
+
     return req;
   },
-  (err) => Promise.reject(err)
+  async (err) => Promise.reject(err)
 );
 
 instance.interceptors.response.use(
-  (res) => res,
-  async (err) => {
-    return fetchNewToken(instance, err);
-  }
+  async (res) => res,
+  async (err) => fetchNewToken(instance, err)
 );
 
 export default instance;

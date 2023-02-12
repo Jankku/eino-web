@@ -1,34 +1,26 @@
 import { useReducer } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress, Container, Fab, Grid, Typography } from '@mui/material';
+import { Container, Fab, Grid } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import movieSortOptions from '../../models/movieSortOptions';
-import { getMovies } from '../../data/Movie';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SortStatusSelect from '../../components/common/SortStatusSelect';
 import CopyItemButton from '../../components/common/CopyItemButton';
 import { useSearchParams } from 'react-router-dom';
+import { useMovies } from '../../data/movies/useMovies';
 
 export default function Movies() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
-  const [sortStatus, setSortStatus] = useLocalStorage('movieSort', 'all');
+  const [status, setStatus] = useLocalStorage('movieSort', 'all');
   const [, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
-  const queryClient = useQueryClient();
-  const { isLoading, data } = useQuery({
-    queryKey: ['movies', sortStatus],
-    queryFn: () => getMovies(sortStatus),
-    initialData: () =>
-      queryClient.getQueryData(['movies', 'all'])?.filter(({ status }) => status === sortStatus),
-    onError: () => showErrorSnackbar("Couldn't fetch movies"),
-  });
+  const { data } = useMovies(status);
   const movieCount = data?.length ?? 0;
 
   const onSortStatusChange = (e) => {
-    setSortStatus(e.target.value);
+    setStatus(e.target.value);
     setSearchParams((prevParams) => prevParams.delete('page'));
   };
 
@@ -45,7 +37,7 @@ export default function Movies() {
             onSuccess={() => showSuccessSnackbar('Items copied')}
             onFailure={() => showErrorSnackbar('Failed to copy')}
           />
-          <SortStatusSelect status={sortStatus} onChange={onSortStatusChange}>
+          <SortStatusSelect status={status} onChange={onSortStatusChange}>
             {movieSortOptions.map((item, itemIdx) => (
               <option key={itemIdx} value={item.value}>
                 {item.name}
@@ -55,17 +47,7 @@ export default function Movies() {
         </Grid>
       </Grid>
 
-      {isLoading ? (
-        <Grid container justifyContent="center">
-          <CircularProgress />
-        </Grid>
-      ) : data?.length > 0 ? (
-        <MovieList movies={data} />
-      ) : (
-        <Grid container justifyContent="center">
-          <Typography variant="h6">No movies found</Typography>
-        </Grid>
-      )}
+      <MovieList movies={data} />
 
       <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 

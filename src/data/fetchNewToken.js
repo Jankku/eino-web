@@ -3,11 +3,7 @@ import jwtDecode from 'jwt-decode';
 export default async function fetchNewToken(axios, err) {
   const originalRequest = err.config;
 
-  if (
-    err.response.status === 401 &&
-    err.response.data.errors[0].name === 'authorization_error' &&
-    !originalRequest._retry
-  ) {
+  if (err.response?.status === 401 && isAuthorizationError(err) && !originalRequest._retry) {
     originalRequest._retry = true;
 
     const refreshToken = localStorage.getItem('refreshToken');
@@ -30,5 +26,7 @@ export default async function fetchNewToken(axios, err) {
     return Promise.reject(err);
   }
 }
+
+const isAuthorizationError = (err) => err.response?.data?.errors[0].name === 'authorization_error';
 
 const isExpired = (token) => jwtDecode(token).exp * 1000 < Date.now();

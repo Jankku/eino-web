@@ -1,23 +1,16 @@
 import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import initialBookState from '../../models/initialBookState';
-import { addBook } from '../../data/Book';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Book from '../../models/Book';
+import { useAddBook } from '../../data/books/useAddBook';
 
 export default function AddBookDialog({ visible, closeDialog }) {
-  const queryClient = useQueryClient();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [formData, setFormData] = useState(initialBookState);
-  const addBookMutation = useMutation({
-    mutationFn: (newBook) => addBook(newBook),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['books']);
-    },
-  });
+  const addBookMutation = useAddBook();
 
   const submitForm = (e) => {
     e.preventDefault();

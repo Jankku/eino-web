@@ -24,7 +24,7 @@ export const generateFormBook = () => ({
   status: generateBookStatus(),
 });
 
-export const generateBook = () => ({
+export const generateBook = (status) => ({
   title: generateWords(),
   author: faker.name.fullName(),
   publisher: generateWords(),
@@ -32,7 +32,7 @@ export const generateBook = () => ({
   pages: faker.datatype.number(),
   year: faker.datatype.number(),
   score: faker.datatype.number({ max: 10 }),
-  status: generateBookStatus(),
+  status: status ?? generateBookStatus(),
   start_date: faker.datatype.datetime(),
   end_date: faker.datatype.datetime(),
 });
@@ -48,7 +48,7 @@ export const generateFormMovie = () => ({
   status: generateMovieStatus(),
 });
 
-export const generateMovie = () => ({
+export const generateMovie = (status) => ({
   title: generateWords(),
   studio: faker.name.fullName(),
   director: faker.name.fullName(),
@@ -56,7 +56,7 @@ export const generateMovie = () => ({
   duration: faker.datatype.number(),
   year: faker.datatype.number(),
   score: faker.datatype.number({ max: 10 }),
-  status: generateMovieStatus(),
+  status: status ?? generateMovieStatus(),
   start_date: faker.datatype.datetime(),
   end_date: faker.datatype.datetime(),
 });
