@@ -6,9 +6,11 @@ import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import Movie from '../../models/Movie';
 import { useAddMovie } from '../../data/movies/useAddMovie';
+import PosterDialog from './PosterDialog';
 
 export default function AddMovieDialog({ visible, closeDialog }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const [showPosters, setShowPosters] = useState(false);
   const [formData, setFormData] = useState(initialMovieState);
   const addMovie = useAddMovie();
 
@@ -31,6 +33,16 @@ export default function AddMovieDialog({ visible, closeDialog }) {
     }
   };
 
+  const onCancel = () => {
+    closeDialog();
+    setShowPosters(false);
+  };
+
+  const onSelectPoster = (posterUrl) => {
+    setFormData({ ...formData, image_url: posterUrl });
+    setShowPosters(false);
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -44,7 +56,7 @@ export default function AddMovieDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible}>
+    <BaseDialog open={visible} onClose={onCancel}>
       <DialogTitle>Add new movie</DialogTitle>
       <form onSubmit={submitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
@@ -52,6 +64,14 @@ export default function AddMovieDialog({ visible, closeDialog }) {
             formData={formData}
             handleChange={handleChange}
             handleDateChange={handleDateChange}
+            setShowPosters={setShowPosters}
+          />
+
+          <PosterDialog
+            visible={showPosters}
+            closeDialog={() => setShowPosters((prev) => !prev)}
+            query={formData?.title}
+            onSelect={onSelectPoster}
           />
         </DialogContent>
         <DialogActions>

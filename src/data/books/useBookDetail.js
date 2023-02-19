@@ -13,7 +13,7 @@ export const getBookDetailQuery = async (bookId) => {
 export const useBookDetail = (bookId) => {
   const queryClient = useQueryClient();
   return useQuery({
-    visible: bookId,
+    enabled: !!bookId,
     queryKey: ['book', bookId],
     queryFn: () => getBookDetailQuery(bookId),
     initialData: () =>

@@ -27,7 +27,7 @@ export default function Footer() {
         paragraph
       >
         Made by{' '}
-        <Link href="https://github.com/Jankku" target="_blank">
+        <Link href="https://github.com/Jankku" target="_blank" rel="noreferrer">
           Jankku
         </Link>{' '}
         ✨

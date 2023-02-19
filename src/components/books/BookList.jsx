@@ -36,7 +36,7 @@ export default function BookList({ books }) {
         )}
       />
 
-      <ImageList cols={columnCount} gap={6}>
+      <ImageList cols={columnCount} gap={12}>
         {items.map((book) => (
           <ListItem
             title={book.title}
@@ -44,6 +44,7 @@ export default function BookList({ books }) {
             status={book.status}
             score={book.score}
             itemId={book.book_id}
+            imageUrl={book.image_url}
             onEditClick={onEditClick}
             key={book.book_id}
           />

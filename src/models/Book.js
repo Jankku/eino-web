@@ -6,6 +6,10 @@ const Book = z.object({
   title: z.string().min(0).max(255).default(''),
   author: z.string().min(0).max(255).default(''),
   publisher: z.string().min(0).max(255).default(''),
+  image_url: z.union([
+    z.string().url().startsWith('https').nullable().default(null),
+    z.literal(''),
+  ]),
   pages: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
   status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']),

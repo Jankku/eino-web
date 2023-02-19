@@ -36,7 +36,7 @@ export default function MovieList({ movies }) {
         )}
       />
 
-      <ImageList cols={columnCount} gap={6}>
+      <ImageList cols={columnCount} gap={12}>
         {items.map((movie) => (
           <ListItem
             title={movie.title}
@@ -44,6 +44,7 @@ export default function MovieList({ movies }) {
             status={movie.status}
             score={movie.score}
             itemId={movie.movie_id}
+            imageUrl={movie.image_url}
             onEditClick={onEditClick}
             key={movie.movie_id}
           />

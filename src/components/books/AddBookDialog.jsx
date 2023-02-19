@@ -6,9 +6,12 @@ import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import Book from '../../models/Book';
 import { useAddBook } from '../../data/books/useAddBook';
+import CoverDialog from './CoverDialog';
+import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
 
 export default function AddBookDialog({ visible, closeDialog }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const [showCovers, setShowCovers] = useState(false);
   const [formData, setFormData] = useState(initialBookState);
   const addBookMutation = useAddBook();
 
@@ -31,6 +34,16 @@ export default function AddBookDialog({ visible, closeDialog }) {
     }
   };
 
+  const onCancel = () => {
+    closeDialog();
+    setShowCovers(false);
+  };
+
+  const onSelectCover = (coverUrl) => {
+    setFormData({ ...formData, image_url: coverUrl });
+    setShowCovers(false);
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -44,7 +57,7 @@ export default function AddBookDialog({ visible, closeDialog }) {
   };
 
   return (
-    <BaseDialog open={visible}>
+    <BaseDialog open={visible} onClose={onCancel}>
       <DialogTitle>Add new book</DialogTitle>
       <form onSubmit={submitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
@@ -52,6 +65,14 @@ export default function AddBookDialog({ visible, closeDialog }) {
             formData={formData}
             handleChange={handleChange}
             handleDateChange={handleDateChange}
+            setShowCovers={setShowCovers}
+          />
+
+          <CoverDialog
+            visible={showCovers}
+            closeDialog={() => setShowCovers((prev) => !prev)}
+            query={formatBookSearchQuery(formData?.title, formData?.author)}
+            onSelect={onSelectCover}
           />
         </DialogContent>
         <DialogActions>

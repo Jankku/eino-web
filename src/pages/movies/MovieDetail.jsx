@@ -18,8 +18,10 @@ import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useReducer } from 'react';
 import { useMovieDetail } from '../../data/movies/useMovieDetail';
 import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
+import useIsMobile from '../../hooks/useIsMobile';
 
 export default function MovieDetail() {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { movieId } = useParams();
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
@@ -28,7 +30,7 @@ export default function MovieDetail() {
   const deleteMovie = useDeleteMovie();
 
   return (
-    <Container maxWidth="md">
+    <Container fixed maxWidth="md">
       <Card
         sx={{
           mt: 3,
@@ -37,25 +39,57 @@ export default function MovieDetail() {
           borderRadius: 2,
         }}
       >
-        <CardContent sx={{ pb: 0 }}>
-          <Grid container columns={3} justifyContent="flex-start">
-            <DetailItem title="Title" text={data.title} />
-            <DetailItem title="Studio" text={data.studio} />
-            <DetailItem title="Director" text={data.director} />
-            <DetailItem title="Writer" text={data.writer} />
-            <DetailItem title="Duration" text={`${data.duration} minutes`} />
-            <DetailItem title="Year" text={data.year} />
-            <DetailItem title="Status" text={capitalize(String(data.status))} />
-            <DetailItem title="Score" text={data.score} />
-            <DetailItem
-              title="Start date"
-              text={DateTime.fromISO(data.start_date).toLocaleString()}
-            />
-            <DetailItem title="End date" text={DateTime.fromISO(data.end_date).toLocaleString()} />
+        <CardContent sx={{ pl: isMobile ? 4 : 2, pb: 0 }}>
+          <Grid container justifyContent="center" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+            {data.image_url ? (
+              <Grid
+                container
+                item
+                zeroMinWidth
+                flexShrink={2}
+                mb={{ xs: 1, md: 0 }}
+                sx={{
+                  height: '100%',
+                  maxWidth: isMobile ? '50%' : '80%',
+                }}
+              >
+                <img
+                  alt="Movie poster"
+                  referrerPolicy="no-referrer"
+                  src={data.image_url}
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: 4,
+                    objectFit: 'contain',
+                  }}
+                />
+              </Grid>
+            ) : null}
+
+            <Grid container item zeroMinWidth alignSelf="start" ml={!isMobile && 2} columns={1}>
+              <h2 style={{ margin: 0, marginBottom: 8 }}>Details</h2>
+              <DetailItem title="Title" text={data.title} />
+              <DetailItem title="Studio" text={data.studio} />
+              <DetailItem title="Director" text={data.director} />
+              <DetailItem title="Writer" text={data.writer} />
+              <DetailItem title="Duration" text={`${data.duration} minutes`} />
+              <DetailItem title="Year" text={data.year} />
+              <DetailItem title="Status" text={capitalize(String(data.status))} />
+              <DetailItem title="Score" text={data.score} />
+              <DetailItem
+                title="Start date"
+                text={DateTime.fromISO(data.start_date).toLocaleString()}
+              />
+              <DetailItem
+                title="End date"
+                text={DateTime.fromISO(data.end_date).toLocaleString()}
+              />
+            </Grid>
           </Grid>
         </CardContent>
-        <CardActions sx={{ m: 0, pt: 0, pl: 2, pb: 3 }}>
-          <Grid container justifyContent="flex-start">
+        <CardActions sx={{ m: 0, pt: 2, pl: 2, pb: 2 }}>
+          <Grid container>
             <Button
               variant="contained"
               color="primary"
@@ -65,7 +99,6 @@ export default function MovieDetail() {
             >
               Edit
             </Button>
-
             <Button
               variant="contained"
               color="secondary"

@@ -1,10 +1,11 @@
-import { Grid, InputLabel, Select, TextField } from '@mui/material';
+import { Grid, IconButton, InputAdornment, InputLabel, Select, TextField } from '@mui/material';
 import { Unstable_NextDatePicker as DatePicker } from '@mui/x-date-pickers/NextDatePicker';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import { DateTime } from 'luxon';
+import { AddCircle } from '@mui/icons-material';
 
-function MovieForm({ formData, handleChange, handleDateChange }) {
+function MovieForm({ formData, handleChange, handleDateChange, setShowPosters }) {
   return (
     <>
       <Grid container>
@@ -39,6 +40,23 @@ function MovieForm({ formData, handleChange, handleDateChange }) {
           label="Writer"
           value={formData.writer}
           onChange={handleChange}
+        />
+        <TextField
+          fullWidth
+          margin="dense"
+          name="image_url"
+          label="Poster URL"
+          value={formData.image_url}
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPosters(true)}>
+                  <AddCircle />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Grid container gap={1} justifyContent="space-between">
           <TextField

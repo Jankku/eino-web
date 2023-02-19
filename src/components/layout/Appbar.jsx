@@ -9,7 +9,7 @@ import { useThemeContext } from '../../providers/ThemeProvider';
 
 export default function Appbar({ drawerWidth, toggleDrawer }) {
   const location = useLocation();
-  const { darkTheme, toggleTheme } = useThemeContext();
+  const { isDark, toggleTheme } = useThemeContext();
   const isBookPath = () => location.pathname.includes('/books');
   const isMoviePath = () => location.pathname.includes('/movies');
   return (
@@ -78,13 +78,9 @@ export default function Appbar({ drawerWidth, toggleDrawer }) {
                 {isMoviePath() ? <MovieSearch /> : null}
               </Grid>
               <Grid item>
-                <Tooltip
-                  arrow
-                  title={`${darkTheme === true ? 'Light' : 'Dark'} theme`}
-                  enterTouchDelay={500}
-                >
+                <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
                   <IconButton onClick={() => toggleTheme()} size="large">
-                    {darkTheme === true ? (
+                    {isDark ? (
                       <WbSunnyRounded />
                     ) : (
                       <Brightness2Icon

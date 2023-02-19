@@ -13,7 +13,7 @@ export const getMovieDetailQuery = async (movieId) => {
 export const useMovieDetail = (movieId) => {
   const queryClient = useQueryClient();
   return useQuery({
-    visible: movieId,
+    enabled: !!movieId,
     queryKey: ['movie', movieId],
     queryFn: () => getMovieDetailQuery(movieId),
     initialData: () =>

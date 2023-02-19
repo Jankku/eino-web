@@ -14,9 +14,12 @@ import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import Book from '../../models/Book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
+import CoverDialog from './CoverDialog';
+import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const [showCovers, setShowCovers] = useState(false);
   const [formData, setFormData] = useState();
   const loadBook = useUpdateBookFormData(visible, bookId);
   const updateBook = useUpdateBook(bookId);
@@ -42,7 +45,15 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
     }
   };
 
-  const onCancel = () => closeDialog();
+  const onSelectCover = (coverUrl) => {
+    setFormData({ ...formData, image_url: coverUrl });
+    setShowCovers(false);
+  };
+
+  const onCancel = () => {
+    closeDialog();
+    setShowCovers(false);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,7 +64,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => closeDialog()}>
+    <BaseDialog open={visible} onClose={onCancel}>
       <DialogTitle>Edit book</DialogTitle>
       <form onSubmit={onSubmitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
@@ -64,6 +75,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
               formData={formData}
               handleChange={handleChange}
               handleDateChange={handleDateChange}
+              setShowCovers={setShowCovers}
             />
           ) : null}
 
@@ -76,6 +88,13 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
           {loadBook.isLoadingError ? (
             <Typography paragraph>Failed to load form data.</Typography>
           ) : null}
+
+          <CoverDialog
+            visible={showCovers}
+            closeDialog={() => setShowCovers((prev) => !prev)}
+            query={formatBookSearchQuery(formData?.title, formData?.author)}
+            onSelect={onSelectCover}
+          />
         </DialogContent>
 
         <DialogActions>

@@ -31,7 +31,7 @@ export function ThemeProvider({ children }) {
   const theme = useMemo(() => (isDark ? createTheme(dark) : createTheme(light)), [isDark]);
 
   return (
-    <ThemeContext.Provider value={{ darkTheme: isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
       <StyledEngineProvider injectFirst>
         <MuiThemeProvider theme={theme}>
           <CssBaseline enableColorScheme />

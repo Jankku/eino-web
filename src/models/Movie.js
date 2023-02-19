@@ -6,6 +6,10 @@ const Movie = z.object({
   studio: z.string().min(0).max(255).default(''),
   director: z.string().min(0).max(255).default(''),
   writer: z.string().min(0).max(255).default(''),
+  image_url: z.union([
+    z.string().url().startsWith('https').nullable().default(null),
+    z.literal(''),
+  ]),
   duration: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
   status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']),

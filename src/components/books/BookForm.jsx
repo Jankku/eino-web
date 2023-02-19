@@ -1,10 +1,11 @@
-import { Grid, InputLabel, Select, TextField } from '@mui/material';
+import { Grid, IconButton, InputAdornment, InputLabel, Select, TextField } from '@mui/material';
 import { Unstable_NextDatePicker as DatePicker } from '@mui/x-date-pickers/NextDatePicker';
 import score from '../../models/score';
 import bookStatus from '../../models/bookStatus';
 import { DateTime } from 'luxon';
+import AddCircle from '@mui/icons-material/AddCircle';
 
-function BookForm({ formData, handleChange, handleDateChange }) {
+function BookForm({ formData, handleChange, handleDateChange, setShowCovers }) {
   return (
     <>
       <Grid container>
@@ -39,6 +40,23 @@ function BookForm({ formData, handleChange, handleDateChange }) {
           label="ISBN"
           value={formData.isbn}
           onChange={handleChange}
+        />
+        <TextField
+          fullWidth
+          margin="dense"
+          name="image_url"
+          label="Cover URL"
+          value={formData.image_url}
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowCovers(true)}>
+                  <AddCircle />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Grid container gap={1} justifyContent="space-between">
           <TextField
