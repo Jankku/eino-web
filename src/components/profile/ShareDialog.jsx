@@ -55,26 +55,26 @@ function ShareDialog({ visible, closeDialog }) {
     }
   };
 
+  const onClose = () => {
+    closeDialog();
+    setBase64();
+    shareProfileQuery.remove();
+  };
+
   return (
-    <BaseDialog open={visible} maxWidth={'700'} onClose={() => closeDialog()}>
+    <BaseDialog open={visible} maxWidth={'700'} onClose={onClose}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
-        {base64 && <img src={base64} style={{ width: '100%' }} />}
         {isLoading && (
           <Grid container justifyContent="center">
             <CircularProgress />
           </Grid>
         )}
+        {base64 && <img src={base64} style={{ width: '100%' }} />}
         {isError && <Typography paragraph>Failed to load image</Typography>}
       </DialogContent>
       <DialogActions>
-        <Button
-          color="secondary"
-          onClick={() => {
-            closeDialog();
-            setBase64();
-          }}
-        >
+        <Button color="secondary" onClick={onClose}>
           Cancel
         </Button>
         <Button color="primary" disabled={isActionDisabled} onClick={onCopyUrl}>
