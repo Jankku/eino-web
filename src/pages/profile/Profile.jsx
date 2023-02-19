@@ -1,12 +1,12 @@
-import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
 import { useProfile } from '../../data/profile/useProfile';
+import useIsMobile from '../../hooks/useIsMobile';
 
 function Profile() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useIsMobile();
   const { data } = useProfile();
 
   return (

@@ -1,10 +1,9 @@
-import { Button, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Button, IconButton, Tooltip } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import useIsMobile from '../../hooks/useIsMobile';
 
 function CopyItemButton({ data, isDisabled, onSuccess, onFailure }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
+  const isMobile = useIsMobile();
   const copyTitlesToClipboard = async () => {
     try {
       const items = data
