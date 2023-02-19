@@ -130,7 +130,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
           component="main"
           sx={{
             flexGrow: 1,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            width: { xs: `calc(100% - ${drawerWidth}px)` },
           }}
         >
           {children}
