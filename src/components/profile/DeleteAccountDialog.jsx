@@ -69,11 +69,11 @@ function DeleteAccountDialog({ visible, closeDialog }) {
             onChange={handleChange}
             disabled={deleteAccount.isLoading}
           />
-          {deleteAccount.isError && (
+          {deleteAccount.isError ? (
             <FormHelperText error sx={{ fontSize: 14 }}>
               {formError.text}
             </FormHelperText>
-          )}
+          ) : null}
           <LinearProgress sx={{ display: deleteAccount.isLoading ? 'block' : 'none' }} />
         </DialogContent>
         <DialogActions>

@@ -73,8 +73,10 @@ export default function Login() {
               inputProps={{ minLength: 8, maxLength: 255 }}
               sx={{ mb: 2 }}
             />
-            {loginUser.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
-            {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
+            {loginUser.isLoading ? <LinearProgress sx={{ marginBottom: 2 }} /> : null}
+            {responseError !== undefined ? (
+              <ErrorMessage message={responseError[0]?.message} />
+            ) : null}
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button
                 disabled={loginUser.isLoading}

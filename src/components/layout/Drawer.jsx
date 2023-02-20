@@ -36,11 +36,17 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
       <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
         <MenuList>
           <CustomNavLink item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }} />
-          {isLoggedIn && routeArray.map((item, index) => <CustomNavLink item={item} key={index} />)}
+          {isLoggedIn
+            ? routeArray.map((item, index) => <CustomNavLink item={item} key={index} />)
+            : null}
+
           <Divider />
-          {!isLoggedIn &&
-            authRouteArray.map((item, index) => <CustomNavLink item={item} key={index} />)}
-          {isLoggedIn && (
+
+          {!isLoggedIn
+            ? authRouteArray.map((item, index) => <CustomNavLink item={item} key={index} />)
+            : null}
+
+          {isLoggedIn ? (
             <Grid justifyContent="space-between">
               <Grid item>
                 <MenuItem sx={{ mt: 0.5 }}>
@@ -64,7 +70,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
                 </Button>
               </Grid>
             </Grid>
-          )}
+          ) : null}
         </MenuList>
       </Box>
       <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>

@@ -132,8 +132,10 @@ export default function Register() {
                 error={passwordMatchError}
               />
             </Grid>
-            {registerUser.isLoading && <LinearProgress sx={{ marginBottom: 2 }} />}
-            {responseError !== undefined && <ErrorMessage message={responseError[0]?.message} />}
+            {registerUser.isLoading ? <LinearProgress sx={{ marginBottom: 2 }} /> : null}
+            {responseError !== undefined ? (
+              <ErrorMessage message={responseError[0]?.message} />
+            ) : null}
             <Grid container alignItems="flex-start" justifyContent="space-between">
               <Button disabled={registerUser.isLoading} type="submit" variant="contained">
                 Register

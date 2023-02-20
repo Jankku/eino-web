@@ -65,13 +65,13 @@ function ShareDialog({ visible, closeDialog }) {
     <BaseDialog open={visible} maxWidth={'700'} onClose={onClose}>
       <DialogTitle>Share profile</DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
-        {isLoading && (
+        {isLoading ? (
           <Grid container justifyContent="center">
             <CircularProgress />
           </Grid>
-        )}
-        {base64 && <img src={base64} style={{ width: '100%' }} />}
-        {isError && <Typography paragraph>Failed to load image</Typography>}
+        ) : null}
+        {base64 ? <img src={base64} style={{ width: '100%' }} /> : null}
+        {isError ? <Typography paragraph>Failed to load image</Typography> : null}
       </DialogContent>
       <DialogActions>
         <Button color="secondary" onClick={onClose}>
