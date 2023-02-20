@@ -24,7 +24,7 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
         </Grid>
       ) : null}
       {moviePosters.isLoadingError ? <Typography pt={2}>Failed to load posters.</Typography> : null}
-      {moviePosters.data?.length > 1 ? (
+      {moviePosters.data?.length > 0 ? (
         <ImageList
           cols={3}
           gap={2}
@@ -55,7 +55,9 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
             </ImageListItem>
           ))}
         </ImageList>
-      ) : null}
+      ) : (
+        <Typography pt={2}>No posters found.</Typography>
+      )}
     </ImageDialog>
   );
 }
