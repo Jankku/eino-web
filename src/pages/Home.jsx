@@ -1,5 +1,5 @@
 import { Container, ImageList, Typography } from '@mui/material';
-import InfoBox from '../components/home/InfoBox';
+import { Link } from 'react-router-dom';
 import useColumnCalculator from '../hooks/useColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LoginIcon from '@mui/icons-material/Login';
@@ -9,53 +9,8 @@ import CodeIcon from '@mui/icons-material/Code';
 import AndroidRounded from '@mui/icons-material/AndroidRounded';
 import StorageIcon from '@mui/icons-material/Storage';
 import WebIcon from '@mui/icons-material/Web';
-
-const infoBoxData = [
-  {
-    title: 'Authentication',
-    text: '',
-    icon: <LockOutlinedIcon />,
-    button: {
-      linkText: 'Register',
-      path: '/register',
-      target: '_self',
-      icon: <VpnKeyIcon />,
-    },
-    button2: {
-      linkText: 'Login',
-      path: '/login',
-      target: '_self',
-      icon: <LoginIcon />,
-    },
-  },
-  {
-    title: 'Features',
-    text: 'Keep track of books and movies you have enjoyed, save information about them and give ratings. On profile page you see statistics like score distribution graph, average score and hours watched etc.',
-    icon: <LibraryBooksIcon />,
-  },
-  {
-    title: 'Source code',
-    icon: <CodeIcon />,
-    button: {
-      linkText: 'Backend',
-      link: 'https://github.com/jankku/eino-backend/',
-      target: '_blank',
-      icon: <StorageIcon />,
-    },
-    button2: {
-      linkText: 'Frontend',
-      link: 'https://github.com/jankku/eino-web/',
-      target: '_blank',
-      icon: <WebIcon />,
-    },
-    button3: {
-      linkText: 'Android',
-      link: 'https://github.com/jankku/eino-android/',
-      target: '_blank',
-      icon: <AndroidRounded />,
-    },
-  },
-];
+import InfoCard from '../components/home/InfoCard';
+import InfoCardButton from '../components/home/InfoCardButton';
 
 export default function Home() {
   const columnCount = useColumnCalculator();
@@ -76,10 +31,38 @@ export default function Home() {
       <Typography variant="h6" sx={{ fontWeight: '700' }}>
         Book and movie tracker
       </Typography>
+
       <ImageList cols={columnCount} gap={12}>
-        {infoBoxData.map((box, boxIdx) => (
-          <InfoBox key={boxIdx}>{box}</InfoBox>
-        ))}
+        <InfoCard title="Authentication" icon={<LockOutlinedIcon />}>
+          <Link to="/register">
+            <InfoCardButton icon={<VpnKeyIcon />}>Register</InfoCardButton>
+          </Link>
+          <Link to="/login">
+            <InfoCardButton icon={<LoginIcon />}>Login</InfoCardButton>
+          </Link>
+        </InfoCard>
+
+        <InfoCard title="Features" icon={<LibraryBooksIcon />}>
+          <Typography variant="body1">
+            Keep track of books and movies you have enjoyed, save information about them and give
+            ratings. On profile page you see statistics like score distribution graph, average score
+            and hours watched etc.
+          </Typography>
+        </InfoCard>
+
+        <InfoCard title="Source code" icon={<CodeIcon />}>
+          <a href="https://github.com/jankku/eino-backend/" target="_blank" rel="noreferrer">
+            <InfoCardButton icon={<StorageIcon />}>Backend</InfoCardButton>
+          </a>
+
+          <a href="https://github.com/jankku/eino-web/" target="_blank" rel="noreferrer">
+            <InfoCardButton icon={<WebIcon />}>Frontend</InfoCardButton>
+          </a>
+
+          <a href="https://github.com/jankku/eino-android/" target="_blank" rel="noreferrer">
+            <InfoCardButton icon={<AndroidRounded />}>Android</InfoCardButton>
+          </a>
+        </InfoCard>
       </ImageList>
     </Container>
   );
