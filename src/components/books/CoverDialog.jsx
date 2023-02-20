@@ -53,9 +53,7 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
             </ImageListItem>
           ))}
         </ImageList>
-      ) : (
-        <Typography pt={2}>No covers found.</Typography>
-      )}
+      ) : null}
     </ImageDialog>
   );
 }

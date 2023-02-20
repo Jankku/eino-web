@@ -1,10 +1,7 @@
 import { Grid, Typography } from '@mui/material';
-import useIsMobile from '../../hooks/useIsMobile';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 export default function DetailItem({ title, text }) {
-  const isMobile = useIsMobile();
-
   return (
     <Grid container item zeroMinWidth flexWrap="nowrap" my={0.5}>
       <Typography

@@ -11,9 +11,15 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
     <ImageDialog
       title="Find movie poster"
       sources={
-        <Link href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">
-          TMDB
-        </Link>
+        <>
+          <Link href="https://finna.fi/" target="_blank" rel="noreferrer">
+            Finna
+          </Link>
+          ,{' '}
+          <Link href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">
+            TMDB
+          </Link>
+        </>
       }
       visible={visible}
       closeDialog={closeDialog}
@@ -55,9 +61,7 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
             </ImageListItem>
           ))}
         </ImageList>
-      ) : (
-        <Typography pt={2}>No posters found.</Typography>
-      )}
+      ) : null}
     </ImageDialog>
   );
 }
