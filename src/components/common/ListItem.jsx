@@ -37,6 +37,7 @@ function BookListItem({ title, detailText, status, score, itemId, imageUrl, onEd
             >
               {imageUrl ? (
                 <img
+                  loading={'lazy'}
                   alt="Book cover"
                   referrerPolicy="no-referrer"
                   src={imageUrl}
