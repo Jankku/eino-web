@@ -102,11 +102,17 @@ function Stats({ title, stats }) {
       <CardContent sx={{ p: 0 }}>
         <Box sx={{ pl: 2 }}>
           <h2>{title}</h2>
-          <ProfileDetailItem title={'Count'} text={stats.count} />
+          <ProfileDetailItem title={'Count'} text={new Intl.NumberFormat().format(stats.count)} />
           {isBookStats ? (
-            <ProfileDetailItem title={'Pages read'} text={stats.pages_read} />
+            <ProfileDetailItem
+              title={'Pages read'}
+              text={new Intl.NumberFormat().format(stats.pages_read)}
+            />
           ) : (
-            <ProfileDetailItem title={'Watch time'} text={`${stats.watch_time} hours`} />
+            <ProfileDetailItem
+              title={'Watch time'}
+              text={`${new Intl.NumberFormat().format(stats.watch_time)} hours`}
+            />
           )}
           <ProfileDetailItem title={'Average score'} text={stats.score_average} />
         </Box>
