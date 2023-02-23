@@ -36,9 +36,9 @@ function ExportDialog({ visible, closeDialog }) {
       const a = document.createElement('a');
       a.href = url;
       a.download = generateExportFileName();
-      //   a.click();
-      //   URL.revokeObjectURL(url);
-      //   resetState();
+      a.click();
+      URL.revokeObjectURL(url);
+      resetState();
     } catch (error) {
       console.error(error);
       showErrorSnackbar('Failed to download export file');
