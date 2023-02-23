@@ -3,10 +3,8 @@ import AccountActions from '../../components/profile/AccountActions';
 import Stats from '../../components/profile/Stats';
 import UserInfo from '../../components/profile/UserInfo';
 import { useProfile } from '../../data/profile/useProfile';
-import useIsMobile from '../../hooks/useIsMobile';
 
 function Profile() {
-  const isMobile = useIsMobile();
   const { data } = useProfile();
 
   return (
@@ -15,7 +13,7 @@ function Profile() {
 
       {data ? (
         <>
-          <Grid container={!isMobile}>
+          <Grid container gap={2}>
             <UserInfo data={data} />
             <AccountActions />
           </Grid>

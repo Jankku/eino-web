@@ -1,13 +1,16 @@
+import { useReducer } from 'react';
+import { Button, Card, CardContent, Grid } from '@mui/material';
+import DeleteAccountDialog from './DeleteAccountDialog';
+import ExportDialog from './ExportDialog';
+import ShareDialog from './ShareDialog';
+import Download from '@mui/icons-material/Download';
 import ShareRounded from '@mui/icons-material/ShareRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import { Button, Card, CardContent, Grid } from '@mui/material';
-import { useReducer } from 'react';
-import DeleteAccountDialog from './DeleteAccountDialog';
-import ShareDialog from './ShareDialog';
 
 function AccountActions() {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
+  const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
 
   return (
     <>
@@ -23,6 +26,16 @@ function AccountActions() {
                 onClick={toggleShareDialog}
               >
                 Share
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                startIcon={<Download />}
+                variant="contained"
+                color="primary"
+                onClick={toggleExportDialog}
+              >
+                Export
               </Button>
             </Grid>
             <Grid item>
@@ -44,9 +57,9 @@ function AccountActions() {
         closeDialog={toggleDeleteAccountDialog}
       />
 
-      {shareDialogOpen ? (
-        <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
-      ) : null}
+      <ExportDialog visible={exportDialogOpen} closeDialog={toggleExportDialog} />
+
+      <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
     </>
   );
 }
