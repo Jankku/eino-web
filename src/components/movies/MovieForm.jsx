@@ -46,6 +46,7 @@ function MovieForm({ formData, handleChange, handleDateChange, setShowPosters })
           margin="dense"
           name="image_url"
           label="Poster URL"
+          placeholder='Click the "+" button to search for posters'
           value={formData.image_url}
           onChange={handleChange}
           InputProps={{

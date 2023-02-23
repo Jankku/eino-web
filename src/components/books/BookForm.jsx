@@ -46,6 +46,7 @@ function BookForm({ formData, handleChange, handleDateChange, setShowCovers }) {
           margin="dense"
           name="image_url"
           label="Cover URL"
+          placeholder='Click the "+" button to search for covers'
           value={formData.image_url}
           onChange={handleChange}
           InputProps={{
