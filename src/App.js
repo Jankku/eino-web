@@ -103,7 +103,7 @@ function WrappedApp() {
             }
           />
           <Route
-            path="/books"
+            path="books"
             element={
               <RequireAuth>
                 <PageBoundary>
@@ -111,19 +111,18 @@ function WrappedApp() {
                 </PageBoundary>
               </RequireAuth>
             }
-          />
-          <Route
-            path="/books/:bookId"
-            element={
-              <RequireAuth>
+          >
+            <Route
+              path=":bookId"
+              element={
                 <PageBoundary>
                   <BookDetail />
                 </PageBoundary>
-              </RequireAuth>
-            }
-          />
+              }
+            />
+          </Route>
           <Route
-            path="/movies"
+            path="movies"
             element={
               <RequireAuth>
                 <PageBoundary>
@@ -131,17 +130,17 @@ function WrappedApp() {
                 </PageBoundary>
               </RequireAuth>
             }
-          />
-          <Route
-            path="/movies/:movieId"
-            element={
-              <RequireAuth>
+          >
+            <Route
+              path=":movieId"
+              element={
                 <PageBoundary>
                   <MovieDetail />
                 </PageBoundary>
-              </RequireAuth>
-            }
-          />
+              }
+            />
+          </Route>
+
           <Route path="/*" element={<Error404 />} />
         </Route>
       </Routes>

@@ -87,7 +87,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
       variant="temporary"
       elevation={0}
       sx={{
-        display: { xs: 'block', md: 'none' },
+        display: { xs: 'block', xl: 'none' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
       }}
       anchor="left"
@@ -107,7 +107,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
       variant="permanent"
       anchor="left"
       sx={{
-        display: { xs: 'none', md: 'block' },
+        display: { xs: 'none', xl: 'block' },
         '& .MuiDrawer-paper': {
           boxSizing: 'border-box',
           width: drawerWidth,
@@ -124,9 +124,8 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
         <Box
           component="nav"
           sx={{
-            height: '100%',
-            width: { md: drawerWidth },
-            flexShrink: { md: 0 },
+            width: { xl: drawerWidth },
+            flexShrink: { xl: 0 },
           }}
         >
           {mobileDrawer}
@@ -136,6 +135,7 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
           component="main"
           sx={{
             flexGrow: 1,
+            minHeight: '100%',
             width: { xs: `calc(100% - ${drawerWidth}px)` },
           }}
         >

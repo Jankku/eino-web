@@ -2,7 +2,6 @@ import {
   capitalize,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   Chip,
   Grid,
@@ -10,22 +9,22 @@ import {
   Typography,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
-import CardActionButton from './CardActionButton';
 import getStatusIcon from '../../utils/listItemUtil';
 import { useThemeContext } from '../../providers/ThemeProvider';
 
-function BookListItem({ title, detailText, status, score, itemId, imageUrl, onEditClick }) {
+export default function ListItem({ title, detailText, status, score, itemId, imageUrl }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const { darkTheme } = useThemeContext();
 
-  const navigateToDetail = () => navigate(`./${itemId}`);
+  const navigateToDetail = () => navigate(`./${itemId}${location.search}`);
 
   return (
     <Card variant="outlined">
       <CardActionArea onClick={navigateToDetail}>
-        <CardContent sx={{ px: 1.5, pt: 2, pb: 0 }}>
+        <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
           <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
             <Grid
               container
@@ -43,12 +42,12 @@ function BookListItem({ title, detailText, status, score, itemId, imageUrl, onEd
                   src={imageUrl}
                   width="100%"
                   height="100%"
-                  style={{ objectFit: 'cover', borderRadius: 4, aspectRatio: 0.7 }}
+                  style={{ objectFit: 'cover', aspectRatio: 0.7 }}
                 />
               ) : null}
             </Grid>
-            <Grid container item zeroMinWidth flexDirection="column" ml={1}>
-              <Grid container flexDirection="column" alignContent="flex-start" flex={'1 1 0px'}>
+            <Grid container item zeroMinWidth flexDirection="column" ml={1} mt={1}>
+              <Grid container alignContent="flex-start" flex={'1 1 0px'}>
                 <Stack direction="row" spacing={0.5} mb={1}>
                   <Chip
                     icon={<StarIcon />}
@@ -75,19 +74,6 @@ function BookListItem({ title, detailText, status, score, itemId, imageUrl, onEd
           </Grid>
         </CardContent>
       </CardActionArea>
-      <CardActions
-        sx={{
-          m: 1,
-          p: 0,
-        }}
-      >
-        <Grid container justifyContent="flex-end" columnGap={1}>
-          <CardActionButton onClick={navigateToDetail}>Details</CardActionButton>
-          <CardActionButton onClick={() => onEditClick(itemId)}>Edit</CardActionButton>
-        </Grid>
-      </CardActions>
     </Card>
   );
 }
-
-export default BookListItem;

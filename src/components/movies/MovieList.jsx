@@ -1,18 +1,15 @@
-import { useState, useReducer } from 'react';
 import { ImageList, Pagination, PaginationItem } from '@mui/material';
-import EditMovieDialog from './EditMovieDialog';
 import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import usePagination from '../../hooks/usePagination';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const itemsPerPage = 30;
+const itemsPerPage = 21;
 
 export default function MovieList({ movies }) {
-  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
-  const [editedMovieId, seteditedMovieId] = useState('');
   const columnCount = useColumnCalculator();
   const [items, page, pageCount] = usePagination(movies, itemsPerPage);
+  const { pathname } = useLocation();
 
   const onEditClick = (itemId) => {
     toggleEditDialog();
@@ -28,11 +25,7 @@ export default function MovieList({ movies }) {
         count={pageCount}
         boundaryCount={0}
         renderItem={(item) => (
-          <PaginationItem
-            component={Link}
-            to={`/movies${item.page === 1 ? '' : `?page=${item.page}`}`}
-            {...item}
-          />
+          <PaginationItem component={Link} to={`${pathname}?page=${item.page}`} {...item} />
         )}
       />
 
@@ -58,18 +51,9 @@ export default function MovieList({ movies }) {
         count={pageCount}
         boundaryCount={0}
         renderItem={(item) => (
-          <PaginationItem
-            component={Link}
-            to={`/movies${item.page === 1 ? '' : `?page=${item.page}`}`}
-            {...item}
-          />
+          <PaginationItem component={Link} to={`${pathname}?page=${item.page}`} {...item} />
         )}
-      />
-
-      <EditMovieDialog
-        visible={editDialogOpen}
-        closeDialog={toggleEditDialog}
-        movieId={editedMovieId}
+        sx={{ mb: 2 }}
       />
     </>
   );

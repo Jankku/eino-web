@@ -102,7 +102,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
 
           <Button
             type="submit"
-            disabled={loadMovie.isLoading || loadMovie.isLoadingError | updateMovie.isLoading}
+            disabled={loadMovie.isLoading || loadMovie.isLoadingError || updateMovie.isLoading}
             color="primary"
           >
             Submit changes

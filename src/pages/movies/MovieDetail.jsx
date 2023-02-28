@@ -30,17 +30,17 @@ export default function MovieDetail() {
   const deleteMovie = useDeleteMovie();
 
   return (
-    <Container fixed maxWidth="md">
+    <Container fixed disableGutters={!isMobile} maxWidth="sm">
       <Card
         sx={{
-          mt: 3,
+          my: 3,
           border: 1,
           borderColor: 'primary.main',
           borderRadius: 2,
         }}
       >
         <CardContent sx={{ pl: isMobile ? 4 : 2, pb: 0 }}>
-          <Grid container justifyContent="center" flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+          <Grid container justifyContent="center" flexWrap={'wrap'}>
             {data.image_url ? (
               <Grid
                 container
@@ -49,8 +49,8 @@ export default function MovieDetail() {
                 flexShrink={2}
                 mb={{ xs: 1, md: 0 }}
                 sx={{
-                  height: '100%',
-                  maxWidth: isMobile ? '50%' : '80%',
+                  maxWidth: isMobile ? '50%' : '40%',
+                  aspectRatio: 0.7,
                 }}
               >
                 <img
@@ -61,7 +61,8 @@ export default function MovieDetail() {
                     height: '100%',
                     width: '100%',
                     borderRadius: 4,
-                    objectFit: 'contain',
+                    objectFit: 'cover',
+                    aspectRatio: 0.7,
                   }}
                 />
               </Grid>

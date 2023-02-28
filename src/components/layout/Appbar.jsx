@@ -17,16 +17,16 @@ export default function Appbar({ drawerWidth, toggleDrawer }) {
       position="sticky"
       sx={{
         width: {
-          md: `calc(100% - ${drawerWidth}px)`,
+          xl: `calc(100% - ${drawerWidth}px)`,
         },
-        ml: { md: `${drawerWidth}px` },
+        ml: { xl: `${drawerWidth}px` },
       }}
     >
       <Toolbar>
         <IconButton
           color="inherit"
           edge="start"
-          sx={{ mr: 2, display: { md: 'none' } }}
+          sx={{ mr: 2, display: { xl: 'none' } }}
           onClick={toggleDrawer}
           size="large"
         >

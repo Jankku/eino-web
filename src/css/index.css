@@ -6,7 +6,7 @@ body {
 }
 
 body {
-  overflow-y: scroll;
+  overflow-y: none;
 }
 
 a:link {

@@ -26,14 +26,13 @@ function CopyItemButton({ data, isDisabled, onSuccess, onFailure }) {
   return (
     <>
       {isMobile ? (
-        <Tooltip arrow title="Copy items" enterTouchDelay={500}>
+        <Tooltip arrow title="Copy" enterTouchDelay={500}>
           <span>
             <IconButton
               color="primary"
               size="large"
               onClick={copyTitlesToClipboard}
               disabled={isDisabled}
-              sx={{ marginRight: 1 }}
             >
               <ContentCopyIcon />
             </IconButton>
@@ -42,13 +41,11 @@ function CopyItemButton({ data, isDisabled, onSuccess, onFailure }) {
       ) : (
         <Button
           variant="outlined"
-          size="large"
           startIcon={<ContentCopyIcon />}
           disabled={isDisabled}
           onClick={copyTitlesToClipboard}
-          sx={{ marginRight: 2 }}
         >
-          Copy items
+          Copy
         </Button>
       )}
     </>
