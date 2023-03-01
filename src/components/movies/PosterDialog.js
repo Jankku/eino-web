@@ -1,10 +1,8 @@
 import { CircularProgress, Grid, ImageList, ImageListItem, Link, Typography } from '@mui/material';
 import { useMoviePosters } from '../../data/movies/useMoviePosters';
-import useIsMobile from '../../hooks/useIsMobile';
 import ImageDialog from '../common/ImageDialog';
 
 export default function PosterDialog({ visible, closeDialog, query, onSelect }) {
-  const isMobile = useIsMobile();
   const moviePosters = useMoviePosters(visible, query);
 
   return (
@@ -31,21 +29,15 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
       ) : null}
       {moviePosters.isLoadingError ? <Typography pt={2}>Failed to load posters.</Typography> : null}
       {moviePosters.data?.length > 0 ? (
-        <ImageList
-          cols={3}
-          gap={2}
-          sx={{
-            height: isMobile ? '100%' : 450,
-          }}
-        >
+        <ImageList cols={3}>
           {moviePosters.data?.map((posterUrl) => (
             <ImageListItem
               key={posterUrl}
               sx={{
-                aspectRatio: 0.7,
-                justifySelf: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                minWidth: 120,
                 width: '100%',
-                height: '150px',
+                height: 250,
               }}
             >
               <img
@@ -53,9 +45,7 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
                 alt="Movie poster"
                 referrerPolicy="no-referrer"
                 src={posterUrl}
-                width="100%"
-                height="100%"
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'contain', aspectRatio: 0.7 }}
                 onClick={() => onSelect(posterUrl)}
               />
             </ImageListItem>

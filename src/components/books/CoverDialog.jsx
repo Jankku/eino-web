@@ -1,10 +1,8 @@
 import { CircularProgress, Grid, ImageList, ImageListItem, Link, Typography } from '@mui/material';
 import { useBookCovers } from '../../data/books/useBookCovers';
 import ImageDialog from '../common/ImageDialog';
-import { useThemeContext } from '../../providers/ThemeProvider';
 
 export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
-  const { isDark } = useThemeContext();
   const bookCovers = useBookCovers(visible, query);
 
   return (
@@ -31,15 +29,15 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
       ) : null}
       {bookCovers.isLoadingError ? <Typography pt={2}>Failed to load covers.</Typography> : null}
       {bookCovers.data?.length > 0 ? (
-        <ImageList cols={3} sx={{ width: '600', height: '100%' }}>
+        <ImageList cols={3}>
           {bookCovers.data?.map((coverUrl) => (
             <ImageListItem
               key={coverUrl}
               sx={{
-                justifySelf: 'center',
-                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
-                width: '200',
-                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                minWidth: 120,
+                width: '100%',
+                height: 250,
               }}
             >
               <img
@@ -47,7 +45,7 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
                 alt="Book cover"
                 referrerPolicy="no-referrer"
                 src={coverUrl}
-                style={{ objectFit: 'cover', aspectRatio: 0.7 }}
+                style={{ objectFit: 'contain', aspectRatio: 0.7 }}
                 onClick={() => onSelect(coverUrl)}
               />
             </ImageListItem>
