@@ -18,11 +18,17 @@ export default function ListItem({ title, detailText, status, score, itemId, ima
   const location = useLocation();
   const navigate = useNavigate();
   const { darkTheme } = useThemeContext();
+  const isActive = location.pathname.includes(itemId);
 
   const navigateToDetail = () => navigate(`./${itemId}${location.search}`);
 
   return (
-    <Card variant="outlined">
+    <Card
+      variant="outlined"
+      sx={(theme) => ({
+        border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
+      })}
+    >
       <CardActionArea onClick={navigateToDetail}>
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
           <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
