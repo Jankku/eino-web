@@ -1,9 +1,9 @@
 import { ListItemText, MenuItem } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-function CustomNavLink({ item }) {
+function CustomNavLink({ item, toggleDrawer }) {
   return (
-    <NavLink to={item.path}>
+    <NavLink to={item.path} onClick={toggleDrawer}>
       {({ isActive }) => (
         <MenuItem
           selected={isActive}

@@ -35,15 +35,23 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
     <>
       <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
         <MenuList>
-          <CustomNavLink item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }} />
+          <CustomNavLink
+            toggleDrawer={toggleDrawer}
+            item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }}
+          />
+
           {isLoggedIn
-            ? routeArray.map((item, index) => <CustomNavLink item={item} key={index} />)
+            ? routeArray.map((item, index) => (
+                <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
+              ))
             : null}
 
           <Divider />
 
           {!isLoggedIn
-            ? authRouteArray.map((item, index) => <CustomNavLink item={item} key={index} />)
+            ? authRouteArray.map((item, index) => (
+                <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
+              ))
             : null}
 
           {isLoggedIn ? (
@@ -84,13 +92,11 @@ export default function Header({ window, drawerWidth, drawerOpen, toggleDrawer, 
   const mobileDrawer = (
     <Drawer
       container={container}
-      variant="temporary"
       elevation={0}
       sx={{
         display: { xs: 'block', xl: 'none' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
       }}
-      anchor="left"
       open={drawerOpen}
       onClose={toggleDrawer}
       ModalProps={{
