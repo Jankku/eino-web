@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import AuthPage from './pages/AuthPage';
+import Appbar from './components/Appbar';
 
 test.describe('Register', () => {
   test.use({ storageState: undefined });
@@ -29,6 +30,7 @@ test.describe('Login', () => {
 
   test('Should successfully login and log-out user', async ({ page }) => {
     const authPage = new AuthPage(page);
+    const appbar = new Appbar(page);
     const username = faker.internet.password();
     const password = faker.internet.password();
 
@@ -36,6 +38,8 @@ test.describe('Login', () => {
     await expect(page).toHaveURL('/login');
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/books');
+
+    appbar.openDrawer();
     await page.getByRole('button', { name: 'Log out' }).click();
     await expect(page).toHaveURL('/');
   });

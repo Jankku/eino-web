@@ -10,23 +10,23 @@ test.describe('Books', () => {
   test('Should create book and have correct info on list item', async ({ page }) => {
     await page.goto('/books');
     const bookPage = new BookPage(page);
-    await page.getByRole('button', { name: 'Create book' }).click();
+    await page.getByRole('button', { name: 'create' }).click();
     await bookPage.createBook(book);
-    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
+    const listItem = page.getByRole('button').filter({ hasText: book.title });
     await bookPage.verifyListItem(listItem, book);
   });
 
   test('Should navigate to book details', async ({ page }) => {
     await page.goto('/books');
     const bookPage = new BookPage(page);
-    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
+    const listItem = page.getByRole('button').filter({ hasText: book.title });
     await bookPage.navigateToDetail(listItem);
   });
 
   test('Should delete book', async ({ page }) => {
     await page.goto('/books');
     const bookPage = new BookPage(page);
-    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
+    const listItem = page.getByRole('button').filter({ hasText: book.title });
     await bookPage.navigateToDetail(listItem);
 
     await page.getByRole('button', { name: 'Delete' }).click();
@@ -41,14 +41,14 @@ test.describe('Books', () => {
     const bookPage = new BookPage(page);
     const book = generateFormBook();
 
-    await page.getByRole('button', { name: 'Create book' }).click();
+    await page.getByRole('button', { name: 'create' }).click();
     await bookPage.createBook(book);
 
-    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
+    const listItem = page.getByRole('button').filter({ hasText: book.title, exact: true });
     await bookPage.navigateToDetail(listItem);
     await bookPage.verifyDetailContent(book);
 
-    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('button', { name: 'Edit', exact: true }).click();
     const editDialog = page.getByRole('dialog');
     const newBook = generateFormBook();
     await bookPage.editBook(editDialog, newBook);

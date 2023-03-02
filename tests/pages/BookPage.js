@@ -10,7 +10,7 @@ export default class BookPage {
   }
 
   async navigateToDetail(listItem) {
-    await listItem.getByRole('button', { name: 'Details' }).click();
+    await listItem.click();
     await expect(this.page).toHaveURL(/\/books\/[a-z0-9-]+/);
   }
 

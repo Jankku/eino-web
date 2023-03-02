@@ -24,6 +24,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }) {
     >
       <Toolbar>
         <IconButton
+          name="drawer"
           color="inherit"
           edge="start"
           sx={{ mr: 2, display: { xl: 'none' } }}

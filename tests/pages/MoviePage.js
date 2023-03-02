@@ -10,7 +10,7 @@ export default class MoviePage {
   }
 
   async navigateToDetail(listItem) {
-    await listItem.getByRole('button', { name: 'Details' }).click();
+    await listItem.click();
     await expect(this.page).toHaveURL(/\/movies\/[a-z0-9-]+/);
   }
 
