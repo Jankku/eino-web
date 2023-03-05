@@ -8,7 +8,7 @@ function Profile() {
   const { data } = useProfile();
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ paddingBottom: 4 }}>
       <h1>Profile</h1>
 
       {data ? (
