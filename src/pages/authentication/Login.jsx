@@ -5,6 +5,7 @@ import useToken from '../../hooks/useToken';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
+import PasswordField from '../../components/common/PasswordField';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -58,12 +59,11 @@ export default function Login() {
               inputProps={{ minLength: 3, maxLength: 255 }}
               sx={{ mb: 2 }}
             />
-            <TextField
+            <PasswordField
               required
               fullWidth
               id="password"
               name="password"
-              type="password"
               autoComplete="current-password"
               variant="outlined"
               label="Password"

@@ -5,13 +5,13 @@ import {
   DialogTitle,
   FormHelperText,
   LinearProgress,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
+import PasswordField from '../common/PasswordField';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
@@ -55,12 +55,11 @@ function DeleteAccountDialog({ visible, closeDialog }) {
             This action will permanently delete your account and all associated data. Please confirm
             your password before proceeding.
           </Typography>
-          <TextField
+          <PasswordField
             autoFocus
             required
             fullWidth
             name="password"
-            type="password"
             autoComplete="current-password"
             margin="none"
             label="Confirm password"

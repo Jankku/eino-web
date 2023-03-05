@@ -6,7 +6,6 @@ import {
   FormHelperText,
   LinearProgress,
   Link,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
+import PasswordField from '../common/PasswordField';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
@@ -91,12 +91,11 @@ function ExportDialog({ visible, closeDialog }) {
               </Link>
             </Typography>
           ) : null}
-          <TextField
+          <PasswordField
             autoFocus
             required
             fullWidth
             name="password"
-            type="password"
             autoComplete="current-password"
             margin="none"
             label="Confirm password"

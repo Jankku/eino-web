@@ -11,6 +11,7 @@ import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
+import PasswordField from '../../components/common/PasswordField';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ export default function Register() {
               <FormHelperText>Username should be 3-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
-              <TextField
+              <PasswordField
                 required
                 fullWidth
                 id="password"
@@ -117,13 +118,13 @@ export default function Register() {
               <FormHelperText>Password should be 8-255 characters long</FormHelperText>
             </Grid>
             <Grid item sx={{ mb: 2 }}>
-              <TextField
+              <PasswordField
                 required
                 fullWidth
                 id="password2"
                 name="password2"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 variant="outlined"
                 label="Confirm password"
                 color="primary"
