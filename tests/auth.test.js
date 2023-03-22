@@ -4,7 +4,7 @@ import AuthPage from './pages/AuthPage';
 import Appbar from './components/Appbar';
 
 test.describe('Register', () => {
-  test.use({ storageState: undefined });
+  test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Should register new user', async ({ page }) => {
     const authPage = new AuthPage(page);
@@ -26,7 +26,7 @@ test.describe('Register', () => {
 });
 
 test.describe('Login', () => {
-  test.use({ storageState: undefined });
+  test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Should successfully login and log-out user', async ({ page }) => {
     const authPage = new AuthPage(page);

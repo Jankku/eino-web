@@ -21,7 +21,7 @@ test.describe('Profile', () => {
 });
 
 test.describe('Profile - Delete account', () => {
-  test.use({ storageState: undefined });
+  test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Should delete account', async ({ page }) => {
     const username = faker.internet.userName();
