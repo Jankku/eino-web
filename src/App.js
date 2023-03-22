@@ -14,6 +14,7 @@ import PageBoundary from './components/common/PageBoundary';
 import Logout from './pages/authentication/Logout';
 import Privacy from './pages/Privacy';
 import Error404 from './components/errors/Error404';
+import RedirectAuthenticated from './components/common/RedirectAuthenticated';
 
 const Register = lazy(() => import('./pages/authentication/Register'));
 const Login = lazy(() => import('./pages/authentication/Login'));
@@ -77,17 +78,21 @@ function WrappedApp() {
           <Route
             path="/register"
             element={
-              <PageBoundary>
-                <Register />
-              </PageBoundary>
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <Register />
+                </PageBoundary>
+              </RedirectAuthenticated>
             }
           />
           <Route
             path="/login"
             element={
-              <PageBoundary>
-                <Login />
-              </PageBoundary>
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <Login />
+                </PageBoundary>
+              </RedirectAuthenticated>
             }
           />
           <Route path="/logout" element={<Logout />} />
