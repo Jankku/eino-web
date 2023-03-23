@@ -1,5 +1,5 @@
 import { Grid, IconButton, InputAdornment, InputLabel, Select, TextField } from '@mui/material';
-import { Unstable_NextDatePicker as DatePicker } from '@mui/x-date-pickers/NextDatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import score from '../../models/score';
 import movieStatus from '../../models/movieStatus';
 import { DateTime } from 'luxon';
