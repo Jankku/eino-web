@@ -1,7 +1,25 @@
 import { useTheme } from '@mui/system';
 import { useMediaQuery } from '@mui/material';
+import { listItemTypes } from './useListItemType';
 
-const useColumnCalculator = () => {
+const columns = {
+  [listItemTypes.CARD]: {
+    xs: 1,
+    sm: 1,
+    md: 2,
+    lg: 2,
+    xl: 3,
+  },
+  [listItemTypes.IMAGE]: {
+    xs: 2,
+    sm: 4,
+    md: 3,
+    lg: 4,
+    xl: 4,
+  },
+};
+
+const useColumnCalculator = (itemType) => {
   const { breakpoints } = useTheme();
 
   const matchesXl = useMediaQuery(breakpoints.only('xl'));
@@ -10,11 +28,20 @@ const useColumnCalculator = () => {
   const matchesSm = useMediaQuery(breakpoints.only('sm'));
   const matchesXs = useMediaQuery(breakpoints.only('xs'));
 
-  if (matchesXl) return 3;
-  else if (matchesLg) return 2;
-  else if (matchesMd) return 1;
-  else if (matchesSm) return 1;
-  else if (matchesXs) return 1;
+  // For home page
+  if (!itemType) {
+    if (matchesXl) return 3;
+    else if (matchesLg) return 3;
+    else if (matchesMd) return 3;
+    else if (matchesSm) return 2;
+    else if (matchesXs) return 1;
+  }
+
+  if (matchesXl) return columns[itemType].xl;
+  else if (matchesLg) return columns[itemType].lg;
+  else if (matchesMd) return columns[itemType].md;
+  else if (matchesSm) return columns[itemType].sm;
+  else if (matchesXs) return columns[itemType].xs;
   return 1;
 };
 

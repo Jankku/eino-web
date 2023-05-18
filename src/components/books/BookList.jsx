@@ -3,13 +3,17 @@ import useColumnCalculator from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import usePagination from '../../hooks/usePagination';
 import { Link, useLocation } from 'react-router-dom';
+import ListItemImage from '../common/ListItemImage';
+import { listItemTypes } from '../../hooks/useListItemType';
 
 const itemsPerPage = 21;
 
-export default function BookList({ books }) {
-  const columnCount = useColumnCalculator();
+export default function BookList({ books, itemType }) {
+  const columnCount = useColumnCalculator(itemType);
   const [items, page, pageCount] = usePagination(books, itemsPerPage);
   const { pathname } = useLocation();
+
+  const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
   const onEditClick = (itemId) => {
     toggleEditDialog();
@@ -31,7 +35,7 @@ export default function BookList({ books }) {
 
       <ImageList cols={columnCount} gap={12}>
         {items.map((book) => (
-          <ListItem
+          <ListItemComponent
             title={book.title}
             detailText={book.author}
             status={book.status}

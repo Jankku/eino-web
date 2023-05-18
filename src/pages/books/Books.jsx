@@ -13,6 +13,8 @@ import { useBooks } from '../../data/books/useBooks';
 import useIsMobile from '../../hooks/useIsMobile';
 import CreateButton from '../../components/common/CreateButton';
 import CreateFab from '../../components/common/CreateFab';
+import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
+import ListItemTypeButton from '../../components/common/ListItemTypeButton';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -20,6 +22,7 @@ export default function Books() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
+  const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useBooks(status);
   const bookCount = data?.length ?? 0;
@@ -41,6 +44,7 @@ export default function Books() {
             <Grid item>
               <Grid container item flexDirection="row" gap={1}>
                 {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
+                <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 <CopyItemButton
                   data={data}
                   isDisabled={bookCount === 0}
@@ -58,7 +62,7 @@ export default function Books() {
             </Grid>
           </Grid>
 
-          <BookList books={data} />
+          <BookList books={data} itemType={itemType} />
 
           <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 

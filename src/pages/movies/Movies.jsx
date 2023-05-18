@@ -13,12 +13,15 @@ import ListDetailLayout from '../../components/common/ListDetailLayout';
 import useIsMobile from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import CreateButton from '../../components/common/CreateButton';
+import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
+import ListItemTypeButton from '../../components/common/ListItemTypeButton';
 
 export default function Movies() {
   const isMobile = useIsMobile();
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
+  const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
   const [, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useMovies(status);
@@ -41,6 +44,7 @@ export default function Movies() {
             <Grid item>
               <Grid container item flexDirection="row" gap={1}>
                 {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
+                <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 <CopyItemButton
                   data={data}
                   isDisabled={movieCount === 0}
@@ -58,7 +62,7 @@ export default function Movies() {
             </Grid>
           </Grid>
 
-          <MovieList movies={data} />
+          <MovieList movies={data} itemType={itemType} />
 
           <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
