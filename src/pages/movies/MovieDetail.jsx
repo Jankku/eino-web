@@ -48,10 +48,12 @@ export default function MovieDetail() {
                 zeroMinWidth
                 flexShrink={2}
                 mb={{ xs: 1, md: 0 }}
-                sx={{
+                sx={(theme) => ({
                   maxWidth: isMobile ? '50%' : '40%',
                   aspectRatio: 0.7,
-                }}
+                  borderRadius: 1,
+                  boxShadow: theme.palette.mode === 'light' && theme.shadows[4],
+                })}
               >
                 <img
                   alt="Movie poster"
@@ -60,7 +62,7 @@ export default function MovieDetail() {
                   style={{
                     height: '100%',
                     width: '100%',
-                    borderRadius: 4,
+                    borderRadius: 'inherit',
                     objectFit: 'cover',
                     aspectRatio: 0.7,
                   }}
