@@ -15,6 +15,7 @@ import CreateFab from '../../components/common/CreateFab';
 import CreateButton from '../../components/common/CreateButton';
 import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
 import ListItemTypeButton from '../../components/common/ListItemTypeButton';
+import useMovieCount from './useMovieCount';
 
 export default function Movies() {
   const isMobile = useIsMobile();
@@ -25,7 +26,7 @@ export default function Movies() {
   const [, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useMovies(status);
-  const movieCount = data?.length ?? 0;
+  const countByStatus = useMovieCount();
 
   const onSortStatusChange = (e) => {
     setStatus(e.target.value);
@@ -39,7 +40,7 @@ export default function Movies() {
         <Box mx={isMobile ? 2 : undefined}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <h1>Movies ({movieCount})</h1>
+              <h1>Movies</h1>
             </Grid>
             <Grid item>
               <Grid container item flexDirection="row" gap={1}>
@@ -47,14 +48,14 @@ export default function Movies() {
                 <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 <CopyItemButton
                   data={data}
-                  isDisabled={movieCount === 0}
+                  isDisabled={countByStatus.all === 0}
                   onSuccess={() => showSuccessSnackbar('Items copied')}
                   onFailure={() => showErrorSnackbar('Failed to copy')}
                 />
                 <SortStatusSelect status={status} onChange={onSortStatusChange}>
-                  {movieSortOptions.map((item, itemIdx) => (
-                    <option key={itemIdx} value={item.value}>
-                      {item.name}
+                  {movieSortOptions.map((option, itemIdx) => (
+                    <option key={itemIdx} value={option.value}>
+                      {option.name} ({countByStatus[option.value]})
                     </option>
                   ))}
                 </SortStatusSelect>

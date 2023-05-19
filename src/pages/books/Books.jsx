@@ -15,6 +15,7 @@ import CreateButton from '../../components/common/CreateButton';
 import CreateFab from '../../components/common/CreateFab';
 import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
 import ListItemTypeButton from '../../components/common/ListItemTypeButton';
+import useBookCount from './useBookCount';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -25,7 +26,7 @@ export default function Books() {
   const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useBooks(status);
-  const bookCount = data?.length ?? 0;
+  const countByStatus = useBookCount();
 
   const onSortStatusChange = (e) => {
     setStatus(e.target.value);
@@ -39,7 +40,7 @@ export default function Books() {
         <Box mx={isMobile ? 2 : undefined}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <h1>Books ({bookCount})</h1>
+              <h1>Books</h1>
             </Grid>
             <Grid item>
               <Grid container item flexDirection="row" gap={1}>
@@ -47,14 +48,14 @@ export default function Books() {
                 <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 <CopyItemButton
                   data={data}
-                  isDisabled={bookCount === 0}
+                  isDisabled={countByStatus.all === 0}
                   onSuccess={() => showSuccessSnackbar('Items copied')}
                   onFailure={() => showErrorSnackbar('Failed to copy')}
                 />
                 <SortStatusSelect status={status} onChange={onSortStatusChange}>
-                  {bookSortOptions.map((item, itemIdx) => (
-                    <option key={itemIdx} value={item.value}>
-                      {item.name}
+                  {bookSortOptions.map((option, itemIdx) => (
+                    <option key={itemIdx} value={option.value}>
+                      {option.name} ({countByStatus[option.value]})
                     </option>
                   ))}
                 </SortStatusSelect>
