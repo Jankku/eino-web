@@ -51,7 +51,7 @@ export default function ListItemImage({ title, detailText, status, score, itemId
                   position: 'absolute',
                   width: '100%',
                   bottom: 0,
-                  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), 60%, rgba(0, 0, 0, 0))',
+                  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.9), 75%, rgba(0, 0, 0, 0))',
                 }}
               >
                 <Stack direction="row">
