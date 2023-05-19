@@ -1,5 +1,5 @@
 export const getShareUrl = (shareId) => {
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   return new URL(`share/${shareId}`, baseUrl);
 };
 

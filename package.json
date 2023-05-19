@@ -2,6 +2,16 @@
   "name": "eino-web",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview --host",
+    "e2e": "npx playwright test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .js,.jsx ./src",
+    "lint:fix": "eslint --fix --ext .js,.jsx ./src",
+    "format": "prettier --write ./src"
+  },
   "dependencies": {
     "@date-io/luxon": "^2.16.1",
     "@emotion/react": "^11.11.0",
@@ -25,7 +35,6 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.4",
     "react-router-dom": "^6.11.2",
-    "react-scripts": "5.0.1",
     "react-usestateref": "^1.0.8",
     "web-vitals": "^3.3.1",
     "zod": "^3.21.4"
@@ -34,28 +43,14 @@
     "@faker-js/faker": "^8.0.1",
     "@playwright/test": "^1.33.0",
     "@tanstack/eslint-plugin-query": "^4.29.4",
+    "@vitejs/plugin-react": "^4.0.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.40.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^2.8.8"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "e2e": "npx playwright test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext .js --ext .jsx ./src",
-    "lint:fix": "eslint --fix --ext .js --ext .jsx ./src",
-    "format": "prettier --write ./src"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "prettier": "^2.8.8",
+    "vite": "^4.3.8"
   },
   "browserslist": {
     "production": [

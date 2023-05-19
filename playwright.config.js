@@ -14,7 +14,7 @@ import { devices } from '@playwright/test';
 const config = {
   globalSetup: require.resolve('./tests/globalSetup.js'),
   webServer: {
-    command: 'npm run start',
+    command: 'npm start',
     port: 3000,
   },
   testDir: './tests',

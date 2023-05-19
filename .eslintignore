@@ -1,0 +1,6 @@
+node_modules/
+build/
+playwright-report/
+.idea/
+.prettierrc
+.eslintrc.js

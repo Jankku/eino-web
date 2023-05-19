@@ -8,7 +8,7 @@ export default class ProfilePage {
    */
   constructor(page) {
     this.page = page;
-    this.baseURL = process.env.REACT_APP_BASE_URL;
+    this.baseURL = process.env.VITE_BASE_URL;
   }
 
   async #getAccessToken() {
