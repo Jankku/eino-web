@@ -3,8 +3,8 @@
   "name": "Eino",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#2196f3",
-  "background_color": "#ffffff",
+  "theme_color": "#2e3035",
+  "background_color": "#191b21",
   "icons": [
     {
       "src": "icon.ico",
