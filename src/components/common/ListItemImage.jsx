@@ -25,11 +25,12 @@ export default function ListItemImage({ title, detailText, status, score, itemId
       variant="outlined"
       sx={(theme) => ({
         border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
+        aspectRatio: 0.7,
       })}
     >
-      <CardActionArea onClick={navigateToDetail} sx={{ width: '100%', height: '100%' }}>
+      <CardActionArea onClick={navigateToDetail} style={{ width: '100%', height: '100%' }}>
         <CardContent sx={{ padding: 0 }}>
-          <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
+          <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap" height="100%">
             <Grid container item>
               {imageUrl ? (
                 <img
