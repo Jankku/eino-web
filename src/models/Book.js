@@ -2,12 +2,12 @@ import { DateTime } from 'luxon';
 import { z } from 'zod';
 
 const Book = z.object({
-  isbn: z.string().min(0).max(255).default(''),
-  title: z.string().min(0).max(255).default(''),
-  author: z.string().min(0).max(255).default(''),
-  publisher: z.string().min(0).max(255).default(''),
+  isbn: z.string().min(0).max(255).trim().default(''),
+  title: z.string().min(0).max(255).trim().default(''),
+  author: z.string().min(0).max(255).trim().default(''),
+  publisher: z.string().min(0).max(255).trim().default(''),
   image_url: z.union([
-    z.string().url().startsWith('https').nullable().default(null),
+    z.string().url().trim().startsWith('https').nullable().default(null),
     z.literal(''),
   ]),
   pages: z.coerce.number().nonnegative().default(0),

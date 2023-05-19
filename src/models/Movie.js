@@ -2,12 +2,12 @@ import { DateTime } from 'luxon';
 import { z } from 'zod';
 
 const Movie = z.object({
-  title: z.string().min(0).max(255).default(''),
-  studio: z.string().min(0).max(255).default(''),
-  director: z.string().min(0).max(255).default(''),
-  writer: z.string().min(0).max(255).default(''),
+  title: z.string().min(0).max(255).trim().default(''),
+  studio: z.string().min(0).max(255).trim().default(''),
+  director: z.string().min(0).max(255).trim().default(''),
+  writer: z.string().min(0).max(255).trim().default(''),
   image_url: z.union([
-    z.string().url().startsWith('https').nullable().default(null),
+    z.string().url().trim().startsWith('https').nullable().default(null),
     z.literal(''),
   ]),
   duration: z.coerce.number().nonnegative().default(0),
