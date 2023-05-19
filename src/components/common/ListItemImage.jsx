@@ -27,7 +27,7 @@ export default function ListItemImage({ title, detailText, status, score, itemId
         border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
       })}
     >
-      <CardActionArea onClick={navigateToDetail}>
+      <CardActionArea onClick={navigateToDetail} sx={{ width: '100%', height: '100%' }}>
         <CardContent sx={{ padding: 0 }}>
           <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
             <Grid container item>
