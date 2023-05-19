@@ -15,7 +15,7 @@ const columns = {
     sm: 4,
     md: 3,
     lg: 4,
-    xl: 4,
+    xl: 5,
   },
 };
 
