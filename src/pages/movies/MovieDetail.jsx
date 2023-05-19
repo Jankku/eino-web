@@ -1,13 +1,4 @@
-import {
-  Button,
-  capitalize,
-  Card,
-  CardActions,
-  CardContent,
-  CircularProgress,
-  Container,
-  Grid,
-} from '@mui/material';
+import { Button, capitalize, Card, CardActions, CardContent, Container, Grid } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
@@ -19,6 +10,7 @@ import { useReducer } from 'react';
 import { useMovieDetail } from '../../data/movies/useMovieDetail';
 import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
 import useIsMobile from '../../hooks/useIsMobile';
+import { LoadingButton } from '@mui/lab';
 
 export default function MovieDetail() {
   const isMobile = useIsMobile();
@@ -102,7 +94,8 @@ export default function MovieDetail() {
             >
               Edit
             </Button>
-            <Button
+            <LoadingButton
+              loading={deleteMovie.isLoading}
               variant="contained"
               color="secondary"
               onClick={() =>
@@ -120,8 +113,7 @@ export default function MovieDetail() {
               sx={{ margin: '0.5em' }}
             >
               Delete
-            </Button>
-            {deleteMovie.isLoading ? <CircularProgress /> : null}
+            </LoadingButton>
           </Grid>
         </CardActions>
       </Card>

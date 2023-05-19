@@ -1,4 +1,4 @@
-import { Button, Container, Grid, LinearProgress, TextField, Typography } from '@mui/material';
+import { Container, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
@@ -6,6 +6,7 @@ import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
 import PasswordField from '../../components/common/PasswordField';
+import { LoadingButton } from '@mui/lab';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -73,19 +74,18 @@ export default function Login() {
               inputProps={{ minLength: 8, maxLength: 255 }}
               sx={{ mb: 2 }}
             />
-            {loginUser.isLoading ? <LinearProgress sx={{ marginBottom: 2 }} /> : null}
             {responseError !== undefined ? (
               <ErrorMessage message={responseError[0]?.message} />
             ) : null}
             <Grid container alignItems="flex-start" justifyContent="space-between">
-              <Button
-                disabled={loginUser.isLoading}
+              <LoadingButton
+                loading={loginUser.isLoading}
                 type="submit"
                 variant="contained"
                 color="primary"
               >
                 Login
-              </Button>
+              </LoadingButton>
               <Typography align="left" paragraph>
                 Don&apos;t have an account yet?{' '}
                 <Link to="/register">

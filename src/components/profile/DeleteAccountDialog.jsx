@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
-  LinearProgress,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -12,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
 import PasswordField from '../common/PasswordField';
+import { LoadingButton } from '@mui/lab';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
@@ -73,7 +73,6 @@ function DeleteAccountDialog({ visible, closeDialog }) {
               {formError.text}
             </FormHelperText>
           ) : null}
-          <LinearProgress sx={{ display: deleteAccount.isLoading ? 'block' : 'none' }} />
         </DialogContent>
         <DialogActions>
           <Button
@@ -84,9 +83,9 @@ function DeleteAccountDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button color="primary" disabled={deleteAccount.isLoading} type="submit">
+          <LoadingButton loading={deleteAccount.isLoading} color="primary" type="submit">
             Delete account
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </BaseDialog>

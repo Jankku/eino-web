@@ -1,17 +1,10 @@
-import {
-  Button,
-  Container,
-  FormHelperText,
-  Grid,
-  LinearProgress,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Container, FormHelperText, Grid, TextField, Typography } from '@mui/material';
 import useState from 'react-usestateref';
 import { Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import PasswordField from '../../components/common/PasswordField';
+import { LoadingButton } from '@mui/lab';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -133,14 +126,13 @@ export default function Register() {
                 error={passwordMatchError}
               />
             </Grid>
-            {registerUser.isLoading ? <LinearProgress sx={{ marginBottom: 2 }} /> : null}
             {responseError !== undefined ? (
               <ErrorMessage message={responseError[0]?.message} />
             ) : null}
             <Grid container alignItems="flex-start" justifyContent="space-between">
-              <Button disabled={registerUser.isLoading} type="submit" variant="contained">
+              <LoadingButton loading={registerUser.isLoading} type="submit" variant="contained">
                 Register
-              </Button>
+              </LoadingButton>
               <Typography align="left" paragraph>
                 Already have an account?{' '}
                 <Link to="/login">

@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  LinearProgress,
   Typography,
 } from '@mui/material';
 import MovieForm from './MovieForm';
@@ -15,6 +14,7 @@ import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import Movie from '../../models/Movie';
 import { useUpdateMovie, useUpdateMovieFormData } from '../../data/movies/useUpdateMovie';
 import PosterDialog from './PosterDialog';
+import { LoadingButton } from '@mui/lab';
 
 export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
@@ -66,8 +66,6 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
       <DialogTitle>Edit movie</DialogTitle>
       <form onSubmit={onSubmitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
-          {updateMovie.isLoading ? <LinearProgress /> : null}
-
           {formData ? (
             <MovieForm
               formData={formData}
@@ -100,13 +98,14 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }) {
             Cancel
           </Button>
 
-          <Button
+          <LoadingButton
+            loading={updateMovie.isLoading}
             type="submit"
             disabled={loadMovie.isLoading || loadMovie.isLoadingError || updateMovie.isLoading}
             color="primary"
           >
             Submit changes
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </BaseDialog>

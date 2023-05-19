@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
-  LinearProgress,
   Link,
   Typography,
 } from '@mui/material';
@@ -14,6 +13,7 @@ import { useExportData } from '../../data/profile/useExportData';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
 import PasswordField from '../common/PasswordField';
+import { LoadingButton } from '@mui/lab';
 
 const initialFormErrorState = { isError: false, text: ' ' };
 
@@ -109,7 +109,6 @@ function ExportDialog({ visible, closeDialog }) {
               {formError.text}
             </FormHelperText>
           ) : null}
-          <LinearProgress sx={{ display: exportData.isLoading ? 'block' : 'none' }} />
         </DialogContent>
         <DialogActions>
           <Button
@@ -120,9 +119,9 @@ function ExportDialog({ visible, closeDialog }) {
           >
             Cancel
           </Button>
-          <Button color="primary" disabled={exportData.isLoading} type="submit">
+          <LoadingButton loading={exportData.isLoading} color="primary" type="submit">
             Export
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </BaseDialog>

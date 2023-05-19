@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  LinearProgress,
   Typography,
 } from '@mui/material';
 import BookForm from './BookForm';
@@ -16,6 +15,7 @@ import Book from '../../models/Book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
+import { LoadingButton } from '@mui/lab';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
@@ -68,8 +68,6 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
       <DialogTitle>Edit book</DialogTitle>
       <form onSubmit={onSubmitForm}>
         <DialogContent sx={{ paddingTop: 0 }}>
-          {updateBook.isLoading ? <LinearProgress /> : null}
-
           {formData ? (
             <BookForm
               formData={formData}
@@ -102,13 +100,14 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
             Cancel
           </Button>
 
-          <Button
+          <LoadingButton
+            loading={updateBook.isLoading}
             type="submit"
             disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isLoading}
             color="primary"
           >
             Submit changes
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </BaseDialog>
