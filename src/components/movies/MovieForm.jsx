@@ -85,7 +85,6 @@ function MovieForm({ formData, handleChange, handleDateChange, setShowPosters })
             label="Start date"
             value={DateTime.fromISO(formData.start_date)}
             onChange={(date) => handleDateChange('start_date', DateTime.fromISO(date).toISODate())}
-            renderInput={(props) => <TextField {...props} />}
             sx={{ marginTop: 1, flexGrow: 1 }}
           />
           <DatePicker
@@ -93,7 +92,6 @@ function MovieForm({ formData, handleChange, handleDateChange, setShowPosters })
             label="End date"
             value={DateTime.fromISO(formData.end_date)}
             onChange={(date) => handleDateChange('end_date', DateTime.fromISO(date).toISODate())}
-            renderInput={(props) => <TextField {...props} />}
             sx={{ marginTop: 1, flexGrow: 1 }}
           />
         </Grid>
