@@ -5,7 +5,7 @@ const initialMovieState = {
   studio: '',
   director: '',
   writer: '',
-  image_url: null,
+  image_url: '',
   duration: 0,
   year: DateTime.now().year,
   status: 'watching',

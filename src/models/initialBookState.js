@@ -5,7 +5,7 @@ const initialBookState = {
   title: '',
   author: '',
   publisher: '',
-  image_url: null,
+  image_url: '',
   pages: 0,
   year: DateTime.now().year,
   status: 'reading',
