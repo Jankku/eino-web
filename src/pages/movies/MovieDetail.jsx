@@ -11,6 +11,7 @@ import { useMovieDetail } from '../../data/movies/useMovieDetail';
 import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
 import useIsMobile from '../../hooks/useIsMobile';
 import { LoadingButton } from '@mui/lab';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export default function MovieDetail() {
   const isMobile = useIsMobile();
@@ -20,6 +21,16 @@ export default function MovieDetail() {
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const { data } = useMovieDetail(movieId);
   const deleteMovie = useDeleteMovie();
+
+  const copyToClipboard = async () => {
+    try {
+      const contents = data.director ? `${data.director} - ${data.title}` : data.title;
+      await navigator.clipboard.writeText(contents);
+      showSuccessSnackbar('Copied');
+    } catch (error) {
+      showErrorSnackbar('Failed to copy');
+    }
+  };
 
   return (
     <Container fixed disableGutters={!isMobile} maxWidth="sm">
@@ -93,6 +104,15 @@ export default function MovieDetail() {
               sx={{ margin: '0.5em' }}
             >
               Edit
+            </Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={copyToClipboard}
+              startIcon={<ContentCopyIcon />}
+              sx={{ margin: '0.5em' }}
+            >
+              Copy
             </Button>
             <LoadingButton
               loading={deleteMovie.isLoading}

@@ -28,6 +28,22 @@ export default function Movies() {
   const { data } = useMovies(status);
   const countByStatus = useMovieCount();
 
+  const copyTitlesToClipboard = async () => {
+    try {
+      const items = data
+        .filter((i) => i.title !== '')
+        .map((i) => {
+          if (i.director) return `${i.director} - ${i.title}`;
+          return i.title;
+        })
+        .join('\n');
+      await navigator.clipboard.writeText(items);
+      showSuccessSnackbar('Items copied');
+    } catch (error) {
+      showErrorSnackbar('Failed to copy');
+    }
+  };
+
   const onSortStatusChange = (e) => {
     setStatus(e.target.value);
     setSearchParams((prevParams) => prevParams.delete('page'));
@@ -47,10 +63,8 @@ export default function Movies() {
                 {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
                 <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 <CopyItemButton
-                  data={data}
-                  isDisabled={countByStatus.all === 0}
-                  onSuccess={() => showSuccessSnackbar('Items copied')}
-                  onFailure={() => showErrorSnackbar('Failed to copy')}
+                  disabled={countByStatus.all === 0}
+                  onClick={copyTitlesToClipboard}
                 />
                 <SortStatusSelect status={status} onChange={onSortStatusChange}>
                   {movieSortOptions.map((option, itemIdx) => (
