@@ -1,4 +1,13 @@
-import { Button, capitalize, Card, CardActions, CardContent, Container, Grid } from '@mui/material';
+import {
+  Button,
+  capitalize,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  Grid,
+  IconButton,
+} from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
@@ -12,6 +21,7 @@ import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
 import useIsMobile from '../../hooks/useIsMobile';
 import { LoadingButton } from '@mui/lab';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function MovieDetail() {
   const isMobile = useIsMobile();
@@ -42,8 +52,13 @@ export default function MovieDetail() {
           borderRadius: 2,
         }}
       >
-        <CardContent sx={{ pl: isMobile ? 4 : 2, pb: 0 }}>
-          <Grid container justifyContent="center" flexWrap={'wrap'}>
+        <CardContent sx={{ pb: 0 }}>
+          {isMobile ? (
+            <IconButton onClick={() => navigate(-1)} sx={{ position: 'absolute' }}>
+              <ArrowBackIcon />
+            </IconButton>
+          ) : null}
+          <Grid container justifyContent="center" flexWrap="wrap">
             {data.image_url ? (
               <Grid
                 container
@@ -73,8 +88,7 @@ export default function MovieDetail() {
               </Grid>
             ) : null}
 
-            <Grid container item zeroMinWidth alignSelf="start" ml={!isMobile && 2} columns={1}>
-              <h2 style={{ margin: 0, marginBottom: 8 }}>Details</h2>
+            <Grid container item zeroMinWidth alignSelf="start" pl={2} pt={1} columns={1}>
               <DetailItem title="Title" text={data.title} />
               <DetailItem title="Studio" text={data.studio} />
               <DetailItem title="Director" text={data.director} />
