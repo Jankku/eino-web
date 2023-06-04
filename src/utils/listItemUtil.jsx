@@ -8,16 +8,16 @@ import UpdateIcon from '@mui/icons-material/Update';
 export default function getStatusIcon(status, color) {
   switch (status) {
     case 'reading':
-      return <BookIcon color={color} />;
+      return <BookIcon color={color} data-testid="reading" />;
     case 'watching':
-      return <LocalMoviesIcon color={color} />;
+      return <LocalMoviesIcon color={color} data-testid="watching" />;
     case 'completed':
-      return <DoneIcon color={color} />;
+      return <DoneIcon color={color} data-testid="completed" />;
     case 'on-hold':
-      return <UpdateIcon color={color} />;
+      return <UpdateIcon color={color} data-testid="on-hold" />;
     case 'dropped':
-      return <CloseIcon color={color} />;
+      return <CloseIcon color={color} data-testid="dropped" />;
     case 'planned':
-      return <ScheduleIcon color={color} />;
+      return <ScheduleIcon color={color} data-testid="planned" />;
   }
 }

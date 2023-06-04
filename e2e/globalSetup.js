@@ -18,7 +18,7 @@ async function globalSetup(config) {
   await authPage.loginUser(username, password);
   await expect(page).toHaveURL('/books');
 
-  await page.context().storageState({ path: './tests/storageState.json' });
+  await page.context().storageState({ path: './e2e/storageState.json' });
   await browser.close();
 }
 

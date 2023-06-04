@@ -5,8 +5,10 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build",
-    "serve": "vite preview --host",
-    "e2e": "npx playwright test",
+    "preview": "vite preview --host",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "npx playwright test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src",
@@ -43,14 +45,19 @@
     "@faker-js/faker": "^8.0.1",
     "@playwright/test": "^1.33.0",
     "@tanstack/eslint-plugin-query": "^4.29.4",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.40.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-testing-library": "^5.11.0",
+    "jsdom": "^22.1.0",
     "prettier": "^2.8.8",
-    "vite": "^4.3.8"
+    "vite": "^4.3.8",
+    "vitest": "^0.31.4"
   },
   "browserslist": {
     "production": [

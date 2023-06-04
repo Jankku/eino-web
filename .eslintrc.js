@@ -8,9 +8,10 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
+    'plugin:testing-library/react',
     'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
-  plugins: ['react', 'react-hooks', '@tanstack/query', 'prettier'],
+  plugins: ['react', 'react-hooks', '@tanstack/query', 'testing-library', 'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

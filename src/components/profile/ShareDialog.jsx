@@ -32,7 +32,7 @@ function ShareDialog({ visible, closeDialog }) {
   const onCopyUrl = async () => {
     try {
       const url = getShareUrl(shareId);
-      await navigator.clipboard.writeText(url.toString());
+      await navigator.clipboard.writeText(url);
       showSuccessSnackbar('Link copied');
     } catch (error) {
       showErrorSnackbar('Failed to copy link');
