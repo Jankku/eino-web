@@ -29,4 +29,4 @@ yarn-error.log*
 /tests-examples/
 /playwright-report/
 /playwright/.cache/
-/tests/storageState.json
+/e2e/storageState.json
