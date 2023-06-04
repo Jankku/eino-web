@@ -11,30 +11,53 @@ Eino
 
 ## Run project
 
-- Rename `.env.example` file to `.env`.
-- In `.env` file change `REACT_APP_BASE_URL` value to point to Eino backend. 
-- Install dependencies:
+Create `.env` file.
+
+```sh
+$ touch .env
 ```
-npm install
+
+In `.env` file, create `VITE_BASE_URL` variable, and fill it with Eino backend URL.
+
+```sh
+$ echo "VITE_BASE_URL=<URL>" > .env
 ```
-- Start development server:
+
+Install dependencies.
+
+```sh
+$ npm install
 ```
-npm start
+
+Start development server.
+
+```sh
+$ npm start
 ```
 
 ## Build
-Build minified production version with the following command:
-```
-npm run build
+Build minified production version with the following command.
+
+```sh
+$ npm run build
 ```
 
 ## Testing
 
-This project uses [Playwright](https://playwright.dev/) for end-to-end testing.
+This project uses [Vitest](https://vitest.dev/) for unit tests, and [Playwright](https://playwright.dev/) for end-to-end tests.
 
-Before running the tests, make sure that backend is running and that `REACT_APP_BASE_URL` environment variable is set.
+Before running E2E tests, make sure that backend is running and that `REACT_APP_BASE_URL` environment variable is set.
 
-To run the tests, execute `npm run e2e` in terminal.
+```sh
+# Run unit tests
+$ npm run test:unit
+
+# Run e2e tests
+$ npm run test:e2e
+
+# Run both unit and e2e tests
+$ npm run test
+```
 
 ## License
 Licensed under the [MIT License](https://github.com/Jankku/eino-web/blob/master/LICENSE.md).
