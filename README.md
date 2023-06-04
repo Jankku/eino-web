@@ -46,7 +46,7 @@ $ npm run build
 
 This project uses [Vitest](https://vitest.dev/) for unit tests, and [Playwright](https://playwright.dev/) for end-to-end tests.
 
-Before running E2E tests, make sure that backend is running and that `REACT_APP_BASE_URL` environment variable is set.
+Before running E2E tests, make sure that backend is running and that `VITE_BASE_URL` environment variable is set to the backend URL.
 
 ```sh
 # Run unit tests
