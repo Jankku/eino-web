@@ -16,6 +16,7 @@ import CreateButton from '../../components/common/CreateButton';
 import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
 import ListItemTypeButton from '../../components/common/ListItemTypeButton';
 import useMovieCount from './useMovieCount';
+import ListEmpty from '../../components/common/ListEmpty';
 
 export default function Movies() {
   const isMobile = useIsMobile();
@@ -27,6 +28,7 @@ export default function Movies() {
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useMovies(status);
   const countByStatus = useMovieCount();
+  const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {
     try {
@@ -62,10 +64,7 @@ export default function Movies() {
               <Grid container item flexDirection="row" gap={1}>
                 {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
                 <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
-                <CopyItemButton
-                  disabled={countByStatus.all === 0}
-                  onClick={copyTitlesToClipboard}
-                />
+                <CopyItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard} />
                 <SortStatusSelect status={status} onChange={onSortStatusChange}>
                   {movieSortOptions.map((option, itemIdx) => (
                     <option key={itemIdx} value={option.value}>
@@ -77,7 +76,7 @@ export default function Movies() {
             </Grid>
           </Grid>
 
-          <MovieList movies={data} itemType={itemType} />
+          {isEmptyList ? <ListEmpty /> : <MovieList movies={data} itemType={itemType} />}
 
           <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 

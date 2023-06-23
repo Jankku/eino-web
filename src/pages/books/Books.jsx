@@ -16,6 +16,7 @@ import CreateFab from '../../components/common/CreateFab';
 import useListItemType, { listItemTypes } from '../../hooks/useListItemType';
 import ListItemTypeButton from '../../components/common/ListItemTypeButton';
 import useBookCount from './useBookCount';
+import ListEmpty from '../../components/common/ListEmpty';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -27,6 +28,7 @@ export default function Books() {
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
   const { data } = useBooks(status);
   const countByStatus = useBookCount();
+  const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {
     try {
@@ -62,10 +64,7 @@ export default function Books() {
               <Grid container item flexDirection="row" gap={1}>
                 {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
                 <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
-                <CopyItemButton
-                  disabled={countByStatus.all === 0}
-                  onClick={copyTitlesToClipboard}
-                />
+                <CopyItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard} />
                 <SortStatusSelect status={status} onChange={onSortStatusChange}>
                   {bookSortOptions.map((option, itemIdx) => (
                     <option key={itemIdx} value={option.value}>
@@ -77,7 +76,7 @@ export default function Books() {
             </Grid>
           </Grid>
 
-          <BookList books={data} itemType={itemType} />
+          {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
 
           <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
