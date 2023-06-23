@@ -31,6 +31,7 @@ export default function MovieDetail() {
   const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
   const { data } = useMovieDetail(movieId);
   const deleteMovie = useDeleteMovie();
+  const hasImage = !!data.image_url;
 
   const copyToClipboard = async () => {
     try {
@@ -59,7 +60,7 @@ export default function MovieDetail() {
             </IconButton>
           ) : null}
           <Grid container justifyContent="center" flexWrap="wrap">
-            {data.image_url ? (
+            {hasImage ? (
               <Grid
                 container
                 item
@@ -88,7 +89,15 @@ export default function MovieDetail() {
               </Grid>
             ) : null}
 
-            <Grid container item zeroMinWidth alignSelf="start" pl={2} pt={1} columns={1}>
+            <Grid
+              container
+              item
+              zeroMinWidth
+              alignSelf="start"
+              pl={2}
+              pt={hasImage ? 1 : 6}
+              columns={1}
+            >
               <DetailItem title="Title" text={data.title} />
               <DetailItem title="Studio" text={data.studio} />
               <DetailItem title="Director" text={data.director} />
