@@ -20,8 +20,8 @@ export default function BookList({ books, itemType }) {
     seteditedBookId(itemId);
   };
 
-  return (
-    <>
+  const pagination =
+    books?.length > 0 ? (
       <Pagination
         showFirstButton
         showLastButton
@@ -32,7 +32,11 @@ export default function BookList({ books, itemType }) {
           <PaginationItem component={Link} to={`${pathname}?page=${item.page}`} {...item} />
         )}
       />
+    ) : null;
 
+  return (
+    <>
+      {pagination}
       <ImageList cols={columnCount} gap={12}>
         {items.map((book) => (
           <ListItemComponent
@@ -47,18 +51,7 @@ export default function BookList({ books, itemType }) {
           />
         ))}
       </ImageList>
-
-      <Pagination
-        showFirstButton
-        showLastButton
-        page={page}
-        count={pageCount}
-        boundaryCount={0}
-        renderItem={(item) => (
-          <PaginationItem component={Link} to={`${pathname}?page=${item.page}`} {...item} />
-        )}
-        sx={{ mb: 2 }}
-      />
+      {pagination}
     </>
   );
 }
