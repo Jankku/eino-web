@@ -95,7 +95,7 @@ export default function MovieDetail() {
               zeroMinWidth
               alignSelf="start"
               pl={2}
-              pt={hasImage ? 1 : 6}
+              pt={hasImage ? 1 : isMobile ? 6 : 1}
               columns={1}
             >
               <DetailItem title="Title" text={data.title} />
