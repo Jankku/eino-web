@@ -20,8 +20,14 @@ test.describe('Register', () => {
 
     await authPage.registerUser('a', 'a');
     await expect(page).toHaveURL('/register');
-    await expect(page.locator('input#username')).toHaveAttribute('aria-invalid', 'true');
-    await expect(page.locator('input#password')).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.getByRole('textbox', { name: 'username' })).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    );
+    await expect(page.getByLabel('Password', { exact: true })).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    );
   });
 });
 
