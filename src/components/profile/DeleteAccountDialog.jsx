@@ -7,9 +7,10 @@ import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { zodFields } from '../../utils/zodUtil';
 
 const passwordFormSchema = z.object({
-  password: z.string().min(8).max(255),
+  password: zodFields.password,
 });
 
 function DeleteAccountDialog({ visible, closeDialog }) {

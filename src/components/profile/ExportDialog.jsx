@@ -8,9 +8,10 @@ import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { zodFields } from '../../utils/zodUtil';
 
 const passwordFormSchema = z.object({
-  password: z.string().min(8).max(255),
+  password: zodFields.password,
 });
 
 function ExportDialog({ visible, closeDialog }) {

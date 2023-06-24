@@ -7,6 +7,7 @@ export default function TextField({
   type = 'text',
   autoFocus = false,
   autoComplete = 'on',
+  helperText,
   ...rest
 }) {
   const { control } = useFormContext();
@@ -27,7 +28,7 @@ export default function TextField({
           type={type}
           label={label}
           error={invalid}
-          helperText={error?.message}
+          helperText={error?.message || helperText}
         />
       )}
     />

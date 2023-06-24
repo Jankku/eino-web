@@ -8,12 +8,13 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
+import { zodFields } from '../../utils/zodUtil';
 
 const registerSchema = z
   .object({
-    username: z.string().min(3).max(255),
-    password: z.string().min(8).max(255),
-    password2: z.string().min(8).max(255),
+    username: zodFields.username,
+    password: zodFields.password,
+    password2: zodFields.password,
   })
   .superRefine(({ password, password2 }, ctx) => {
     if (password !== password2) {
@@ -62,10 +63,20 @@ export default function Register() {
                 <h1>Register</h1>
               </Grid>
               <Grid item sx={{ mb: 2 }}>
-                <TextField autoFocus name="username" label="Username" autoComplete="username" />
+                <TextField
+                  autoFocus
+                  name="username"
+                  label="Username"
+                  autoComplete="username"
+                  helperText="Username should be 3-255 characters long"
+                />
               </Grid>
               <Grid item sx={{ mb: 2 }}>
-                <PasswordField name="password" label="Password" />
+                <PasswordField
+                  name="password"
+                  label="Password"
+                  helperText="Password should be 8-255 characters long"
+                />
               </Grid>
               <Grid item sx={{ mb: 2 }}>
                 <PasswordField name="password2" label="Confirm password" />

@@ -10,10 +10,11 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
+import { zodFields } from '../../utils/zodUtil';
 
 const loginSchema = z.object({
-  username: z.string().min(3).max(255),
-  password: z.string().min(8).max(255),
+  username: zodFields.username,
+  password: zodFields.password,
 });
 
 export default function Login() {
