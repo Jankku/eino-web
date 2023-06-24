@@ -12,10 +12,24 @@ const Movie = z.object({
   ]),
   duration: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
-  status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']),
+  status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']).default('watching'),
   score: z.coerce.number().nonnegative().max(10).default(0),
   start_date: z.string(),
   end_date: z.string(),
+});
+
+export const movieDefaults = Movie.parse({
+  title: '',
+  studio: '',
+  director: '',
+  writer: '',
+  image_url: '',
+  duration: 0,
+  year: DateTime.now().year,
+  status: 'watching',
+  score: 0,
+  start_date: DateTime.now().toISO(),
+  end_date: DateTime.now().toISO(),
 });
 
 export default Movie;

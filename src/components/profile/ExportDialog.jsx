@@ -1,33 +1,28 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormHelperText,
-  Link,
-  Typography,
-} from '@mui/material';
-import { useState } from 'react';
+import { Button, DialogActions, DialogContent, DialogTitle, Link, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
-import PasswordField from '../common/PasswordField';
+import PasswordField from '../form/PasswordField';
 import { LoadingButton } from '@mui/lab';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-const initialFormErrorState = { isError: false, text: ' ' };
+const passwordFormSchema = z.object({
+  password: z.string().min(8).max(255),
+});
 
 function ExportDialog({ visible, closeDialog }) {
   const { showErrorSnackbar } = useCustomSnackbar();
-  const [userPassword, setUserPassword] = useState('');
-  const [formError, setFormError] = useState(initialFormErrorState);
+  const formMethods = useForm({
+    defaultValues: {
+      password: '',
+    },
+    resolver: zodResolver(passwordFormSchema),
+  });
+  const { handleSubmit, setError, reset: resetForm } = formMethods;
   const exportData = useExportData();
-
-  const clearFormError = () => setFormError(initialFormErrorState);
-
-  const handleChange = (e) => {
-    setUserPassword(e.target.value);
-  };
 
   const downloadJsonExport = (data) => {
     try {
@@ -46,9 +41,22 @@ function ExportDialog({ visible, closeDialog }) {
   };
 
   const resetState = () => {
-    setUserPassword('');
+    resetForm();
     exportData.reset();
     closeDialog();
+  };
+
+  const onSubmit = ({ password }) => {
+    exportData.mutate(password, {
+      onSuccess: (data) => {
+        downloadJsonExport(data);
+      },
+      onError: (error) => {
+        setError('password', {
+          message: error.response.data.errors[0].message,
+        });
+      },
+    });
   };
 
   return (
@@ -59,71 +67,42 @@ function ExportDialog({ visible, closeDialog }) {
       }}
     >
       <DialogTitle>Export account data</DialogTitle>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          exportData.mutate(userPassword, {
-            onSuccess: (data) => {
-              downloadJsonExport(data);
-            },
-            onError: (err) => {
-              setFormError({
-                isError: true,
-                text: err.response.data.errors[0].message,
-              });
-            },
-          });
-        }}
-      >
-        <DialogContent sx={{ pt: 0 }}>
-          <Typography paragraph>
-            All account data is downloaded as a JSON file. Please confirm your password to continue.
-          </Typography>
-          {exportData.isSuccess ? (
-            <Typography paragraph pb={1}>
-              Download didn&apos;t work?{' '}
-              <Link
-                download={generateExportFileName()}
-                href={URL.createObjectURL(createJsonBlob(exportData.data))}
-                onClick={() => resetState()}
-              >
-                Click here to download
-              </Link>
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent sx={{ pt: 0 }}>
+            <Typography paragraph>
+              All account data is downloaded as a JSON file. Please confirm your password to
+              continue.
             </Typography>
-          ) : null}
-          <PasswordField
-            autoFocus
-            required
-            fullWidth
-            name="password"
-            autoComplete="current-password"
-            margin="none"
-            label="Confirm password"
-            onFocus={clearFormError}
-            value={userPassword}
-            onChange={handleChange}
-            disabled={exportData.isLoading}
-          />
-          {exportData.isError ? (
-            <FormHelperText error sx={{ fontSize: 14 }}>
-              {formError.text}
-            </FormHelperText>
-          ) : null}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color="secondary"
-            onClick={() => {
-              resetState();
-            }}
-          >
-            Cancel
-          </Button>
-          <LoadingButton loading={exportData.isLoading} color="primary" type="submit">
-            Export
-          </LoadingButton>
-        </DialogActions>
-      </form>
+            {exportData.isSuccess ? (
+              <Typography paragraph pb={1}>
+                Download didn&apos;t work?{' '}
+                <Link
+                  download={generateExportFileName()}
+                  href={URL.createObjectURL(createJsonBlob(exportData.data))}
+                  onClick={() => resetState()}
+                >
+                  Click here to download
+                </Link>
+              </Typography>
+            ) : null}
+            <PasswordField autoFocus name="password" label="Confirm password" />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="secondary"
+              onClick={() => {
+                resetState();
+              }}
+            >
+              Cancel
+            </Button>
+            <LoadingButton loading={exportData.isLoading} color="primary" type="submit">
+              Export
+            </LoadingButton>
+          </DialogActions>
+        </form>
+      </FormProvider>
     </BaseDialog>
   );
 }

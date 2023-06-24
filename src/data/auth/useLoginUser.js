@@ -13,5 +13,5 @@ const loginUserQuery = async (credentials) => {
 export const useLoginUser = () =>
   useMutation({
     useErrorBoundary: false,
-    mutationFn: (userCredentials) => loginUserQuery(userCredentials),
+    mutationFn: (credentials) => loginUserQuery(credentials),
   });

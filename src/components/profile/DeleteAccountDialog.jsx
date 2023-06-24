@@ -1,93 +1,78 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormHelperText,
-  Typography,
-} from '@mui/material';
-import { useState } from 'react';
+import { Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
-import PasswordField from '../common/PasswordField';
 import { LoadingButton } from '@mui/lab';
+import PasswordField from '../form/PasswordField';
+import { z } from 'zod';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-const initialFormErrorState = { isError: false, text: ' ' };
+const passwordFormSchema = z.object({
+  password: z.string().min(8).max(255),
+});
 
 function DeleteAccountDialog({ visible, closeDialog }) {
   const navigate = useNavigate();
-  const [userPassword, setUserPassword] = useState('');
-  const [formError, setFormError] = useState(initialFormErrorState);
+  const formMethods = useForm({
+    defaultValues: {
+      password: '',
+    },
+    resolver: zodResolver(passwordFormSchema),
+  });
+  const { handleSubmit, setError, reset: resetForm } = formMethods;
   const deleteAccount = useDeleteAccount();
 
-  const clearFormError = () => setFormError(initialFormErrorState);
+  const resetState = () => {
+    resetForm();
+    deleteAccount.reset();
+    closeDialog();
+  };
 
-  const handleChange = (e) => {
-    setUserPassword(e.target.value);
+  const onSubmit = ({ password }) => {
+    deleteAccount.mutate(password, {
+      onSuccess: () => {
+        closeDialog();
+        navigate('/logout');
+      },
+      onError: (error) => {
+        setError('password', {
+          message: error?.response?.data?.errors[0]?.message,
+        });
+      },
+    });
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => closeDialog()}>
+    <BaseDialog open={visible} onClose={() => resetState()}>
       <DialogTitle>Delete account</DialogTitle>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          deleteAccount.mutate(userPassword, {
-            onSuccess: () => {
-              closeDialog();
-              navigate('/logout');
-            },
-            onError: (err) => {
-              setFormError({
-                isError: true,
-                text: err.response.data.errors[0].message,
-              });
-            },
-          });
-        }}
-      >
-        <DialogContent sx={{ pt: 0 }}>
-          <Typography paragraph fontWeight={700} color="error">
-            NOTE: THIS ACTION IS IRREVERSIBLE!
-          </Typography>
-          <Typography paragraph variant="body1">
-            This action will permanently delete your account and all associated data. Please confirm
-            your password before proceeding.
-          </Typography>
-          <PasswordField
-            autoFocus
-            required
-            fullWidth
-            name="password"
-            autoComplete="current-password"
-            margin="none"
-            label="Confirm password"
-            onFocus={clearFormError}
-            value={userPassword}
-            onChange={handleChange}
-            disabled={deleteAccount.isLoading}
-          />
-          {deleteAccount.isError ? (
-            <FormHelperText error sx={{ fontSize: 14 }}>
-              {formError.text}
-            </FormHelperText>
-          ) : null}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color="secondary"
-            onClick={() => {
-              closeDialog();
-            }}
-          >
-            Cancel
-          </Button>
-          <LoadingButton loading={deleteAccount.isLoading} color="primary" type="submit">
-            Delete account
-          </LoadingButton>
-        </DialogActions>
-      </form>
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent sx={{ pt: 0 }}>
+            <Typography paragraph fontWeight={700} color="error">
+              NOTE: THIS ACTION IS IRREVERSIBLE!
+            </Typography>
+            <Typography paragraph variant="body1">
+              This action will permanently delete your account and all associated data. Please
+              confirm your password before proceeding.
+            </Typography>
+            <PasswordField autoFocus name="password" label="Confirm password" />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="secondary"
+              onClick={() => {
+                resetState();
+              }}
+            >
+              Cancel
+            </Button>
+            <LoadingButton loading={deleteAccount.isLoading} color="primary" type="submit">
+              Delete account
+            </LoadingButton>
+          </DialogActions>
+        </form>
+      </FormProvider>
     </BaseDialog>
   );
 }

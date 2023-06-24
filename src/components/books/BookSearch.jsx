@@ -1,14 +1,13 @@
-import { Autocomplete, createFilterOptions, Grid, ListItem, Typography } from '@mui/material';
+import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../hooks/useDebounce';
 import SearchTextField from '../common/SearchTextField';
 import { useBookSearch } from '../../data/books/useBookSearch';
-import { useThemeContext } from '../../providers/ThemeProvider';
+import SearchResult from '../common/SearchResult';
 
 function BookSearch() {
   const navigate = useNavigate();
-  const { isDark } = useThemeContext();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [shouldNavigate, setShouldNavigate] = useState(false);
@@ -58,39 +57,13 @@ function BookSearch() {
       onInputChange={(e, value) => setSearchTerm(value ?? '')}
       renderInput={(params) => <SearchTextField params={{ ...params }} label="Search books" />}
       renderOption={(props, option) => (
-        <ListItem {...props} key={option.book_id}>
-          {option.image_url ? (
-            <Grid
-              container
-              width="50px"
-              height="100%"
-              sx={{
-                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
-                marginRight: 1,
-              }}
-            >
-              <img
-                loading={'lazy'}
-                alt="Book cover"
-                referrerPolicy="no-referrer"
-                src={option.image_url}
-                width="50px"
-                height="100%"
-                style={{ objectFit: 'cover', aspectRatio: 0.7, borderRadius: 2 }}
-              />
-            </Grid>
-          ) : null}
-          <Grid zeroMinWidth>
-            <Typography noWrap variant="body1" sx={{ minWidth: '5em' }}>
-              {option.title}
-            </Typography>
-            {option.author ? (
-              <Typography noWrap variant="body2" color="text.secondary">
-                {option.author}
-              </Typography>
-            ) : null}
-          </Grid>
-        </ListItem>
+        <SearchResult
+          {...props}
+          key={option.book_id}
+          title={option?.title}
+          subtitle={option?.author}
+          imageUrl={option?.image_url}
+        />
       )}
     />
   );

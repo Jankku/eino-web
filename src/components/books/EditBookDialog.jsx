@@ -11,34 +11,40 @@ import {
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
-import Book from '../../models/Book';
+import Book, { bookDefaults } from '../../models/Book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
 import { LoadingButton } from '@mui/lab';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
-  const [formData, setFormData] = useState();
+  const formMethods = useForm({
+    defaultValues: bookDefaults,
+    resolver: zodResolver(Book),
+  });
+  const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
   const loadBook = useUpdateBookFormData(visible, bookId);
   const updateBook = useUpdateBook(bookId);
 
   useEffect(() => {
-    setFormData(loadBook.data);
-  }, [loadBook.data, setFormData]);
+    resetForm(Book.parse(loadBook.data));
+  }, [loadBook.data, resetForm]);
 
-  const onSubmitForm = (e) => {
-    e.preventDefault();
+  const onSubmit = (formData) => {
     try {
-      const book = Book.parse(formData);
-      updateBook.mutate(book, {
+      updateBook.mutate(formData, {
         onSuccess: () => {
-          closeDialog();
           showSuccessSnackbar('Book saved.');
         },
-        onError: () => showErrorSnackbar('Failed to save book.'),
+        onError: () => {
+          showErrorSnackbar('Failed to save book.');
+        },
       });
+      closeDialog();
     } catch (error) {
       console.error(error);
       showErrorSnackbar('Failed to save book.');
@@ -46,70 +52,58 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
   };
 
   const onSelectCover = (coverUrl) => {
-    setFormData({ ...formData, image_url: coverUrl });
+    setValue('image_url', coverUrl);
     setShowCovers(false);
   };
 
   const onCancel = () => {
     closeDialog();
+    resetForm();
     setShowCovers(false);
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleDateChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
   };
 
   return (
     <BaseDialog open={visible} onClose={onCancel}>
       <DialogTitle>Edit book</DialogTitle>
-      <form onSubmit={onSubmitForm}>
-        <DialogContent sx={{ paddingTop: 0 }}>
-          {formData ? (
-            <BookForm
-              formData={formData}
-              handleChange={handleChange}
-              handleDateChange={handleDateChange}
-              setShowCovers={setShowCovers}
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent sx={{ paddingTop: 0 }}>
+            <BookForm onShowCovers={() => setShowCovers(true)} />
+
+            {loadBook.isLoading ? (
+              <Grid container justifyContent="center">
+                <CircularProgress />
+              </Grid>
+            ) : null}
+
+            {loadBook.isLoadingError ? (
+              <Typography paragraph>Failed to load form data.</Typography>
+            ) : null}
+
+            <CoverDialog
+              visible={showCovers}
+              closeDialog={() => setShowCovers((prev) => !prev)}
+              query={formatBookSearchQuery(getValues('title'), getValues('author'))}
+              onSelect={onSelectCover}
             />
-          ) : null}
+          </DialogContent>
 
-          {loadBook.isLoading ? (
-            <Grid container justifyContent="center">
-              <CircularProgress />
-            </Grid>
-          ) : null}
+          <DialogActions>
+            <Button color="secondary" onClick={onCancel}>
+              Cancel
+            </Button>
 
-          {loadBook.isLoadingError ? (
-            <Typography paragraph>Failed to load form data.</Typography>
-          ) : null}
-
-          <CoverDialog
-            visible={showCovers}
-            closeDialog={() => setShowCovers((prev) => !prev)}
-            query={formatBookSearchQuery(formData?.title, formData?.author)}
-            onSelect={onSelectCover}
-          />
-        </DialogContent>
-
-        <DialogActions>
-          <Button color="secondary" onClick={onCancel}>
-            Cancel
-          </Button>
-
-          <LoadingButton
-            loading={updateBook.isLoading}
-            type="submit"
-            disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isLoading}
-            color="primary"
-          >
-            Submit changes
-          </LoadingButton>
-        </DialogActions>
-      </form>
+            <LoadingButton
+              loading={updateBook.isLoading}
+              type="submit"
+              disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isLoading}
+              color="primary"
+            >
+              Submit changes
+            </LoadingButton>
+          </DialogActions>
+        </form>
+      </FormProvider>
     </BaseDialog>
   );
 }

@@ -1,30 +1,40 @@
-import { Container, Grid, TextField, Typography } from '@mui/material';
-import useState from 'react-usestateref';
+import { Container, Grid, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
-import PasswordField from '../../components/common/PasswordField';
 import { LoadingButton } from '@mui/lab';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import TextField from '../../components/form/TextField';
+import PasswordField from '../../components/form/PasswordField';
+
+const loginSchema = z.object({
+  username: z.string().min(3).max(255),
+  password: z.string().min(8).max(255),
+});
 
 export default function Login() {
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
   const { setIsLoggedIn } = useAuthContext();
-  const [responseError, setResponseError] = useState();
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
+  const formMethods = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+    resolver: zodResolver(loginSchema),
   });
+  const {
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = formMethods;
   const loginUser = useLoginUser();
 
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (credentials) => {
     loginUser.mutate(credentials, {
       onSuccess: (data) => {
         setToken(data.accessToken);
@@ -32,77 +42,62 @@ export default function Login() {
         setIsLoggedIn(true);
         navigate('/books');
       },
-      onError: (err) => setResponseError(err.response.data.errors),
+      onError: (error) =>
+        setError('root.serverError', {
+          message: error?.response?.data?.errors[0]?.message,
+        }),
     });
   };
 
   return (
     <Container maxWidth="md">
-      <form method="post" onSubmit={handleSubmit} encType="application/json">
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs={12} sm={10} md={8}>
-            <Grid item sx={{ textAlign: 'center' }}>
-              <h1>Login</h1>
-            </Grid>
-            <TextField
-              required
-              fullWidth
-              autoFocus
-              id="username"
-              name="username"
-              type="text"
-              autoComplete="username"
-              variant="outlined"
-              label="Username"
-              color="primary"
-              value={credentials.username}
-              onChange={handleChange}
-              inputProps={{ minLength: 3, maxLength: 255 }}
-              sx={{ mb: 2 }}
-            />
-            <PasswordField
-              required
-              fullWidth
-              id="password"
-              name="password"
-              autoComplete="current-password"
-              variant="outlined"
-              label="Password"
-              color="primary"
-              value={credentials.password}
-              onChange={handleChange}
-              inputProps={{ minLength: 8, maxLength: 255 }}
-              sx={{ mb: 2 }}
-            />
-            {responseError !== undefined ? (
-              <ErrorMessage message={responseError[0]?.message} />
-            ) : null}
-            <Grid container alignItems="flex-start" justifyContent="space-between">
-              <LoadingButton
-                loading={loginUser.isLoading}
-                type="submit"
-                variant="contained"
-                color="primary"
-              >
-                Login
-              </LoadingButton>
-              <Typography align="left" paragraph>
-                Don&apos;t have an account yet?{' '}
-                <Link to="/register">
-                  <Typography
-                    sx={{
-                      color: 'text.secondary',
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    Register
-                  </Typography>
-                </Link>
-              </Typography>
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={12} sm={10} md={8}>
+              <Grid item sx={{ textAlign: 'center' }}>
+                <h1>Login</h1>
+              </Grid>
+              <Grid item sx={{ mb: 2 }}>
+                <TextField autoFocus name="username" label="Username" autoComplete="username" />
+              </Grid>
+              <Grid item sx={{ mb: 2 }}>
+                <PasswordField name="password" label="Password" />
+              </Grid>
+
+              {errors.root?.serverError?.message ? (
+                <Grid item>
+                  <ErrorMessage message={errors.root.serverError.message} />
+                </Grid>
+              ) : null}
+
+              <Grid container alignItems="flex-start" justifyContent="space-between">
+                <LoadingButton
+                  loading={loginUser.isLoading}
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
+                  Login
+                </LoadingButton>
+                <Typography align="left" paragraph>
+                  Don&apos;t have an account yet?{' '}
+                  <Link to="/register">
+                    <Typography
+                      sx={{
+                        color: 'text.secondary',
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      Register
+                    </Typography>
+                  </Link>
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      </FormProvider>
     </Container>
   );
 }

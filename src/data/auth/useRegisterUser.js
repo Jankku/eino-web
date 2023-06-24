@@ -5,11 +5,7 @@ const registerUserQuery = async (credentials) => {
   const res = await axios({
     method: 'post',
     url: '/auth/register',
-    data: {
-      username: credentials.username,
-      password: credentials.password,
-      password2: credentials.password2,
-    },
+    data: credentials,
   });
   return res.data;
 };

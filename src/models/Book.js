@@ -12,10 +12,24 @@ const Book = z.object({
   ]),
   pages: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
-  status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']),
+  status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']).default('reading'),
   score: z.coerce.number().nonnegative().max(10).default(0),
   start_date: z.string(),
   end_date: z.string(),
+});
+
+export const bookDefaults = Book.parse({
+  isbn: '',
+  title: '',
+  author: '',
+  publisher: '',
+  image_url: '',
+  pages: 0,
+  year: DateTime.now().year,
+  status: 'reading',
+  score: 0,
+  start_date: DateTime.now().toISO(),
+  end_date: DateTime.now().toISO(),
 });
 
 export default Book;
