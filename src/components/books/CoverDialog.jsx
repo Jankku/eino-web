@@ -41,6 +41,7 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
               }}
             >
               <img
+                draggable="false"
                 loading="lazy"
                 alt="Book cover"
                 referrerPolicy="no-referrer"

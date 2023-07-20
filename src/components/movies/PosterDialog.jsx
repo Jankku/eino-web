@@ -41,6 +41,7 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
               }}
             >
               <img
+                draggable="false"
                 loading="lazy"
                 alt="Movie poster"
                 referrerPolicy="no-referrer"

@@ -42,6 +42,7 @@ export default function ListItem({ title, detailText, status, score, itemId, ima
             >
               {imageUrl ? (
                 <img
+                  draggable="false"
                   loading={'lazy'}
                   alt="Book cover"
                   referrerPolicy="no-referrer"

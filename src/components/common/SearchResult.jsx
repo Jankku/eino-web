@@ -17,6 +17,7 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }) {
           }}
         >
           <img
+            draggable="false"
             loading={'lazy'}
             alt="Book cover"
             referrerPolicy="no-referrer"

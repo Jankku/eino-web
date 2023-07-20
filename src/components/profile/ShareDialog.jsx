@@ -70,7 +70,7 @@ function ShareDialog({ visible, closeDialog }) {
             <CircularProgress />
           </Grid>
         ) : null}
-        {base64 ? <img src={base64} style={{ width: '100%' }} /> : null}
+        {base64 ? <img draggable="false" src={base64} style={{ width: '100%' }} /> : null}
         {isError ? <Typography paragraph>Failed to load image</Typography> : null}
       </DialogContent>
       <DialogActions>

@@ -34,6 +34,7 @@ export default function ListItemImage({ title, detailText, status, score, itemId
             <Grid container item>
               {imageUrl ? (
                 <img
+                  draggable="false"
                   loading={'lazy'}
                   alt="Book cover"
                   referrerPolicy="no-referrer"
