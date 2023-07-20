@@ -9,7 +9,6 @@ import {
   IconButton,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
@@ -19,9 +18,9 @@ import { useReducer } from 'react';
 import { useMovieDetail } from '../../data/movies/useMovieDetail';
 import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
 import useIsMobile from '../../hooks/useIsMobile';
-import { LoadingButton } from '@mui/lab';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteButton from '../../components/common/DeleteButton';
 
 export default function MovieDetail() {
   const isMobile = useIsMobile();
@@ -75,6 +74,7 @@ export default function MovieDetail() {
                 })}
               >
                 <img
+                  draggable="false"
                   alt="Movie poster"
                   referrerPolicy="no-referrer"
                   src={data.image_url}
@@ -137,11 +137,12 @@ export default function MovieDetail() {
             >
               Copy
             </Button>
-            <LoadingButton
+            <DeleteButton
               loading={deleteMovie.isLoading}
               variant="contained"
               color="secondary"
-              onClick={() =>
+              sx={{ margin: '0.5em' }}
+              onClick={() => {
                 deleteMovie.mutate(movieId, {
                   onSuccess: () => {
                     showSuccessSnackbar('Movie deleted.');
@@ -150,13 +151,9 @@ export default function MovieDetail() {
                   onError: () => {
                     showErrorSnackbar('Failed to delete movie.');
                   },
-                })
-              }
-              startIcon={<DeleteIcon />}
-              sx={{ margin: '0.5em' }}
-            >
-              Delete
-            </LoadingButton>
+                });
+              }}
+            />
           </Grid>
         </CardActions>
       </Card>

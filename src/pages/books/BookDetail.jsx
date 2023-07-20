@@ -9,7 +9,6 @@ import {
   IconButton,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
@@ -19,9 +18,9 @@ import { useReducer } from 'react';
 import { useBookDetail } from '../../data/books/useBookDetail';
 import { useDeleteBook } from '../../data/books/useDeleteBook';
 import useIsMobile from '../../hooks/useIsMobile';
-import { LoadingButton } from '@mui/lab';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteButton from '../../components/common/DeleteButton';
 
 export default function BookDetail() {
   const isMobile = useIsMobile();
@@ -75,6 +74,7 @@ export default function BookDetail() {
                 })}
               >
                 <img
+                  draggable="false"
                   alt="Book cover"
                   referrerPolicy="no-referrer"
                   src={data.image_url}
@@ -137,11 +137,12 @@ export default function BookDetail() {
             >
               Copy
             </Button>
-            <LoadingButton
+            <DeleteButton
               loading={deleteBook.isLoading}
               variant="contained"
               color="secondary"
-              onClick={() =>
+              sx={{ margin: '0.5em' }}
+              onClick={() => {
                 deleteBook.mutate(bookId, {
                   onSuccess: () => {
                     showSuccessSnackbar('Book deleted.');
@@ -150,13 +151,9 @@ export default function BookDetail() {
                   onError: () => {
                     showErrorSnackbar('Failed to delete book.');
                   },
-                })
-              }
-              startIcon={<DeleteIcon />}
-              sx={{ margin: '0.5em' }}
-            >
-              Delete
-            </LoadingButton>
+                });
+              }}
+            />
           </Grid>
         </CardActions>
       </Card>
