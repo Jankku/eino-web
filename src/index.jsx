@@ -35,5 +35,5 @@ root.render(
         </AuthenticationProvider>
       </ThemeProvider>
     </LocalizationProvider>
-  </StrictMode>
+  </StrictMode>,
 );

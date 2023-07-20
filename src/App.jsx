@@ -43,7 +43,7 @@ function App() {
             retry: 2,
           },
         },
-      })
+      }),
   );
 
   const { isLoggedIn } = useAuthContext();

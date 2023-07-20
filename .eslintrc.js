@@ -10,6 +10,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:testing-library/react',
     'plugin:@tanstack/eslint-plugin-query/recommended',
+    'prettier',
   ],
   plugins: ['react', 'react-hooks', '@tanstack/query', 'testing-library', 'prettier'],
   parserOptions: {

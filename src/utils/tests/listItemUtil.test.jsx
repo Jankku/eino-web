@@ -10,7 +10,7 @@ describe('listItemUtil', () => {
       (status) => {
         render(getStatusIcon(status));
         expect(screen.getByTestId(status)).toBeInTheDocument();
-      }
+      },
     );
   });
 });

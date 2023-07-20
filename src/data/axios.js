@@ -20,12 +20,12 @@ instance.interceptors.request.use(
 
     return req;
   },
-  async (err) => Promise.reject(err)
+  async (err) => Promise.reject(err),
 );
 
 instance.interceptors.response.use(
   async (res) => res,
-  async (err) => fetchNewToken(instance, err)
+  async (err) => fetchNewToken(instance, err),
 );
 
 export default instance;

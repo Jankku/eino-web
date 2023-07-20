@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 
 export default function Privacy() {
   const lastUpdated = DateTime.fromISO('2022-04-30T00:00:00+03:00').toLocaleString(
-    DateTime.DATE_SHORT
+    DateTime.DATE_SHORT,
   );
 
   return (
