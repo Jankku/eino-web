@@ -30,6 +30,7 @@ test.describe('Books', () => {
     await bookPage.navigateToDetail(listItem);
 
     await page.getByRole('button', { name: 'Delete' }).click();
+    await page.getByRole('button', { name: 'You sure?' }).click();
     await expect(page).toHaveURL('/books');
     await expect(listItem).toHaveCount(0);
   });
