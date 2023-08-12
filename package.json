@@ -11,7 +11,8 @@
     "test:e2e": "npx playwright test",
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@date-io/luxon": "^2.17.0",
@@ -42,6 +43,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.37.0",
     "@tanstack/eslint-plugin-query": "^4.32.5",
@@ -55,10 +58,16 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.0.0",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "prettier": "^3.0.1",
     "vite": "^4.4.9",
     "vitest": "^0.34.1"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "browserslist": {
     "production": [
