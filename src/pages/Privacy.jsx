@@ -21,14 +21,13 @@ export default function Privacy() {
 
       <Typography paragraph>
         This website uses self-hosted instance of{' '}
-        <Link href="https://plausible.io/" target="_blank" rel="noreferrer">
+        <Link href="https://plausible.io/" rel="noreferrer">
           Plausible
         </Link>{' '}
         analytics. The server is located in Amsterdam, Netherlands. This means your data will always
         stay inside EU. You can see what analytics data is collected on Plausible&apos;s{' '}
         <Link
           href="https://plausible.io/data-policy#first-thing-first-what-we-collect-and-what-we-use-it-for"
-          target="_blank"
           rel="noreferrer"
         >
           data policy

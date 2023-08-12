@@ -51,7 +51,6 @@ export default function Appbar({ drawerWidth, toggleDrawer }) {
                 margin: '0em 0em 0.2em 0em',
                 fontFamily: 'Pacifico, cursive',
                 fontSize: '32px',
-                letterSpacing: '0.03em',
                 color: '#FFFFFF',
                 textDecoration: 'none',
                 '&:hover': {

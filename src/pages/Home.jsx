@@ -20,10 +20,9 @@ export default function Home() {
       <Typography
         variant="h1"
         sx={{
-          typography: 'h3',
+          typography: 'h2',
           margin: '0.3em 0em',
           fontFamily: 'Pacifico, cursive',
-          letterSpacing: '0.03em',
         }}
       >
         eino
@@ -51,15 +50,15 @@ export default function Home() {
         </InfoCard>
 
         <InfoCard title="Source code" icon={<CodeIcon />}>
-          <a href="https://github.com/jankku/eino-backend/" target="_blank" rel="noreferrer">
+          <a href="https://github.com/jankku/eino-backend/" rel="noreferrer">
             <InfoCardButton icon={<StorageIcon />}>Backend</InfoCardButton>
           </a>
 
-          <a href="https://github.com/jankku/eino-web/" target="_blank" rel="noreferrer">
+          <a href="https://github.com/jankku/eino-web/" rel="noreferrer">
             <InfoCardButton icon={<WebIcon />}>Frontend</InfoCardButton>
           </a>
 
-          <a href="https://github.com/jankku/eino-android/" target="_blank" rel="noreferrer">
+          <a href="https://github.com/jankku/eino-android/" rel="noreferrer">
             <InfoCardButton icon={<AndroidRounded />}>Android</InfoCardButton>
           </a>
         </InfoCard>
