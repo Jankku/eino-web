@@ -10,11 +10,11 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
       title="Find book cover"
       sources={
         <>
-          <Link href="https://finna.fi/" target="_blank" rel="noreferrer">
+          <Link href="https://finna.fi/" rel="noreferrer">
             Finna
           </Link>
           ,{' '}
-          <Link href="https://openlibrary.org/" target="_blank" rel="noreferrer">
+          <Link href="https://openlibrary.org/" rel="noreferrer">
             Open Library
           </Link>
         </>
@@ -42,12 +42,16 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
             >
               <img
                 draggable="false"
+                tabIndex="0"
                 loading="lazy"
                 alt="Book cover"
                 referrerPolicy="no-referrer"
                 src={coverUrl}
                 style={{ objectFit: 'contain', aspectRatio: 0.7 }}
                 onClick={() => onSelect(coverUrl)}
+                onKeyUp={(event) => {
+                  if (event.key === 'Enter') onSelect(coverUrl);
+                }}
               />
             </ImageListItem>
           ))}

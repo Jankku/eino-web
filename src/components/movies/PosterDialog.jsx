@@ -10,11 +10,11 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
       title="Find movie poster"
       sources={
         <>
-          <Link href="https://finna.fi/" target="_blank" rel="noreferrer">
+          <Link href="https://finna.fi/" rel="noreferrer">
             Finna
           </Link>
           ,{' '}
-          <Link href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">
+          <Link href="https://www.themoviedb.org/" rel="noreferrer">
             TMDB
           </Link>
         </>
@@ -42,12 +42,16 @@ export default function PosterDialog({ visible, closeDialog, query, onSelect }) 
             >
               <img
                 draggable="false"
+                tabIndex="0"
                 loading="lazy"
                 alt="Movie poster"
                 referrerPolicy="no-referrer"
                 src={posterUrl}
                 style={{ objectFit: 'contain', aspectRatio: 0.7 }}
                 onClick={() => onSelect(posterUrl)}
+                onKeyUp={(event) => {
+                  if (event.key === 'Enter') onSelect(coverUrl);
+                }}
               />
             </ImageListItem>
           ))}
