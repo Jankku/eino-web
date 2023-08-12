@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 function CustomNavLink({ item, toggleDrawer }) {
   return (
-    <NavLink to={item.path} onClick={toggleDrawer}>
+    <NavLink draggable={false} to={item.path} onClick={toggleDrawer}>
       {({ isActive }) => (
         <MenuItem
           selected={isActive}
