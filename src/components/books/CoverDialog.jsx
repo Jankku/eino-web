@@ -28,7 +28,7 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
         </Grid>
       ) : null}
       {bookCovers.isLoadingError ? <Typography pt={2}>Failed to load covers.</Typography> : null}
-      {bookCovers.data?.length > 0 ? (
+      {bookCovers.isSuccess && bookCovers.data?.length > 0 ? (
         <ImageList cols={3}>
           {bookCovers.data?.map((coverUrl) => (
             <ImageListItem
@@ -56,6 +56,9 @@ export default function CoverDialog({ visible, closeDialog, query, onSelect }) {
             </ImageListItem>
           ))}
         </ImageList>
+      ) : null}
+      {bookCovers.isSuccess && bookCovers.data?.length === 0 ? (
+        <Typography pt={2}>No covers found.</Typography>
       ) : null}
     </ImageDialog>
   );
