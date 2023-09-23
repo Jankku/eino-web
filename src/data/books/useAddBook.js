@@ -4,7 +4,7 @@ import axios from '../axios';
 const addBookQuery = async (book) => {
   const res = await axios({
     method: 'post',
-    url: '/list/books/add',
+    url: '/v1/list/books/add',
     data: book,
   });
   return res.data;

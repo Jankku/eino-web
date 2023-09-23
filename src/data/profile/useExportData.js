@@ -4,7 +4,7 @@ import axios from '../axios';
 const exportDataQuery = async (password) => {
   const res = await axios({
     method: 'POST',
-    url: '/profile/export',
+    url: '/v1/profile/export',
     data: { password },
   });
   return res.data;

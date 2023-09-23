@@ -4,7 +4,7 @@ import axios from '../axios';
 const deleteBookQuery = async (bookId) => {
   const res = await axios({
     method: 'delete',
-    url: `/list/books/delete/${bookId}`,
+    url: `/v1/list/books/delete/${bookId}`,
   });
   return res.data;
 };

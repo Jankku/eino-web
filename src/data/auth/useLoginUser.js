@@ -4,7 +4,7 @@ import axios from '../axios';
 const loginUserQuery = async (credentials) => {
   const res = await axios({
     method: 'post',
-    url: '/auth/login',
+    url: '/v1/auth/login',
     data: credentials,
   });
   return res.data;

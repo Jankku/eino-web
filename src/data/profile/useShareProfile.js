@@ -4,7 +4,7 @@ import axios from '../axios';
 const shareProfileQuery = async () => {
   const res = await axios({
     method: 'GET',
-    url: '/profile/share',
+    url: '/v1/profile/share',
   });
   return res.data.results[0].share_id;
 };

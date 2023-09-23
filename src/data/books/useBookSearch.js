@@ -4,7 +4,7 @@ import axios from '../axios';
 const searchBooksQuery = async (query) => {
   const res = await axios({
     method: 'get',
-    url: `/list/books/search?query=${query}`,
+    url: `/v1/list/books/search?query=${query}`,
   });
   return res.data.results;
 };

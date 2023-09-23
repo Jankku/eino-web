@@ -4,7 +4,7 @@ import axios from '../axios';
 const deleteMovieQuery = async (movieId) => {
   const res = await axios({
     method: 'delete',
-    url: `/list/movies/delete/${movieId}`,
+    url: `/v1/list/movies/delete/${movieId}`,
   });
   return res.data;
 };

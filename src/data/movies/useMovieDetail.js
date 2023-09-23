@@ -5,7 +5,7 @@ import axios from '../axios';
 export const getMovieDetailQuery = async (movieId) => {
   const res = await axios({
     method: 'get',
-    url: `/list/movies/movie/${movieId}`,
+    url: `/v1/list/movies/movie/${movieId}`,
   });
   return formatItemDates(res.data.results[0]);
 };

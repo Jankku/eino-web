@@ -5,7 +5,7 @@ import axios from '../axios';
 export const getBookDetailQuery = async (bookId) => {
   const res = await axios({
     method: 'get',
-    url: `/list/books/book/${bookId}`,
+    url: `/v1/list/books/book/${bookId}`,
   });
   return formatItemDates(res.data.results[0]);
 };

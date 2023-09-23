@@ -4,7 +4,7 @@ import axios from '../axios';
 const getShareImageQuery = async (shareId) => {
   const res = await axios({
     method: 'GET',
-    url: `/share/${shareId}`,
+    url: `/v1/share/${shareId}`,
     responseType: 'blob',
     headers: { 'Content-Type': 'image/png' },
   });

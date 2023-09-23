@@ -4,7 +4,7 @@ import axios from '../axios';
 const deleteAccountQuery = async (password) => {
   const res = await axios({
     method: 'POST',
-    url: '/profile/deleteaccount',
+    url: '/v1/profile/deleteaccount',
     data: { password },
   });
   return res.data;

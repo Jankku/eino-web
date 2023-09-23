@@ -4,7 +4,7 @@ import axios from '../axios';
 export const getMoviePostersQuery = async (query) => {
   const res = await axios({
     method: 'get',
-    url: `/list/movies/images`,
+    url: `/v1/list/movies/images`,
     params: { query },
   });
   return res.data.results;

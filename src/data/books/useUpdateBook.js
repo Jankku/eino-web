@@ -6,7 +6,7 @@ import { getBookDetailQuery } from './useBookDetail';
 const updateBookQuery = async (bookId, book) => {
   const res = await axios({
     method: 'PUT',
-    url: `/list/books/update/${bookId}`,
+    url: `/v1/list/books/update/${bookId}`,
     data: formatItemDates(book),
   });
   return res.data.results[0];

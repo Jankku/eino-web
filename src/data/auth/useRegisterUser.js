@@ -4,7 +4,7 @@ import axios from '../axios';
 const registerUserQuery = async (credentials) => {
   const res = await axios({
     method: 'post',
-    url: '/auth/register',
+    url: '/v1/auth/register',
     data: credentials,
   });
   return res.data;

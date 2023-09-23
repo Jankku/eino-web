@@ -4,7 +4,7 @@ import axios from '../axios';
 const addMovieQuery = async (movie) => {
   const res = await axios({
     method: 'post',
-    url: '/list/movies/add',
+    url: '/v1/list/movies/add',
     data: movie,
   });
   return res.data;

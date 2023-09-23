@@ -4,7 +4,7 @@ import axios from '../axios';
 const searchMoviesQuery = async (query) => {
   const res = await axios({
     method: 'get',
-    url: `/list/movies/search?query=${query}`,
+    url: `/v1/list/movies/search?query=${query}`,
   });
   return res.data.results;
 };

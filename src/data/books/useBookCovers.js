@@ -4,7 +4,7 @@ import axios from '../axios';
 export const getBookCoversQuery = async (query) => {
   const res = await axios({
     method: 'get',
-    url: `/list/books/images`,
+    url: `/v1/list/books/images`,
     params: { query },
   });
   return res.data.results;

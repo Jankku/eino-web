@@ -4,7 +4,7 @@ import axios from '../axios';
 export const getProfileQuery = async () => {
   const res = await axios({
     method: 'GET',
-    url: '/profile',
+    url: '/v1/profile',
   });
   return res.data;
 };

@@ -6,7 +6,7 @@ import { getMovieDetailQuery } from './useMovieDetail';
 const updateMovieQuery = async (movieId, movie) => {
   const res = await axios({
     method: 'PUT',
-    url: `/list/movies/update/${movieId}`,
+    url: `/v1/list/movies/update/${movieId}`,
     data: formatItemDates(movie),
   });
   return res.data.results[0];
