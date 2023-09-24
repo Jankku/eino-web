@@ -1,29 +1,23 @@
 import { useTheme } from '@emotion/react';
-import { Card, CardContent, useMediaQuery } from '@mui/material';
+import { Card, CardContent, Grid, useMediaQuery } from '@mui/material';
 import { Box } from '@mui/system';
 import ProfileDetailItem from './ProfileDetailItem';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
+import StatsStatusTable from './StatsStatusTable';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
 function Stats({ title, stats }) {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.only('xs'));
-  const scores = stats.score_distribution;
-  const scoreCount = scores.map((item) => item.count);
+  const scoreCounts = stats.score_distribution.map((item) => item.count);
   const isBookStats = stats.pages_read ? true : false;
 
   const options = {
     responsive: true,
     aspectRatio: matchesXs ? 1.5 : 2,
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-      },
-    },
     plugins: {
       title: {
         display: true,
@@ -84,39 +78,49 @@ function Stats({ title, stats }) {
     },
   };
 
-  const data = {
+  const tableData = {
     labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     color: theme.palette.text.primary,
     datasets: [
       {
         label: 'Count',
-        data: scoreCount,
+        data: scoreCounts,
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.primary.main,
       },
     ],
   };
 
+  const formatter = new Intl.NumberFormat();
+
   return (
     <Card variant="outlined">
       <CardContent sx={{ p: 0 }}>
-        <Box sx={{ pl: 2 }}>
+        <Box sx={{ px: 2 }}>
           <h2>{title}</h2>
-          <ProfileDetailItem title={'Count'} text={new Intl.NumberFormat().format(stats.count)} />
-          {isBookStats ? (
-            <ProfileDetailItem
-              title={'Pages read'}
-              text={new Intl.NumberFormat().format(stats.pages_read)}
+          <Grid container columns={1} rowGap={2}>
+            <Grid container spacing={4}>
+              {isBookStats ? (
+                <ProfileDetailItem title={'Pages read'} text={formatter.format(stats.pages_read)} />
+              ) : (
+                <ProfileDetailItem
+                  title={'Watch time'}
+                  text={`${formatter.format(stats.watch_time)} hours`}
+                />
+              )}
+              <ProfileDetailItem title={'Average score'} text={stats.score_average} />
+            </Grid>
+            <Grid item sx={{ width: '100%' }}>
+              <StatsStatusTable type={isBookStats ? 'book' : 'movie'} stats={stats} />
+            </Grid>
+            <Bar
+              data={tableData}
+              options={options}
+              plugins={[ChartDataLabels]}
+              style={{ width: '100%', height: '100%' }}
             />
-          ) : (
-            <ProfileDetailItem
-              title={'Watch time'}
-              text={`${new Intl.NumberFormat().format(stats.watch_time)} hours`}
-            />
-          )}
-          <ProfileDetailItem title={'Average score'} text={stats.score_average} />
+          </Grid>
         </Box>
-        <Bar data={data} options={options} plugins={[ChartDataLabels]} />
       </CardContent>
     </Card>
   );

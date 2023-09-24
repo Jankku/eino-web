@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api';
 
 const deleteMovieQuery = async (movieId) => {
-  const res = await api.delete(`api/v1/list/movies/delete/${movieId}`).json();
-  return res;
+  return await api.delete(`api/v1/list/movies/delete/${movieId}`).json();
 };
 
 export const useDeleteMovie = () => {

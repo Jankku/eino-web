@@ -2,8 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { api } from '../api';
 
 const exportDataQuery = async (password) => {
-  const res = await api.post('api/v1/profile/export', { json: { password } }).json();
-  return res;
+  return await api.post('api/v1/profile/export', { json: { password } }).json();
 };
 
 export const useExportData = () =>

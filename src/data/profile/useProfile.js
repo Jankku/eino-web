@@ -2,8 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../api';
 
 export const getProfileQuery = async () => {
-  const res = await api.get('api/v1/profile').json();
-  return res;
+  return await api.get('api/v2/profile').json();
 };
 
 export const useProfile = () => {

@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api';
 
 const addMovieQuery = async (movie) => {
-  const res = await api.post('api/v1/list/movies/add', { json: movie }).json();
-  return res;
+  return await api.post('api/v1/list/movies/add', { json: movie }).json();
 };
 
 export const useAddMovie = () => {
