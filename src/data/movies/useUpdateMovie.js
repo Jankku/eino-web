@@ -1,15 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatItemDates } from '../../utils/itemDateUtil';
-import axios from '../axios';
+import { api } from '../api';
 import { getMovieDetailQuery } from './useMovieDetail';
 
 const updateMovieQuery = async (movieId, movie) => {
-  const res = await axios({
-    method: 'PUT',
-    url: `/v1/list/movies/update/${movieId}`,
-    data: formatItemDates(movie),
-  });
-  return res.data.results[0];
+  const res = await api
+    .put(`api/v1/list/movies/update/${movieId}`, { json: formatItemDates(movie) })
+    .json();
+  return res.results[0];
 };
 
 export const useUpdateMovie = (movieId) => {

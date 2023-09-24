@@ -1,13 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const deleteAccountQuery = async (password) => {
-  const res = await axios({
-    method: 'POST',
-    url: '/v1/profile/deleteaccount',
-    data: { password },
-  });
-  return res.data;
+  const res = await api.post('api/v1/profile/deleteaccount', { json: { password } }).json();
+  return res;
 };
 
 export const useDeleteAccount = () =>

@@ -1,6 +1,7 @@
 export const getShareUrl = (shareId) => {
+  if (!shareId) return '';
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  return new URL(`share/${shareId}`, baseUrl).toString();
+  return new URL(`api/v1/share/${shareId}`, baseUrl).toString();
 };
 
 export const blobToBase64 = async (image) => {

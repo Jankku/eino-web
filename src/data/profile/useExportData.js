@@ -1,13 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const exportDataQuery = async (password) => {
-  const res = await axios({
-    method: 'POST',
-    url: '/v1/profile/export',
-    data: { password },
-  });
-  return res.data;
+  const res = await api.post('api/v1/profile/export', { json: { password } }).json();
+  return res;
 };
 
 export const useExportData = () =>

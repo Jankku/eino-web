@@ -1,13 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatItemDates } from '../../utils/itemDateUtil';
-import axios from '../axios';
+import { api } from '../api';
 
 export const getBookDetailQuery = async (bookId) => {
-  const res = await axios({
-    method: 'get',
-    url: `/v1/list/books/book/${bookId}`,
-  });
-  return formatItemDates(res.data.results[0]);
+  const res = await api.get(`api/v1/list/books/book/${bookId}`).json();
+  return formatItemDates(res.results[0]);
 };
 
 export const useBookDetail = (bookId) => {

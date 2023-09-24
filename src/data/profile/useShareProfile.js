@@ -1,12 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const shareProfileQuery = async () => {
-  const res = await axios({
-    method: 'GET',
-    url: '/v1/profile/share',
-  });
-  return res.data.results[0].share_id;
+  const res = await api.get('api/v1/profile/share').json();
+  return res.results[0].share_id;
 };
 
 export const useShareprofile = (visible) =>

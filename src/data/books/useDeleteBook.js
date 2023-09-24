@@ -1,12 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const deleteBookQuery = async (bookId) => {
-  const res = await axios({
-    method: 'delete',
-    url: `/v1/list/books/delete/${bookId}`,
-  });
-  return res.data;
+  const res = await api.delete(`api/v1/list/books/delete/${bookId}`).json();
+  return res;
 };
 
 export const useDeleteBook = () => {

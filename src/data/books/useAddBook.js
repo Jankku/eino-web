@@ -1,13 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const addBookQuery = async (book) => {
-  const res = await axios({
-    method: 'post',
-    url: '/v1/list/books/add',
-    data: book,
-  });
-  return res.data;
+  return await api.post('api/v1/list/books/add', { json: book }).json();
 };
 
 export const useAddBook = () => {

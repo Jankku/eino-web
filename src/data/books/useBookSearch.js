@@ -1,12 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const searchBooksQuery = async (query) => {
-  const res = await axios({
-    method: 'get',
-    url: `/v1/list/books/search?query=${query}`,
-  });
-  return res.data.results;
+  const res = await api.get(`api/v1/list/books/search`, { searchParams: { query } }).json();
+  return res.results;
 };
 
 export const useBookSearch = (isOpen) => {

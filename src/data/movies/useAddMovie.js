@@ -1,13 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const addMovieQuery = async (movie) => {
-  const res = await axios({
-    method: 'post',
-    url: '/v1/list/movies/add',
-    data: movie,
-  });
-  return res.data;
+  const res = await api.post('api/v1/list/movies/add', { json: movie }).json();
+  return res;
 };
 
 export const useAddMovie = () => {

@@ -1,14 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const getShareImageQuery = async (shareId) => {
-  const res = await axios({
-    method: 'GET',
-    url: `/v1/share/${shareId}`,
-    responseType: 'blob',
+  return await api.get(`api/v1/share/${shareId}`, {
     headers: { 'Content-Type': 'image/png' },
   });
-  return res.data;
 };
 
 export const useShareImage = (visible, shareId, onSuccess) => {

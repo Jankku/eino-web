@@ -1,12 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 export const getMoviesQuery = async (status) => {
-  const res = await axios({
-    method: 'get',
-    url: `/v1/list/movies/${status}`,
-  });
-  return res.data.results;
+  const res = await api.get(`api/v1/list/movies/${status}`).json();
+  return res.results;
 };
 
 export const useMovies = (sortStatus) => {

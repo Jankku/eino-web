@@ -1,13 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const loginUserQuery = async (credentials) => {
-  const res = await axios({
-    method: 'post',
-    url: '/v1/auth/login',
-    data: credentials,
-  });
-  return res.data;
+  return await api.post('api/v1/auth/login', { json: credentials }).json();
 };
 
 export const useLoginUser = () =>

@@ -1,15 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatItemDates } from '../../utils/itemDateUtil';
-import axios from '../axios';
+import { api } from '../api';
 import { getBookDetailQuery } from './useBookDetail';
 
 const updateBookQuery = async (bookId, book) => {
-  const res = await axios({
-    method: 'PUT',
-    url: `/v1/list/books/update/${bookId}`,
-    data: formatItemDates(book),
-  });
-  return res.data.results[0];
+  const res = await api
+    .put(`api/v1/list/books/update/${bookId}`, { json: formatItemDates(book) })
+    .json();
+  return res.results[0];
 };
 
 export const useUpdateBook = (bookId) => {

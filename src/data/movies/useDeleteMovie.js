@@ -1,12 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 const deleteMovieQuery = async (movieId) => {
-  const res = await axios({
-    method: 'delete',
-    url: `/v1/list/movies/delete/${movieId}`,
-  });
-  return res.data;
+  const res = await api.delete(`api/v1/list/movies/delete/${movieId}`).json();
+  return res;
 };
 
 export const useDeleteMovie = () => {

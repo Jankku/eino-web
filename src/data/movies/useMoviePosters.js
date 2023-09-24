@@ -1,13 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from '../axios';
+import { api } from '../api';
 
 export const getMoviePostersQuery = async (query) => {
-  const res = await axios({
-    method: 'get',
-    url: `/v1/list/movies/images`,
-    params: { query },
-  });
-  return res.data.results;
+  const res = await api.get('api/v1/list/movies/images', { searchParams: { query } }).json();
+  return res.results;
 };
 
 export const useMoviePosters = (showPosters, query) =>
