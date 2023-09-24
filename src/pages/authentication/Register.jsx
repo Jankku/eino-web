@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
-import { zodFields } from '../../utils/zodUtil';
+import { parseError, zodFields } from '../../utils/zodUtil';
 
 const registerSchema = z
   .object({
@@ -46,10 +46,12 @@ export default function Register() {
   const onSubmit = (credentials) => {
     registerUser.mutate(credentials, {
       onSuccess: () => navigate('/login'),
-      onError: (error) =>
+      onError: async (error) => {
+        const errors = await parseError(error);
         setError('root.serverError', {
-          message: error?.response?.data?.errors[0]?.message,
-        }),
+          message: errors[0].message,
+        });
+      },
     });
   };
 

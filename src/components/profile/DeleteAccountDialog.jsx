@@ -7,7 +7,8 @@ import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { zodFields } from '../../utils/zodUtil';
+import { parseError, zodFields } from '../../utils/zodUtil';
+import ErrorMessage from '../authentication/ErrorMessage';
 
 const passwordFormSchema = z.object({
   password: zodFields.password,
@@ -21,7 +22,12 @@ function DeleteAccountDialog({ visible, closeDialog }) {
     },
     resolver: zodResolver(passwordFormSchema),
   });
-  const { handleSubmit, setError, reset: resetForm } = formMethods;
+  const {
+    handleSubmit,
+    setError,
+    reset: resetForm,
+    formState: { errors },
+  } = formMethods;
   const deleteAccount = useDeleteAccount();
 
   const resetState = () => {
@@ -36,9 +42,10 @@ function DeleteAccountDialog({ visible, closeDialog }) {
         closeDialog();
         navigate('/logout');
       },
-      onError: (error) => {
-        setError('password', {
-          message: error?.response?.data?.errors[0]?.message,
+      onError: async (error) => {
+        const errors = await parseError(error);
+        setError('root.serverError', {
+          message: errors[0].message,
         });
       },
     });
@@ -58,6 +65,9 @@ function DeleteAccountDialog({ visible, closeDialog }) {
               confirm your password before proceeding.
             </Typography>
             <PasswordField autoFocus name="password" label="Confirm password" />
+            {errors.root?.serverError?.message ? (
+              <ErrorMessage message={errors.root.serverError.message} />
+            ) : null}
           </DialogContent>
           <DialogActions>
             <Button

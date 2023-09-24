@@ -1,5 +1,4 @@
 export const getShareUrl = (shareId) => {
-  if (!shareId) return '';
   const baseUrl = import.meta.env.VITE_BASE_URL;
   return new URL(`api/v1/share/${shareId}`, baseUrl).toString();
 };

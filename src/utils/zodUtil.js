@@ -14,3 +14,18 @@ export const zodFields = {
     .min(8, 'Password should be at least 8 characters long')
     .max(255, 'Password should be at most 255 characters long'),
 };
+
+export const errorSchema = z.object({
+  errors: z.array(
+    z.object({
+      name: z.string(),
+      message: z.string(),
+    }),
+  ),
+});
+
+export async function parseError(error) {
+  const json = await error.response.json();
+  const parsedErrors = errorSchema.parse(json);
+  return parsedErrors.errors;
+}
