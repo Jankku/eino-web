@@ -7,7 +7,7 @@ import Download from '@mui/icons-material/Download';
 import ShareRounded from '@mui/icons-material/ShareRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
-function AccountActions() {
+export function AccountActions() {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
@@ -63,5 +63,3 @@ function AccountActions() {
     </>
   );
 }
-
-export default AccountActions;

@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 
-export default function ProfileDetailItem({ title, text }) {
+export function ProfileDetailItem({ title, text }) {
   return (
     <Grid item>
       <Grid item>

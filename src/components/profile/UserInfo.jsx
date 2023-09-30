@@ -1,8 +1,8 @@
 import { Card, CardContent } from '@mui/material';
 import { DateTime } from 'luxon';
-import ProfileDetailItem from './ProfileDetailItem';
+import { ProfileDetailItem } from './ProfileDetailItem';
 
-function UserInfo({ data }) {
+export function UserInfo({ data }) {
   return (
     <Card variant="outlined" sx={{ flexGrow: 1 }}>
       <CardContent sx={{ p: 0, px: 2 }}>
@@ -16,5 +16,3 @@ function UserInfo({ data }) {
     </Card>
   );
 }
-
-export default UserInfo;

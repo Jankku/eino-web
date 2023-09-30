@@ -1,8 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import bookStatus from '../../models/bookStatus';
-import movieStatus from '../../models/movieStatus';
+import bookStatus from '../../../models/bookStatus';
+import movieStatus from '../../../models/movieStatus';
 
-export default function StatsStatusTable({ type, stats }) {
+export function StatsStatusTable({ type, stats }) {
   const statuses = type === 'book' ? bookStatus : movieStatus;
   const formatter = new Intl.NumberFormat();
 

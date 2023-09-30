@@ -1,10 +1,11 @@
 import { Container, Grid } from '@mui/material';
-import AccountActions from '../../components/profile/AccountActions';
-import Stats from '../../components/profile/Stats';
-import UserInfo from '../../components/profile/UserInfo';
+import { AccountActions } from '../../components/profile/AccountActions';
+import { BookStats } from '../../components/profile/stats/BookStats';
+import { MovieStats } from '../../components/profile/stats/MovieStats';
+import { UserInfo } from '../../components/profile/UserInfo';
 import { useProfile } from '../../data/profile/useProfile';
 
-function Profile() {
+export default function Profile() {
   const { data } = useProfile();
 
   return (
@@ -18,15 +19,13 @@ function Profile() {
             <AccountActions />
           </Grid>
           <Grid item mt={2}>
-            <Stats title="Book stats" stats={data.stats.book} />
+            <BookStats stats={data.stats.book} />
           </Grid>
           <Grid item mt={2}>
-            <Stats title="Movie stats" stats={data.stats.movie} />
+            <MovieStats stats={data.stats.movie} />
           </Grid>
         </>
       ) : null}
     </Container>
   );
 }
-
-export default Profile;
