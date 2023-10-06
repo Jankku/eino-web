@@ -78,10 +78,15 @@ export default function Register() {
                   name="password"
                   label="Password"
                   helperText="Password should be 8-255 characters long"
+                  autoComplete="new-password"
                 />
               </Grid>
               <Grid item sx={{ mb: 2 }}>
-                <PasswordField name="password2" label="Confirm password" />
+                <PasswordField
+                  name="password2"
+                  label="Confirm password"
+                  autoComplete="new-password"
+                />
               </Grid>
 
               {errors.root?.serverError?.message ? (

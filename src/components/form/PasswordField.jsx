@@ -4,7 +4,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-export default function PasswordField({ name, label, autoFocus = false, helperText }) {
+export default function PasswordField({
+  name,
+  label,
+  autoFocus = false,
+  autoComplete = 'current-password',
+  helperText,
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const { control } = useFormContext();
 
@@ -20,6 +26,8 @@ export default function PasswordField({ name, label, autoFocus = false, helperTe
           variant="outlined"
           color="primary"
           type={showPassword ? 'text' : 'password'}
+          autoComplete={autoComplete}
+          autoCapitalize="none"
           label={label}
           error={invalid}
           helperText={error?.message || helperText}
