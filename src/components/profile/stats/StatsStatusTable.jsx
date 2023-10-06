@@ -19,16 +19,16 @@ export function StatsStatusTable({ type, stats }) {
       <TableHead>
         <TableRow>
           <TableCell>
-            <Typography variant="subtitle2">Status</Typography>
+            <Typography fontWeight={500}>Status</Typography>
           </TableCell>
           <TableCell align={cellAlign}>
-            <Typography variant="subtitle2">Count</Typography>
+            <Typography fontWeight={500}>Count</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {statuses.map((status) => (
-          <TableRow key={status}>
+          <TableRow hover key={status}>
             <TableCell padding="none">
               <Grid container alignItems="center" gap={1}>
                 <StatusIndicator color={statusColors[status]} />
@@ -37,15 +37,17 @@ export function StatsStatusTable({ type, stats }) {
                 </Typography>
               </Grid>
             </TableCell>
-            <TableCell align={cellAlign}>{formatter.format(stats.count[status])}</TableCell>
+            <TableCell align={cellAlign}>
+              <Typography>{formatter.format(stats.count[status])}</Typography>
+            </TableCell>
           </TableRow>
         ))}
-        <TableRow key="all">
-          <TableCell variant="head">
-            <Typography variant="subtitle2">Total</Typography>
+        <TableRow hover key="all">
+          <TableCell variant="footer">
+            <Typography fontWeight={500}>Total</Typography>
           </TableCell>
-          <TableCell variant="head" align={cellAlign}>
-            <Typography variant="subtitle2">{formatter.format(stats.count['all'])}</Typography>
+          <TableCell variant="footer" align={cellAlign}>
+            <Typography fontWeight={500}>{formatter.format(stats.count['all'])}</Typography>
           </TableCell>
         </TableRow>
       </TableBody>
