@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
 import { formatItemDates } from '../../utils/itemDateUtil';
 import { api } from '../api';
 
@@ -9,8 +9,7 @@ export const getMovieDetailQuery = async (movieId) => {
 
 export const useMovieDetail = (movieId) => {
   const queryClient = useQueryClient();
-  return useQuery({
-    enabled: !!movieId,
+  return useSuspenseQuery({
     queryKey: ['movie', movieId],
     queryFn: () => getMovieDetailQuery(movieId),
     initialData: () =>

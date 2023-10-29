@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, startTransition } from 'react';
 import { Box, Grid } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
@@ -47,8 +47,10 @@ export default function Movies() {
   };
 
   const onSortStatusChange = (e) => {
-    setStatus(e.target.value);
-    setSearchParams((prevParams) => prevParams.delete('page'));
+    startTransition(() => {
+      setStatus(e.target.value);
+      setSearchParams((prevParams) => prevParams.delete('page'));
+    });
   };
 
   return (

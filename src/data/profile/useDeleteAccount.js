@@ -7,6 +7,6 @@ const deleteAccountQuery = async (password) => {
 
 export const useDeleteAccount = () =>
   useMutation({
-    useErrorBoundary: false,
+    throwOnError: false,
     mutationFn: (userPassword) => deleteAccountQuery(userPassword),
   });

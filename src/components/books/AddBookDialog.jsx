@@ -67,7 +67,7 @@ export default function AddBookDialog({ visible, closeDialog }) {
             <Button color="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="submit" color="primary" disabled={addBookMutation.isLoading}>
+            <Button type="submit" color="primary" disabled={addBookMutation.isPending}>
               Create
             </Button>
           </DialogActions>

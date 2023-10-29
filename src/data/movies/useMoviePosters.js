@@ -9,8 +9,7 @@ export const getMoviePostersQuery = async (query) => {
 export const useMoviePosters = (showPosters, query) =>
   useQuery({
     enabled: showPosters && query.length > 0,
-    useErrorBoundary: false,
-    suspense: false,
+    throwOnError: false,
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: Infinity,

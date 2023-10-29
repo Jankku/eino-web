@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
 import { formatItemDates } from '../../utils/itemDateUtil';
 import { api } from '../api';
 
@@ -9,8 +9,7 @@ export const getBookDetailQuery = async (bookId) => {
 
 export const useBookDetail = (bookId) => {
   const queryClient = useQueryClient();
-  return useQuery({
-    enabled: !!bookId,
+  return useSuspenseQuery({
     queryKey: ['book', bookId],
     queryFn: () => getBookDetailQuery(bookId),
     initialData: () =>

@@ -1,5 +1,5 @@
 import ky from 'ky';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { z } from 'zod';
 import { errorSchema } from '../utils/zodUtil';
 

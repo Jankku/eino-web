@@ -78,7 +78,7 @@ function DeleteAccountDialog({ visible, closeDialog }) {
             >
               Cancel
             </Button>
-            <LoadingButton loading={deleteAccount.isLoading} color="primary" type="submit">
+            <LoadingButton loading={deleteAccount.isPending} color="primary" type="submit">
               Delete account
             </LoadingButton>
           </DialogActions>

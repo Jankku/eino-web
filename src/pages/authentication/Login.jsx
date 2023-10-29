@@ -76,7 +76,7 @@ export default function Login() {
 
               <Grid container alignItems="flex-start" justifyContent="space-between">
                 <LoadingButton
-                  loading={loginUser.isLoading}
+                  loading={loginUser.isPending}
                   type="submit"
                   variant="contained"
                   color="primary"

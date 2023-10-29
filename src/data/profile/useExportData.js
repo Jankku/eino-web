@@ -7,6 +7,6 @@ const exportDataQuery = async (password) => {
 
 export const useExportData = () =>
   useMutation({
-    useErrorBoundary: false,
+    throwOnError: false,
     mutationFn: (userPassword) => exportDataQuery(userPassword),
   });

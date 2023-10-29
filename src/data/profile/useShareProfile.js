@@ -8,7 +8,6 @@ const shareProfileQuery = async () => {
 
 export const useShareprofile = (visible) =>
   useQuery({
-    suspense: false,
     enabled: visible,
     queryKey: ['shareProfile'],
     queryFn: shareProfileQuery,

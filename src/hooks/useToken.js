@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { DateTime } from 'luxon';
 
 export default function useToken() {
@@ -8,7 +8,7 @@ export default function useToken() {
 
   const setToken = (accessToken) => {
     try {
-      const { username } = jwt_decode(accessToken);
+      const { username } = jwtDecode(accessToken);
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('username', username);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function useToken() {
 
   const isAccessTokenValid = () => {
     try {
-      jwt_decode(token, { header: true });
+      jwtDecode(token, { header: true });
       return true;
     } catch (error) {
       return false;
@@ -35,7 +35,7 @@ export default function useToken() {
 
   const isRefreshTokenValid = () => {
     try {
-      const decoded = jwt_decode(refreshToken);
+      const decoded = jwtDecode(refreshToken);
       const expTime = DateTime.fromSeconds(decoded.exp);
       return expTime > DateTime.now();
     } catch (error) {

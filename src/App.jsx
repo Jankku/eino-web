@@ -38,7 +38,6 @@ function App() {
         }),
         defaultOptions: {
           queries: {
-            suspense: true,
             staleTime: 20 * 1000,
             retry: 2,
           },

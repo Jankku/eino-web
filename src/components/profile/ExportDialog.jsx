@@ -108,7 +108,7 @@ function ExportDialog({ visible, closeDialog }) {
             >
               Cancel
             </Button>
-            <LoadingButton loading={exportData.isLoading} color="primary" type="submit">
+            <LoadingButton loading={exportData.isPending} color="primary" type="submit">
               Export
             </LoadingButton>
           </DialogActions>

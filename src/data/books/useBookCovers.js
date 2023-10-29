@@ -9,8 +9,7 @@ export const getBookCoversQuery = async (query) => {
 export const useBookCovers = (showCovers, query) =>
   useQuery({
     enabled: showCovers && query.length > 0,
-    useErrorBoundary: false,
-    suspense: false,
+    throwOnError: false,
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: Infinity,

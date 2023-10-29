@@ -66,7 +66,7 @@ export default function AddMovieDialog({ visible, closeDialog }) {
             <Button color="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="submit" color="primary" disabled={addMovie.isLoading}>
+            <Button type="submit" color="primary" disabled={addMovie.isPending}>
               Create
             </Button>
           </DialogActions>

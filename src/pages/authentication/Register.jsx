@@ -96,7 +96,7 @@ export default function Register() {
               ) : null}
 
               <Grid container alignItems="flex-start" justifyContent="space-between">
-                <LoadingButton loading={registerUser.isLoading} type="submit" variant="contained">
+                <LoadingButton loading={registerUser.isPending} type="submit" variant="contained">
                   Register
                 </LoadingButton>
                 <Typography align="left" paragraph>

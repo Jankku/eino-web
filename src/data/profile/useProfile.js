@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { api } from '../api';
 
 export const getProfileQuery = async () => {
@@ -6,11 +6,8 @@ export const getProfileQuery = async () => {
 };
 
 export const useProfile = () => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['profile'],
     queryFn: getProfileQuery,
-    useErrorBoundary: (_, query) => {
-      return query.state.data !== undefined ? false : true;
-    },
   });
 };

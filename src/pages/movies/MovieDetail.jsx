@@ -138,7 +138,7 @@ export default function MovieDetail() {
               Copy
             </Button>
             <DeleteButton
-              loading={deleteMovie.isLoading}
+              loading={deleteMovie.isPending}
               variant="contained"
               color="secondary"
               sx={{ margin: '0.5em' }}

@@ -96,7 +96,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }) {
             <LoadingButton
               loading={updateBook.isLoading}
               type="submit"
-              disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isLoading}
+              disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isPending}
               color="primary"
             >
               Submit changes

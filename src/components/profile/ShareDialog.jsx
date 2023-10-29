@@ -12,8 +12,10 @@ import { getShareUrl } from '../../utils/shareUtil';
 import BaseDialog from '../common/BaseDialog';
 import { useShareprofile } from '../../data/profile/useShareProfile';
 import ky from 'ky';
+import { useQueryClient } from '@tanstack/react-query';
 
 function ShareDialog({ visible, closeDialog }) {
+  const queryClient = useQueryClient();
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const shareProfileQuery = useShareprofile(visible);
   const shareId = shareProfileQuery?.data;
@@ -51,7 +53,7 @@ function ShareDialog({ visible, closeDialog }) {
 
   const onClose = () => {
     closeDialog();
-    shareProfileQuery.remove();
+    queryClient.removeQueries({ queryKey: ['shareProfile'] });
   };
 
   return (
