@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Typography, Stack, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
@@ -9,6 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
 import { parseError, zodFields } from '../../utils/zodUtil';
+import PasswordStrengthMeter from '../../components/authentication/PasswordStrengthMeter';
+import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
+import useDebounce from '../../hooks/useDebounce';
 
 const registerSchema = z
   .object({
@@ -40,8 +43,14 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     setError,
+    watch,
   } = formMethods;
   const registerUser = useRegisterUser();
+  const watchPassword = watch('password');
+  const debouncedPassword = useDebounce(watchPassword, 200);
+  const { data: passwordStrength } = usePasswordStrength(debouncedPassword);
+  const passwordScore = watchPassword.length ? passwordStrength?.score ?? 0 : 0;
+  const passwordMessage = passwordStrength?.message || 'Input a password to see the guide';
 
   const onSubmit = (credentials) => {
     registerUser.mutate(credentials, {
@@ -59,62 +68,68 @@ export default function Register() {
     <Container maxWidth="md">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container justifyContent="center">
-            <Grid item xs={12} sm={10} md={8}>
-              <Grid item sx={{ textAlign: 'center' }}>
-                <h1>Register</h1>
-              </Grid>
-              <Grid item sx={{ mb: 2 }}>
-                <TextField
-                  autoFocus
-                  name="username"
-                  label="Username"
-                  autoComplete="username"
-                  helperText="Username should be 3-255 characters long"
-                />
-              </Grid>
-              <Grid item sx={{ mb: 2 }}>
+          <Stack>
+            <Box sx={{ textAlign: 'center' }}>
+              <h1>Register</h1>
+            </Box>
+            <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+              <TextField
+                autoFocus
+                name="username"
+                label="Username"
+                autoComplete="username"
+                helperText="Username should be 3-255 characters long"
+              />
+              <Stack>
                 <PasswordField
                   name="password"
                   label="Password"
                   helperText="Password should be 8-255 characters long"
                   autoComplete="new-password"
                 />
-              </Grid>
-              <Grid item sx={{ mb: 2 }}>
-                <PasswordField
-                  name="password2"
-                  label="Confirm password"
-                  autoComplete="new-password"
-                />
-              </Grid>
+                <Stack direction="column" gap={1} pt={2}>
+                  <PasswordStrengthMeter score={passwordScore} />
+                  <Typography variant="caption" color="text.secondary">
+                    {passwordMessage}
+                  </Typography>
+                </Stack>
+              </Stack>
+              <PasswordField
+                name="password2"
+                label="Confirm password"
+                autoComplete="new-password"
+              />
 
-              {errors.root?.serverError?.message ? (
-                <Grid item>
+              <Stack>
+                {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
-                </Grid>
-              ) : null}
-
-              <Grid container alignItems="flex-start" justifyContent="space-between">
-                <LoadingButton loading={registerUser.isPending} type="submit" variant="contained">
-                  Register
-                </LoadingButton>
-                <Typography align="left" paragraph>
-                  Already have an account?{' '}
-                  <Link to="/login">
-                    <Typography
-                      sx={{
-                        color: 'text.secondary',
-                        textDecoration: 'underline',
-                      }}
-                    >
-                      Login
-                    </Typography>
-                  </Link>
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+                ) : null}
+                <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                  <LoadingButton
+                    loading={registerUser.isPending}
+                    disabled={passwordScore < 3}
+                    type="submit"
+                    variant="contained"
+                  >
+                    Register
+                  </LoadingButton>
+                  <Typography align="left" paragraph>
+                    Already have an account?{' '}
+                    <Link to="/login">
+                      <Typography
+                        sx={{
+                          color: 'text.secondary',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        Login
+                      </Typography>
+                    </Link>
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
         </form>
       </FormProvider>
     </Container>

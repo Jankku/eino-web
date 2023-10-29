@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../hooks/useToken';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
@@ -56,49 +56,45 @@ export default function Login() {
     <Container maxWidth="md">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container justifyContent="center" alignItems="center">
-            <Grid item xs={12} sm={10} md={8}>
-              <Grid item sx={{ textAlign: 'center' }}>
-                <h1>Login</h1>
-              </Grid>
-              <Grid item sx={{ mb: 2 }}>
-                <TextField autoFocus name="username" label="Username" autoComplete="username" />
-              </Grid>
-              <Grid item sx={{ mb: 2 }}>
-                <PasswordField name="password" label="Password" />
-              </Grid>
+          <Stack>
+            <Box sx={{ textAlign: 'center' }}>
+              <h1>Login</h1>
+            </Box>
+            <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+              <TextField autoFocus name="username" label="Username" autoComplete="username" />
+              <PasswordField name="password" label="Password" />
 
-              {errors.root?.serverError?.message ? (
-                <Grid item>
+              <Stack>
+                {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
-                </Grid>
-              ) : null}
+                ) : null}
 
-              <Grid container alignItems="flex-start" justifyContent="space-between">
-                <LoadingButton
-                  loading={loginUser.isPending}
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                >
-                  Login
-                </LoadingButton>
-                <Typography align="left" paragraph>
-                  Don&apos;t have an account yet?{' '}
-                  <Link to="/register">
-                    <Typography
-                      sx={{
-                        color: 'text.secondary',
-                        textDecoration: 'underline',
-                      }}
-                    >
-                      Register
-                    </Typography>
-                  </Link>
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+                <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                  <LoadingButton
+                    loading={loginUser.isPending}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Login
+                  </LoadingButton>
+                  <Typography align="left" paragraph>
+                    Don&apos;t have an account yet?{' '}
+                    <Link to="/register">
+                      <Typography
+                        sx={{
+                          color: 'text.secondary',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        Register
+                      </Typography>
+                    </Link>
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
         </form>
       </FormProvider>
     </Container>
