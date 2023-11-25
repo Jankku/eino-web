@@ -10,8 +10,9 @@ import { useThemeContext } from '../../providers/ThemeProvider';
 export default function Appbar({ drawerWidth, toggleDrawer }) {
   const location = useLocation();
   const { isDark, toggleTheme } = useThemeContext();
-  const isBookPath = () => location.pathname.includes('/books');
-  const isMoviePath = () => location.pathname.includes('/movies');
+  const isBookPath = location.pathname.includes('/books');
+  const isMoviePath = location.pathname.includes('/movies');
+
   return (
     <AppBar
       position="sticky"
@@ -61,21 +62,18 @@ export default function Appbar({ drawerWidth, toggleDrawer }) {
               eino
             </Typography>
           </Link>
-          <Grid item>
+          <Grid item flexGrow={2}>
             <Grid
               container
               alignItems="center"
-              sx={{
-                width: { xs: '80vw', sm: '60vw', md: '50vw' },
-              }}
               justifyContent={{
                 sm: 'flex-end',
               }}
               gap={2}
             >
               <Grid item sx={{ flexGrow: 1, maxWidth: '25em' }}>
-                {isBookPath() ? <BookSearch /> : null}
-                {isMoviePath() ? <MovieSearch /> : null}
+                {isBookPath ? <BookSearch /> : null}
+                {isMoviePath ? <MovieSearch /> : null}
               </Grid>
               <Grid item>
                 <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
