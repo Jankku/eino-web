@@ -1,6 +1,6 @@
 import { generateBook, generateMovie } from '../util';
 
-require('dotenv').config();
+import 'dotenv/config';
 
 export default class ProfilePage {
   /**
@@ -13,7 +13,7 @@ export default class ProfilePage {
 
   async #getAccessToken() {
     const token = (await this.page.context().storageState()).origins[0].localStorage.find(
-      (item) => item.name === 'accessToken'
+      (item) => item.name === 'accessToken',
     );
     return token.value;
   }

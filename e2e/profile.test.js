@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
 import AuthPage from './pages/AuthPage';
 import ProfilePage from './pages/ProfilePage';
+import { generatePassword, generateUsername } from './util';
 
 test.describe('Profile', () => {
   test('Should generate profile image and copy link', async ({ page }) => {
@@ -14,7 +14,9 @@ test.describe('Profile', () => {
     await page.getByRole('button', { name: 'Share' }).click();
     const shareDialog = page.getByRole('dialog');
     await expect(shareDialog).toBeVisible();
-    await page.getByRole('button', { name: 'Copy link', disabled: false }).click();
+    const copyButton = page.getByRole('button', { name: 'Copy link', disabled: false });
+    await expect(copyButton).toBeVisible({ timeout: 10_000 });
+    await copyButton.click();
     const shareUrl = await page.evaluate(() => navigator.clipboard.readText());
     expect(shareUrl).toMatch(/\/share\/[a-z0-9-]+/);
   });
@@ -24,10 +26,11 @@ test.describe('Profile - Delete account', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Should delete account', async ({ page }) => {
-    const username = faker.internet.userName();
-    const password = faker.internet.password();
+    const username = generateUsername();
+    const password = generatePassword();
     const authPage = new AuthPage(page);
-    await authPage.registerUser(username, password);
+    await authPage.fillRegisterForm(username, password);
+    await authPage.clickRegisterButton();
     await expect(page).toHaveURL('/login');
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/books');

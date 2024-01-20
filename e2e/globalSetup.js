@@ -1,6 +1,6 @@
 import { chromium, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import AuthPage from './pages/AuthPage';
+import { generatePassword, generateUsername } from './util';
 
 /**
  * @param {import('@playwright/test').FullConfig} config
@@ -9,10 +9,11 @@ async function globalSetup(config) {
   const browser = await chromium.launch();
   const page = await browser.newPage({ baseURL: config.projects[0].use.baseURL });
   const authPage = new AuthPage(page);
-  const username = faker.internet.password();
-  const password = faker.internet.password();
+  const username = generateUsername();
+  const password = generatePassword();
 
-  await authPage.registerUser(username, password);
+  await authPage.fillRegisterForm(username, password);
+  await authPage.clickRegisterButton();
   await expect(page).toHaveURL('/login');
 
   await authPage.loginUser(username, password);

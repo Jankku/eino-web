@@ -2,17 +2,11 @@
 import { devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
  * @see https://playwright.dev/docs/test-configuration
  * @type {import('@playwright/test').PlaywrightTestConfig}
  */
 const config = {
-  globalSetup: require.resolve('./e2e/globalSetup.js'),
+  globalSetup: './e2e/globalSetup.js',
   webServer: {
     command: 'npm start',
     port: 3000,

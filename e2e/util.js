@@ -13,6 +13,10 @@ const generateWords = () => {
   return words.length > 250 ? words.slice(0, 250) : words;
 };
 
+export const generateUsername = () => faker.internet.password();
+
+export const generatePassword = () => faker.internet.password({ length: 30 });
+
 export const generateFormBook = () => ({
   title: generateWords(),
   author: faker.person.fullName(),

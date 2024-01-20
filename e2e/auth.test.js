@@ -1,33 +1,26 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import AuthPage from './pages/AuthPage';
 import Appbar from './components/Appbar';
+import { generatePassword, generateUsername } from './util';
 
 test.describe('Register', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Should register new user', async ({ page }) => {
     const authPage = new AuthPage(page);
-    const username = faker.internet.password();
-    const password = faker.internet.password();
+    const username = generateUsername();
+    const password = generatePassword();
 
-    await authPage.registerUser(username, password);
+    await authPage.fillRegisterForm(username, password);
+    await authPage.clickRegisterButton();
     await expect(page).toHaveURL('/login');
   });
 
   test('Should not register new user with invalid credentials', async ({ page }) => {
     const authPage = new AuthPage(page);
 
-    await authPage.registerUser('a', 'a');
-    await expect(page).toHaveURL('/register');
-    await expect(page.getByRole('textbox', { name: 'username' })).toHaveAttribute(
-      'aria-invalid',
-      'true'
-    );
-    await expect(page.getByLabel('Password', { exact: true })).toHaveAttribute(
-      'aria-invalid',
-      'true'
-    );
+    await authPage.fillRegisterForm('a', 'a');
+    await authPage.expectPasswordIsWeak();
   });
 });
 
@@ -37,10 +30,11 @@ test.describe('Login', () => {
   test('Should successfully login and log-out user', async ({ page }) => {
     const authPage = new AuthPage(page);
     const appbar = new Appbar(page);
-    const username = faker.internet.password();
-    const password = faker.internet.password();
+    const username = generateUsername();
+    const password = generatePassword();
 
-    await authPage.registerUser(username, password);
+    await authPage.fillRegisterForm(username, password);
+    await authPage.clickRegisterButton();
     await expect(page).toHaveURL('/login');
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/books');
@@ -52,8 +46,8 @@ test.describe('Login', () => {
 
   test('Should not login user with incorrect credentials', async ({ page }) => {
     const authPage = new AuthPage(page);
-    const username = faker.internet.password();
-    const password = faker.internet.password();
+    const username = generateUsername();
+    const password = generatePassword();
 
     await authPage.loginUser(username, password);
     await expect(page).toHaveURL('/login');

@@ -9,7 +9,14 @@ export default function PasswordStrengthMeter({ score = 0 }) {
   } = useTheme();
 
   return (
-    <Stack direction="row" gap={isMobile ? 1 : 2} flexGrow={2} sx={{ width: '100%' }}>
+    <Stack
+      direction="row"
+      id="password-strength"
+      aria-label={`${score}/4`}
+      gap={isMobile ? 1 : 2}
+      flexGrow={2}
+      sx={{ width: '100%' }}
+    >
       <PasswordStrengthMeterBar active={score >= 1} color={error.main} />
       <PasswordStrengthMeterBar active={score >= 2} color={warning.main} />
       <PasswordStrengthMeterBar active={score >= 3} color={success.main} />
