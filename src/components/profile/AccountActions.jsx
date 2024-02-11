@@ -4,13 +4,16 @@ import DeleteAccountDialog from './DeleteAccountDialog';
 import ExportDialog from './ExportDialog';
 import ShareDialog from './ShareDialog';
 import Download from '@mui/icons-material/Download';
+import Upload from '@mui/icons-material/Upload';
 import ShareRounded from '@mui/icons-material/ShareRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import ImportDialog from './ImportDialog';
 
 export function AccountActions() {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
+  const [importDialogOpen, toggleImportDialog] = useReducer((open) => !open, false);
 
   return (
     <>
@@ -40,6 +43,16 @@ export function AccountActions() {
             </Grid>
             <Grid item>
               <Button
+                startIcon={<Upload />}
+                variant="contained"
+                color="primary"
+                onClick={toggleImportDialog}
+              >
+                Import
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
                 startIcon={<PersonRemoveIcon />}
                 variant="contained"
                 color="secondary"
@@ -58,6 +71,8 @@ export function AccountActions() {
       />
 
       <ExportDialog visible={exportDialogOpen} closeDialog={toggleExportDialog} />
+
+      <ImportDialog visible={importDialogOpen} closeDialog={toggleImportDialog} />
 
       <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
     </>
