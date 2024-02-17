@@ -1,7 +1,7 @@
 import { ImageList, Pagination, PaginationItem } from '@mui/material';
-import useColumnCalculator from '../../hooks/useColumnCalculator';
+import { useColumnCalculator } from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
-import usePagination from '../../hooks/usePagination';
+import { usePagination } from '../../hooks/usePagination';
 import { Link, useLocation } from 'react-router-dom';
 import ListItemImage from '../common/ListItemImage';
 import { listItemTypes } from '../../hooks/useListItemType';

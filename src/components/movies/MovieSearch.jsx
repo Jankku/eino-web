@@ -1,37 +1,24 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useDebounce from '../../hooks/useDebounce';
 import SearchTextField from '../common/SearchTextField';
 import { useMovieSearch } from '../../data/movies/useMovieSearch';
 import SearchResult from '../common/SearchResult';
+import { useSearch } from '../../hooks/useSearch';
 
 function MovieSearch() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 200);
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [shouldNavigate, setShouldNavigate] = useState(false);
   const { isLoading, mutate } = useMovieSearch(isOpen);
 
-  useEffect(() => {
-    if (debouncedSearchTerm)
-      mutate(debouncedSearchTerm, { onSuccess: (results) => setSearchResults(results) });
-  }, [debouncedSearchTerm, mutate]);
+  const onSelect = (item) => {
+    navigate(`./movies/${item.movie_id}`);
+  };
 
-  useEffect(() => {
-    if (selectedMovie !== null) setShouldNavigate(true);
-
-    if (selectedMovie !== null && shouldNavigate) {
-      navigate(`./movies/${selectedMovie.movie_id}`);
-      setSelectedMovie(null);
-      setSearchResults([]);
-    }
-
-    return () => setShouldNavigate(false);
-  }, [selectedMovie, navigate, shouldNavigate]);
+  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } = useSearch(
+    mutate,
+    onSelect,
+  );
 
   return (
     <Autocomplete
@@ -49,8 +36,8 @@ function MovieSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.movie_id === value.movie_id}
-      value={selectedMovie}
-      onChange={(_event, newValue) => setSelectedMovie(newValue)}
+      value={selectedItem}
+      onChange={(_event, newValue) => setSelecteditem(newValue)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => option.title}
       inputValue={String(searchTerm)}

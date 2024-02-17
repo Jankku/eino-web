@@ -1,7 +1,7 @@
 import { Button, DialogActions, DialogContent, DialogTitle, Link, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
 import PasswordField from '../form/PasswordField';
 import { LoadingButton } from '@mui/lab';

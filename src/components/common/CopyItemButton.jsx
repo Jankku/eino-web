@@ -1,6 +1,6 @@
 import { Button, IconButton, Tooltip } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 function CopyItemButton({ disabled, onClick }) {
   const isMobile = useIsMobile();

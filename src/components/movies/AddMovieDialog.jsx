@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import Movie, { movieDefaults } from '../../models/Movie';
 import { useAddMovie } from '../../data/movies/useAddMovie';
 import PosterDialog from './PosterDialog';

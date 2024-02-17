@@ -1,6 +1,6 @@
 import { Button, IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 export default function CreateButton({ onClick }) {
   const isMobile = useIsMobile();

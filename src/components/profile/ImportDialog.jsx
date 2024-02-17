@@ -16,7 +16,7 @@ import { useDropzone } from 'react-dropzone';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useThemeContext } from '../../providers/ThemeProvider';
 import { byteFormatter, fileValidator } from '../../utils/importUtil';
 

@@ -1,5 +1,5 @@
 import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import useIsMobile from '../../../hooks/useIsMobile';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import { statusColors } from '../../../utils/profileUtil';
 
 export function StatsStatusTable({ type, stats }) {

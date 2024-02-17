@@ -2,7 +2,7 @@ import { lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import useCustomSnackbar from './hooks/useCustomSnackbar';
+import { useCustomSnackbar } from './hooks/useCustomSnackbar';
 import { getBooksQuery } from './data/books/useBooks';
 import { getMoviesQuery } from './data/movies/useMovies';
 import { getProfileQuery } from './data/profile/useProfile';

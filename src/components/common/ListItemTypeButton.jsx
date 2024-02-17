@@ -1,5 +1,5 @@
 import { Button, IconButton, Tooltip } from '@mui/material';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import ImageIcon from '@mui/icons-material/Image';
 import { listItemTypes } from '../../hooks/useListItemType';

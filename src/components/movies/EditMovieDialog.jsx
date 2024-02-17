@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import Movie, { movieDefaults } from '../../models/Movie';
 import { useUpdateMovie, useUpdateMovieFormData } from '../../data/movies/useUpdateMovie';
 import PosterDialog from './PosterDialog';
@@ -21,17 +21,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 export default function EditMovieDialog({ visible, closeDialog, movieId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [showPosters, setShowPosters] = useState(false);
+  const loadMovie = useUpdateMovieFormData(visible, movieId);
   const formMethods = useForm({
     defaultValues: movieDefaults,
+    values: Movie.parse(loadMovie.data),
     resolver: zodResolver(Movie),
   });
   const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
-  const loadMovie = useUpdateMovieFormData(visible, movieId);
   const updateMovie = useUpdateMovie(movieId);
-
-  useEffect(() => {
-    resetForm(Movie.parse(loadMovie.data));
-  }, [loadMovie.data, resetForm]);
 
   const onSubmit = (formData) => {
     try {

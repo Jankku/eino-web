@@ -1,11 +1,11 @@
-import useLocalStorage from './useLocalStorage';
+import { useLocalStorage } from './useLocalStorage';
 
 export const listItemTypes = {
   CARD: 'card',
   IMAGE: 'image',
 };
 
-export default function useListItemType(key, defaultValue) {
+export function useListItemType(key, defaultValue) {
   const [itemType, setItemType] = useLocalStorage(key, defaultValue);
 
   const toggleItemType = () => {

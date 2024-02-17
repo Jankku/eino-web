@@ -19,7 +19,7 @@ const columns = {
   },
 };
 
-const useColumnCalculator = (itemType) => {
+export function useColumnCalculator(itemType) {
   const { breakpoints } = useTheme();
 
   const matchesXl = useMediaQuery(breakpoints.only('xl'));
@@ -43,6 +43,4 @@ const useColumnCalculator = (itemType) => {
   else if (matchesSm) return columns[itemType].sm;
   else if (matchesXs) return columns[itemType].xs;
   return 1;
-};
-
-export default useColumnCalculator;
+}

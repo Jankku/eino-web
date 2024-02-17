@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 export default function PasswordStrengthMeter({ score = 0 }) {
   const isMobile = useIsMobile();

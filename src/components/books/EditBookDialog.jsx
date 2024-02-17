@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import Book, { bookDefaults } from '../../models/Book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
@@ -22,17 +22,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 export default function EditBookDialog({ visible, closeDialog, bookId }) {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
+  const loadBook = useUpdateBookFormData(visible, bookId);
   const formMethods = useForm({
     defaultValues: bookDefaults,
+    values: Book.parse(loadBook.data),
     resolver: zodResolver(Book),
   });
   const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
-  const loadBook = useUpdateBookFormData(visible, bookId);
   const updateBook = useUpdateBook(bookId);
-
-  useEffect(() => {
-    resetForm(Book.parse(loadBook.data));
-  }, [loadBook.data, resetForm]);
 
   const onSubmit = (formData) => {
     try {

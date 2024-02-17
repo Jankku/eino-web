@@ -1,37 +1,24 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useDebounce from '../../hooks/useDebounce';
 import SearchTextField from '../common/SearchTextField';
 import { useBookSearch } from '../../data/books/useBookSearch';
 import SearchResult from '../common/SearchResult';
+import { useSearch } from '../../hooks/useSearch';
 
 function BookSearch() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [shouldNavigate, setShouldNavigate] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 200);
   const { isLoading, mutate } = useBookSearch(isOpen);
 
-  useEffect(() => {
-    if (debouncedSearchTerm)
-      mutate(debouncedSearchTerm, { onSuccess: (results) => setSearchResults(results) });
-  }, [debouncedSearchTerm, mutate]);
+  const onSelect = (item) => {
+    navigate(`./books/${item.book_id}`);
+  };
 
-  useEffect(() => {
-    if (selectedBook !== null) setShouldNavigate(true);
-
-    if (selectedBook !== null && shouldNavigate) {
-      navigate(`./books/${selectedBook.book_id}`);
-      setSelectedBook(null);
-      setSearchResults([]);
-    }
-
-    return () => setShouldNavigate(false);
-  }, [selectedBook, navigate, shouldNavigate]);
+  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } = useSearch(
+    mutate,
+    onSelect,
+  );
 
   return (
     <Autocomplete
@@ -49,8 +36,8 @@ function BookSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.book_id === value.book_id}
-      value={selectedBook}
-      onChange={(_event, newValue) => setSelectedBook(newValue)}
+      value={selectedItem}
+      onChange={(_event, newValue) => setSelecteditem(newValue)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => option.title}
       inputValue={String(searchTerm)}

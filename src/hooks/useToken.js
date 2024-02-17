@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import { DateTime } from 'luxon';
 
-export default function useToken() {
+export function useToken() {
   const token = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const username = localStorage.getItem('username');

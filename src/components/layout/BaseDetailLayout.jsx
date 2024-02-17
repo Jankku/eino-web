@@ -1,6 +1,6 @@
 import { Card, CardActions, CardContent, Container, Grid, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function BaseDetailLayout({ imageUrl, details, children, actions }) {

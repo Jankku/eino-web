@@ -1,6 +1,6 @@
 import { useSnackbar } from 'notistack';
 
-function useCustomSnackbar() {
+export function useCustomSnackbar() {
   const { enqueueSnackbar } = useSnackbar();
 
   const showSuccessSnackbar = (message) =>
@@ -17,5 +17,3 @@ function useCustomSnackbar() {
 
   return { showSuccessSnackbar, showErrorSnackbar };
 }
-
-export default useCustomSnackbar;

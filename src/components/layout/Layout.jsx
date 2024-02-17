@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Drawer from './Drawer';
 import Appbar from './Appbar';
 import OfflineAlert from '../common/OfflineAlert';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 function Layout() {
   const isMobile = useIsMobile();

@@ -1,6 +1,6 @@
 import { Container, ImageList, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import useColumnCalculator from '../hooks/useColumnCalculator';
+import { useColumnCalculator } from '../hooks/useColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LoginIcon from '@mui/icons-material/Login';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';

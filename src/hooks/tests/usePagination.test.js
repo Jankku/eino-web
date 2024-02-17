@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import usePagination from '../usePagination';
+import { usePagination } from '../usePagination';
 import { renderHook } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 

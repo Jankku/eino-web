@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import Book, { bookDefaults } from '../../models/Book';
 import { useAddBook } from '../../data/books/useAddBook';
 import CoverDialog from './CoverDialog';

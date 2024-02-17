@@ -1,4 +1,4 @@
-import useToken from '../../hooks/useToken';
+import { useToken } from '../../hooks/useToken';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import { useQueryClient } from '@tanstack/react-query';

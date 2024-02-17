@@ -1,6 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import useToken from '../../hooks/useToken';
+import { useToken } from '../../hooks/useToken';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';

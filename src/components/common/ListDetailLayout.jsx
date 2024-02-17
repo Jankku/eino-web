@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import PanelContainer from './PanelContainer';
 
 export default function ListDetailLayout({ list, detail, id }) {

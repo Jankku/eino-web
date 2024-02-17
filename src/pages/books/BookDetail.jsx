@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
-import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useReducer } from 'react';
 import { useBookDetail } from '../../data/books/useBookDetail';
 import { useDeleteBook } from '../../data/books/useDeleteBook';
