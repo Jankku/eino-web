@@ -72,8 +72,6 @@ export default function BookDetail() {
           </Button>
           <DeleteButton
             loading={deleteBook.isPending}
-            variant="contained"
-            color="secondary"
             sx={{ margin: '0.5em' }}
             onClick={() => {
               deleteBook.mutate(bookId, {

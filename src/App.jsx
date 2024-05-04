@@ -15,6 +15,7 @@ import Logout from './pages/authentication/Logout';
 import Privacy from './pages/Privacy';
 import Error404 from './components/errors/Error404';
 import RedirectAuthenticated from './components/common/RedirectAuthenticated';
+import VerifyEmail from './pages/VerifyEmail';
 
 const Register = lazy(() => import('./pages/authentication/Register'));
 const Login = lazy(() => import('./pages/authentication/Login'));
@@ -56,7 +57,10 @@ function App() {
         queryKey: ['movies', 'all'],
         queryFn: () => getMoviesQuery('all'),
       });
-      queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => getProfileQuery() });
+      queryClient.prefetchQuery({
+        queryKey: ['profile'],
+        queryFn: () => getProfileQuery(),
+      });
     }
   }, [isLoggedIn, queryClient]);
 
@@ -144,7 +148,16 @@ function WrappedApp() {
               }
             />
           </Route>
-
+          <Route
+            path="verify"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <VerifyEmail />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
           <Route path="/*" element={<Error404 />} />
         </Route>
       </Routes>

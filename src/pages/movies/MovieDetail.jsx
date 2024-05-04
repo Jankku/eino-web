@@ -72,8 +72,6 @@ export default function MovieDetail() {
           </Button>
           <DeleteButton
             loading={deleteMovie.isPending}
-            variant="contained"
-            color="secondary"
             sx={{ margin: '0.5em' }}
             onClick={() => {
               deleteMovie.mutate(movieId, {

@@ -7,6 +7,7 @@ export default function TextField({
   type = 'text',
   autoFocus = false,
   autoComplete = 'on',
+  fullWidth = true,
   helperText,
   ...rest
 }) {
@@ -20,7 +21,7 @@ export default function TextField({
         <MUITextField
           {...field}
           {...rest}
-          fullWidth
+          fullWidth={fullWidth}
           autoFocus={autoFocus}
           autoComplete={autoComplete}
           variant="outlined"

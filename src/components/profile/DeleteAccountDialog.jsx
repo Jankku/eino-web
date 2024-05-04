@@ -2,13 +2,13 @@ import { Button, DialogActions, DialogContent, DialogTitle, Typography } from '@
 import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
-import { LoadingButton } from '@mui/lab';
 import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
+import DeleteButton from '../common/DeleteButton';
 
 const passwordFormSchema = z.object({
   password: zodFields.password,
@@ -71,16 +71,21 @@ function DeleteAccountDialog({ visible, closeDialog }) {
           </DialogContent>
           <DialogActions>
             <Button
-              color="secondary"
+              color="primary"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <LoadingButton loading={deleteAccount.isPending} color="primary" type="submit">
+            <DeleteButton
+              loading={deleteAccount.isPending}
+              variant="text"
+              startIcon={null}
+              type="submit"
+            >
               Delete account
-            </LoadingButton>
+            </DeleteButton>
           </DialogActions>
         </form>
       </FormProvider>
