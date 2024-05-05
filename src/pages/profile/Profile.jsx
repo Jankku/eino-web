@@ -1,7 +1,6 @@
 import { Container, Grid } from '@mui/material';
 import { AccountActions } from '../../components/profile/AccountActions';
-import { BookStats } from '../../components/profile/stats/BookStats';
-import { MovieStats } from '../../components/profile/stats/MovieStats';
+import { Stats } from '../../components/profile/stats/Stats';
 import { UserInfo } from '../../components/profile/UserInfo';
 import { useProfile } from '../../data/profile/useProfile';
 
@@ -19,10 +18,10 @@ export default function Profile() {
             <AccountActions />
           </Grid>
           <Grid item mt={2}>
-            <BookStats stats={data.stats.book} />
+            <Stats type="book" stats={data.stats.book} />
           </Grid>
           <Grid item mt={2}>
-            <MovieStats stats={data.stats.movie} />
+            <Stats type="movie" stats={data.stats.movie} />
           </Grid>
         </>
       ) : null}

@@ -9,8 +9,10 @@ import { StatusProgressBar } from './StatusProgressBar';
 
 const formatter = new Intl.NumberFormat();
 
-export function BookStats({ stats }) {
+export function Stats({ type, stats }) {
   const theme = useTheme();
+
+  const title = type === 'book' ? 'Book stats' : 'Movie stats';
 
   const scoreCounts = stats.score_distribution.map((item) => item.count);
 
@@ -36,19 +38,26 @@ export function BookStats({ stats }) {
     }));
 
   return (
-    <Card variant="outlined">
+    <Card component="section" variant="outlined">
       <CardContent sx={{ p: 0 }}>
         <Box px={2}>
-          <h2>Book stats</h2>
+          <h2>{title}</h2>
           <Grid container columns={1} rowGap={2}>
             <Grid container rowGap={1}>
-              <Grid container justifyContent="space-between">
-                <StatsItem title={'Pages read:'} text={formatter.format(stats.pages_read)} />
+              <Grid component="dl" container justifyContent="space-between" m={0}>
+                {type === 'book' ? (
+                  <StatsItem title={'Pages read:'} text={formatter.format(stats.pages_read)} />
+                ) : (
+                  <StatsItem
+                    title={'Watch time:'}
+                    text={`${formatter.format(stats.watch_time)} hours`}
+                  />
+                )}
                 <StatsItem title={'Average score:'} text={stats.score_average} />
               </Grid>
-              <Grid item sx={{ width: '100%' }}>
+              <Grid container item rowGap={1} sx={{ width: '100%' }}>
                 <StatusProgressBar data={progressValues} total={stats.count.all} />
-                <StatsStatusTable type={'book'} stats={stats} />
+                <StatsStatusTable type={type} stats={stats} />
               </Grid>
             </Grid>
             <BarChart data={tableData} />
