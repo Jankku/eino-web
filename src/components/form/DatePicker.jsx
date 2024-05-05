@@ -12,7 +12,6 @@ export default function DatePicker({ name, label, ...rest }) {
       render={({ field: { value, name, onChange, ref }, fieldState: { error } }) => (
         <MUIDatepicker
           {...rest}
-          defaultValue={DateTime.now().toISO()}
           value={DateTime.fromISO(value) ?? null}
           onChange={(date) => onChange(DateTime.fromISO(date).toISO())}
           label={label}
