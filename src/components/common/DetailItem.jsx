@@ -3,8 +3,9 @@ import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 export default function DetailItem({ title, text }) {
   return (
-    <Grid container item zeroMinWidth flexWrap="nowrap" my={0.5}>
+    <Grid container item flexWrap="nowrap" my={1}>
       <Typography
+        component="dt"
         variant="body1"
         noWrap
         alignSelf="center"
@@ -12,11 +13,9 @@ export default function DetailItem({ title, text }) {
       >
         {stringOrPlaceholder(title)}
       </Typography>
-      <Grid container item zeroMinWidth flexWrap="nowrap">
-        <Typography variant="body2" noWrap minWidth={0} ml={2} alignSelf="center">
-          {stringOrPlaceholder(text)}
-        </Typography>
-      </Grid>
+      <Typography component="dd" variant="body2" noWrap minWidth={0} ml={2} alignSelf="center">
+        {stringOrPlaceholder(text)}
+      </Typography>
     </Grid>
   );
 }

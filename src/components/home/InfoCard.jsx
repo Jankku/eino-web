@@ -4,6 +4,7 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 export default function InfoCard({ title, icon, children }) {
   return (
     <Card
+      component="section"
       sx={{
         padding: '0.2em',
         border: 1,

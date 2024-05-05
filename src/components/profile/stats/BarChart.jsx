@@ -78,6 +78,7 @@ export function BarChart({ data }) {
       data={data}
       options={options}
       plugins={[ChartDataLabels]}
+      aria-label="Score distribution chart"
       style={{ width: '100%', height: '100%' }}
     />
   );

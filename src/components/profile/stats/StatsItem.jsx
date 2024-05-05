@@ -5,14 +5,12 @@ export function StatsItem({ title, text }) {
   return (
     <Grid item>
       <Grid container gap={1}>
-        <Grid item>
-          <Typography variant="body1">{stringOrPlaceholder(title)}</Typography>
-        </Grid>
-        <Grid item>
-          <Typography paragraph variant="body1" margin={0} sx={{ fontWeight: 700 }}>
-            {stringOrPlaceholder(text)}
-          </Typography>
-        </Grid>
+        <Typography component="dt" variant="body1">
+          {stringOrPlaceholder(title)}
+        </Typography>
+        <Typography component="dd" variant="body1" sx={{ fontWeight: 700 }}>
+          {stringOrPlaceholder(text)}
+        </Typography>
       </Grid>
     </Grid>
   );

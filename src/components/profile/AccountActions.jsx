@@ -17,7 +17,7 @@ export function AccountActions() {
 
   return (
     <>
-      <Card variant="outlined" sx={{ flexGrow: 1 }}>
+      <Card component="section" variant="outlined" sx={{ flexGrow: 1 }}>
         <CardContent sx={{ p: 0, pl: 2 }}>
           <h2>Account actions</h2>
           <Grid container spacing={2}>

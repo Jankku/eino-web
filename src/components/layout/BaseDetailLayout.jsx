@@ -1,4 +1,4 @@
-import { Card, CardActions, CardContent, Container, Grid, IconButton } from '@mui/material';
+import { Box, Card, CardActions, CardContent, Container, Grid, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -63,7 +63,9 @@ export default function BaseDetailLayout({ imageUrl, details, children, actions 
               pt={imageUrl ? 1 : isMobile ? 6 : 1}
               columns={1}
             >
-              {details}
+              <Box component="dl" aria-label="Book details" maxWidth="100%" m={0}>
+                {details}
+              </Box>
             </Grid>
           </Grid>
         </CardContent>
