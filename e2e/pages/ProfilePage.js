@@ -21,7 +21,7 @@ export default class ProfilePage {
   async createRandomBook() {
     const book = generateBook('completed');
     const token = await this.#getAccessToken();
-    const url = new URL('list/books/add', this.baseURL).toString();
+    const url = new URL('api/v1/list/books/add', this.baseURL).toString();
     await this.page.request.post(url, {
       data: book,
       headers: {
@@ -35,7 +35,7 @@ export default class ProfilePage {
   async createRandomMovie() {
     const movie = generateMovie('completed');
     const token = await this.#getAccessToken();
-    const url = new URL('list/movies/add', this.baseURL).toString();
+    const url = new URL('api/v1/list/movies/add', this.baseURL).toString();
     await this.page.request.post(url, {
       data: movie,
       headers: {
