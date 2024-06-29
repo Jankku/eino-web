@@ -78,18 +78,19 @@ export default function Login() {
                   >
                     Login
                   </LoadingButton>
-                  <Typography align="left" paragraph>
+                  <Typography paragraph align="left">
                     Don&apos;t have an account yet?{' '}
-                    <Link to="/register">
-                      <Typography
+                    <Typography component={Link} to="/register">
+                      <Box
+                        component="span"
                         sx={{
                           color: 'text.secondary',
                           textDecoration: 'underline',
                         }}
                       >
                         Register
-                      </Typography>
-                    </Link>
+                      </Box>
+                    </Typography>
                   </Typography>
                 </Stack>
               </Stack>

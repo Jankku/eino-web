@@ -12,21 +12,21 @@ test.describe('Movies', () => {
     const moviePage = new MoviePage(page);
     await page.getByRole('button', { name: 'create' }).click();
     await moviePage.createMovie(movie);
-    const listItem = page.getByRole('button').filter({ hasText: movie.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
     await moviePage.verifyListItem(listItem, movie);
   });
 
   test('Should navigate to movie details', async ({ page }) => {
     await page.goto('/movies');
     const moviePage = new MoviePage(page);
-    const listItem = page.getByRole('button').filter({ hasText: movie.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
     await moviePage.navigateToDetail(listItem);
   });
 
   test('Should delete movie', async ({ page }) => {
     await page.goto('/movies');
     const moviePage = new MoviePage(page);
-    const listItem = page.getByRole('button').filter({ hasText: movie.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title });
     await moviePage.navigateToDetail(listItem);
 
     await page.getByRole('button', { name: 'Delete' }).click();
@@ -45,7 +45,7 @@ test.describe('Movies', () => {
     await page.getByRole('button', { name: 'create' }).click();
     await moviePage.createMovie(movie);
 
-    const listItem = page.getByRole('button').filter({ hasText: movie.title, exact: true });
+    const listItem = page.getByRole('listitem').filter({ hasText: movie.title, exact: true });
     await moviePage.navigateToDetail(listItem);
     await moviePage.verifyDetailContent(movie);
 

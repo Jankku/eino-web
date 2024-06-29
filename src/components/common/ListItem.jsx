@@ -9,27 +9,30 @@ import {
   Typography,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import getStatusIcon from '../../utils/listItemUtil';
 import { useThemeContext } from '../../providers/ThemeProvider';
 
 export default function ListItem({ title, detailText, status, score, itemId, imageUrl }) {
   const location = useLocation();
-  const navigate = useNavigate();
   const { darkTheme } = useThemeContext();
   const isActive = location.pathname.includes(itemId);
 
-  const navigateToDetail = () => navigate(`./${itemId}${location.search}`);
-
   return (
     <Card
+      component="li"
       variant="outlined"
       sx={(theme) => ({
         border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
       })}
     >
-      <CardActionArea onClick={navigateToDetail}>
+      <CardActionArea
+        component={Link}
+        to={`./${itemId}${location.search}`}
+        sx={{ display: 'block' }}
+        draggable="false"
+      >
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
           <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
             <Grid

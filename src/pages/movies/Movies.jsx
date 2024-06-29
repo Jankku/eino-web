@@ -57,23 +57,50 @@ export default function Movies() {
     <ListDetailLayout
       id={movieId}
       list={
-        <Box mx={isMobile ? 2 : undefined}>
-          <Grid container alignItems="center" justifyContent="space-between">
+        <Box my={2} mx={isMobile ? 2 : undefined}>
+          <Grid
+            container
+            component="header"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2}
+            sx={{ rowGap: 1 }}
+          >
             <Grid item>
-              <h1>Movies</h1>
+              <Box component="h1" m={0}>
+                Movies
+              </Box>
             </Grid>
             <Grid item>
-              <Grid container item flexDirection="row" gap={1}>
-                {!isMobile ? <CreateButton onClick={toggleAddDialog} /> : null}
-                <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
-                <CopyItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard} />
-                <SortStatusSelect status={status} onChange={onSortStatusChange}>
-                  {movieSortOptions.map((option, itemIdx) => (
-                    <option key={itemIdx} value={option.value}>
-                      {option.name} ({countByStatus[option.value]})
-                    </option>
-                  ))}
-                </SortStatusSelect>
+              <Grid
+                container
+                item
+                component="ul"
+                aria-label="Actions"
+                gap={1}
+                p={0}
+                sx={{ listStyle: 'none' }}
+              >
+                {!isMobile ? (
+                  <Box component="li" display="inline-flex">
+                    <CreateButton onClick={toggleAddDialog} />
+                  </Box>
+                ) : null}
+                <Box component="li" display="inline-flex">
+                  <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
+                </Box>
+                <Box component="li" display="inline-flex">
+                  <CopyItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard} />
+                </Box>
+                <Box component="li" display="inline-flex">
+                  <SortStatusSelect status={status} onChange={onSortStatusChange}>
+                    {movieSortOptions.map((option, itemIdx) => (
+                      <option key={itemIdx} value={option.value}>
+                        {option.name} ({countByStatus[option.value]})
+                      </option>
+                    ))}
+                  </SortStatusSelect>
+                </Box>
               </Grid>
             </Grid>
           </Grid>

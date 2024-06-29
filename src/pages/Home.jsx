@@ -1,5 +1,4 @@
 import { Container, ImageList, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { useColumnCalculator } from '../hooks/useColumnCalculator';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LoginIcon from '@mui/icons-material/Login';
@@ -17,28 +16,21 @@ export default function Home() {
 
   return (
     <Container maxWidth="md">
-      <Typography
-        variant="h1"
-        sx={{
-          typography: 'h2',
-          margin: '0.3em 0em',
-          fontFamily: 'Pacifico, cursive',
-        }}
-      >
+      <Typography component="h1" variant="h2" fontFamily="Pacifico, cursive" my={2}>
         eino
       </Typography>
-      <Typography variant="h6" sx={{ fontWeight: '700' }}>
+      <Typography component="h2" variant="h6" fontWeight={700} mb={3}>
         Book and movie tracker
       </Typography>
 
       <ImageList cols={columnCount} gap={12}>
         <InfoCard title="Authentication" icon={<LockOutlinedIcon />}>
-          <Link to="/register">
-            <InfoCardButton icon={<VpnKeyIcon />}>Register</InfoCardButton>
-          </Link>
-          <Link to="/login">
-            <InfoCardButton icon={<LoginIcon />}>Login</InfoCardButton>
-          </Link>
+          <InfoCardButton to="/register" icon={<VpnKeyIcon />}>
+            Register
+          </InfoCardButton>
+          <InfoCardButton to="/login" icon={<LoginIcon />}>
+            Login
+          </InfoCardButton>
         </InfoCard>
 
         <InfoCard title="Features" icon={<LibraryBooksIcon />}>
@@ -50,17 +42,17 @@ export default function Home() {
         </InfoCard>
 
         <InfoCard title="Source code" icon={<CodeIcon />}>
-          <a href="https://github.com/jankku/eino-backend/" rel="noreferrer">
-            <InfoCardButton icon={<StorageIcon />}>Backend</InfoCardButton>
-          </a>
+          <InfoCardButton to="https://github.com/jankku/eino-backend/" icon={<StorageIcon />}>
+            Backend
+          </InfoCardButton>
 
-          <a href="https://github.com/jankku/eino-web/" rel="noreferrer">
-            <InfoCardButton icon={<WebIcon />}>Frontend</InfoCardButton>
-          </a>
+          <InfoCardButton to="https://github.com/jankku/eino-web/" icon={<WebIcon />}>
+            Frontend
+          </InfoCardButton>
 
-          <a href="https://github.com/jankku/eino-android/" rel="noreferrer">
-            <InfoCardButton icon={<AndroidRounded />}>Android</InfoCardButton>
-          </a>
+          <InfoCardButton to="https://github.com/jankku/eino-android/" icon={<AndroidRounded />}>
+            Android
+          </InfoCardButton>
         </InfoCard>
       </ImageList>
     </Container>

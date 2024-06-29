@@ -113,18 +113,19 @@ export default function Register() {
                   >
                     Register
                   </LoadingButton>
-                  <Typography align="left" paragraph>
+                  <Typography paragraph align="left">
                     Already have an account?{' '}
-                    <Link to="/login">
-                      <Typography
+                    <Typography component={Link} to="/login">
+                      <Box
+                        component="span"
                         sx={{
                           color: 'text.secondary',
                           textDecoration: 'underline',
                         }}
                       >
                         Login
-                      </Typography>
-                    </Link>
+                      </Box>
+                    </Typography>
                   </Typography>
                 </Stack>
               </Stack>

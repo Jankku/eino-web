@@ -4,7 +4,7 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 export default function InfoCard({ title, icon, children }) {
   return (
     <Card
-      component="section"
+      component="li"
       sx={{
         padding: '0.2em',
         border: 1,
@@ -31,7 +31,9 @@ export default function InfoCard({ title, icon, children }) {
             </Box>
           </Grid>
           <Grid item>
-            <Typography variant="h6">{title}</Typography>
+            <Typography component="h3" variant="h6">
+              {title}
+            </Typography>
           </Grid>
         </Grid>
 

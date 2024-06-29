@@ -12,21 +12,21 @@ test.describe('Books', () => {
     const bookPage = new BookPage(page);
     await page.getByRole('button', { name: 'create' }).click();
     await bookPage.createBook(book);
-    const listItem = page.getByRole('button').filter({ hasText: book.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
     await bookPage.verifyListItem(listItem, book);
   });
 
   test('Should navigate to book details', async ({ page }) => {
     await page.goto('/books');
     const bookPage = new BookPage(page);
-    const listItem = page.getByRole('button').filter({ hasText: book.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
     await bookPage.navigateToDetail(listItem);
   });
 
   test('Should delete book', async ({ page }) => {
     await page.goto('/books');
     const bookPage = new BookPage(page);
-    const listItem = page.getByRole('button').filter({ hasText: book.title });
+    const listItem = page.getByRole('listitem').filter({ hasText: book.title });
     await bookPage.navigateToDetail(listItem);
 
     await page.getByRole('button', { name: 'Delete' }).click();
@@ -45,7 +45,7 @@ test.describe('Books', () => {
     await page.getByRole('button', { name: 'create' }).click();
     await bookPage.createBook(book);
 
-    const listItem = page.getByRole('button').filter({ hasText: book.title, exact: true });
+    const listItem = page.getByRole('listitem').filter({ hasText: book.title, exact: true });
     await bookPage.navigateToDetail(listItem);
     await bookPage.verifyDetailContent(book);
 

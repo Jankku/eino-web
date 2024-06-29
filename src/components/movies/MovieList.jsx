@@ -1,4 +1,4 @@
-import { ImageList, Pagination, PaginationItem } from '@mui/material';
+import { Box, ImageList, Pagination, PaginationItem } from '@mui/material';
 import { useColumnCalculator } from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import { usePagination } from '../../hooks/usePagination';
@@ -35,7 +35,7 @@ export default function MovieList({ itemType, movies }) {
     ) : null;
 
   return (
-    <>
+    <Box component="section">
       {pagination}
       <ImageList cols={columnCount} gap={12}>
         {items.map((movie) => (
@@ -52,6 +52,6 @@ export default function MovieList({ itemType, movies }) {
         ))}
       </ImageList>
       {pagination}
-    </>
+    </Box>
   );
 }

@@ -10,6 +10,7 @@ export default function BaseDetailLayout({ imageUrl, details, children, actions 
   return (
     <Container fixed disableGutters={!isMobile} maxWidth="sm">
       <Card
+        component="section"
         sx={{
           my: 3,
           border: 1,
