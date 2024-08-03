@@ -31,7 +31,7 @@ test.describe('Books', () => {
 
     await page.getByRole('button', { name: 'Delete' }).click();
     await page.getByRole('button', { name: 'You sure?' }).click();
-    await expect(page).toHaveURL('/books');
+    await expect(page).toHaveURL(/\/books/);
     await expect(listItem).toHaveCount(0);
   });
 });

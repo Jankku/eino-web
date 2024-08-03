@@ -2,9 +2,11 @@ import { Box, ImageList, Pagination, PaginationItem } from '@mui/material';
 import { useColumnCalculator } from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import { usePagination } from '../../hooks/usePagination';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import ListItemImage from '../common/ListItemImage';
 import { listItemTypes } from '../../hooks/useListItemType';
+import { useFilterSearchParams } from '../../hooks/useFilterSearchParams';
+import { getPaginationUrl } from '../../utils/paginationUtil';
 
 const itemsPerPage = 21;
 
@@ -12,6 +14,8 @@ export default function MovieList({ itemType, movies }) {
   const columnCount = useColumnCalculator(itemType);
   const [items, page, pageCount] = usePagination(movies, itemsPerPage);
   const { pathname } = useLocation();
+  const [searchParams] = useSearchParams();
+  const newSearchParams = useFilterSearchParams(searchParams, 'page');
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
@@ -29,7 +33,15 @@ export default function MovieList({ itemType, movies }) {
         count={pageCount}
         boundaryCount={0}
         renderItem={(item) => (
-          <PaginationItem component={Link} to={`${pathname}?page=${item.page}`} {...item} />
+          <PaginationItem
+            component={Link}
+            to={getPaginationUrl({
+              path: pathname,
+              searchParams: newSearchParams,
+              page: item.page,
+            })}
+            {...item}
+          />
         )}
       />
     ) : null;

@@ -1,5 +1,15 @@
 import bookStatus from './bookStatus';
 
-const bookSortOptions = [{ value: 'all', name: 'All' }, ...bookStatus];
+export const bookSortStatuses = [{ value: 'all', name: 'All' }, ...bookStatus];
 
-export default bookSortOptions;
+export const bookSortFields = [
+  { name: 'Title', value: 'title' },
+  { name: 'Author', value: 'author' },
+  { name: 'Publisher', value: 'publisher' },
+  { name: 'Pages', value: 'pages' },
+  { name: 'Year', value: 'year' },
+  { name: 'Status', value: 'status' },
+  { name: 'Score', value: 'score' },
+  { name: 'Start Date', value: 'start_date' },
+  { name: 'End Date', value: 'end_date' },
+];

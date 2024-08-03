@@ -1,12 +1,8 @@
-import { lazy, useEffect, useState } from 'react';
+import { lazy, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useCustomSnackbar } from './hooks/useCustomSnackbar';
-import { getBooksQuery } from './data/books/useBooks';
-import { getMoviesQuery } from './data/movies/useMovies';
-import { getProfileQuery } from './data/profile/useProfile';
-import { useAuthContext } from './providers/AuthenticationProvider';
 import Home from './pages/Home';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/common/RequireAuth';
@@ -44,21 +40,6 @@ function App() {
         },
       }),
   );
-
-  const { isLoggedIn } = useAuthContext();
-  useEffect(() => {
-    if (isLoggedIn) {
-      queryClient.prefetchQuery({
-        queryKey: ['books', 'all'],
-        queryFn: () => getBooksQuery('all'),
-      });
-      queryClient.prefetchQuery({
-        queryKey: ['movies', 'all'],
-        queryFn: () => getMoviesQuery('all'),
-      });
-      queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => getProfileQuery() });
-    }
-  }, [isLoggedIn, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

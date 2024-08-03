@@ -1,32 +1,24 @@
 import { Button, IconButton, Tooltip } from '@mui/material';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useIsMobile } from '../../hooks/useIsMobile';
 
-function CopyItemButton({ disabled, onClick }) {
+export default function ResponsiveButton({ icon, disabled, onClick, children }) {
   const isMobile = useIsMobile();
 
   return (
     <>
       {isMobile ? (
-        <Tooltip arrow title="Copy" enterTouchDelay={500}>
+        <Tooltip arrow title={children} enterTouchDelay={500}>
           <span>
             <IconButton color="primary" size="large" onClick={onClick} disabled={disabled}>
-              <ContentCopyIcon />
+              {icon}
             </IconButton>
           </span>
         </Tooltip>
       ) : (
-        <Button
-          variant="outlined"
-          startIcon={<ContentCopyIcon />}
-          disabled={disabled}
-          onClick={onClick}
-        >
-          Copy
+        <Button variant="outlined" startIcon={icon} disabled={disabled} onClick={onClick}>
+          {children}
         </Button>
       )}
     </>
   );
 }
-
-export default CopyItemButton;

@@ -1,22 +1,24 @@
-import { useReducer, startTransition } from 'react';
+import { useReducer, startTransition, useLayoutEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
-import movieSortOptions from '../../models/movieSortOptions';
+import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import SortStatusSelect from '../../components/common/SortStatusSelect';
-import CopyItemButton from '../../components/common/CopyItemButton';
+import SmallSelect from '../../components/common/SmallSelect';
+import AddIcon from '@mui/icons-material/Add';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Outlet, useParams, useSearchParams } from 'react-router-dom';
 import { useMovies } from '../../data/movies/useMovies';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
-import CreateButton from '../../components/common/CreateButton';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
 import ListItemTypeButton from '../../components/common/ListItemTypeButton';
 import useMovieCount from './useMovieCount';
 import ListEmpty from '../../components/common/ListEmpty';
+import SortButton from '../../components/common/SortButton';
+import ResponsiveButton from '../../components/common/ResponsiveButton';
 
 export default function Movies() {
   const isMobile = useIsMobile();
@@ -24,9 +26,13 @@ export default function Movies() {
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
   const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
-  const [, setSearchParams] = useSearchParams();
+  const [searchparams, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
-  const { data } = useMovies(status);
+  const { data } = useMovies({
+    status,
+    sort: searchparams.get('sort'),
+    order: searchparams.get('order'),
+  });
   const countByStatus = useMovieCount();
   const isEmptyList = countByStatus.all === 0;
 
@@ -40,18 +46,33 @@ export default function Movies() {
         })
         .join('\n');
       await navigator.clipboard.writeText(items);
-      showSuccessSnackbar('Items copied');
+      showSuccessSnackbar('Items copied to clipboard');
     } catch (error) {
       showErrorSnackbar('Failed to copy');
     }
   };
 
-  const onSortStatusChange = (e) => {
+  const onSort = ({ key, value }) => {
+    startTransition(() => {
+      setSearchParams((prevParams) => {
+        prevParams.set(key, value);
+        return prevParams;
+      });
+    });
+  };
+
+  const onStatusChange = (e) => {
     startTransition(() => {
       setStatus(e.target.value);
       setSearchParams((prevParams) => prevParams.delete('page'));
     });
   };
+
+  useLayoutEffect(() => {
+    startTransition(() => {
+      setSearchParams({ sort: 'title', order: 'ascending' });
+    });
+  }, []);
 
   return (
     <ListDetailLayout
@@ -83,23 +104,34 @@ export default function Movies() {
               >
                 {!isMobile ? (
                   <Box component="li" display="inline-flex">
-                    <CreateButton onClick={toggleAddDialog} />
+                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog}>
+                      Create
+                    </ResponsiveButton>
                   </Box>
                 ) : null}
                 <Box component="li" display="inline-flex">
                   <ListItemTypeButton itemType={itemType} onClick={toggleItemType} />
                 </Box>
                 <Box component="li" display="inline-flex">
-                  <CopyItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard} />
+                  <ResponsiveButton
+                    icon={<ContentCopyIcon />}
+                    disabled={isEmptyList}
+                    onClick={copyTitlesToClipboard}
+                  >
+                    Copy
+                  </ResponsiveButton>
                 </Box>
                 <Box component="li" display="inline-flex">
-                  <SortStatusSelect status={status} onChange={onSortStatusChange}>
-                    {movieSortOptions.map((option, itemIdx) => (
+                  <SortButton fieldOptions={movieSortFields} onChange={onSort} />
+                </Box>
+                <Box component="li" display="inline-flex">
+                  <SmallSelect value={status} onChange={onStatusChange}>
+                    {movieSortStatuses.map((option, itemIdx) => (
                       <option key={itemIdx} value={option.value}>
                         {option.name} ({countByStatus[option.value]})
                       </option>
                     ))}
-                  </SortStatusSelect>
+                  </SmallSelect>
                 </Box>
               </Grid>
             </Grid>
