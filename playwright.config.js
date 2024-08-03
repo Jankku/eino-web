@@ -8,7 +8,7 @@ import { devices } from '@playwright/test';
 const config = {
   globalSetup: './e2e/globalSetup.js',
   webServer: {
-    command: 'npm start',
+    command: 'npm run dev',
     port: 3000,
   },
   testDir: './e2e',
