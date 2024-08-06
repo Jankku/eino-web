@@ -1,13 +1,9 @@
-import { Fab } from '@mui/material';
+import { Fab, FabProps } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-type CreateFabProps = {
-  onClick: () => void;
-};
-
-export default function CreateFab({ onClick }: CreateFabProps) {
+export default function CreateFab(props: FabProps) {
   return (
-    <Fab color="primary" aria-label="Create" onClick={onClick}>
+    <Fab {...props} color="primary" aria-label="Create">
       <AddIcon />
     </Fab>
   );

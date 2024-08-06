@@ -42,6 +42,7 @@ export default function SortButton({ fieldOptions, onChange }: SortButtonProps) 
       >
         <Stack direction="row" p={2} spacing={2}>
           <SmallSelect
+            label="Sort by"
             value={searchParams.get('sort')!}
             onChange={(e) => onSelectChange('sort', e.target.value)}
           >
@@ -52,6 +53,7 @@ export default function SortButton({ fieldOptions, onChange }: SortButtonProps) 
             ))}
           </SmallSelect>
           <SmallSelect
+            label="Order"
             value={searchParams.get('order')!}
             onChange={(e) => onSelectChange('order', e.target.value)}
           >
