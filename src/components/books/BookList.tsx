@@ -39,7 +39,7 @@ export default function BookList({ books, itemType }: BookListProps) {
             to={getPaginationUrl({
               path: pathname,
               searchParams: newSearchParams,
-              page: item.page!,
+              page: item.page || 1,
             })}
             {...item}
           />
