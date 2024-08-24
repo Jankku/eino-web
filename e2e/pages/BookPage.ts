@@ -19,7 +19,7 @@ export default class BookPage {
     await this.page.getByLabel('Publisher').fill(book.publisher);
     await this.page.getByLabel('ISBN').fill(book.isbn);
     await this.page.getByLabel('Pages').fill(book.pages);
-    await this.page.getByLabel('Year').fill(book.year);
+    await this.page.getByLabel('Release year').fill(book.year);
     await this.page.getByRole('combobox', { name: 'Score' }).selectOption(book.score);
     await this.page.getByRole('combobox', { name: 'Status' }).selectOption(book.status);
     await this.page.locator('button[type=submit]').click();
@@ -33,7 +33,7 @@ export default class BookPage {
     await dialog.getByLabel('Publisher').fill(newBook.publisher);
     await dialog.getByLabel('ISBN').fill(newBook.isbn);
     await dialog.getByLabel('Pages').fill(newBook.pages);
-    await dialog.getByLabel('Year').fill(newBook.year);
+    await dialog.getByLabel('Release year').fill(newBook.year);
     await dialog.getByRole('combobox', { name: 'Score' }).selectOption(newBook.score);
     await dialog.getByRole('combobox', { name: 'Status' }).selectOption(newBook.status);
     await dialog.locator('button[type=submit]').click();

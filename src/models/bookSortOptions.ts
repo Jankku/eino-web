@@ -7,7 +7,7 @@ export const bookSortFields = [
   { name: 'Author', value: 'author' },
   { name: 'Publisher', value: 'publisher' },
   { name: 'Pages', value: 'pages' },
-  { name: 'Year', value: 'year' },
+  { name: 'Release year', value: 'year' },
   { name: 'Status', value: 'status' },
   { name: 'Score', value: 'score' },
   { name: 'Start Date', value: 'start_date' },

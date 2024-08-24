@@ -34,14 +34,12 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
           }}
         />
         <Grid container gap={1} justifyContent="space-between">
-          <TextField
-            type="number"
-            margin="dense"
-            name="duration"
-            label="Duration"
-            sx={{ flexGrow: 1 }}
-          />
-          <TextField type="number" margin="dense" name="year" label="Year" sx={{ flexGrow: 1 }} />
+          <Grid item flexGrow={2}>
+            <TextField type="number" margin="dense" name="duration" label="Duration" />
+          </Grid>
+          <Grid item flexGrow={2}>
+            <TextField type="number" margin="dense" name="year" label="Release year" />
+          </Grid>
         </Grid>
         <Grid container gap={1} justifyContent="space-between">
           <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
