@@ -16,7 +16,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { Outlet, useParams, useSearchParams } from 'react-router-dom';
-import { useMovies } from '../../data/movies/useMovies';
+import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
@@ -35,7 +35,7 @@ export default function Movies() {
   const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
   const [searchparams, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
-  const { data } = useMovies({
+  const { data } = useMoviesSuspense({
     status,
     sort: searchparams.get('sort'),
     order: searchparams.get('order'),

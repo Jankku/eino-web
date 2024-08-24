@@ -17,7 +17,7 @@ import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
 import { Outlet, useParams, useSearchParams } from 'react-router-dom';
-import { useBooks } from '../../data/books/useBooks';
+import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
@@ -35,7 +35,7 @@ export default function Books() {
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
   const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
   const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
-  const { data } = useBooks({
+  const { data } = useBooksSuspense({
     status,
     sort: searchparams.get('sort'),
     order: searchparams.get('order'),

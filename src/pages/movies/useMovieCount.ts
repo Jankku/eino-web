@@ -1,8 +1,8 @@
-import { useMovies } from '../../data/movies/useMovies';
+import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
 import { movieSortStatuses } from '../../models/movieSortOptions';
 
 export default function useMovieCount() {
-  const { data } = useMovies({ status: 'all' });
+  const { data } = useMoviesSuspense({ status: 'all' });
 
   const counts = movieSortStatuses.map((option) => {
     if (option.value === 'all') return [option.value, data?.length ?? 0];

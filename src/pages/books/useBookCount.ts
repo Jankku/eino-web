@@ -1,8 +1,8 @@
-import { useBooks } from '../../data/books/useBooks';
+import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { bookSortStatuses } from '../../models/bookSortOptions';
 
 export default function useBookCount() {
-  const { data } = useBooks({ status: 'all' });
+  const { data } = useBooksSuspense({ status: 'all' });
 
   const counts = bookSortStatuses.map((option) => {
     if (option.value === 'all') return [option.value, data?.length ?? 0];

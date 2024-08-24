@@ -21,6 +21,8 @@ type ListItemProps = {
   score: number;
   itemId: string;
   imageUrl: string | null;
+  disableClick?: boolean;
+  lighten?: boolean;
 };
 
 export default function ListItem({
@@ -30,6 +32,8 @@ export default function ListItem({
   score,
   itemId,
   imageUrl,
+  disableClick,
+  lighten,
 }: ListItemProps) {
   const location = useLocation();
   const { isDark } = useThemeContext();
@@ -38,13 +42,14 @@ export default function ListItem({
   return (
     <Card
       component="li"
-      variant="outlined"
+      variant={lighten ? 'elevation' : 'outlined'}
       sx={(theme) => ({
         border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
       })}
     >
       <CardActionArea
         component={Link}
+        disabled={disableClick}
         to={`./${itemId}${location.search}`}
         sx={{ display: 'block' }}
         draggable="false"
@@ -54,9 +59,9 @@ export default function ListItem({
             <Grid
               container
               width="10em"
-              height="10em"
+              minHeight="10em"
               sx={{
-                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.1)',
               }}
             >
               {imageUrl ? (
@@ -68,7 +73,7 @@ export default function ListItem({
                   src={imageUrl}
                   width="100%"
                   height="100%"
-                  style={{ objectFit: 'cover', aspectRatio: 0.7 }}
+                  style={{ objectFit: 'cover' }}
                 />
               ) : null}
             </Grid>

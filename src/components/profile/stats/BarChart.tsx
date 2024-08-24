@@ -13,19 +13,12 @@ import { useMediaQuery, useTheme } from '@mui/material';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
 type BarChartProps = {
-  data: {
-    labels: number[];
-    color: string;
-    datasets: {
-      label: string;
-      data: number[];
-      color: string;
-      backgroundColor: string;
-    }[];
-  };
+  labels: number[];
+  data: number[];
+  onClick: (index: number) => void;
 };
 
-export function BarChart({ data }: BarChartProps) {
+export function BarChart({ labels, data, onClick }: BarChartProps) {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.only('xs'));
 
@@ -90,11 +83,26 @@ export function BarChart({ data }: BarChartProps) {
         },
       },
     },
+    onClick: (_, elements) =>
+      elements?.[0]?.index !== undefined ? onClick(elements[0].index) : undefined,
   } satisfies ChartOptions;
+
+  const tableData = {
+    labels,
+    color: theme.palette.text.primary,
+    datasets: [
+      {
+        label: 'Count',
+        data,
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.primary.main,
+      },
+    ],
+  };
 
   return (
     <Bar
-      data={data}
+      data={tableData}
       options={options}
       plugins={[ChartDataLabels]}
       aria-label="Score distribution chart"

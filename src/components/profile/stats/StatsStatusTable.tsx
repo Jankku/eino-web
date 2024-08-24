@@ -3,21 +3,16 @@ import { useIsMobile } from '../../../hooks/useIsMobile';
 import { statusColors } from '../../../utils/profileUtil';
 import { Profile } from '../../../data/profile/profile.types';
 
+const formatter = new Intl.NumberFormat();
+
 type StatsStatusTableProps = {
-  type: 'book' | 'movie';
   stats: Profile['stats']['book'] | Profile['stats']['movie'];
+  statuses: string[];
 };
 
-export function StatsStatusTable({ type, stats }: StatsStatusTableProps) {
+export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
   const isMobile = useIsMobile();
-  const statuses = [
-    'completed',
-    type === 'book' ? 'reading' : 'watching',
-    'on-hold',
-    'dropped',
-    'planned',
-  ];
-  const formatter = new Intl.NumberFormat();
+
   const cellAlign = isMobile ? 'right' : undefined;
 
   return (
