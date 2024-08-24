@@ -7,13 +7,20 @@ import Download from '@mui/icons-material/Download';
 import Upload from '@mui/icons-material/Upload';
 import ShareRounded from '@mui/icons-material/ShareRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import ImportDialog from './ImportDialog';
+import UpdateEmailDialog from './UpdateEmailDialog';
 
-export function AccountActions() {
+type AccountActionsProps = {
+  email: string | null;
+};
+
+export function AccountActions({ email }: AccountActionsProps) {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
   const [importDialogOpen, toggleImportDialog] = useReducer((open) => !open, false);
+  const [updateEmailDialogOpen, toggleUpdateEmailDialog] = useReducer((open) => !open, false);
 
   return (
     <>
@@ -21,6 +28,16 @@ export function AccountActions() {
         <CardContent sx={{ p: 0, pl: 2 }}>
           <h2>Account actions</h2>
           <Grid container spacing={2}>
+            <Grid item>
+              <Button
+                startIcon={<AlternateEmailIcon />}
+                variant="contained"
+                color="primary"
+                onClick={toggleUpdateEmailDialog}
+              >
+                Update email
+              </Button>
+            </Grid>
             <Grid item>
               <Button
                 startIcon={<ShareRounded />}
@@ -75,6 +92,12 @@ export function AccountActions() {
       <ImportDialog visible={importDialogOpen} closeDialog={toggleImportDialog} />
 
       <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
+
+      <UpdateEmailDialog
+        email={email}
+        visible={updateEmailDialogOpen}
+        closeDialog={toggleUpdateEmailDialog}
+      />
     </>
   );
 }

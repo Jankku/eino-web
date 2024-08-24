@@ -14,7 +14,8 @@ export const api = ky.create({
         if (
           request.url.includes('books') ||
           request.url.includes('movies') ||
-          request.url.includes('profile')
+          request.url.includes('profile') ||
+          request.url.includes('email')
         ) {
           const accessToken = localStorage.getItem('accessToken');
           if (!accessToken) return request;

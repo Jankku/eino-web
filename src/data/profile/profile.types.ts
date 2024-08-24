@@ -14,6 +14,7 @@ type ProfileShare = {
 
 export type Profile = {
   user_id: string;
+  email: string | null;
   username: string;
   registration_date: string;
   stats: {

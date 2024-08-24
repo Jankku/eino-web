@@ -18,6 +18,7 @@ import { HTTPError } from 'ky';
 const registerSchema = z
   .object({
     username: zodFields.username,
+    email: zodFields.email,
     password: zodFields.password,
     password2: zodFields.password,
   })
@@ -36,6 +37,7 @@ export default function Register() {
   const formMethods = useForm({
     defaultValues: {
       username: '',
+      email: null,
       password: '',
       password2: '',
     },
@@ -81,6 +83,12 @@ export default function Register() {
                 label="Username"
                 autoComplete="username"
                 helperText="Username should be 3-255 characters long"
+              />
+              <TextField
+                name="email"
+                label="Email"
+                autoComplete="email"
+                helperText="Email is optional"
               />
               <Stack>
                 <PasswordField

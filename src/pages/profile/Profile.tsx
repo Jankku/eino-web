@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Stack } from '@mui/material';
 import { AccountActions } from '../../components/profile/AccountActions';
 import { BookStats } from '../../components/profile/stats/BookStats';
 import { MovieStats } from '../../components/profile/stats/MovieStats';
@@ -13,10 +13,14 @@ export default function Profile() {
       <h1>Profile</h1>
       {data ? (
         <>
-          <Grid container gap={2}>
-            <UserInfo username={data.username} registrationDate={data.registration_date} />
-            <AccountActions />
-          </Grid>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            <UserInfo
+              username={data.username}
+              email={data.email}
+              registrationDate={data.registration_date}
+            />
+            <AccountActions email={data.email} />
+          </Stack>
           <Grid item mt={2}>
             <BookStats stats={data.stats.book} />
           </Grid>

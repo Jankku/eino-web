@@ -8,6 +8,14 @@ export const zodFields = {
     })
     .min(3, 'Username should be at least 3 characters long')
     .max(255, 'Username should be at most 255 characters long'),
+  email: z
+    .string()
+    .trim()
+    .min(0)
+    .max(255, {
+      message: 'Email should be at most 255 characters long',
+    })
+    .nullable(),
   password: z
     .string({
       required_error: 'Password is required',

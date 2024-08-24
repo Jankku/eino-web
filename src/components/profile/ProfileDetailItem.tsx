@@ -3,7 +3,7 @@ import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 type ProfileDetailItemProps = {
   title: string;
-  text: string;
+  text: string | null;
 };
 
 export function ProfileDetailItem({ title, text }: ProfileDetailItemProps) {
