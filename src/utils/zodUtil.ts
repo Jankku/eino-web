@@ -22,6 +22,12 @@ export const zodFields = {
     })
     .min(8, 'Password should be at least 8 characters long')
     .max(255, 'Password should be at most 255 characters long'),
+  otp: z
+    .string({
+      required_error: 'OTP is required',
+    })
+    .min(6, 'OTP should be 6 digits long')
+    .max(6, 'OTP should be 6 digits long'),
 };
 
 export const errorSchema = z.object({

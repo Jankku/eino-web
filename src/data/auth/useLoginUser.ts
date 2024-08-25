@@ -4,7 +4,7 @@ import { Credentials } from './auth.schema';
 
 const loginUserQuery = async (credentials: Credentials) => {
   return await api
-    .post('api/v1/auth/login', { json: credentials })
+    .post('api/v2/auth/login', { json: credentials })
     .json<{ accessToken: string; refreshToken: string }>();
 };
 

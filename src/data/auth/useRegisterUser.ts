@@ -3,7 +3,7 @@ import { api } from '../api';
 import { Credentials } from './auth.schema';
 
 const registerUserQuery = async (credentials: Credentials) => {
-  return await api.post('api/v1/auth/register', { json: credentials }).json();
+  return await api.post('api/v2/auth/register', { json: credentials }).json();
 };
 
 export const useRegisterUser = () =>

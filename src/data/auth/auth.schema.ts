@@ -6,4 +6,8 @@ export const credentialsSchema = z.object({
   password: zodFields.password,
 });
 
-export type Credentials = z.infer<typeof credentialsSchema>;
+export type Credentials = {
+  username: string;
+  password: string;
+  otp?: string;
+};

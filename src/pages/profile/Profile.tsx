@@ -18,8 +18,9 @@ export default function Profile() {
               username={data.username}
               email={data.email}
               registrationDate={data.registration_date}
+              totpEnabledOn={data.totp_enabled_on}
             />
-            <AccountActions email={data.email} />
+            <AccountActions email={data.email} totpEnabledOn={data.totp_enabled_on} />
           </Stack>
           <Grid item mt={2}>
             <BookStats stats={data.stats.book} />

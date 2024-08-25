@@ -17,6 +17,7 @@ export type Profile = {
   email: string | null;
   username: string;
   registration_date: string;
+  totp_enabled_on: string | null;
   stats: {
     book: {
       count: Record<string, number>;

@@ -12,6 +12,7 @@ import PasswordField from '../../components/form/PasswordField';
 import { parseError } from '../../utils/zodUtil';
 import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
+import { useLoginConfig } from '../../data/auth/useLoginConfig';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,15 +30,30 @@ export default function Login() {
     formState: { errors },
     setError,
   } = formMethods;
+  const loginConfig = useLoginConfig();
   const loginUser = useLoginUser();
 
   const onSubmit = async (credentials: Credentials) => {
-    loginUser.mutate(credentials, {
+    loginConfig.mutate(credentials, {
       onSuccess: (data) => {
-        setToken(data.accessToken);
-        setRefreshToken(data.refreshToken);
-        setIsLoggedIn(true);
-        navigate('/books');
+        if (data.requireOtp) {
+          navigate('/login/otp', { state: { credentials } });
+        } else {
+          loginUser.mutate(credentials, {
+            onSuccess: (data) => {
+              setToken(data.accessToken);
+              setRefreshToken(data.refreshToken);
+              setIsLoggedIn(true);
+              navigate('/books');
+            },
+            onError: async (error) => {
+              const errors = await parseError(error as HTTPError);
+              setError('root.serverError', {
+                message: errors[0].message,
+              });
+            },
+          });
+        }
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);
@@ -59,7 +75,6 @@ export default function Login() {
             <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
               <TextField autoFocus name="username" label="Username" autoComplete="username" />
               <PasswordField name="password" label="Password" />
-
               <Stack>
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
@@ -67,7 +82,7 @@ export default function Login() {
 
                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
                   <LoadingButton
-                    loading={loginUser.isPending}
+                    loading={loginConfig.isPending || loginUser.isPending}
                     type="submit"
                     variant="contained"
                     color="primary"

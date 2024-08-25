@@ -14,6 +14,7 @@ import RedirectAuthenticated from './components/common/RedirectAuthenticated';
 
 const Register = lazy(() => import('./pages/authentication/Register'));
 const Login = lazy(() => import('./pages/authentication/Login'));
+const LoginOtp = lazy(() => import('./pages/authentication/LoginOtp'));
 const Books = lazy(() => import('./pages/books/Books'));
 const BookDetail = lazy(() => import('./pages/books/BookDetail'));
 const Movies = lazy(() => import('./pages/movies/Movies'));
@@ -71,6 +72,16 @@ function WrappedApp() {
               <RedirectAuthenticated>
                 <PageBoundary>
                   <Login />
+                </PageBoundary>
+              </RedirectAuthenticated>
+            }
+          />
+          <Route
+            path="/login/otp"
+            element={
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <LoginOtp />
                 </PageBoundary>
               </RedirectAuthenticated>
             }

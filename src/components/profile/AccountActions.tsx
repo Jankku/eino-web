@@ -8,19 +8,26 @@ import Upload from '@mui/icons-material/Upload';
 import ShareRounded from '@mui/icons-material/ShareRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import ShieldOutlined from '@mui/icons-material/ShieldOutlined';
+import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
 import ImportDialog from './ImportDialog';
 import UpdateEmailDialog from './UpdateEmailDialog';
+import Enable2FADialog from './Enable2FADialog';
+import Disable2FADialog from './Disable2FADialog';
 
 type AccountActionsProps = {
   email: string | null;
+  totpEnabledOn: string | null;
 };
 
-export function AccountActions({ email }: AccountActionsProps) {
+export function AccountActions({ email, totpEnabledOn }: AccountActionsProps) {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
   const [importDialogOpen, toggleImportDialog] = useReducer((open) => !open, false);
   const [updateEmailDialogOpen, toggleUpdateEmailDialog] = useReducer((open) => !open, false);
+  const [enable2FADialogOpen, toggleEnable2FADialog] = useReducer((open) => !open, false);
+  const [disable2FADialogOpen, toggleDisable2FADialog] = useReducer((open) => !open, false);
 
   return (
     <>
@@ -28,6 +35,29 @@ export function AccountActions({ email }: AccountActionsProps) {
         <CardContent sx={{ p: 0, pl: 2 }}>
           <h2>Account actions</h2>
           <Grid container spacing={2}>
+            {totpEnabledOn ? (
+              <Grid item>
+                <Button
+                  startIcon={<RemoveModeratorIcon />}
+                  variant="contained"
+                  color="secondary"
+                  onClick={toggleDisable2FADialog}
+                >
+                  Disable 2FA
+                </Button>
+              </Grid>
+            ) : (
+              <Grid item>
+                <Button
+                  startIcon={<ShieldOutlined />}
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleEnable2FADialog}
+                >
+                  Enable 2FA
+                </Button>
+              </Grid>
+            )}
             <Grid item>
               <Button
                 startIcon={<AlternateEmailIcon />}
@@ -98,6 +128,10 @@ export function AccountActions({ email }: AccountActionsProps) {
         visible={updateEmailDialogOpen}
         closeDialog={toggleUpdateEmailDialog}
       />
+
+      <Enable2FADialog visible={enable2FADialogOpen} closeDialog={toggleEnable2FADialog} />
+
+      <Disable2FADialog visible={disable2FADialogOpen} closeDialog={toggleDisable2FADialog} />
     </>
   );
 }
