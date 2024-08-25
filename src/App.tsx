@@ -20,6 +20,7 @@ const BookDetail = lazy(() => import('./pages/books/BookDetail'));
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
+const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
 
 function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
@@ -94,6 +95,16 @@ function WrappedApp() {
               <RequireAuth>
                 <PageBoundary>
                   <Profile />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile/verify-email"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <ProfileVerifyEmail />
                 </PageBoundary>
               </RequireAuth>
             }

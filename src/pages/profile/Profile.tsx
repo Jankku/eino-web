@@ -17,6 +17,7 @@ export default function Profile() {
             <UserInfo
               username={data.username}
               email={data.email}
+              emailVerifiedOn={data.email_verified_on}
               registrationDate={data.registration_date}
               totpEnabledOn={data.totp_enabled_on}
             />

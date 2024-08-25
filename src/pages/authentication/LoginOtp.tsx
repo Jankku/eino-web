@@ -42,7 +42,7 @@ export default function LoginOtp() {
   const onSubmit = async ({ otp }: { otp: string }) => {
     const locationState = locationStateSchema.safeParse(state);
     if (!locationState.success) {
-      navigate('/login');
+      navigate('/login', { replace: true });
       return;
     }
     const credentials = locationState.data.credentials;
@@ -54,7 +54,7 @@ export default function LoginOtp() {
           setToken(data.accessToken);
           setRefreshToken(data.refreshToken);
           setIsLoggedIn(true);
-          navigate('/books');
+          navigate('/books', { replace: true });
         },
         onError: async (error) => {
           const errors = await parseError(error as HTTPError);

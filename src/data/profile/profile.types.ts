@@ -15,6 +15,7 @@ type ProfileShare = {
 export type Profile = {
   user_id: string;
   email: string | null;
+  email_verified_on: string | null;
   username: string;
   registration_date: string;
   totp_enabled_on: string | null;

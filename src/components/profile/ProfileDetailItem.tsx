@@ -1,12 +1,14 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, Tooltip } from '@mui/material';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
+import React from 'react';
 
 type ProfileDetailItemProps = {
   title: string;
-  text: string | null;
+  text: string | React.ReactNode | null;
+  tooltip?: React.ReactNode;
 };
 
-export function ProfileDetailItem({ title, text }: ProfileDetailItemProps) {
+export function ProfileDetailItem({ title, text, tooltip }: ProfileDetailItemProps) {
   return (
     <Grid item>
       <Grid item>
@@ -14,10 +16,34 @@ export function ProfileDetailItem({ title, text }: ProfileDetailItemProps) {
           {stringOrPlaceholder(title)}
         </Typography>
       </Grid>
-      <Grid item>
-        <Typography component="dd" paragraph variant="body1">
-          {stringOrPlaceholder(text)}
-        </Typography>
+      <Grid width="fit-content">
+        {tooltip ? (
+          <Tooltip
+            arrow
+            title={<Typography variant="body2">{tooltip}</Typography>}
+            placement="top-start"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, -10],
+                    },
+                  },
+                ],
+              },
+            }}
+          >
+            <Typography component="dd" paragraph variant="body1">
+              {text}
+            </Typography>
+          </Tooltip>
+        ) : (
+          <Typography component="dd" paragraph variant="body1">
+            {text}
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
