@@ -75,9 +75,7 @@ export default function LoginOtp() {
               <h1>Verify Your Identity</h1>
             </Box>
             <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
-              <Typography>
-                Check your preferred one-time password application for a code.
-              </Typography>
+              <Typography>Check your preferred one-time code application for a code.</Typography>
               <TextField autoFocus name="otp" label="Enter your one-time code" />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />

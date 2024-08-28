@@ -60,9 +60,12 @@ export default function ListItem({
               container
               width="10em"
               minHeight="10em"
-              sx={{
-                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.1)',
-              }}
+              sx={(theme) => ({
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                ...theme.applyStyles('dark', {
+                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                }),
+              })}
             >
               {imageUrl ? (
                 <img

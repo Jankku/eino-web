@@ -73,13 +73,19 @@ export default function Login() {
               <h1>Login</h1>
             </Box>
             <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
-              <TextField autoFocus name="username" label="Username" autoComplete="username" />
-              <PasswordField name="password" label="Password" />
-              <Stack>
+              <TextField
+                autoFocus
+                name="username"
+                label="Username or email"
+                autoComplete="username"
+              />
+              <Stack gap={1}>
+                <PasswordField name="password" label="Password" />
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}
-
+              </Stack>
+              <Stack>
                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
                   <LoadingButton
                     loading={loginConfig.isPending || loginUser.isPending}
@@ -90,8 +96,7 @@ export default function Login() {
                     Login
                   </LoadingButton>
                   <Typography paragraph align="left">
-                    Don&apos;t have an account yet?{' '}
-                    <Typography component={Link} to="/register">
+                    <Typography component={Link} to="/forgot-password">
                       <Box
                         component="span"
                         sx={{
@@ -99,7 +104,7 @@ export default function Login() {
                           textDecoration: 'underline',
                         }}
                       >
-                        Register
+                        Forgot password?
                       </Box>
                     </Typography>
                   </Typography>

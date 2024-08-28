@@ -95,11 +95,14 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                 </Box>
                 <Box
                   sx={(theme) => ({
-                    backgroundColor: theme.palette.background.default,
+                    backgroundColor: '#eee',
                     wordBreak: 'break-all',
                     px: 2,
                     py: 1,
                     borderRadius: 2,
+                    ...theme.applyStyles('dark', {
+                      backgroundColor: '#303030',
+                    }),
                   })}
                 >
                   <Typography fontFamily="monospace">{data.totpUrl}</Typography>

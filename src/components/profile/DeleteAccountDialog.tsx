@@ -58,7 +58,7 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => resetState()}>
+    <BaseDialog maxWidth="xs" open={visible} onClose={() => resetState()}>
       <DialogTitle>Delete account</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>

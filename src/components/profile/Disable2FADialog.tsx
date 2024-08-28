@@ -63,7 +63,7 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => resetState()}>
+    <BaseDialog maxWidth="xs" open={visible} onClose={() => resetState()}>
       <DialogTitle>Disable Two Factor Authentication (2FA)</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>

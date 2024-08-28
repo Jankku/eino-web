@@ -1,7 +1,8 @@
-import { Card, CardContent } from '@mui/material';
+import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
 import { ProfileDetailItem } from './ProfileDetailItem';
 import { Link } from 'react-router-dom';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 type UserInfoProps = {
   username: string;
@@ -19,31 +20,59 @@ export function UserInfo({
   totpEnabledOn,
 }: UserInfoProps) {
   return (
-    <Card component="section" variant="outlined" sx={{ flexGrow: 2, minWidth: '20rem' }}>
-      <CardContent sx={{ p: 0, px: 2 }}>
+    <Card component="section" variant="outlined" sx={{ flexGrow: 2, minWidth: { sm: '22rem' } }}>
+      <CardContent sx={{ p: 0, px: 2, overflowWrap: 'anywhere' }}>
         <h2>User</h2>
-        <dl>
+        <Stack gap={1}>
           <ProfileDetailItem title={'Username'} text={username} />
           {email ? (
             <ProfileDetailItem
               title={'Email'}
               text={
                 <>
-                  <span>{email}</span> (
+                  {email}
                   {emailVerifiedOn ? (
-                    'Verified'
+                    <Tooltip
+                      arrow
+                      title={
+                        emailVerifiedOn ? (
+                          <Typography variant="body2">
+                            Email verified on {DateTime.fromISO(emailVerifiedOn).toLocaleString()}
+                          </Typography>
+                        ) : undefined
+                      }
+                      placement="top-start"
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: 'offset',
+                              options: {
+                                offset: [0, -10],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
+                      <Box
+                        component="span"
+                        sx={{ paddingLeft: '4px', display: 'flex', alignContent: 'center' }}
+                      >
+                        <CheckCircleIcon
+                          role="presentation"
+                          color="success"
+                          fontSize="small"
+                          sx={{ alignSelf: 'center' }}
+                        />
+                      </Box>
+                    </Tooltip>
                   ) : (
                     <Link to="verify-email" state={{ email }}>
                       Verify email
                     </Link>
                   )}
-                  )
                 </>
-              }
-              tooltip={
-                emailVerifiedOn
-                  ? `Email verified on ${DateTime.fromISO(emailVerifiedOn).toLocaleString()}`
-                  : undefined
               }
             />
           ) : undefined}
@@ -57,7 +86,7 @@ export function UserInfo({
               text={DateTime.fromISO(totpEnabledOn).toLocaleString()}
             />
           ) : undefined}
-        </dl>
+        </Stack>
       </CardContent>
     </Card>
   );

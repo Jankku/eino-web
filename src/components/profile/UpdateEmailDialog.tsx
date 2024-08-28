@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { z } from 'zod';
@@ -12,7 +12,7 @@ import TextField from '../form/TextField';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 
 const emailFormSchema = z.object({
-  email: zodFields.email,
+  email: zodFields.optionalEmail,
 });
 
 type UpdateEmailDialogProps = {
@@ -57,11 +57,15 @@ export default function UpdateEmailDialog({ email, visible, closeDialog }: Updat
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => resetState()}>
+    <BaseDialog maxWidth="xs" open={visible} onClose={() => resetState()}>
       <DialogTitle>Update email</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
+          <DialogContent sx={{ pt: 0 }}>
+            <Typography paragraph mb={3}>
+              Make sure to verify your new email address after updating it. Otherwise you cannot
+              reset your password.
+            </Typography>
             <TextField autoFocus name="email" label="New email" />
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />

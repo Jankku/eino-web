@@ -76,6 +76,7 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
 
   return (
     <BaseDialog
+      maxWidth="xs"
       open={visible}
       onClose={() => {
         resetState();

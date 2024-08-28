@@ -1,5 +1,4 @@
 import { Grid, ListItem, Typography } from '@mui/material';
-import { useThemeContext } from '../../providers/ThemeProvider';
 
 type SearchResultProps = {
   title: string;
@@ -8,8 +7,6 @@ type SearchResultProps = {
 };
 
 export default function SearchResult({ title, subtitle, imageUrl, ...rest }: SearchResultProps) {
-  const { isDark } = useThemeContext();
-
   return (
     <ListItem {...rest}>
       {imageUrl ? (
@@ -17,10 +14,13 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }: Sea
           container
           width="50px"
           height="100%"
-          sx={{
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+          sx={(theme) => ({
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
             marginRight: 1,
-          }}
+            ...theme.applyStyles('dark', {
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            }),
+          })}
         >
           <img
             draggable="false"

@@ -18,7 +18,7 @@ import { HTTPError } from 'ky';
 const registerSchema = z
   .object({
     username: zodFields.username,
-    email: zodFields.email,
+    email: zodFields.optionalEmail,
     password: zodFields.password,
     password2: zodFields.password,
   })
@@ -104,16 +104,18 @@ export default function Register() {
                   </Typography>
                 </Stack>
               </Stack>
-              <PasswordField
-                name="password2"
-                label="Confirm password"
-                autoComplete="new-password"
-              />
-
-              <Stack>
+              <Stack gap={1}>
+                <PasswordField
+                  name="password2"
+                  label="Confirm password"
+                  autoComplete="new-password"
+                />
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}
+              </Stack>
+
+              <Stack>
                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
                   <LoadingButton
                     loading={registerUser.isPending}
