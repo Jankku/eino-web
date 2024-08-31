@@ -29,6 +29,7 @@ export default function ProfileVerifyEmail() {
     handleSubmit,
     setError,
     formState: { errors },
+    clearErrors,
   } = formMethods;
   const sendConfirmation = useSendEmailConfirmation();
   const verifyEmail = useVerifyEmail();
@@ -40,8 +41,7 @@ export default function ProfileVerifyEmail() {
   }, [state]);
 
   const onSendConfirmation = () => {
-    console.log('Sending confirmation email', email);
-
+    clearErrors('root.serverError');
     sendConfirmation.mutate(undefined, {
       onSuccess: () => {
         setShowOtpField(true);
@@ -56,6 +56,7 @@ export default function ProfileVerifyEmail() {
   };
 
   const onVerify = async ({ otp }: { otp: string }) => {
+    clearErrors('root.serverError');
     verifyEmail.mutate(otp, {
       onSuccess: () => {
         navigate('/profile', { replace: true });
@@ -73,7 +74,7 @@ export default function ProfileVerifyEmail() {
   return (
     <Container maxWidth="sm">
       <h1>Verify email</h1>
-      <Stack>
+      <Stack spacing={1}>
         {!showOtpField ? (
           <Stack spacing={2} alignItems="start">
             <Typography paragraph>Email to verify: {email ? email : 'No email found'}</Typography>

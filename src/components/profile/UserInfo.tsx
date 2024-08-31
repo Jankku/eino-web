@@ -1,8 +1,9 @@
-import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Card, CardContent, Stack, Tooltip, Typography, Link as MUILink } from '@mui/material';
 import { DateTime } from 'luxon';
 import { ProfileDetailItem } from './ProfileDetailItem';
 import { Link } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 type UserInfoProps = {
   username: string;
@@ -31,47 +32,60 @@ export function UserInfo({
               text={
                 <>
                   {email}
-                  {emailVerifiedOn ? (
-                    <Tooltip
-                      arrow
-                      title={
-                        emailVerifiedOn ? (
-                          <Typography variant="body2">
-                            Email verified on {DateTime.fromISO(emailVerifiedOn).toLocaleString()}
-                          </Typography>
-                        ) : undefined
-                      }
-                      placement="top-start"
-                      slotProps={{
-                        popper: {
-                          modifiers: [
-                            {
-                              name: 'offset',
-                              options: {
-                                offset: [0, -10],
-                              },
+                  <Tooltip
+                    arrow
+                    title={
+                      <Typography variant="body2">
+                        {emailVerifiedOn ? (
+                          `Email verified on ${DateTime.fromISO(emailVerifiedOn).toLocaleString()}`
+                        ) : (
+                          <MUILink
+                            component={Link}
+                            to="verify-email"
+                            state={{ email }}
+                            color="#fff"
+                            underline="hover"
+                          >
+                            Click to verify email
+                          </MUILink>
+                        )}
+                      </Typography>
+                    }
+                    placement="top-start"
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: 'offset',
+                            options: {
+                              offset: [0, -10],
                             },
-                          ],
-                        },
-                      }}
+                          },
+                        ],
+                      },
+                    }}
+                  >
+                    <Box
+                      component="span"
+                      sx={{ paddingLeft: '4px', display: 'flex', alignContent: 'center' }}
                     >
-                      <Box
-                        component="span"
-                        sx={{ paddingLeft: '4px', display: 'flex', alignContent: 'center' }}
-                      >
+                      {emailVerifiedOn ? (
                         <CheckCircleIcon
                           role="presentation"
                           color="success"
                           fontSize="small"
                           sx={{ alignSelf: 'center' }}
                         />
-                      </Box>
-                    </Tooltip>
-                  ) : (
-                    <Link to="verify-email" state={{ email }}>
-                      Verify email
-                    </Link>
-                  )}
+                      ) : (
+                        <CancelOutlinedIcon
+                          role="presentation"
+                          color="error"
+                          fontSize="small"
+                          sx={{ alignSelf: 'center' }}
+                        />
+                      )}
+                    </Box>
+                  </Tooltip>
                 </>
               }
             />

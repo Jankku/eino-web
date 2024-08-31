@@ -14,13 +14,15 @@ import ImportDialog from './ImportDialog';
 import UpdateEmailDialog from './UpdateEmailDialog';
 import Enable2FADialog from './Enable2FADialog';
 import Disable2FADialog from './Disable2FADialog';
+import { Link } from 'react-router-dom';
 
 type AccountActionsProps = {
   email: string | null;
+  emailVerifiedOn: string | null;
   totpEnabledOn: string | null;
 };
 
-export function AccountActions({ email, totpEnabledOn }: AccountActionsProps) {
+export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: AccountActionsProps) {
   const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
@@ -59,14 +61,27 @@ export function AccountActions({ email, totpEnabledOn }: AccountActionsProps) {
               </Grid>
             )}
             <Grid item>
-              <Button
-                startIcon={<AlternateEmailIcon />}
-                variant="contained"
-                color="primary"
-                onClick={toggleUpdateEmailDialog}
-              >
-                Update email
-              </Button>
+              {emailVerifiedOn ? (
+                <Button
+                  startIcon={<AlternateEmailIcon />}
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleUpdateEmailDialog}
+                >
+                  Update email
+                </Button>
+              ) : (
+                <Button
+                  component={Link}
+                  to="verify-email"
+                  state={{ email }}
+                  startIcon={<AlternateEmailIcon />}
+                  variant="contained"
+                  color="primary"
+                >
+                  Verify email
+                </Button>
+              )}
             </Grid>
             <Grid item>
               <Button

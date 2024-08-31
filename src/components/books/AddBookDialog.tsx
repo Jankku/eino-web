@@ -26,8 +26,6 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   const addBookMutation = useAddBook();
 
   const onSubmit = (formData: Book) => {
-    console.log('formData', formData);
-
     try {
       addBookMutation.mutate(formData, {
         onSuccess: () => {
