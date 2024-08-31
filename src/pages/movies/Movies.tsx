@@ -79,9 +79,10 @@ export default function Movies() {
   };
 
   useLayoutEffect(() => {
-    setSearchParams({ sort: 'title', order: 'ascending' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!searchparams.get('sort') || !searchparams.get('order')) {
+      setSearchParams({ sort: 'title', order: 'ascending' });
+    }
+  }, [searchparams, setSearchParams]);
 
   return (
     <ListDetailLayout
