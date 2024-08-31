@@ -107,7 +107,12 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                 >
                   <Typography fontFamily="monospace">{data.totpUrl}</Typography>
                 </Box>
-                <TextField autoFocus name="otp" label="Enter your one-time code" />
+                <TextField
+                  autoFocus
+                  name="otp"
+                  label="Enter your one-time code"
+                  autoComplete="one-time-code"
+                />
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}

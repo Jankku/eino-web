@@ -73,7 +73,12 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
                 Disabling 2FA will remove an extra layer of security from your account. Are you sure
                 you want to disable 2FA?
               </Typography>
-              <TextField autoFocus name="otp" label="Enter your one-time code" />
+              <TextField
+                autoFocus
+                name="otp"
+                label="Enter your one-time code"
+                autoComplete="one-time-code"
+              />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />
               ) : null}

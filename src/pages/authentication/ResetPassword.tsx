@@ -72,7 +72,7 @@ export default function ResetPassword() {
               Enter the one-time code sent to your email and your new password.
             </Typography>
 
-            <TextField autoFocus name="email" label="Email" autoComplete="email" />
+            <TextField autoFocus name="email" type="email" label="Email" autoComplete="email" />
             <PasswordField name="newPassword" label="New password" autoComplete="new-password" />
             <Stack gap={1}>
               <TextField name="otp" label="One-time code" autoComplete="one-time-code" />

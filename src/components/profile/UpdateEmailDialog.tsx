@@ -24,7 +24,9 @@ type UpdateEmailDialogProps = {
 export default function UpdateEmailDialog({ email, visible, closeDialog }: UpdateEmailDialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
-    defaultValues: async () => ({ email: email || '' }),
+    defaultValues: {
+      email: '',
+    },
     resolver: zodResolver(emailFormSchema),
   });
   const {
@@ -62,11 +64,20 @@ export default function UpdateEmailDialog({ email, visible, closeDialog }: Updat
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography paragraph mb={3}>
+            <Typography paragraph mb={1}>
               Make sure to verify your new email address after updating it. Otherwise you cannot
               reset your password.
             </Typography>
-            <TextField autoFocus name="email" label="New email" />
+            <Typography paragraph mb={3}>
+              Current email: {email}
+            </Typography>
+            <TextField
+              autoFocus
+              type="email"
+              name="email"
+              label="New email"
+              placeholder="john@example.com"
+            />
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}

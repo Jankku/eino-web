@@ -61,16 +61,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
               </Grid>
             )}
             <Grid item>
-              {emailVerifiedOn ? (
-                <Button
-                  startIcon={<AlternateEmailIcon />}
-                  variant="contained"
-                  color="primary"
-                  onClick={toggleUpdateEmailDialog}
-                >
-                  Update email
-                </Button>
-              ) : (
+              {email && !emailVerifiedOn ? (
                 <Button
                   component={Link}
                   to="verify-email"
@@ -80,6 +71,15 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                   color="primary"
                 >
                   Verify email
+                </Button>
+              ) : (
+                <Button
+                  startIcon={<AlternateEmailIcon />}
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleUpdateEmailDialog}
+                >
+                  Update email
                 </Button>
               )}
             </Grid>

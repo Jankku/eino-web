@@ -59,7 +59,7 @@ export default function ForgotPassword() {
             </Typography>
 
             <Stack gap={1}>
-              <TextField autoFocus name="email" label="Email" autoComplete="email" />
+              <TextField autoFocus name="email" type="email" label="Email" />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />
               ) : null}

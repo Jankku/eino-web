@@ -84,12 +84,7 @@ export default function Register() {
                 autoComplete="username"
                 helperText="Username should be 3-255 characters long"
               />
-              <TextField
-                name="email"
-                label="Email"
-                autoComplete="email"
-                helperText="Email is optional"
-              />
+              <TextField name="email" label="Email" helperText="Email is optional" />
               <Stack>
                 <PasswordField
                   name="password"

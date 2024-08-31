@@ -93,7 +93,12 @@ export default function ProfileVerifyEmail() {
             {showOtpField ? (
               <Stack spacing={2} alignItems="start" maxWidth="fit-content">
                 <Typography>Email sent! Check your email for a one-time code.</Typography>
-                <TextField autoFocus name="otp" label="Enter your one-time code" />
+                <TextField
+                  autoFocus
+                  name="otp"
+                  label="Enter your one-time code"
+                  autoComplete="one-time-code"
+                />
                 <LoadingButton
                   loading={verifyEmail.isPending}
                   variant="contained"

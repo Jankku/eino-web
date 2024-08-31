@@ -114,7 +114,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                     </Typography>
                   ))
                 ) : (
-                  <Typography>Drag and drop or click to select an Eino JSON file</Typography>
+                  <Typography>Drag and drop or click to select Eino JSON file</Typography>
                 )}
               </Paper>
               <Box pt={1}>

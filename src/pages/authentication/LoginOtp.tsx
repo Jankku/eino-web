@@ -76,7 +76,12 @@ export default function LoginOtp() {
             </Box>
             <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
               <Typography>Check your preferred one-time code application for a code.</Typography>
-              <TextField autoFocus name="otp" label="Enter your one-time code" />
+              <TextField
+                autoFocus
+                name="otp"
+                label="Enter your one-time code"
+                autoComplete="one-time-code"
+              />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />
               ) : null}
