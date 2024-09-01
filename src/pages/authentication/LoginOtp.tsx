@@ -67,24 +67,26 @@ export default function LoginOtp() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack>
             <Box sx={{ textAlign: 'center' }}>
               <h1>Verify Your Identity</h1>
             </Box>
-            <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
-              <Typography>Check your preferred one-time code application for a code.</Typography>
-              <TextField
-                autoFocus
-                name="otp"
-                label="Enter your one-time code"
-                autoComplete="one-time-code"
-              />
-              {errors.root?.serverError?.message ? (
-                <ErrorMessage message={errors.root.serverError.message} />
-              ) : null}
+            <Stack gap={4} width="100%" alignSelf="center">
+              <Typography>Check your preferred authenticator app for the one-time code.</Typography>
+              <Stack spacing={1}>
+                <TextField
+                  autoFocus
+                  name="otp"
+                  label="Enter your one-time code"
+                  autoComplete="one-time-code"
+                />
+                {errors.root?.serverError?.message ? (
+                  <ErrorMessage message={errors.root.serverError.message} />
+                ) : null}
+              </Stack>
               <LoadingButton
                 loading={loginUser.isPending}
                 type="submit"

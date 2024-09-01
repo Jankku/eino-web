@@ -2,19 +2,31 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useStat
 import { useToken } from '../hooks/useToken';
 
 const AuthContext = createContext<{
+  username: string;
+  email: string | null;
+  is2FAEnabled: boolean;
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }>({
+  username: '',
+  email: null,
+  is2FAEnabled: false,
   isLoggedIn: false,
   setIsLoggedIn: () => {},
 });
 
 export function AuthenticationProvider({ children }: { children: ReactNode }) {
-  const { isAccessTokenValid, isRefreshTokenValid } = useToken();
+  const { getUsername, getEmail, getIs2FAEnabled, isAccessTokenValid, isRefreshTokenValid } =
+    useToken();
+  const [username] = useState(() => getUsername());
+  const [email] = useState(() => getEmail());
+  const [is2FAEnabled] = useState(() => getIs2FAEnabled());
   const [isLoggedIn, setIsLoggedIn] = useState(() => isAccessTokenValid() && isRefreshTokenValid());
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ username, email, is2FAEnabled, isLoggedIn, setIsLoggedIn }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
