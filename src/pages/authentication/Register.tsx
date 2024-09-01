@@ -11,7 +11,7 @@ import PasswordField from '../../components/form/PasswordField.tsx';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import PasswordStrengthMeter from '../../components/authentication/PasswordStrengthMeter';
 import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDebounce } from '@uidotdev/usehooks';
 import { Credentials } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 

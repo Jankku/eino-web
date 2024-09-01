@@ -12,7 +12,7 @@ import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { Outlet, useParams, useSearchParams } from 'react-router-dom';

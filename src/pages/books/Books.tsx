@@ -12,7 +12,7 @@ import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
