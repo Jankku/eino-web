@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, DialogActions, DialogContent } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -54,8 +54,7 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   };
 
   return (
-    <BaseDialog open={visible} onClose={onCancel}>
-      <DialogTitle>Add new book</DialogTitle>
+    <BaseDialog title="Add new book" open={visible} onClose={onCancel}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>

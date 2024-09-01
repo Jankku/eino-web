@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, Paper, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -77,13 +69,13 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
 
   return (
     <BaseDialog
+      title="Import account data"
       maxWidth="xs"
       open={visible}
       onClose={() => {
         resetState();
       }}
     >
-      <DialogTitle>Import account data</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>

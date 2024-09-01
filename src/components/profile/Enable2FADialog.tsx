@@ -4,7 +4,6 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   Stack,
   Typography,
@@ -68,8 +67,11 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
   };
 
   return (
-    <BaseDialog open={visible} onClose={() => resetState()}>
-      <DialogTitle>Enable Two Factor Authentication (2FA)</DialogTitle>
+    <BaseDialog
+      title="Enable Two Factor Authentication (2FA)"
+      open={visible}
+      onClose={() => resetState()}
+    >
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
@@ -108,7 +110,6 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                   <Typography fontFamily="monospace">{data.totpUrl}</Typography>
                 </Box>
                 <TextField
-                  autoFocus
                   name="otp"
                   label="Enter your one-time code"
                   autoComplete="one-time-code"

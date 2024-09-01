@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
@@ -58,8 +58,7 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
   };
 
   return (
-    <BaseDialog maxWidth="xs" open={visible} onClose={() => resetState()}>
-      <DialogTitle>Delete account</DialogTitle>
+    <BaseDialog title="Delete account" maxWidth="xs" open={visible} onClose={() => resetState()}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>

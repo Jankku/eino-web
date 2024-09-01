@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { z } from 'zod';
@@ -59,8 +59,7 @@ export default function UpdateEmailDialog({ email, visible, closeDialog }: Updat
   };
 
   return (
-    <BaseDialog maxWidth="xs" open={visible} onClose={() => resetState()}>
-      <DialogTitle>Update email</DialogTitle>
+    <BaseDialog title="Update email" maxWidth="xs" open={visible} onClose={() => resetState()}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>

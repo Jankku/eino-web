@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, DialogActions, DialogContent } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -53,8 +53,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   };
 
   return (
-    <BaseDialog open={visible} onClose={onCancel}>
-      <DialogTitle>Add new movie</DialogTitle>
+    <BaseDialog title="Add new movie" open={visible} onClose={onCancel}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>

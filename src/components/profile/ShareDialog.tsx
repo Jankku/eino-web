@@ -3,7 +3,6 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   Typography,
 } from '@mui/material';
@@ -62,8 +61,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   };
 
   return (
-    <BaseDialog open={visible} maxWidth={'md'} onClose={onClose}>
-      <DialogTitle>Share profile</DialogTitle>
+    <BaseDialog title="Share profile" open={visible} maxWidth={'md'} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
           <Grid container justifyContent="center">

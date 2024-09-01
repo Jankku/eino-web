@@ -1,11 +1,14 @@
-import { Dialog, DialogProps, useMediaQuery, useTheme } from '@mui/material';
+import { Dialog, DialogProps, DialogTitle, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 
-function BaseDialog({ children, ...props }: DialogProps) {
+interface BaseDialogProps extends DialogProps {
+  title: string;
+}
+
+function BaseDialog({ title, children, ...props }: BaseDialogProps) {
   const theme = useTheme();
   const fullscreenBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const open = props.open;
-
   useEffect(() => {
     if (!open) return;
 
@@ -19,10 +22,11 @@ function BaseDialog({ children, ...props }: DialogProps) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [open]);
+  }, [open, props]);
 
   return (
     <Dialog {...props} fullScreen={fullscreenBelowMd}>
+      <DialogTitle>{title}</DialogTitle>
       {children}
     </Dialog>
   );

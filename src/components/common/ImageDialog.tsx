@@ -1,10 +1,4 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import BaseDialog from './BaseDialog';
 import React from 'react';
 
@@ -24,8 +18,7 @@ export default function ImageDialog({
   children,
 }: ImageDialogProps) {
   return (
-    <BaseDialog open={visible} onClose={closeDialog} hideBackdrop>
-      <DialogTitle>{title}</DialogTitle>
+    <BaseDialog title={title} open={visible} onClose={closeDialog} hideBackdrop>
       <DialogContent sx={{ paddingTop: 0 }}>
         <DialogContentText>Sources: {sources}</DialogContentText>
         {children}
