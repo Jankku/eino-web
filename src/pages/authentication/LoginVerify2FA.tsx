@@ -21,7 +21,7 @@ const otpFormSchema = z.object({
   otp: zodFields.otp,
 });
 
-export default function LoginOtp() {
+export default function LoginVerify2FA() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();

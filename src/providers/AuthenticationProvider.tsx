@@ -1,4 +1,12 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useToken } from '../hooks/useToken';
 
 const AuthContext = createContext<{
@@ -18,10 +26,19 @@ const AuthContext = createContext<{
 export function AuthenticationProvider({ children }: { children: ReactNode }) {
   const { getUsername, getEmail, getIs2FAEnabled, isAccessTokenValid, isRefreshTokenValid } =
     useToken();
-  const [username] = useState(() => getUsername());
-  const [email] = useState(() => getEmail());
-  const [is2FAEnabled] = useState(() => getIs2FAEnabled());
+  const [username, setUsername] = useState(() => getUsername());
+  const [email, setEmail] = useState(() => getEmail());
+  const [is2FAEnabled, setIs2FAEnabled] = useState(() => getIs2FAEnabled());
   const [isLoggedIn, setIsLoggedIn] = useState(() => isAccessTokenValid() && isRefreshTokenValid());
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setUsername(getUsername());
+      setEmail(getEmail());
+      setIs2FAEnabled(getIs2FAEnabled());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   return (
     <AuthContext.Provider value={{ username, email, is2FAEnabled, isLoggedIn, setIsLoggedIn }}>

@@ -5,7 +5,7 @@ import { Credentials } from './auth.schema';
 const loginConfigQuery = async (credentials: Omit<Credentials, 'password'>) => {
   return await api
     .post('api/v2/auth/login/config', { json: credentials })
-    .json<{ requireOtp: boolean }>();
+    .json<{ is2FAEnabled: boolean }>();
 };
 
 export const useLoginConfig = () =>

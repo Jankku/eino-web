@@ -36,8 +36,8 @@ export default function Login() {
   const onSubmit = async (credentials: Credentials) => {
     loginConfig.mutate(credentials, {
       onSuccess: (data) => {
-        if (data.requireOtp) {
-          navigate('/login/otp', { state: { credentials } });
+        if (data.is2FAEnabled) {
+          navigate('/login/2fa', { state: { credentials } });
         } else {
           loginUser.mutate(credentials, {
             onSuccess: (data) => {

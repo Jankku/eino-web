@@ -13,18 +13,21 @@ export function useToken() {
   const refreshToken = localStorage.getItem('refreshToken') as string;
 
   const getUsername = () => {
+    if (!token) return '';
     const decoded = jwtDecode(token) as DecodedToken;
-    return decoded?.username || '';
+    return decoded.username || '';
   };
 
   const getEmail = () => {
+    if (!token) return null;
     const decoded = jwtDecode(token) as DecodedToken;
-    return decoded?.email;
+    return decoded.email;
   };
 
   const getIs2FAEnabled = () => {
+    if (!token) return false;
     const decoded = jwtDecode(token) as DecodedToken;
-    return decoded?.is2FAEnabled;
+    return decoded.is2FAEnabled;
   };
 
   const setToken = (accessToken: string) => {
