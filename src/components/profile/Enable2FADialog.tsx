@@ -109,14 +109,16 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                 >
                   <Typography fontFamily="monospace">{data.totpUrl}</Typography>
                 </Box>
-                <TextField
-                  name="otp"
-                  label="Enter your one-time code"
-                  autoComplete="one-time-code"
-                />
-                {errors.root?.serverError?.message ? (
-                  <ErrorMessage message={errors.root.serverError.message} />
-                ) : null}
+                <Stack spacing={1}>
+                  <TextField
+                    name="otp"
+                    label="Enter your one-time code"
+                    autoComplete="one-time-code"
+                  />
+                  {errors.root?.serverError?.message ? (
+                    <ErrorMessage message={errors.root.serverError.message} />
+                  ) : null}
+                </Stack>
               </Stack>
             ) : undefined}
           </DialogContent>
