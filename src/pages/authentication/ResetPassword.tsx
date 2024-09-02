@@ -10,13 +10,12 @@ import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { ResetPasswordBody, useResetPassword } from '../../data/auth/useResetPassword';
-import { useEffect } from 'react';
 import PasswordField from '../../components/form/PasswordField';
 
 const newPasswordFormSchema = z.object({
-  email: zodFields.email,
   newPassword: zodFields.password,
   otp: zodFields.otp,
+  twoFactorCode: zodFields.optionalOtp,
 });
 
 export default function ResetPassword() {
@@ -25,9 +24,9 @@ export default function ResetPassword() {
   const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
     defaultValues: {
-      email: '',
       newPassword: '',
       otp: '',
+      twoFactorCode: '',
     },
     resolver: zodResolver(newPasswordFormSchema),
   });
@@ -35,18 +34,15 @@ export default function ResetPassword() {
     handleSubmit,
     formState: { errors },
     setError,
-    reset,
   } = formMethods;
   const resetPassword = useResetPassword();
+  const email = state?.email;
+  const is2FAEnabled = state?.is2FAEnabled;
 
-  useEffect(() => {
-    if (state?.email) {
-      reset({ email: state.email }, { keepDefaultValues: true });
-    }
-  }, [state, reset]);
+  const onSubmit = async (body: Partial<ResetPasswordBody>) => {
+    if (!email) return navigate('/forgot-password', { replace: true });
 
-  const onSubmit = async (object: ResetPasswordBody) => {
-    resetPassword.mutate(object, {
+    resetPassword.mutate({ ...body, email } as ResetPasswordBody, {
       onSuccess: (message) => {
         navigate('/login', { replace: true });
         showSuccessSnackbar(message);
@@ -69,13 +65,20 @@ export default function ResetPassword() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
             <Typography>
-              Enter the one-time code sent to your email and your new password.
+              Enter the one-time code sent to your email ({email}), your new password and 2FA code
+              if requested.
             </Typography>
 
-            <TextField autoFocus name="email" type="email" label="Email" autoComplete="email" />
             <PasswordField name="newPassword" label="New password" autoComplete="new-password" />
+            <TextField name="otp" label="One-time code" autoComplete="one-time-code" />
             <Stack gap={1}>
-              <TextField name="otp" label="One-time code" autoComplete="one-time-code" />
+              {is2FAEnabled ? (
+                <TextField
+                  name="twoFactorCode"
+                  label="Enter your 2FA code"
+                  autoComplete="one-time-code"
+                />
+              ) : undefined}
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />
               ) : null}

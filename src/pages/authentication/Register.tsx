@@ -37,7 +37,7 @@ export default function Register() {
   const formMethods = useForm({
     defaultValues: {
       username: '',
-      email: null,
+      email: '',
       password: '',
       password2: '',
     },

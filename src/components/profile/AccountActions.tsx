@@ -11,7 +11,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import ShieldOutlined from '@mui/icons-material/ShieldOutlined';
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
 import ImportDialog from './ImportDialog';
-import UpdateEmailDialog from './UpdateEmailDialog';
+import ChangeEmailDialog from './ChangeEmailDialog';
 import Enable2FADialog from './Enable2FADialog';
 import Disable2FADialog from './Disable2FADialog';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
   const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
   const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
   const [importDialogOpen, toggleImportDialog] = useReducer((open) => !open, false);
-  const [updateEmailDialogOpen, toggleUpdateEmailDialog] = useReducer((open) => !open, false);
+  const [changeEmailDialogOpen, toggleChangeEmailDialog] = useReducer((open) => !open, false);
   const [enable2FADialogOpen, toggleEnable2FADialog] = useReducer((open) => !open, false);
   const [disable2FADialogOpen, toggleDisable2FADialog] = useReducer((open) => !open, false);
 
@@ -77,9 +77,9 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                   startIcon={<AlternateEmailIcon />}
                   variant="contained"
                   color="primary"
-                  onClick={toggleUpdateEmailDialog}
+                  onClick={toggleChangeEmailDialog}
                 >
-                  Update email
+                  {email ? 'Update' : 'Add'} email
                 </Button>
               )}
             </Grid>
@@ -138,10 +138,10 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
 
       <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
 
-      <UpdateEmailDialog
+      <ChangeEmailDialog
         email={email}
-        visible={updateEmailDialogOpen}
-        closeDialog={toggleUpdateEmailDialog}
+        visible={changeEmailDialogOpen}
+        closeDialog={toggleChangeEmailDialog}
       />
 
       <Enable2FADialog visible={enable2FADialogOpen} closeDialog={toggleEnable2FADialog} />

@@ -33,8 +33,8 @@ export default function ForgotPassword() {
 
   const onSubmit = async ({ email }: { email: string }) => {
     forgotPassword.mutate(email, {
-      onSuccess: (message) => {
-        navigate('/reset-password', { state: { email } });
+      onSuccess: ({ message, is2FAEnabled }) => {
+        navigate('/reset-password', { state: { email, is2FAEnabled } });
         showSuccessSnackbar(message);
       },
       onError: async (error) => {
