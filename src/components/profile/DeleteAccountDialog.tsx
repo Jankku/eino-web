@@ -1,7 +1,7 @@
-import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
+import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BaseDialog from '../common/BaseDialog';
-import { useDeleteAccount } from '../../data/profile/useDeleteAccount';
+import { DeleteAccountBody, useDeleteAccount } from '../../data/profile/useDeleteAccount';
 import { LoadingButton } from '@mui/lab';
 import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
@@ -10,9 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { HTTPError } from 'ky';
+import TextField from '../form/TextField';
+import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 
 const passwordFormSchema = z.object({
   password: zodFields.password,
+  twoFactorCode: zodFields.optionalOtp,
 });
 
 type DeleteAccountDialogProps = {
@@ -22,9 +26,12 @@ type DeleteAccountDialogProps = {
 
 function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps) {
   const navigate = useNavigate();
+  const { is2FAEnabled } = useAuthContext();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
     defaultValues: {
       password: '',
+      twoFactorCode: '',
     },
     resolver: zodResolver(passwordFormSchema),
   });
@@ -42,11 +49,12 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
     closeDialog();
   };
 
-  const onSubmit = ({ password }: { password: string }) => {
-    deleteAccount.mutate(password, {
-      onSuccess: () => {
+  const onSubmit = (body: DeleteAccountBody) => {
+    deleteAccount.mutate(body, {
+      onSuccess: (message) => {
         closeDialog();
         navigate('/logout');
+        showSuccessSnackbar(message);
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);
@@ -66,10 +74,19 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
               NOTE: THIS ACTION IS IRREVERSIBLE!
             </Typography>
             <Typography paragraph variant="body1">
-              This action will permanently delete your account and all associated data. Please
-              confirm your password before proceeding.
+              This action will permanently delete your account and all associated data. Confirm your
+              password to proceed.
             </Typography>
-            <PasswordField autoFocus name="password" label="Confirm password" />
+            <Stack spacing={2}>
+              <PasswordField autoFocus name="password" label="Confirm password" />
+              {is2FAEnabled ? (
+                <TextField
+                  name="twoFactorCode"
+                  label="Enter your 2FA code"
+                  autoComplete="one-time-code"
+                />
+              ) : undefined}
+            </Stack>
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
