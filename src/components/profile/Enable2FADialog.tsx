@@ -22,7 +22,7 @@ import { useGenerate2FAUrl } from '../../data/profile/useGenerate2FAUrl';
 import { useEnable2FA } from '../../data/profile/useEnable2FA';
 
 const totpFormSchema = z.object({
-  otp: zodFields.otp,
+  twoFactorCode: zodFields.otp,
 });
 
 type Enable2FADialogProps = {
@@ -33,7 +33,7 @@ type Enable2FADialogProps = {
 export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
-    defaultValues: { otp: '' },
+    defaultValues: { twoFactorCode: '' },
     resolver: zodResolver(totpFormSchema),
   });
   const {
@@ -51,8 +51,8 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
     closeDialog();
   };
 
-  const onSubmit = ({ otp }: { otp: string }) => {
-    enable2FA.mutate(otp, {
+  const onSubmit = ({ twoFactorCode }: { twoFactorCode: string }) => {
+    enable2FA.mutate(twoFactorCode, {
       onSuccess: () => {
         closeDialog();
         showSuccessSnackbar('2FA enabled successfully');
@@ -68,7 +68,7 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
 
   return (
     <BaseDialog
-      title="Enable Two Factor Authentication (2FA)"
+      title="Enable Two-Factor Authentication (2FA)"
       open={visible}
       onClose={() => resetState()}
     >
@@ -111,8 +111,8 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                 </Box>
                 <Stack spacing={1}>
                   <TextField
-                    name="otp"
-                    label="Enter your one-time code"
+                    name="twoFactorCode"
+                    label="Enter your two-factor code"
                     autoComplete="one-time-code"
                   />
                   {errors.root?.serverError?.message ? (

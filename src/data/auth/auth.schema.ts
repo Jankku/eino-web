@@ -9,5 +9,5 @@ export const credentialsSchema = z.object({
 export type Credentials = {
   username: string;
   password: string;
-  otp?: string;
+  twoFactorCode?: string;
 };

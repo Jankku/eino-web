@@ -28,7 +28,7 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
         email: zodFields.optionalEmail,
         twoFactorCode: zodFields.optionalOtp,
       })
-      .refine((data) => is2FAEnabled && data.twoFactorCode, {
+      .refine((data) => !is2FAEnabled || data.twoFactorCode, {
         path: ['twoFactorCode'],
         message: 'Two-factor code is required',
       }),

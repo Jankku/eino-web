@@ -18,7 +18,7 @@ const locationStateSchema = z.object({
 });
 
 const otpFormSchema = z.object({
-  otp: zodFields.otp,
+  twoFactorCode: zodFields.otp,
 });
 
 export default function LoginVerify2FA() {
@@ -28,7 +28,7 @@ export default function LoginVerify2FA() {
   const { setIsLoggedIn } = useAuthContext();
   const formMethods = useForm({
     defaultValues: {
-      otp: '',
+      twoFactorCode: '',
     },
     resolver: zodResolver(otpFormSchema),
   });
@@ -39,7 +39,7 @@ export default function LoginVerify2FA() {
   } = formMethods;
   const loginUser = useLoginUser();
 
-  const onSubmit = async ({ otp }: { otp: string }) => {
+  const onSubmit = async ({ twoFactorCode }: { twoFactorCode: string }) => {
     const locationState = locationStateSchema.safeParse(state);
     if (!locationState.success) {
       navigate('/login', { replace: true });
@@ -48,7 +48,7 @@ export default function LoginVerify2FA() {
     const credentials = locationState.data.credentials;
 
     loginUser.mutate(
-      { ...credentials, otp },
+      { ...credentials, twoFactorCode },
       {
         onSuccess: (data) => {
           setToken(data.accessToken);
@@ -79,8 +79,8 @@ export default function LoginVerify2FA() {
               <Stack spacing={1}>
                 <TextField
                   autoFocus
-                  name="otp"
-                  label="Enter your one-time code"
+                  name="twoFactorCode"
+                  label="Enter your 2FA code"
                   autoComplete="one-time-code"
                 />
                 {errors.root?.serverError?.message ? (

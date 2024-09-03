@@ -34,7 +34,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
   return (
     <>
       <Card component="section" variant="outlined" sx={{ flexGrow: 1 }}>
-        <CardContent sx={{ p: 0, pl: 2 }}>
+        <CardContent sx={{ p: 0, px: 2 }}>
           <h2>Account actions</h2>
           <Grid container spacing={2}>
             {totpEnabledOn ? (
@@ -60,29 +60,46 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                 </Button>
               </Grid>
             )}
-            <Grid item>
-              {email && !emailVerifiedOn ? (
-                <Button
-                  component={Link}
-                  to="verify-email"
-                  state={{ email }}
-                  startIcon={<AlternateEmailIcon />}
-                  variant="contained"
-                  color="primary"
-                >
-                  Verify email
-                </Button>
-              ) : (
+
+            {email ? (
+              <>
+                {!emailVerifiedOn ? (
+                  <Grid item>
+                    <Button
+                      component={Link}
+                      to="verify-email"
+                      state={{ email }}
+                      startIcon={<AlternateEmailIcon />}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Verify email
+                    </Button>
+                  </Grid>
+                ) : undefined}
+                <Grid item>
+                  <Button
+                    startIcon={<AlternateEmailIcon />}
+                    variant="contained"
+                    color="primary"
+                    onClick={toggleChangeEmailDialog}
+                  >
+                    Update email
+                  </Button>
+                </Grid>
+              </>
+            ) : (
+              <Grid item>
                 <Button
                   startIcon={<AlternateEmailIcon />}
                   variant="contained"
                   color="primary"
                   onClick={toggleChangeEmailDialog}
                 >
-                  {email ? 'Update' : 'Add'} email
+                  Add email
                 </Button>
-              )}
-            </Grid>
+              </Grid>
+            )}
             <Grid item>
               <Button
                 startIcon={<ShareRounded />}

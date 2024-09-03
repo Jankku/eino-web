@@ -1,11 +1,4 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { z } from 'zod';
@@ -19,7 +12,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useDisable2FA } from '../../data/profile/useDisable2FA';
 
 const totpFormSchema = z.object({
-  otp: zodFields.otp,
+  twoFactorCode: zodFields.otp,
 });
 
 type Disable2FADialogProps = {
@@ -30,7 +23,7 @@ type Disable2FADialogProps = {
 export default function Disable2FADialog({ visible, closeDialog }: Disable2FADialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
-    defaultValues: { otp: '' },
+    defaultValues: { twoFactorCode: '' },
     resolver: zodResolver(totpFormSchema),
   });
   const {
@@ -47,8 +40,8 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
     closeDialog();
   };
 
-  const onSubmit = ({ otp }: { otp: string }) => {
-    disable2FA.mutate(otp, {
+  const onSubmit = ({ twoFactorCode }: { twoFactorCode: string }) => {
+    disable2FA.mutate(twoFactorCode, {
       onSuccess: () => {
         closeDialog();
         showSuccessSnackbar('2FA disabled successfully');
@@ -64,7 +57,7 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
 
   return (
     <BaseDialog
-      title="Disable Two Factor Authentication (2FA)"
+      title="Disable Two-Factor Authentication (2FA)"
       maxWidth="xs"
       open={visible}
       onClose={() => resetState()}
@@ -80,8 +73,8 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
               <Stack spacing={1}>
                 <TextField
                   autoFocus
-                  name="otp"
-                  label="Enter your one-time code"
+                  name="twoFactorCode"
+                  label="Enter your two-factor code"
                   autoComplete="one-time-code"
                 />
                 {errors.root?.serverError?.message ? (
