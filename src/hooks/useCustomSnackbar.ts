@@ -6,13 +6,13 @@ export function useCustomSnackbar() {
   const showSuccessSnackbar = (message: string) =>
     enqueueSnackbar(message, {
       variant: 'success',
-      autoHideDuration: 2000,
+      autoHideDuration: 4000,
     });
 
   const showErrorSnackbar = (message: string) =>
     enqueueSnackbar(message, {
       variant: 'error',
-      autoHideDuration: 2000,
+      autoHideDuration: 4000,
     });
 
   return { showSuccessSnackbar, showErrorSnackbar };

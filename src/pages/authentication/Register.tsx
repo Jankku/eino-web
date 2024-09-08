@@ -11,13 +11,14 @@ import PasswordField from '../../components/form/PasswordField.tsx';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import PasswordStrengthMeter from '../../components/authentication/PasswordStrengthMeter';
 import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDebounce } from '@uidotdev/usehooks';
 import { Credentials } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 
 const registerSchema = z
   .object({
     username: zodFields.username,
+    email: zodFields.optionalEmail,
     password: zodFields.password,
     password2: zodFields.password,
   })
@@ -36,6 +37,7 @@ export default function Register() {
   const formMethods = useForm({
     defaultValues: {
       username: '',
+      email: '',
       password: '',
       password2: '',
     },
@@ -82,6 +84,7 @@ export default function Register() {
                 autoComplete="username"
                 helperText="Username should be 3-255 characters long"
               />
+              <TextField name="email" label="Email" helperText="Email is optional" />
               <Stack>
                 <PasswordField
                   name="password"
@@ -96,16 +99,18 @@ export default function Register() {
                   </Typography>
                 </Stack>
               </Stack>
-              <PasswordField
-                name="password2"
-                label="Confirm password"
-                autoComplete="new-password"
-              />
-
-              <Stack>
+              <Stack gap={1}>
+                <PasswordField
+                  name="password2"
+                  label="Confirm password"
+                  autoComplete="new-password"
+                />
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}
+              </Stack>
+
+              <Stack>
                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
                   <LoadingButton
                     loading={registerUser.isPending}

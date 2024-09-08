@@ -14,11 +14,15 @@ import RedirectAuthenticated from './components/common/RedirectAuthenticated';
 
 const Register = lazy(() => import('./pages/authentication/Register'));
 const Login = lazy(() => import('./pages/authentication/Login'));
+const LoginVerify2FA = lazy(() => import('./pages/authentication/LoginVerify2FA'));
+const ForgotPassword = lazy(() => import('./pages/authentication/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/authentication/ResetPassword'));
 const Books = lazy(() => import('./pages/books/Books'));
 const BookDetail = lazy(() => import('./pages/books/BookDetail'));
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
+const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
 
 function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
@@ -75,6 +79,36 @@ function WrappedApp() {
               </RedirectAuthenticated>
             }
           />
+          <Route
+            path="/login/2fa"
+            element={
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <LoginVerify2FA />
+                </PageBoundary>
+              </RedirectAuthenticated>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <ForgotPassword />
+                </PageBoundary>
+              </RedirectAuthenticated>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <RedirectAuthenticated>
+                <PageBoundary>
+                  <ResetPassword />
+                </PageBoundary>
+              </RedirectAuthenticated>
+            }
+          />
           <Route path="/logout" element={<Logout />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route
@@ -83,6 +117,16 @@ function WrappedApp() {
               <RequireAuth>
                 <PageBoundary>
                   <Profile />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile/verify-email"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <ProfileVerifyEmail />
                 </PageBoundary>
               </RequireAuth>
             }

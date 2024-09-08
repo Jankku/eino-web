@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Link, Typography } from '@mui/material';
+import { Button, DialogActions, DialogContent, Link, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -76,12 +76,13 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
 
   return (
     <BaseDialog
+      title="Export account data"
+      maxWidth="xs"
       open={visible}
       onClose={() => {
         resetState();
       }}
     >
-      <DialogTitle>Export account data</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>

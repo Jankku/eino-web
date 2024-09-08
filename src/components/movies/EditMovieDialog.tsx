@@ -4,7 +4,6 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   Typography,
 } from '@mui/material';
@@ -63,8 +62,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
   };
 
   return (
-    <BaseDialog open={visible} onClose={onCancel}>
-      <DialogTitle>Edit movie</DialogTitle>
+    <BaseDialog title="Edit movie" open={visible} onClose={onCancel}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>

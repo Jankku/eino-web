@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useDebounce } from './useDebounce';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { useDebounce } from '@uidotdev/usehooks';
 
 export function useSearch<T>(
   mutate: UseMutateFunction<T[], Error, string>,

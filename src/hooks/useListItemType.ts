@@ -1,4 +1,4 @@
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
 export const listItemTypes = {
   CARD: 'card',

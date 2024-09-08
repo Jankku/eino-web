@@ -87,13 +87,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
                       <WbSunnyRounded />
                     ) : (
                       <Brightness2Icon
-                        sx={(theme) =>
-                          theme.palette.mode === 'light'
-                            ? {
-                                color: 'white',
-                              }
-                            : {}
-                        }
+                        sx={(theme) => theme.applyStyles('light', { color: 'white' })}
                       />
                     )}
                   </IconButton>

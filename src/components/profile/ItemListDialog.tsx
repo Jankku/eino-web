@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, DialogActions, DialogContent } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 
 type ItemListDialog = {
@@ -14,8 +14,7 @@ export default function ItemListDialog({ title, visible, closeDialog, children }
   };
 
   return (
-    <BaseDialog open={visible} onClose={onClose}>
-      <DialogTitle>{title}</DialogTitle>
+    <BaseDialog title={title} open={visible} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>{children}</DialogContent>
       <DialogActions>
         <Button color="secondary" onClick={onClose}>

@@ -1,16 +1,38 @@
 import { jwtDecode } from 'jwt-decode';
 import { DateTime } from 'luxon';
 
+type DecodedToken = {
+  userId: string;
+  username: string;
+  email: string | null;
+  is2FAEnabled: boolean;
+};
+
 export function useToken() {
   const token = localStorage.getItem('accessToken') as string;
   const refreshToken = localStorage.getItem('refreshToken') as string;
-  const username = localStorage.getItem('username') as string;
+
+  const getUsername = () => {
+    if (!token) return '';
+    const decoded = jwtDecode(token) as DecodedToken;
+    return decoded.username || '';
+  };
+
+  const getEmail = () => {
+    if (!token) return null;
+    const decoded = jwtDecode(token) as DecodedToken;
+    return decoded.email;
+  };
+
+  const getIs2FAEnabled = () => {
+    if (!token) return false;
+    const decoded = jwtDecode(token) as DecodedToken;
+    return decoded.is2FAEnabled;
+  };
 
   const setToken = (accessToken: string) => {
     try {
-      const tokenUsername = (jwtDecode(accessToken) as { username: string }).username;
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('username', tokenUsername);
     } catch (err) {
       console.error(err);
     }
@@ -36,8 +58,11 @@ export function useToken() {
   const isRefreshTokenValid = () => {
     try {
       const decoded = jwtDecode(refreshToken);
-      const expTime = DateTime.fromSeconds(decoded.exp!);
-      return expTime > DateTime.now();
+      if (decoded.exp) {
+        const expTime = DateTime.fromSeconds(decoded.exp);
+        return expTime > DateTime.now();
+      }
+      return false;
     } catch {
       return false;
     }
@@ -46,17 +71,18 @@ export function useToken() {
   const removeTokens = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    localStorage.removeItem('username');
   };
 
   return {
     token,
     refreshToken,
-    username,
+    getUsername,
+    getEmail,
+    getIs2FAEnabled,
     setToken,
     setRefreshToken,
-    removeTokens,
     isAccessTokenValid,
     isRefreshTokenValid,
+    removeTokens,
   };
 }

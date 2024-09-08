@@ -1,6 +1,5 @@
 import { Button, Divider, Drawer, Grid, MenuItem, MenuList, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useToken } from '../../hooks/useToken';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import Home from '@mui/icons-material/Home';
@@ -40,8 +39,7 @@ export default function Header({
   children,
 }: HeaderProps) {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthContext();
-  const { username } = useToken();
+  const { username, isLoggedIn } = useAuthContext();
 
   const container = window !== undefined ? () => window().document.body : undefined;
 

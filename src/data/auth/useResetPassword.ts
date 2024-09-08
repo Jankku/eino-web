@@ -2,20 +2,22 @@ import { useMutation } from '@tanstack/react-query';
 import { api } from '../api';
 import { ApiResponse, Result } from '../types';
 
-export type DeleteAccountBody = {
-  password: string;
+export type ResetPasswordBody = {
+  email: string;
+  newPassword: string;
+  otp: string;
   twoFactorCode?: string;
 };
 
-const deleteAccountQuery = async (body: DeleteAccountBody) => {
+const resetPasswordQuery = async (body: ResetPasswordBody) => {
   const res = await api
-    .post('api/v1/profile/deleteaccount', { json: body })
+    .post('api/v2/auth/password/reset', { json: body })
     .json<ApiResponse<Result[]>>();
   return res.results[0].message;
 };
 
-export const useDeleteAccount = () =>
+export const useResetPassword = () =>
   useMutation({
     throwOnError: false,
-    mutationFn: deleteAccountQuery,
+    mutationFn: resetPasswordQuery,
   });

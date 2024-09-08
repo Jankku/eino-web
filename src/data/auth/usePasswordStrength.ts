@@ -4,7 +4,7 @@ import { ApiResponse } from '../types';
 
 const passwordStrengthQuery = async (password: string) => {
   const res = await api
-    .post('api/v1/auth/passwordstrength', { json: { password } })
+    .post('api/v2/auth/passwordstrength', { json: { password } })
     .json<ApiResponse<{ score: number; message: string }[]>>();
   return res.results[0];
 };

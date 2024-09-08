@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, Paper, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -17,7 +9,6 @@ import ErrorMessage from '../authentication/ErrorMessage';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useThemeContext } from '../../providers/ThemeProvider';
 import { byteFormatter, FileValidationError, fileValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
 
@@ -44,7 +35,6 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
     setError,
     formState: { errors },
   } = formMethods;
-  const { isDark } = useThemeContext();
   const queryClient = useQueryClient();
   const importData = useImportData();
   const { showSuccessSnackbar } = useCustomSnackbar();
@@ -79,12 +69,13 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
 
   return (
     <BaseDialog
+      title="Import account data"
+      maxWidth="xs"
       open={visible}
       onClose={() => {
         resetState();
       }}
     >
-      <DialogTitle>Import account data</DialogTitle>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
@@ -96,13 +87,16 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
               <Paper
                 {...getRootProps()}
                 elevation={2}
-                sx={{
-                  backgroundColor: isDark ? '#25272c' : 'grey.200',
+                sx={(theme) => ({
+                  backgroundColor: 'grey.200',
                   px: 1,
                   py: 4,
                   textAlign: 'center',
                   cursor: 'pointer',
-                }}
+                  ...theme.applyStyles('dark', {
+                    backgroundColor: '#25272c',
+                  }),
+                })}
               >
                 <input {...getInputProps()} />
                 {files.length > 0 ? (
@@ -112,9 +106,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                     </Typography>
                   ))
                 ) : (
-                  <Typography>
-                    Drag and drop Eino JSON file here, or click to select a file
-                  </Typography>
+                  <Typography>Drag and drop or click to select Eino JSON file</Typography>
                 )}
               </Paper>
               <Box pt={1}>
