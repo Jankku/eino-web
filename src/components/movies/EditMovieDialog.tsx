@@ -39,14 +39,14 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
     try {
       updateMovie.mutate(formData, {
         onSuccess: () => {
-          showSuccessSnackbar('Movie saved.');
+          showSuccessSnackbar('Movie saved');
         },
-        onError: () => showErrorSnackbar('Failed to save movie.'),
+        onError: () => showErrorSnackbar('Failed to save movie'),
       });
       closeDialog();
       resetForm();
     } catch {
-      showErrorSnackbar('Failed to save movie.');
+      showErrorSnackbar('Failed to save movie');
     }
   };
 

@@ -78,11 +78,11 @@ export default function BookDetail() {
             onClick={() => {
               deleteBook.mutate(bookId, {
                 onSuccess: () => {
-                  showSuccessSnackbar('Book deleted.');
+                  showSuccessSnackbar('Book deleted');
                   navigate(-1);
                 },
                 onError: () => {
-                  showErrorSnackbar('Failed to delete book.');
+                  showErrorSnackbar('Failed to delete book');
                 },
               });
             }}

@@ -78,11 +78,11 @@ export default function MovieDetail() {
             onClick={() => {
               deleteMovie.mutate(movieId, {
                 onSuccess: () => {
-                  showSuccessSnackbar('Movie deleted.');
+                  showSuccessSnackbar('Movie deleted');
                   navigate(-1);
                 },
                 onError: () => {
-                  showErrorSnackbar('Failed to delete movie.');
+                  showErrorSnackbar('Failed to delete movie');
                 },
               });
             }}

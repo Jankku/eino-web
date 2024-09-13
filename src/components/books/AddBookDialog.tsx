@@ -29,16 +29,16 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
     try {
       addBookMutation.mutate(formData, {
         onSuccess: () => {
-          showSuccessSnackbar('Book created.');
+          showSuccessSnackbar('Book created');
         },
         onError: () => {
-          showErrorSnackbar('Failed to create book.');
+          showErrorSnackbar('Failed to create book');
         },
       });
       closeDialog();
       resetForm();
     } catch {
-      showErrorSnackbar('Failed to create book.');
+      showErrorSnackbar('Failed to create book');
     }
   };
 
