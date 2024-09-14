@@ -85,6 +85,12 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
     },
     onClick: (_, elements) =>
       elements?.[0]?.index !== undefined ? onClick(elements[0].index) : undefined,
+    onHover: (event, elements) => {
+      if (event?.native?.target) {
+        // @ts-expect-error -- no types
+        event.native.target.style.cursor = elements[0] ? 'pointer' : 'default';
+      }
+    },
   } satisfies ChartOptions;
 
   const tableData = {
