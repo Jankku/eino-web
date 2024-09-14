@@ -38,7 +38,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
             <TextField type="number" margin="dense" name="duration" label="Duration" />
           </Grid>
           <Grid item flexGrow={2}>
-            <TextField type="number" margin="dense" name="year" label="Release year" />
+            <TextField type="number" margin="dense" name="year" label="Released" />
           </Grid>
         </Grid>
         <Grid container gap={1} justifyContent="space-between">

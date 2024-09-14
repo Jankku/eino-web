@@ -38,7 +38,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
             <TextField type="number" margin="dense" name="pages" label="Pages" />
           </Grid>
           <Grid item flexGrow={2}>
-            <TextField type="number" margin="dense" name="year" label="Release year" />
+            <TextField type="number" margin="dense" name="year" label="Released" />
           </Grid>
         </Grid>
         <Grid container gap={1} justifyContent="space-between">

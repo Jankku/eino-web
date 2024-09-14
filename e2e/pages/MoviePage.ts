@@ -19,7 +19,7 @@ export default class MoviePage {
     await this.page.getByLabel('Director').fill(movie.director);
     await this.page.getByLabel('Writer').fill(movie.writer);
     await this.page.getByLabel('Duration').fill(movie.duration);
-    await this.page.getByLabel('Release year').fill(movie.year);
+    await this.page.getByLabel('Released').fill(movie.year);
     await this.page.getByRole('combobox', { name: 'Score' }).selectOption(movie.score);
     await this.page.getByRole('combobox', { name: 'Status' }).selectOption(movie.status);
     await this.page.locator('button[type=submit]').click();
@@ -33,7 +33,7 @@ export default class MoviePage {
     await dialog.getByLabel('Director').fill(newMovie.director);
     await dialog.getByLabel('Writer').fill(newMovie.writer);
     await dialog.getByLabel('Duration').fill(newMovie.duration);
-    await dialog.getByLabel('Release year').fill(newMovie.year);
+    await dialog.getByLabel('Released').fill(newMovie.year);
     await dialog.getByRole('combobox', { name: 'Score' }).selectOption(newMovie.score);
     await dialog.getByRole('combobox', { name: 'Status' }).selectOption(newMovie.status);
     await dialog.locator('button[type=submit]').click();

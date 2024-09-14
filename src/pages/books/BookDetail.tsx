@@ -40,7 +40,7 @@ export default function BookDetail() {
           <DetailItem title="Publisher" text={data.publisher} />
           <DetailItem title="ISBN" text={data.isbn} />
           <DetailItem title="Pages" text={data.pages} />
-          <DetailItem title="Release year" text={data.year} />
+          <DetailItem title="Released" text={data.year} />
           <DetailItem title="Status" text={capitalize(String(data.status))} />
           <DetailItem title="Score" text={data.score} />
           <DetailItem

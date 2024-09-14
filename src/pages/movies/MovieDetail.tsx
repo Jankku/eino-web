@@ -40,7 +40,7 @@ export default function MovieDetail() {
           <DetailItem title="Director" text={data.director} />
           <DetailItem title="Writer" text={data.writer} />
           <DetailItem title="Duration" text={`${data.duration} minutes`} />
-          <DetailItem title="Release year" text={data.year} />
+          <DetailItem title="Released" text={data.year} />
           <DetailItem title="Status" text={capitalize(String(data.status))} />
           <DetailItem title="Score" text={data.score} />
           <DetailItem

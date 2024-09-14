@@ -8,9 +8,10 @@ export const movieSortFields = [
   { name: 'Director', value: 'director' },
   { name: 'Writer', value: 'writer' },
   { name: 'Duration', value: 'duration' },
-  { name: 'Release year', value: 'year' },
+  { name: 'Released', value: 'year' },
   { name: 'Status', value: 'status' },
   { name: 'Score', value: 'score' },
   { name: 'Start Date', value: 'start_date' },
   { name: 'End Date', value: 'end_date' },
+  { name: 'Created', value: 'created_on' },
 ];
