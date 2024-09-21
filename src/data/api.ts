@@ -5,9 +5,6 @@ import { errorSchema } from '../utils/zodUtil.ts';
 
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   hooks: {
     beforeRequest: [
       async (request) => {

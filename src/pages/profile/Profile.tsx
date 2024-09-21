@@ -19,6 +19,7 @@ export default function Profile() {
               email={data.email}
               emailVerifiedOn={data.email_verified_on}
               registrationDate={data.registration_date}
+              profilePicturePath={data.profile_picture_path}
               totpEnabledOn={data.totp_enabled_on}
             />
             <AccountActions

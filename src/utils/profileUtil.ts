@@ -6,3 +6,10 @@ export const statusColors = {
   dropped: '#d33641',
   planned: '#858585',
 };
+
+export const getProfilePictureUrl = (path: string | null | undefined) => {
+  if (!path) return undefined;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  if (!URL.canParse(`api/v2/${path}`, baseUrl)) return undefined;
+  return new URL(`api/v2/${path}`, baseUrl).toString();
+};

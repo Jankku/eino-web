@@ -31,7 +31,29 @@ export type FileValidationError = {
   message: string;
 };
 
-export const fileValidator = async (file: File): Promise<FileValidationError[]> => {
+export const imageValidator = async (file: File): Promise<FileValidationError[]> => {
+  if (file.size > TEN_MB) {
+    return [
+      {
+        code: 'file_too_large',
+        message: `File size must be less than ${byteFormatter.format(TEN_MB)}`,
+      },
+    ];
+  }
+
+  if (!file.type.startsWith('image/')) {
+    return [
+      {
+        code: 'invalid_file_type',
+        message: 'File must be an image',
+      },
+    ];
+  }
+
+  return [];
+};
+
+export const einoJsonValidator = async (file: File): Promise<FileValidationError[]> => {
   if (file.size > TEN_MB) {
     return [
       {

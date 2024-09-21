@@ -1,16 +1,16 @@
-import { Box, Button, DialogActions, DialogContent, Paper, Typography } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
 import { useImportData } from '../../data/profile/useImportData';
-import { useDropzone } from 'react-dropzone';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { byteFormatter, FileValidationError, fileValidator } from '../../utils/importUtil';
+import { byteFormatter, FileValidationError, einoJsonValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
+import Dropzone from './Dropzone';
 
 type ImportDialogProps = {
   visible: boolean;
@@ -20,15 +20,6 @@ type ImportDialogProps = {
 export default function ImportDialog({ visible, closeDialog }: ImportDialogProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [fileErrors, setFileErrors] = useState<FileValidationError[]>([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    maxFiles: 1,
-    multiple: false,
-    onDrop: async (acceptedFiles) => {
-      const errors = await fileValidator(acceptedFiles[0]);
-      setFileErrors(errors);
-      if (errors.length === 0) setFiles(acceptedFiles);
-    },
-  });
   const formMethods = useForm();
   const {
     handleSubmit,
@@ -38,6 +29,12 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
   const queryClient = useQueryClient();
   const importData = useImportData();
   const { showSuccessSnackbar } = useCustomSnackbar();
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const errors = await einoJsonValidator(acceptedFiles[0]);
+    setFileErrors(errors);
+    if (errors.length === 0) setFiles(acceptedFiles);
+  };
 
   const onSubmit = async () => {
     if (files.length === 0) return;
@@ -84,21 +81,13 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
               existing data.
             </Typography>
             <section>
-              <Paper
-                {...getRootProps()}
-                elevation={2}
-                sx={(theme) => ({
-                  backgroundColor: 'grey.200',
-                  px: 1,
-                  py: 4,
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  ...theme.applyStyles('dark', {
-                    backgroundColor: '#25272c',
-                  }),
-                })}
+              <Dropzone
+                options={{
+                  maxFiles: 1,
+                  multiple: false,
+                  onDrop,
+                }}
               >
-                <input {...getInputProps()} />
                 {files.length > 0 ? (
                   files.map((file) => (
                     <Typography key={file.name}>
@@ -108,7 +97,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                 ) : (
                   <Typography>Drag and drop or click to select Eino JSON file</Typography>
                 )}
-              </Paper>
+              </Dropzone>
               <Box pt={1}>
                 {fileErrors.map((e, index) => (
                   <ErrorMessage key={index} message={e.message} />
