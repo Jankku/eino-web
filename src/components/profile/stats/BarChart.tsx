@@ -9,7 +9,6 @@ import {
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { roundHundred } from '../../../utils/chartUtils';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
@@ -25,13 +24,13 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
 
   const options = {
     responsive: true,
-    aspectRatio: matchesXs ? 1.5 : 2,
+    aspectRatio: matchesXs ? 1.4 : 2,
     plugins: {
       title: {
         display: true,
         text: 'Score distribution',
         color: theme.palette.text.primary,
-        padding: 2,
+        padding: { bottom: 12, top: 2 },
         font: {
           size: 16,
           family: theme.typography.fontFamily,
@@ -44,7 +43,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
         anchor: 'end',
         font: { size: 14 },
         formatter: (value) => {
-          return Number(value) === 0 ? null : value;
+          return Number.parseInt(value) === 0 ? null : value;
         },
       },
     },
@@ -63,7 +62,6 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
         grace: 4,
         ticks: {
           color: theme.palette.text.secondary,
-          stepSize: Math.max(...data) <= 50 ? 2 : roundHundred(Math.max(...data) / 5),
         },
         grid: {
           display: false,
