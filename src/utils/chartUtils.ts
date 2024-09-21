@@ -9,3 +9,5 @@ export const getProgressValues = (data: Record<string, number>) => {
       color: statusColors[key as keyof typeof statusColors],
     }));
 };
+
+export const roundHundred = (value: number) => Math.ceil(value / 100) * 100;
