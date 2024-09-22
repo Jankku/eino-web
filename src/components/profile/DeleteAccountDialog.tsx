@@ -80,7 +80,7 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
                 component="p"
                 sx={{
                   fontWeight: 700,
-                  color: 'error',
+                  color: 'error.main',
                 }}
               >
                 NOTE: THIS ACTION IS IRREVERSIBLE!
