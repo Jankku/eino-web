@@ -76,7 +76,12 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             {isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}
@@ -107,7 +112,13 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                     }),
                   })}
                 >
-                  <Typography fontFamily="monospace">{data.totpUrl}</Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    {data.totpUrl}
+                  </Typography>
                 </Box>
                 <Stack spacing={1}>
                   <TextField

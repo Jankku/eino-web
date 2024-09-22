@@ -17,15 +17,27 @@ export default function ListDetailLayout({ list, detail, id }: ListDetailLayoutP
     return (
       <Grid
         container
-        flexDirection="row"
-        flexWrap="nowrap"
-        width="100%"
-        sx={{ overflow: 'hidden' }}
+        sx={{
+          flexDirection: 'row',
+          flexWrap: 'nowrap',
+          width: '100%',
+          overflow: 'hidden',
+        }}
       >
-        <Grid item minWidth="65%">
+        <Grid
+          item
+          sx={{
+            minWidth: '65%',
+          }}
+        >
           <PanelContainer>{list}</PanelContainer>
         </Grid>
-        <Grid item minWidth="35%">
+        <Grid
+          item
+          sx={{
+            minWidth: '35%',
+          }}
+        >
           <PanelContainer>{detail}</PanelContainer>
         </Grid>
       </Grid>

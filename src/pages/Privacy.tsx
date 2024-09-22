@@ -10,11 +10,15 @@ export default function Privacy() {
     <Container maxWidth="sm">
       <h1>Privacy Policy</h1>
       <Typography component="p">Last updated: {lastUpdated}</Typography>
-
       <Stack>
         <Box>
           <h2>What data is collected?</h2>
-          <Box component="ul" pl={2}>
+          <Box
+            component="ul"
+            sx={{
+              pl: 2,
+            }}
+          >
             <li>Username</li>
             <li>Email (optional)</li>
             <li>Encrypted password</li>

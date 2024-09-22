@@ -10,11 +10,21 @@ export function ProfileDetailItem({ title, text }: ProfileDetailItemProps) {
   return (
     <Grid item>
       <Grid item>
-        <Typography component="dt" variant="body1" fontWeight={700}>
+        <Typography
+          component="dt"
+          variant="body1"
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           {title}
         </Typography>
       </Grid>
-      <Grid width="fit-content">
+      <Grid
+        sx={{
+          width: 'fit-content',
+        }}
+      >
         <Typography component="dd" variant="body1" sx={{ display: 'flex' }}>
           {text}
         </Typography>

@@ -72,7 +72,12 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             {loadBook.isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}

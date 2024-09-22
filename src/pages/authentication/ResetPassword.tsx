@@ -63,7 +63,14 @@ export default function ResetPassword() {
       </Box>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+          <Stack
+            sx={{
+              gap: 4,
+              width: '100%',
+              maxWidth: 'sm',
+              alignSelf: 'center',
+            }}
+          >
             <Typography>
               Enter the one-time code sent to your email ({email}), your new password and 2FA code
               if requested.
@@ -71,7 +78,11 @@ export default function ResetPassword() {
 
             <PasswordField name="newPassword" label="New password" autoComplete="new-password" />
             <TextField name="otp" label="One-time code" autoComplete="one-time-code" />
-            <Stack gap={1}>
+            <Stack
+              sx={{
+                gap: 1,
+              }}
+            >
               {is2FAEnabled ? (
                 <TextField
                   name="twoFactorCode"

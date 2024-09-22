@@ -40,7 +40,14 @@ export default function SortButton({ fieldOptions, onChange }: SortButtonProps) 
           horizontal: 'left',
         }}
       >
-        <Stack direction="row" px={2} py={1} spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            px: 2,
+            py: 1,
+          }}
+        >
           <SmallSelect
             label="Sort by"
             value={searchParams.get('sort')!}

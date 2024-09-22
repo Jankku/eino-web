@@ -41,18 +41,47 @@ export function MovieStats({ stats }: MovieStatsProps) {
     <>
       <Card component="section" variant="outlined">
         <CardContent sx={{ p: 0 }}>
-          <Box px={2}>
+          <Box
+            sx={{
+              px: 2,
+            }}
+          >
             <h2>Movie stats</h2>
-            <Grid container columns={1} rowGap={2}>
-              <Grid container rowGap={1}>
-                <Grid component="dl" container justifyContent="space-between" m={0}>
+            <Grid
+              container
+              columns={1}
+              sx={{
+                rowGap: 2,
+              }}
+            >
+              <Grid
+                container
+                sx={{
+                  rowGap: 1,
+                }}
+              >
+                <Grid
+                  component="dl"
+                  container
+                  sx={{
+                    justifyContent: 'space-between',
+                    m: 0,
+                  }}
+                >
                   <StatsItem
                     title={'Watch time:'}
                     text={`${formatter.format(stats.watch_time)} hours`}
                   />
                   <StatsItem title={'Average score:'} text={stats.score_average} />
                 </Grid>
-                <Grid container item rowGap={1} sx={{ width: '100%' }}>
+                <Grid
+                  container
+                  item
+                  sx={{
+                    rowGap: 1,
+                    width: '100%',
+                  }}
+                >
                   <StatusProgressBar data={progressValues} total={stats.count.all} />
                   <StatsStatusTable stats={stats} statuses={statuses} />
                 </Grid>
@@ -72,7 +101,12 @@ export function MovieStats({ stats }: MovieStatsProps) {
         closeDialog={toggleListDialog}
       >
         {isLoading ? (
-          <Grid container justifyContent="center">
+          <Grid
+            container
+            sx={{
+              justifyContent: 'center',
+            }}
+          >
             <CircularProgress />
           </Grid>
         ) : null}

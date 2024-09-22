@@ -9,7 +9,12 @@ type StatsItemProps = {
 export function StatsItem({ title, text }: StatsItemProps) {
   return (
     <Grid item>
-      <Grid container gap={1}>
+      <Grid
+        container
+        sx={{
+          gap: 1,
+        }}
+      >
         <Typography component="dt" variant="body1">
           {stringOrPlaceholder(title)}
         </Typography>

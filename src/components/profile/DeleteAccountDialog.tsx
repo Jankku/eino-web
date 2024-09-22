@@ -70,8 +70,19 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Stack gap={1} mb={2}>
-              <Typography component="p" fontWeight={700} color="error">
+            <Stack
+              sx={{
+                gap: 1,
+                mb: 2,
+              }}
+            >
+              <Typography
+                component="p"
+                sx={{
+                  fontWeight: 700,
+                  color: 'error',
+                }}
+              >
                 NOTE: THIS ACTION IS IRREVERSIBLE!
               </Typography>
               <Typography component="p" variant="body1">

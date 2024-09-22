@@ -64,7 +64,12 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
     <BaseDialog title="Share profile" open={visible} maxWidth={'md'} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
-          <Grid container justifyContent="center">
+          <Grid
+            container
+            sx={{
+              justifyContent: 'center',
+            }}
+          >
             <CircularProgress />
           </Grid>
         ) : null}

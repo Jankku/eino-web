@@ -41,10 +41,13 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
         </IconButton>
         <Grid
           container
-          alignItems="center"
-          gap={{ sm: 2 }}
-          justifyContent={{
-            sm: 'space-between',
+          sx={{
+            alignItems: 'center',
+            gap: { sm: 2 },
+
+            justifyContent: {
+              sm: 'space-between',
+            },
           }}
         >
           <Link to="/">
@@ -67,14 +70,23 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               eino
             </Typography>
           </Link>
-          <Grid item flexGrow={2}>
+          <Grid
+            item
+            sx={{
+              flexGrow: 2,
+            }}
+          >
             <Grid
               container
-              alignItems="center"
-              justifyContent={{
-                sm: 'flex-end',
+              sx={{
+                alignItems: 'center',
+
+                justifyContent: {
+                  sm: 'flex-end',
+                },
+
+                gap: 2,
               }}
-              gap={2}
             >
               <Grid item sx={{ flexGrow: 1, maxWidth: '25em' }}>
                 {isBookPath ? <BookSearch /> : null}

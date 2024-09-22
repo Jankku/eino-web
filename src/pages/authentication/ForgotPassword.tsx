@@ -53,12 +53,23 @@ export default function ForgotPassword() {
       </Box>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+          <Stack
+            sx={{
+              gap: 4,
+              width: '100%',
+              maxWidth: 'sm',
+              alignSelf: 'center',
+            }}
+          >
             <Typography>
               Enter the email associated with your account to change your password.
             </Typography>
 
-            <Stack gap={1}>
+            <Stack
+              sx={{
+                gap: 1,
+              }}
+            >
               <TextField autoFocus name="email" type="email" label="Email" />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />

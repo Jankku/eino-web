@@ -3,7 +3,11 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <Stack gap={2}>
+    <Stack
+      sx={{
+        gap: 2,
+      }}
+    >
       <Typography
         component="p"
         variant="subtitle2"
@@ -16,7 +20,6 @@ export default function Footer() {
           Privacy
         </Link>
       </Typography>
-
       <Typography
         component="p"
         variant="subtitle2"
@@ -29,7 +32,6 @@ export default function Footer() {
           {__COMMIT_HASH__}
         </Link>
       </Typography>
-
       <Typography
         component="p"
         variant="subtitle2"

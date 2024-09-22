@@ -16,13 +16,26 @@ export default function Home() {
 
   return (
     <Container maxWidth="md">
-      <Typography component="h1" variant="h2" fontFamily="Pacifico, cursive" my={2}>
+      <Typography
+        component="h1"
+        variant="h2"
+        sx={{
+          fontFamily: 'Pacifico, cursive',
+          my: 2,
+        }}
+      >
         eino
       </Typography>
-      <Typography component="h2" variant="h6" fontWeight={700} mb={3}>
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{
+          fontWeight: 700,
+          mb: 3,
+        }}
+      >
         Book and movie tracker
       </Typography>
-
       <ImageList cols={columnCount} gap={12}>
         <InfoCard title="Authentication" icon={<LockOutlinedIcon />}>
           <InfoCardButton to="/register" icon={<VpnKeyIcon />}>

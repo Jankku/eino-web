@@ -69,7 +69,12 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             {loadMovie.isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}

@@ -74,7 +74,13 @@ export default function LoginVerify2FA() {
             <Box sx={{ textAlign: 'center' }}>
               <h1>Verify Your Identity</h1>
             </Box>
-            <Stack gap={4} width="100%" alignSelf="center">
+            <Stack
+              sx={{
+                gap: 4,
+                width: '100%',
+                alignSelf: 'center',
+              }}
+            >
               <Typography>Check your preferred authenticator app for the one-time code.</Typography>
               <Stack spacing={1}>
                 <TextField
