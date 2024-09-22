@@ -76,7 +76,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography component="p">
+            <Typography component="p" mb={2}>
               Import your Eino account data from a JSON file. This action will not remove any
               existing data.
             </Typography>

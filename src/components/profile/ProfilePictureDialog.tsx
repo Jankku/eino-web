@@ -144,7 +144,7 @@ export default function ProfilePictureDialog({
               ) : undefined}
               {thumbnails}
             </Box>
-            <Typography component="p">
+            <Typography component="p" mb={2}>
               Only image files are allowed and the file size must be less than 10MB.
             </Typography>
             <Dropzone

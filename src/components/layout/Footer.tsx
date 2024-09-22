@@ -1,9 +1,9 @@
-import { Link, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <>
+    <Stack gap={2}>
       <Typography
         component="p"
         variant="subtitle2"
@@ -45,6 +45,6 @@ export default function Footer() {
         </Link>{' '}
         ✨
       </Typography>
-    </>
+    </Stack>
   );
 }
