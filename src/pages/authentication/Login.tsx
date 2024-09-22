@@ -95,7 +95,7 @@ export default function Login() {
                   >
                     Login
                   </LoadingButton>
-                  <Typography paragraph align="left">
+                  <Typography component="p" align="left">
                     <Typography component={Link} to="/forgot-password">
                       <Box
                         component="span"

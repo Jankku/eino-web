@@ -70,10 +70,10 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography paragraph fontWeight={700} color="error">
+            <Typography component="p" fontWeight={700} color="error">
               NOTE: THIS ACTION IS IRREVERSIBLE!
             </Typography>
-            <Typography paragraph variant="body1">
+            <Typography component="p" variant="body1">
               This action will permanently delete your account and all associated data. Confirm your
               password to proceed.
             </Typography>

@@ -80,11 +80,11 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             <Stack spacing={2}>
-              <Typography paragraph>
+              <Typography component="p">
                 Make sure to verify your new email address after updating it. Otherwise you cannot
                 reset your password.
               </Typography>
-              {email ? <Typography paragraph>Current email: {email}</Typography> : undefined}
+              {email ? <Typography component="p">Current email: {email}</Typography> : undefined}
 
               <TextField
                 autoFocus

@@ -77,7 +77,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
             style={{ width: '100%' }}
           />
         ) : null}
-        {isError ? <Typography paragraph>Failed to load image</Typography> : null}
+        {isError ? <Typography component="p">Failed to load image</Typography> : null}
       </DialogContent>
       <DialogActions>
         <Button color="secondary" onClick={onClose}>

@@ -86,12 +86,12 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography paragraph>
+            <Typography component="p">
               All account data is downloaded as a JSON file. Please confirm your password to
               continue.
             </Typography>
             {exportData.isSuccess ? (
-              <Typography paragraph pb={1}>
+              <Typography component="p" pb={1}>
                 Download didn&apos;t work?{' '}
                 <Link
                   download={generateExportFileName()}

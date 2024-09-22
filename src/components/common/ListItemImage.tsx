@@ -114,10 +114,16 @@ export default function ListItemImage({
                   />
                 </Stack>
                 <Grid container alignContent="flex-start" flex={'1 1 0px'}>
-                  <Typography noWrap variant="body1" width="100%" fontWeight={500} color="white">
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    width="100%"
+                    fontWeight={500}
+                    sx={{ color: 'white' }}
+                  >
                     {stringOrPlaceholder(title)}
                   </Typography>
-                  <Typography noWrap variant="body2" width="100%" color="#ddd">
+                  <Typography noWrap variant="body2" width="100%" sx={{ color: '#ddd' }}>
                     {stringOrPlaceholder(detailText)}
                   </Typography>
                 </Grid>

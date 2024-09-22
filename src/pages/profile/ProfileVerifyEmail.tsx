@@ -77,7 +77,9 @@ export default function ProfileVerifyEmail() {
       <Stack spacing={1}>
         {!showOtpField ? (
           <Stack spacing={3} alignItems="start">
-            <Typography paragraph>Email to verify: {email ? email : 'No email found'}</Typography>
+            <Typography component="p">
+              Email to verify: {email ? email : 'No email found'}
+            </Typography>
             <LoadingButton
               loading={sendConfirmation.isPending}
               variant="contained"

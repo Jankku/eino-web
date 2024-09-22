@@ -75,7 +75,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             ) : null}
 
             {loadMovie.isLoadingError ? (
-              <Typography paragraph>Failed to load form data.</Typography>
+              <Typography component="p">Failed to load form data.</Typography>
             ) : null}
 
             <PosterDialog

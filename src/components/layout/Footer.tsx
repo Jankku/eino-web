@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <>
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',
@@ -18,7 +18,7 @@ export default function Footer() {
       </Typography>
 
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',
@@ -31,7 +31,7 @@ export default function Footer() {
       </Typography>
 
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',

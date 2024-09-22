@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 export default function ErrorMessage({ message }: { message: string }) {
   return (
     <Typography
-      paragraph
+      component="p"
       id="errorText"
       sx={{
         fontWeight: 700,

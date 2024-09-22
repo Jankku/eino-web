@@ -80,10 +80,10 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                 <CircularProgress />
               </Grid>
             ) : null}
-            {isError ? <Typography paragraph>Failed to load QR code</Typography> : undefined}
+            {isError ? <Typography component="p">Failed to load QR code</Typography> : undefined}
             {data?.totpUrl ? (
               <Stack spacing={2}>
-                <Typography paragraph>
+                <Typography component="p">
                   Scan the QR code or use the URL below to set up your authenticator app. After that
                   enter the 6 digit one-time code from the app to the text field below.
                 </Typography>

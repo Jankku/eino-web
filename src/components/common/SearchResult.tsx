@@ -39,7 +39,7 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }: Sea
           {title}
         </Typography>
         {subtitle ? (
-          <Typography noWrap variant="body2" color="text.secondary">
+          <Typography noWrap variant="body2" color="textSecondary">
             {subtitle}
           </Typography>
         ) : null}

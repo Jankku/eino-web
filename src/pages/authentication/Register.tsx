@@ -94,7 +94,7 @@ export default function Register() {
                 />
                 <Stack direction="column" gap={1} pt={2}>
                   <PasswordStrengthMeter score={passwordScore} />
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="textSecondary">
                     {passwordMessage}
                   </Typography>
                 </Stack>
@@ -120,7 +120,7 @@ export default function Register() {
                   >
                     Register
                   </LoadingButton>
-                  <Typography paragraph align="left">
+                  <Typography component="p" align="left">
                     Already have an account?{' '}
                     <Typography component={Link} to="/login">
                       <Box

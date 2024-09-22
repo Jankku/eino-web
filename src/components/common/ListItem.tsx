@@ -100,7 +100,7 @@ export default function ListItem({
                 <Typography noWrap variant="body1" width="100%" fontWeight={500}>
                   {stringOrPlaceholder(title)}
                 </Typography>
-                <Typography noWrap variant="body2" width="100%" color="text.secondary">
+                <Typography noWrap variant="body2" width="100%" color="textSecondary">
                   {stringOrPlaceholder(detailText)}
                 </Typography>
               </Grid>

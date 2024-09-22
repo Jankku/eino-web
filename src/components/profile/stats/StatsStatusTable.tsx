@@ -33,7 +33,7 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
             <TableCell padding="none">
               <Grid container alignItems="center" gap={1}>
                 <StatusIndicator color={statusColors[status as keyof typeof statusColors]} />
-                <Typography paragraph p={0} m={0} textTransform="capitalize">
+                <Typography component="p" p={0} m={0} textTransform="capitalize">
                   {status}
                 </Typography>
               </Grid>
