@@ -13,7 +13,8 @@ export const api = ky.create({
           request.url.includes('movies') ||
           request.url.includes('profile') ||
           request.url.includes('email') ||
-          request.url.includes('2fa')
+          request.url.includes('2fa') ||
+          request.url.includes('admin')
         ) {
           const accessToken = localStorage.getItem('accessToken');
           if (!accessToken) return request;

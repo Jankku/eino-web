@@ -6,6 +6,7 @@ import { useCustomSnackbar } from './hooks/useCustomSnackbar';
 import Home from './pages/Home';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/common/RequireAuth';
+import RequireAdmin from './components/common/RequireAdmin';
 import PageBoundary from './components/common/PageBoundary';
 import Logout from './pages/authentication/Logout';
 import Privacy from './pages/Privacy';
@@ -23,6 +24,9 @@ const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
+
+const Users = lazy(() => import('./pages/admin/Users'));
+const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 
 function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
@@ -169,6 +173,32 @@ function WrappedApp() {
               }
             />
           </Route>
+
+          <Route
+            path="users"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <Users />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="audits"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <AuditLog />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
 
           <Route path="/*" element={<Error404 />} />
         </Route>

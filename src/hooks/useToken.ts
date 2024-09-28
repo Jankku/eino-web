@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 type DecodedToken = {
   userId: string;
   username: string;
+  role: 'admin' | 'basic' | 'demo';
   email: string | null;
   is2FAEnabled: boolean;
 };
@@ -22,6 +23,12 @@ export function useToken() {
     if (!token) return null;
     const decoded = jwtDecode(token) as DecodedToken;
     return decoded.email;
+  };
+
+  const getRole = () => {
+    if (!token) return null;
+    const decoded = jwtDecode(token) as DecodedToken;
+    return decoded.role;
   };
 
   const getIs2FAEnabled = () => {
@@ -78,6 +85,7 @@ export function useToken() {
     refreshToken,
     getUsername,
     getEmail,
+    getRole,
     getIs2FAEnabled,
     setToken,
     setRefreshToken,
