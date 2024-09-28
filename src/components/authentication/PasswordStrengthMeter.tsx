@@ -13,9 +13,11 @@ export default function PasswordStrengthMeter({ score = 0 }: { score: number }) 
       direction="row"
       id="password-strength"
       aria-label={`Password strength is ${score} out of 4`}
-      gap={isMobile ? 1 : 2}
-      flexGrow={2}
-      sx={{ width: '100%' }}
+      sx={{
+        gap: isMobile ? 1 : 2,
+        flexGrow: 2,
+        width: '100%',
+      }}
     >
       <PasswordStrengthMeterBar active={score >= 1} color={error.main} />
       <PasswordStrengthMeterBar active={score >= 2} color={warning.main} />

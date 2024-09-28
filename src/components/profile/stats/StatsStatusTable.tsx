@@ -20,10 +20,22 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
       <TableHead>
         <TableRow>
           <TableCell>
-            <Typography fontWeight={500}>Status</Typography>
+            <Typography
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              Status
+            </Typography>
           </TableCell>
           <TableCell align={cellAlign}>
-            <Typography fontWeight={500}>Count</Typography>
+            <Typography
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              Count
+            </Typography>
           </TableCell>
         </TableRow>
       </TableHead>
@@ -31,9 +43,22 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
         {statuses.map((status) => (
           <TableRow hover key={status}>
             <TableCell padding="none">
-              <Grid container alignItems="center" gap={1}>
+              <Grid
+                container
+                sx={{
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
                 <StatusIndicator color={statusColors[status as keyof typeof statusColors]} />
-                <Typography paragraph p={0} m={0} textTransform="capitalize">
+                <Typography
+                  component="p"
+                  sx={{
+                    p: 0,
+                    m: 0,
+                    textTransform: 'capitalize',
+                  }}
+                >
                   {status}
                 </Typography>
               </Grid>
@@ -45,10 +70,22 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
         ))}
         <TableRow hover key="all">
           <TableCell variant="footer">
-            <Typography fontWeight={500}>Total</Typography>
+            <Typography
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              Total
+            </Typography>
           </TableCell>
           <TableCell variant="footer" align={cellAlign}>
-            <Typography fontWeight={500}>{formatter.format(stats.count['all'])}</Typography>
+            <Typography
+              sx={{
+                fontWeight: 500,
+              }}
+            >
+              {formatter.format(stats.count['all'])}
+            </Typography>
           </TableCell>
         </TableRow>
       </TableBody>

@@ -88,17 +88,29 @@ export default function Books() {
     <ListDetailLayout
       id={bookId}
       list={
-        <Box my={2} mx={isMobile ? 2 : undefined}>
+        <Box
+          sx={{
+            my: 2,
+            mx: isMobile ? 2 : undefined,
+          }}
+        >
           <Grid
             container
             component="header"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={2}
-            sx={{ rowGap: 1 }}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 2,
+              rowGap: 1,
+            }}
           >
             <Grid item>
-              <Box component="h1" m={0}>
+              <Box
+                component="h1"
+                sx={{
+                  m: 0,
+                }}
+              >
                 Books
               </Box>
             </Grid>
@@ -108,21 +120,38 @@ export default function Books() {
                 item
                 component="ul"
                 aria-label="Actions"
-                gap={1}
-                p={0}
-                sx={{ listStyle: 'none' }}
+                sx={{
+                  gap: 1,
+                  p: 0,
+                  listStyle: 'none',
+                }}
               >
                 {!isMobile ? (
-                  <Box component="li" display="inline-flex">
+                  <Box
+                    component="li"
+                    sx={{
+                      display: 'inline-flex',
+                    }}
+                  >
                     <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog}>
                       Create
                     </ResponsiveButton>
                   </Box>
                 ) : null}
-                <Box component="li" display="inline-flex">
+                <Box
+                  component="li"
+                  sx={{
+                    display: 'inline-flex',
+                  }}
+                >
                   <SortButton fieldOptions={bookSortFields} onChange={onSort} />
                 </Box>
-                <Box component="li" display="inline-flex">
+                <Box
+                  component="li"
+                  sx={{
+                    display: 'inline-flex',
+                  }}
+                >
                   <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                     {bookSortStatuses.map((option, itemIdx) => (
                       <option key={itemIdx} value={option.value}>
@@ -131,7 +160,12 @@ export default function Books() {
                     ))}
                   </SmallSelect>
                 </Box>
-                <Box component="li" display="inline-flex">
+                <Box
+                  component="li"
+                  sx={{
+                    display: 'inline-flex',
+                  }}
+                >
                   <MoreButton>
                     <List disablePadding>
                       <ListItem disablePadding>

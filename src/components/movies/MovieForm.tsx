@@ -33,20 +33,47 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
             ),
           }}
         />
-        <Grid container gap={1} justifyContent="space-between">
-          <Grid item flexGrow={2}>
+        <Grid
+          container
+          sx={{
+            gap: 1,
+            justifyContent: 'space-between',
+          }}
+        >
+          <Grid
+            item
+            sx={{
+              flexGrow: 2,
+            }}
+          >
             <TextField type="number" margin="dense" name="duration" label="Duration" />
           </Grid>
-          <Grid item flexGrow={2}>
+          <Grid
+            item
+            sx={{
+              flexGrow: 2,
+            }}
+          >
             <TextField type="number" margin="dense" name="year" label="Released" />
           </Grid>
         </Grid>
-        <Grid container gap={1} justifyContent="space-between">
+        <Grid
+          container
+          sx={{
+            gap: 1,
+            justifyContent: 'space-between',
+          }}
+        >
           <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
         </Grid>
       </Grid>
-      <Grid container justifyContent="space-between">
+      <Grid
+        container
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
         <Grid item>
           <Select name="score" label="Score">
             {score.map((item, itemIdx) => (

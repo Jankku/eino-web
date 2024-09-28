@@ -76,7 +76,14 @@ export default function Register() {
             <Box sx={{ textAlign: 'center' }}>
               <h1>Register</h1>
             </Box>
-            <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+            <Stack
+              sx={{
+                gap: 4,
+                width: '100%',
+                maxWidth: 'sm',
+                alignSelf: 'center',
+              }}
+            >
               <TextField
                 autoFocus
                 name="username"
@@ -92,14 +99,29 @@ export default function Register() {
                   helperText="Password should be 8-255 characters long"
                   autoComplete="new-password"
                 />
-                <Stack direction="column" gap={1} pt={2}>
+                <Stack
+                  direction="column"
+                  sx={{
+                    gap: 1,
+                    pt: 2,
+                  }}
+                >
                   <PasswordStrengthMeter score={passwordScore} />
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {passwordMessage}
                   </Typography>
                 </Stack>
               </Stack>
-              <Stack gap={1}>
+              <Stack
+                sx={{
+                  gap: 1,
+                }}
+              >
                 <PasswordField
                   name="password2"
                   label="Confirm password"
@@ -111,7 +133,13 @@ export default function Register() {
               </Stack>
 
               <Stack>
-                <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                <Stack
+                  direction="row"
+                  sx={{
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <LoadingButton
                     loading={registerUser.isPending}
                     disabled={passwordScore < 3}
@@ -120,7 +148,7 @@ export default function Register() {
                   >
                     Register
                   </LoadingButton>
-                  <Typography paragraph align="left">
+                  <Typography component="p" align="left">
                     Already have an account?{' '}
                     <Typography component={Link} to="/login">
                       <Box

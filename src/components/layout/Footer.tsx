@@ -1,11 +1,15 @@
-import { Link, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <>
+    <Stack
+      sx={{
+        gap: 2,
+      }}
+    >
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',
@@ -16,9 +20,8 @@ export default function Footer() {
           Privacy
         </Link>
       </Typography>
-
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',
@@ -29,9 +32,8 @@ export default function Footer() {
           {__COMMIT_HASH__}
         </Link>
       </Typography>
-
       <Typography
-        paragraph
+        component="p"
         variant="subtitle2"
         sx={{
           textAlign: 'center',
@@ -45,6 +47,6 @@ export default function Footer() {
         </Link>{' '}
         ✨
       </Typography>
-    </>
+    </Stack>
   );
 }

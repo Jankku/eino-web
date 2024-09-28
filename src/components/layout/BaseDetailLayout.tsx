@@ -36,20 +36,30 @@ export default function BaseDetailLayout({
               <ArrowBackIcon />
             </IconButton>
           ) : null}
-          <Grid container justifyContent="center" flexWrap="wrap">
+          <Grid
+            container
+            sx={{
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
             {imageUrl ? (
               <Grid
                 container
                 item
                 zeroMinWidth
-                flexShrink={2}
-                mb={{ xs: 1, md: 0 }}
-                sx={(theme) => ({
-                  maxWidth: isMobile ? '50%' : '40%',
-                  aspectRatio: 0.7,
-                  borderRadius: 1,
-                  boxShadow: theme.palette.mode === 'light' ? theme.shadows[4] : undefined,
-                })}
+                sx={[
+                  {
+                    flexShrink: 2,
+                    mb: { xs: 1, md: 0 },
+                  },
+                  (theme) => ({
+                    maxWidth: isMobile ? '50%' : '40%',
+                    aspectRatio: 0.7,
+                    borderRadius: 1,
+                    boxShadow: theme.palette.mode === 'light' ? theme.shadows[4] : undefined,
+                  }),
+                ]}
               >
                 <img
                   draggable="false"
@@ -71,12 +81,21 @@ export default function BaseDetailLayout({
               container
               item
               zeroMinWidth
-              alignSelf="start"
-              pl={2}
-              pt={imageUrl ? 1 : isMobile ? 6 : 1}
               columns={1}
+              sx={{
+                alignSelf: 'start',
+                pl: 2,
+                pt: imageUrl ? 1 : isMobile ? 6 : 1,
+              }}
             >
-              <Box component="dl" aria-label="Book details" maxWidth="100%" m={0}>
+              <Box
+                component="dl"
+                aria-label="Book details"
+                sx={{
+                  maxWidth: '100%',
+                  m: 0,
+                }}
+              >
                 {details}
               </Box>
             </Grid>
@@ -86,7 +105,6 @@ export default function BaseDetailLayout({
           <Grid container>{actions}</Grid>
         </CardActions>
       </Card>
-
       {children}
     </Container>
   );

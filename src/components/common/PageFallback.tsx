@@ -8,8 +8,13 @@ type PageFallbackProps = {
 
 export default function PageFallback({ resetErrorBoundary }: PageFallbackProps) {
   return (
-    <Box mt={8} textAlign="center">
-      <Typography variant="h5" paragraph>
+    <Box
+      sx={{
+        mt: 8,
+        textAlign: 'center',
+      }}
+    >
+      <Typography variant="h5" component="p">
         Failed to load page. 😭
       </Typography>
       <Button startIcon={<Refresh />} variant="contained" onClick={() => resetErrorBoundary()}>

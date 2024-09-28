@@ -66,7 +66,7 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             <Stack spacing={2}>
-              <Typography paragraph>
+              <Typography component="p">
                 Disabling 2FA will remove an extra layer of security from your account. Are you sure
                 you want to disable 2FA?
               </Typography>

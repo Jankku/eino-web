@@ -41,15 +41,44 @@ export function BookStats({ stats }: BookStatsProps) {
     <>
       <Card component="section" variant="outlined">
         <CardContent sx={{ p: 0 }}>
-          <Box px={2}>
+          <Box
+            sx={{
+              px: 2,
+            }}
+          >
             <h2>Book stats</h2>
-            <Grid container columns={1} rowGap={2}>
-              <Grid container rowGap={1}>
-                <Grid component="dl" container justifyContent="space-between" m={0}>
+            <Grid
+              container
+              columns={1}
+              sx={{
+                rowGap: 2,
+              }}
+            >
+              <Grid
+                container
+                sx={{
+                  rowGap: 1,
+                }}
+              >
+                <Grid
+                  component="dl"
+                  container
+                  sx={{
+                    justifyContent: 'space-between',
+                    m: 0,
+                  }}
+                >
                   <StatsItem title={'Pages read:'} text={formatter.format(stats.pages_read)} />
                   <StatsItem title={'Average score:'} text={stats.score_average} />
                 </Grid>
-                <Grid container item rowGap={1} sx={{ width: '100%' }}>
+                <Grid
+                  container
+                  item
+                  sx={{
+                    rowGap: 1,
+                    width: '100%',
+                  }}
+                >
                   <StatusProgressBar data={progressValues} total={stats.count.all} />
                   <StatsStatusTable stats={stats} statuses={statuses} />
                 </Grid>
@@ -69,7 +98,12 @@ export function BookStats({ stats }: BookStatsProps) {
         closeDialog={toggleListDialog}
       >
         {isLoading ? (
-          <Grid container justifyContent="center">
+          <Grid
+            container
+            sx={{
+              justifyContent: 'center',
+            }}
+          >
             <CircularProgress />
           </Grid>
         ) : null}

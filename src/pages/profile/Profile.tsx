@@ -28,10 +28,20 @@ export default function Profile() {
               totpEnabledOn={data.totp_enabled_on}
             />
           </Stack>
-          <Grid item mt={2}>
+          <Grid
+            item
+            sx={{
+              mt: 2,
+            }}
+          >
             <BookStats stats={data.stats.book} />
           </Grid>
-          <Grid item mt={2}>
+          <Grid
+            item
+            sx={{
+              mt: 2,
+            }}
+          >
             <MovieStats stats={data.stats.movie} />
           </Grid>
         </>

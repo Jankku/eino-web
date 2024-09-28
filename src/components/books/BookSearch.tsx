@@ -40,7 +40,10 @@ function BookSearch() {
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as BookWithId).title}
       inputValue={String(searchTerm)}
-      onInputChange={(_e, value) => setSearchTerm(value ?? '')}
+      onInputChange={(_e, value, reason) => {
+        if (reason === 'input') setSearchTerm(value ?? '');
+        if (['clear', 'reset'].includes(reason)) setSearchTerm('');
+      }}
       renderInput={(params) => <SearchTextField params={{ ...params }} label="Search books" />}
       renderOption={(props, option: BookWithId) => (
         <SearchResult

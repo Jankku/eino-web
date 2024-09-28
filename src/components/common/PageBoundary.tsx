@@ -32,7 +32,13 @@ function PageBoundary({ children }: PageBoundaryProps) {
           <Suspense
             fallback={
               <Wait>
-                <Stack justifyContent="center" alignItems="center" mt={10}>
+                <Stack
+                  sx={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    mt: 10,
+                  }}
+                >
                   <CircularProgress />
                 </Stack>
               </Wait>

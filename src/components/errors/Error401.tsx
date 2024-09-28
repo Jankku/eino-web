@@ -5,8 +5,18 @@ export default function Error401() {
   return (
     <>
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
-        <Box mt={4}>
-          <Typography component="h1" variant="h4" mb={0}>
+        <Box
+          sx={{
+            mt: 4,
+          }}
+        >
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              mb: 0,
+            }}
+          >
             Unauthorized
           </Typography>
           <p>Please login before trying to reach this page</p>

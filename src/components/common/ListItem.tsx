@@ -55,17 +55,29 @@ export default function ListItem({
         draggable="false"
       >
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
-          <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap">
+          <Grid
+            container
+            item
+            zeroMinWidth
+            sx={{
+              flexDirection: 'row',
+              flexWrap: 'nowrap',
+            }}
+          >
             <Grid
               container
-              width="10em"
-              minHeight="10em"
-              sx={(theme) => ({
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                ...theme.applyStyles('dark', {
-                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              sx={[
+                {
+                  width: '10em',
+                  minHeight: '10em',
+                },
+                (theme) => ({
+                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  ...theme.applyStyles('dark', {
+                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                  }),
                 }),
-              })}
+              ]}
             >
               {imageUrl ? (
                 <img
@@ -80,9 +92,30 @@ export default function ListItem({
                 />
               ) : null}
             </Grid>
-            <Grid container item zeroMinWidth flexDirection="column" ml={1} mt={1}>
-              <Grid container alignContent="flex-start" flex={'1 1 0px'}>
-                <Stack direction="row" spacing={0.5} mb={1}>
+            <Grid
+              container
+              item
+              zeroMinWidth
+              sx={{
+                flexDirection: 'column',
+                ml: 1,
+                mt: 1,
+              }}
+            >
+              <Grid
+                container
+                sx={{
+                  alignContent: 'flex-start',
+                  flex: '1 1 0px',
+                }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  sx={{
+                    mb: 1,
+                  }}
+                >
                   <Chip
                     icon={<StarIcon />}
                     variant={isDark ? 'outlined' : 'filled'}
@@ -97,10 +130,24 @@ export default function ListItem({
                     label={capitalize(status)}
                   />
                 </Stack>
-                <Typography noWrap variant="body1" width="100%" fontWeight={500}>
+                <Typography
+                  noWrap
+                  variant="body1"
+                  sx={{
+                    width: '100%',
+                    fontWeight: 500,
+                  }}
+                >
                   {stringOrPlaceholder(title)}
                 </Typography>
-                <Typography noWrap variant="body2" width="100%" color="text.secondary">
+                <Typography
+                  noWrap
+                  variant="body2"
+                  sx={{
+                    width: '100%',
+                    color: 'text.secondary',
+                  }}
+                >
                   {stringOrPlaceholder(detailText)}
                 </Typography>
               </Grid>

@@ -40,7 +40,10 @@ function MovieSearch() {
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as MovieWithId).title}
       inputValue={String(searchTerm)}
-      onInputChange={(_e, value) => setSearchTerm(value ?? '')}
+      onInputChange={(_e, value, reason) => {
+        if (reason === 'input') setSearchTerm(value ?? '');
+        if (['clear', 'reset'].includes(reason)) setSearchTerm('');
+      }}
       renderInput={(params) => <SearchTextField params={{ ...params }} label="Search movies" />}
       renderOption={(props, option: MovieWithId) => (
         <SearchResult

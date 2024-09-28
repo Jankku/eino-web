@@ -72,13 +72,18 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             {loadBook.isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}
 
             {loadBook.isLoadingError ? (
-              <Typography paragraph>Failed to load form data.</Typography>
+              <Typography component="p">Failed to load form data.</Typography>
             ) : null}
 
             <CoverDialog

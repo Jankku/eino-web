@@ -42,7 +42,11 @@ export function UserInfo({
     <>
       <Card component="section" variant="outlined" sx={{ flexGrow: 2, minWidth: { sm: '22rem' } }}>
         <CardContent sx={{ overflowWrap: 'anywhere' }}>
-          <Stack gap={2}>
+          <Stack
+            sx={{
+              gap: 2,
+            }}
+          >
             <Tooltip
               arrow
               title={<Typography variant="body2">Click to edit your profile picture</Typography>}

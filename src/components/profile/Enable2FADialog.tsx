@@ -76,14 +76,19 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             {isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}
-            {isError ? <Typography paragraph>Failed to load QR code</Typography> : undefined}
+            {isError ? <Typography component="p">Failed to load QR code</Typography> : undefined}
             {data?.totpUrl ? (
               <Stack spacing={2}>
-                <Typography paragraph>
+                <Typography component="p">
                   Scan the QR code or use the URL below to set up your authenticator app. After that
                   enter the 6 digit one-time code from the app to the text field below.
                 </Typography>
@@ -107,7 +112,13 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                     }),
                   })}
                 >
-                  <Typography fontFamily="monospace">{data.totpUrl}</Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    {data.totpUrl}
+                  </Typography>
                 </Box>
                 <Stack spacing={1}>
                   <TextField

@@ -69,13 +69,18 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             {loadMovie.isLoading ? (
-              <Grid container justifyContent="center">
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
                 <CircularProgress />
               </Grid>
             ) : null}
 
             {loadMovie.isLoadingError ? (
-              <Typography paragraph>Failed to load form data.</Typography>
+              <Typography component="p">Failed to load form data.</Typography>
             ) : null}
 
             <PosterDialog

@@ -30,11 +30,24 @@ export default function PosterDialog({ visible, query, closeDialog, onSelect }: 
       closeDialog={closeDialog}
     >
       {moviePosters.isLoading ? (
-        <Grid container justifyContent="center">
+        <Grid
+          container
+          sx={{
+            justifyContent: 'center',
+          }}
+        >
           <CircularProgress />
         </Grid>
       ) : null}
-      {moviePosters.isLoadingError ? <Typography pt={2}>Failed to load posters.</Typography> : null}
+      {moviePosters.isLoadingError ? (
+        <Typography
+          sx={{
+            pt: 2,
+          }}
+        >
+          Failed to load posters.
+        </Typography>
+      ) : null}
       {moviePosters.isSuccess && moviePosters.data?.length > 0 ? (
         <ImageList cols={3}>
           {moviePosters.data?.map((posterUrl) => (
@@ -65,7 +78,13 @@ export default function PosterDialog({ visible, query, closeDialog, onSelect }: 
         </ImageList>
       ) : null}
       {moviePosters.isSuccess && moviePosters.data?.length === 0 ? (
-        <Typography pt={2}>No posters found.</Typography>
+        <Typography
+          sx={{
+            pt: 2,
+          }}
+        >
+          No posters found.
+        </Typography>
       ) : null}
     </ImageDialog>
   );

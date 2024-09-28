@@ -67,10 +67,19 @@ export default function Header({
             : null}
 
           {isLoggedIn ? (
-            <Grid justifyContent="space-between">
+            <Grid
+              sx={{
+                justifyContent: 'space-between',
+              }}
+            >
               <Grid item>
                 <MenuItem sx={{ mt: 0.5 }}>
-                  <Typography fontWeight={500} noWrap>
+                  <Typography
+                    noWrap
+                    sx={{
+                      fontWeight: 500,
+                    }}
+                  >
                     {username}
                   </Typography>
                 </MenuItem>

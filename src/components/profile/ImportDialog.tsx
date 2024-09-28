@@ -76,7 +76,12 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography paragraph>
+            <Typography
+              component="p"
+              sx={{
+                mb: 2,
+              }}
+            >
               Import your Eino account data from a JSON file. This action will not remove any
               existing data.
             </Typography>
@@ -98,7 +103,11 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                   <Typography>Drag and drop or click to select Eino JSON file</Typography>
                 )}
               </Dropzone>
-              <Box pt={1}>
+              <Box
+                sx={{
+                  pt: 1,
+                }}
+              >
                 {fileErrors.map((e, index) => (
                   <ErrorMessage key={index} message={e.message} />
                 ))}

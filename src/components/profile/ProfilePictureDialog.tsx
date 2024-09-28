@@ -122,9 +122,20 @@ export default function ProfilePictureDialog({
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Box display="flex" justifyContent="center" gap={2} pb={2}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: 2,
+                pb: 2,
+              }}
+            >
               {files.length === 0 && profilePictureUrl ? (
-                <Stack gap={1}>
+                <Stack
+                  sx={{
+                    gap: 1,
+                  }}
+                >
                   <Avatar
                     src={profilePictureUrl}
                     alt="Profile picture"
@@ -144,7 +155,12 @@ export default function ProfilePictureDialog({
               ) : undefined}
               {thumbnails}
             </Box>
-            <Typography paragraph>
+            <Typography
+              component="p"
+              sx={{
+                mb: 2,
+              }}
+            >
               Only image files are allowed and the file size must be less than 10MB.
             </Typography>
             <Dropzone
@@ -159,7 +175,11 @@ export default function ProfilePictureDialog({
             >
               <Typography>Drag and drop or click to select a new picture</Typography>
             </Dropzone>
-            <Box pt={1}>
+            <Box
+              sx={{
+                pt: 1,
+              }}
+            >
               {fileErrors.map((e, index) => (
                 <ErrorMessage key={index} message={e.message} />
               ))}

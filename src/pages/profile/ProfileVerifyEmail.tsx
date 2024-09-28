@@ -76,8 +76,15 @@ export default function ProfileVerifyEmail() {
       <h1>Verify email</h1>
       <Stack spacing={1}>
         {!showOtpField ? (
-          <Stack spacing={3} alignItems="start">
-            <Typography paragraph>Email to verify: {email ? email : 'No email found'}</Typography>
+          <Stack
+            spacing={3}
+            sx={{
+              alignItems: 'start',
+            }}
+          >
+            <Typography component="p">
+              Email to verify: {email ? email : 'No email found'}
+            </Typography>
             <LoadingButton
               loading={sendConfirmation.isPending}
               variant="contained"
@@ -91,7 +98,13 @@ export default function ProfileVerifyEmail() {
         <FormProvider {...formMethods}>
           <form onSubmit={handleSubmit(onVerify)}>
             {showOtpField ? (
-              <Stack spacing={3} alignItems="start" maxWidth="fit-content">
+              <Stack
+                spacing={3}
+                sx={{
+                  alignItems: 'start',
+                  maxWidth: 'fit-content',
+                }}
+              >
                 <Typography>Email sent! Check your email for a one-time code.</Typography>
                 <TextField
                   autoFocus

@@ -49,7 +49,16 @@ export default function ListItemImage({
         draggable="false"
       >
         <CardContent sx={{ padding: 0 }}>
-          <Grid container item zeroMinWidth flexDirection="row" flexWrap="nowrap" height="100%">
+          <Grid
+            container
+            item
+            zeroMinWidth
+            sx={{
+              flexDirection: 'row',
+              flexWrap: 'nowrap',
+              height: '100%',
+            }}
+          >
             <Grid container item>
               {imageUrl ? (
                 <img
@@ -64,10 +73,10 @@ export default function ListItemImage({
                 />
               ) : null}
               <Grid
-                px={2}
-                pb={2}
-                pt={6}
                 sx={{
+                  px: 2,
+                  pb: 2,
+                  pt: 6,
                   position: 'absolute',
                   width: '100%',
                   bottom: 0,
@@ -113,11 +122,32 @@ export default function ListItemImage({
                     })}
                   />
                 </Stack>
-                <Grid container alignContent="flex-start" flex={'1 1 0px'}>
-                  <Typography noWrap variant="body1" width="100%" fontWeight={500} color="white">
+                <Grid
+                  container
+                  sx={{
+                    alignContent: 'flex-start',
+                    flex: '1 1 0px',
+                  }}
+                >
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    sx={{
+                      width: '100%',
+                      fontWeight: 500,
+                      color: 'white',
+                    }}
+                  >
                     {stringOrPlaceholder(title)}
                   </Typography>
-                  <Typography noWrap variant="body2" width="100%" color="#ddd">
+                  <Typography
+                    noWrap
+                    variant="body2"
+                    sx={{
+                      width: '100%',
+                      color: '#ddd',
+                    }}
+                  >
                     {stringOrPlaceholder(detailText)}
                   </Typography>
                 </Grid>

@@ -72,21 +72,38 @@ export default function Login() {
             <Box sx={{ textAlign: 'center' }}>
               <h1>Login</h1>
             </Box>
-            <Stack gap={4} width="100%" maxWidth="sm" alignSelf="center">
+            <Stack
+              sx={{
+                gap: 4,
+                width: '100%',
+                maxWidth: 'sm',
+                alignSelf: 'center',
+              }}
+            >
               <TextField
                 autoFocus
                 name="username"
                 label="Username or email"
                 autoComplete="username"
               />
-              <Stack gap={1}>
+              <Stack
+                sx={{
+                  gap: 1,
+                }}
+              >
                 <PasswordField name="password" label="Password" />
                 {errors.root?.serverError?.message ? (
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}
               </Stack>
               <Stack>
-                <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                <Stack
+                  direction="row"
+                  sx={{
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <LoadingButton
                     loading={loginConfig.isPending || loginUser.isPending}
                     type="submit"
@@ -95,7 +112,7 @@ export default function Login() {
                   >
                     Login
                   </LoadingButton>
-                  <Typography paragraph align="left">
+                  <Typography component="p" align="left">
                     <Typography component={Link} to="/forgot-password">
                       <Box
                         component="span"

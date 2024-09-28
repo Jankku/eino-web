@@ -70,13 +70,26 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography paragraph fontWeight={700} color="error">
-              NOTE: THIS ACTION IS IRREVERSIBLE!
-            </Typography>
-            <Typography paragraph variant="body1">
-              This action will permanently delete your account and all associated data. Confirm your
-              password to proceed.
-            </Typography>
+            <Stack
+              sx={{
+                gap: 1,
+                mb: 2,
+              }}
+            >
+              <Typography
+                component="p"
+                sx={{
+                  fontWeight: 700,
+                  color: 'error.main',
+                }}
+              >
+                NOTE: THIS ACTION IS IRREVERSIBLE!
+              </Typography>
+              <Typography component="p" variant="body1">
+                This action will permanently delete your account and all associated data. Confirm
+                your password to proceed.
+              </Typography>
+            </Stack>
             <Stack spacing={2}>
               <PasswordField autoFocus name="password" label="Confirm password" />
               {is2FAEnabled ? (
@@ -86,10 +99,11 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
                   autoComplete="one-time-code"
                 />
               ) : undefined}
+
+              {errors.root?.serverError?.message ? (
+                <ErrorMessage message={errors.root.serverError.message} />
+              ) : null}
             </Stack>
-            {errors.root?.serverError?.message ? (
-              <ErrorMessage message={errors.root.serverError.message} />
-            ) : null}
           </DialogContent>
           <DialogActions>
             <Button

@@ -33,20 +33,46 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
             ),
           }}
         />
-        <Grid container gap={1}>
-          <Grid item flexGrow={2}>
+        <Grid
+          container
+          sx={{
+            gap: 1,
+          }}
+        >
+          <Grid
+            item
+            sx={{
+              flexGrow: 2,
+            }}
+          >
             <TextField type="number" margin="dense" name="pages" label="Pages" />
           </Grid>
-          <Grid item flexGrow={2}>
+          <Grid
+            item
+            sx={{
+              flexGrow: 2,
+            }}
+          >
             <TextField type="number" margin="dense" name="year" label="Released" />
           </Grid>
         </Grid>
-        <Grid container gap={1} justifyContent="space-between">
+        <Grid
+          container
+          sx={{
+            gap: 1,
+            justifyContent: 'space-between',
+          }}
+        >
           <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
         </Grid>
       </Grid>
-      <Grid container justifyContent="space-between">
+      <Grid
+        container
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
         <Grid item>
           <Select name="score" label="Score">
             {score.map((item, itemIdx) => (
