@@ -12,6 +12,7 @@ import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useToken } from '../../hooks/useToken';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { useRedirect } from '../../hooks/useRedirect';
 
 const locationStateSchema = z.object({
   credentials: credentialsSchema,
@@ -23,6 +24,7 @@ const otpFormSchema = z.object({
 
 export default function LoginVerify2FA() {
   const { state } = useLocation();
+  const redirectTo = useRedirect();
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
   const { setIsLoggedIn } = useAuthContext();
@@ -54,7 +56,7 @@ export default function LoginVerify2FA() {
           setToken(data.accessToken);
           setRefreshToken(data.refreshToken);
           setIsLoggedIn(true);
-          navigate('/books', { replace: true });
+          navigate(redirectTo, { replace: true });
         },
         onError: async (error) => {
           const errors = await parseError(error as HTTPError);

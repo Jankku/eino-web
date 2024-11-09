@@ -7,7 +7,7 @@ export default function Privacy() {
   );
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ paddingBottom: 4 }}>
       <h1>Privacy Policy</h1>
       <Typography component="p">Last updated: {lastUpdated}</Typography>
       <Stack>

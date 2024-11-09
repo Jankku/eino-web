@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <ThemeProvider>
         <AuthenticationProvider>
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <SnackbarProvider
               TransitionComponent={Fade}
               // @ts-expect-error -- Valid

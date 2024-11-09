@@ -32,6 +32,7 @@ export default function BookDetail() {
 
   return (
     <BaseDetailLayout
+      backButtonDefaultUrl="/books"
       imageUrl={data.image_url}
       details={
         <>

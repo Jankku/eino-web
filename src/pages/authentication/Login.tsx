@@ -13,9 +13,11 @@ import { parseError } from '../../utils/zodUtil';
 import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { useLoginConfig } from '../../data/auth/useLoginConfig';
+import { useRedirect } from '../../hooks/useRedirect';
 
 export default function Login() {
   const navigate = useNavigate();
+  const redirectTo = useRedirect();
   const { setToken, setRefreshToken } = useToken();
   const { setIsLoggedIn } = useAuthContext();
   const formMethods = useForm({
@@ -37,14 +39,14 @@ export default function Login() {
     loginConfig.mutate(credentials, {
       onSuccess: (data) => {
         if (data.is2FAEnabled) {
-          navigate('/login/2fa', { state: { credentials } });
+          navigate(`/login/2fa?redirectTo=${redirectTo}`, { state: { credentials } });
         } else {
           loginUser.mutate(credentials, {
             onSuccess: (data) => {
               setToken(data.accessToken);
               setRefreshToken(data.refreshToken);
               setIsLoggedIn(true);
-              navigate('/books');
+              navigate(redirectTo);
             },
             onError: async (error) => {
               const errors = await parseError(error as HTTPError);

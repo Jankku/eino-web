@@ -1,7 +1,11 @@
 import { Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-export default function Footer() {
+type FooterProps = {
+  toggleDrawer: () => void;
+};
+
+export default function Footer({ toggleDrawer }: FooterProps) {
   return (
     <Stack
       sx={{
@@ -16,7 +20,7 @@ export default function Footer() {
           color: 'text.secondary',
         }}
       >
-        <Link component={RouterLink} to="/privacy">
+        <Link component={RouterLink} to="/privacy" onClick={() => toggleDrawer()}>
           Privacy
         </Link>
       </Typography>
