@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { useRedirect } from '../../hooks/useRedirect';
 
 type RedirectAuthenticatedProps = {
   children: React.ReactNode;
@@ -7,5 +8,6 @@ type RedirectAuthenticatedProps = {
 
 export default function RedirectAuthenticated({ children }: RedirectAuthenticatedProps) {
   const { isLoggedIn } = useAuthContext();
-  return isLoggedIn ? <Navigate replace to="/books" /> : children;
+  const redirectTo = useRedirect();
+  return isLoggedIn ? <Navigate replace to={redirectTo} /> : children;
 }
