@@ -104,7 +104,7 @@ export default function Header({
       </Box>
       <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>
         <Grid item sx={{ alignSelf: 'flex-end' }}>
-          <Footer />
+          <Footer toggleDrawer={toggleDrawer} />
         </Grid>
       </Grid>
     </>
