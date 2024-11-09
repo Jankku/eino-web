@@ -4,6 +4,7 @@ import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 type BaseDetailLayoutProps = {
+  backButtonDefaultUrl: string;
   imageUrl: string | null;
   details: React.ReactNode;
   children: React.ReactNode;
@@ -11,6 +12,7 @@ type BaseDetailLayoutProps = {
 };
 
 export default function BaseDetailLayout({
+  backButtonDefaultUrl,
   imageUrl,
   details,
   children,
@@ -18,6 +20,15 @@ export default function BaseDetailLayout({
 }: BaseDetailLayoutProps) {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+
+  const onBackButtonClick = () => {
+    const canGoBack = window.history.state.idx !== 0;
+    if (canGoBack) {
+      navigate(-1);
+    } else {
+      navigate(backButtonDefaultUrl);
+    }
+  };
 
   return (
     <Container fixed disableGutters={!isMobile} maxWidth="sm">
@@ -32,7 +43,7 @@ export default function BaseDetailLayout({
       >
         <CardContent sx={{ pb: 0 }}>
           {isMobile ? (
-            <IconButton onClick={() => navigate(-1)} sx={{ position: 'absolute' }}>
+            <IconButton onClick={onBackButtonClick} sx={{ position: 'absolute' }}>
               <ArrowBackIcon />
             </IconButton>
           ) : null}

@@ -32,6 +32,7 @@ export default function MovieDetail() {
 
   return (
     <BaseDetailLayout
+      backButtonDefaultUrl="/movies"
       imageUrl={data.image_url}
       details={
         <>
