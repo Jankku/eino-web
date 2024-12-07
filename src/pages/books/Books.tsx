@@ -1,4 +1,4 @@
-import { useReducer, startTransition, useLayoutEffect } from 'react';
+import { startTransition, useLayoutEffect } from 'react';
 import {
   Box,
   Grid,
@@ -12,7 +12,7 @@ import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
@@ -34,7 +34,7 @@ export default function Books() {
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
   const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
-  const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
+  const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useBooksSuspense({
     status,
     sort: searchparams.get('sort'),
@@ -133,7 +133,7 @@ export default function Books() {
                       display: 'inline-flex',
                     }}
                   >
-                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog}>
+                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
                       Create
                     </ResponsiveButton>
                   </Box>
@@ -191,7 +191,7 @@ export default function Books() {
 
           <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-          {isMobile ? <CreateFab onClick={toggleAddDialog} /> : null}
+          {isMobile ? <CreateFab onClick={toggleAddDialog as () => void} /> : null}
         </Box>
       }
       detail={<Outlet />}

@@ -1,4 +1,4 @@
-import { useReducer, startTransition, useLayoutEffect } from 'react';
+import { startTransition, useLayoutEffect } from 'react';
 import {
   Box,
   Grid,
@@ -12,7 +12,7 @@ import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { Outlet, useParams, useSearchParams } from 'react-router';
@@ -34,7 +34,7 @@ export default function Movies() {
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
   const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
   const [searchparams, setSearchParams] = useSearchParams();
-  const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
+  const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useMoviesSuspense({
     status,
     sort: searchparams.get('sort'),
@@ -133,7 +133,7 @@ export default function Movies() {
                       display: 'inline-flex',
                     }}
                   >
-                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog}>
+                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
                       Create
                     </ResponsiveButton>
                   </Box>
@@ -191,7 +191,7 @@ export default function Movies() {
 
           <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-          {isMobile ? <CreateFab onClick={toggleAddDialog} /> : null}
+          {isMobile ? <CreateFab onClick={toggleAddDialog as () => void} /> : null}
         </Box>
       }
       detail={<Outlet />}

@@ -14,8 +14,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
-import { useReducer } from 'react';
 import ProfilePictureDialog from './ProfilePictureDialog';
+import { useToggle } from '@uidotdev/usehooks';
 
 type UserInfoProps = {
   username: string;
@@ -34,10 +34,7 @@ export function UserInfo({
   profilePicturePath,
   registrationDate,
 }: UserInfoProps) {
-  const [editProfilePictureDialogOpen, toggleEditProfilePictureDialog] = useReducer(
-    (open) => !open,
-    false,
-  );
+  const [editProfilePictureDialogOpen, toggleEditProfilePictureDialog] = useToggle(false);
   return (
     <>
       <Card component="section" variant="outlined" sx={{ flexGrow: 2, minWidth: { sm: '22rem' } }}>
@@ -55,7 +52,7 @@ export function UserInfo({
               <ButtonBase
                 aria-label="Edit profile picture"
                 sx={{ width: 'fit-content' }}
-                onClick={toggleEditProfilePictureDialog}
+                onClick={toggleEditProfilePictureDialog as () => void}
               >
                 <Avatar
                   src={getProfilePictureUrl(profilePicturePath)}

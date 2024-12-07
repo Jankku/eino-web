@@ -51,11 +51,9 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
   }, [isLoggedIn]);
 
   return (
-    <AuthContext.Provider
-      value={{ username, email, role, is2FAEnabled, isLoggedIn, setIsLoggedIn }}
-    >
+    <AuthContext value={{ username, email, role, is2FAEnabled, isLoggedIn, setIsLoggedIn }}>
       {children}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 }
 

@@ -5,11 +5,12 @@ import { BarChart } from './BarChart';
 import { StatsItem } from './StatsItem';
 import { StatusProgressBar } from './StatusProgressBar';
 import { Profile } from '../../../data/profile/profile.types';
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 import ItemListDialog from '../ItemListDialog';
 import { getProgressValues } from '../../../utils/chartUtils';
 import { useBooks } from '../../../data/books/useBooks';
 import ListItem from '../../common/ListItem';
+import { useToggle } from '@uidotdev/usehooks';
 
 const formatter = new Intl.NumberFormat();
 
@@ -20,7 +21,7 @@ type BookStatsProps = {
 };
 
 export function BookStats({ stats }: BookStatsProps) {
-  const [listDialogOpen, toggleListDialog] = useReducer((open) => !open, false);
+  const [listDialogOpen, toggleListDialog] = useToggle(false);
   const [selectedScore, setSelectedScore] = useState<number>();
   const { data, isLoading, isSuccess } = useBooks({
     enabled: listDialogOpen && selectedScore !== undefined,
