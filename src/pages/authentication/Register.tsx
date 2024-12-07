@@ -14,6 +14,7 @@ import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Credentials } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
+import Head from '../../components/common/Head.tsx';
 
 const registerSchema = z
   .object({
@@ -70,6 +71,7 @@ export default function Register() {
 
   return (
     <Container maxWidth="md">
+      <Head pageTitle="Register" />
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack>

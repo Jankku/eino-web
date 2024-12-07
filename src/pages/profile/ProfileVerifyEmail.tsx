@@ -12,6 +12,7 @@ import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useVerifyEmail } from '../../data/profile/useVerifyEmail';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
+import Head from '../../components/common/Head';
 
 const totpFormSchema = z.object({
   otp: z.optional(zodFields.otp),
@@ -73,6 +74,7 @@ export default function ProfileVerifyEmail() {
 
   return (
     <Container maxWidth="sm">
+      <Head pageTitle="Verify email" />
       <h1>Verify email</h1>
       <Stack spacing={1}>
         {!showOtpField ? (

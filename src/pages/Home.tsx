@@ -10,12 +10,14 @@ import StorageIcon from '@mui/icons-material/Storage';
 import WebIcon from '@mui/icons-material/Web';
 import InfoCard from '../components/home/InfoCard';
 import InfoCardButton from '../components/home/InfoCardButton';
+import Head from '../components/common/Head';
 
 export default function Home() {
   const columnCount = useColumnCalculator();
 
   return (
     <Container maxWidth="md">
+      <Head pageTitle="Home" />
       <Typography
         component="h1"
         variant="h2"

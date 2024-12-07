@@ -4,6 +4,7 @@ import { useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
 import { dateValueFormatter, jsonValueFormatter } from '../../utils/tableUtils';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
+import Head from '../../components/common/Head';
 
 const slots = { toolbar: GridToolbar };
 
@@ -50,6 +51,7 @@ export default function AuditLog() {
   const { data } = useAuditLog();
   return (
     <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
+      <Head pageTitle="Audit log" />
       <h1>Audit log</h1>
       <Box height={500}>
         <DataGrid

@@ -13,6 +13,7 @@ import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { useLoginConfig } from '../../data/auth/useLoginConfig';
 import { useRedirect } from '../../hooks/useRedirect';
+import Head from '../../components/common/Head';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ export default function Login() {
 
   return (
     <Container maxWidth="md">
+      <Head pageTitle="Login" />
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack>

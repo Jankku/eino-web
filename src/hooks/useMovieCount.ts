@@ -1,5 +1,5 @@
-import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
-import { movieSortStatuses } from '../../models/movieSortOptions';
+import { useMoviesSuspense } from '../data/movies/useMoviesSuspense';
+import { movieSortStatuses } from '../models/movieSortOptions';
 
 export default function useMovieCount() {
   const { data } = useMoviesSuspense({ status: 'all' });

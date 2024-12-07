@@ -27,6 +27,7 @@ import { dateValueFormatter } from '../../utils/tableUtils';
 import { DateTime } from 'luxon';
 import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
+import Head from '../../components/common/Head';
 
 type UpdatedRow = User & { isNew: boolean };
 
@@ -248,6 +249,7 @@ export default function Users() {
 
   return (
     <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
+      <Head pageTitle="Users" />
       <h1>Users</h1>
       <Box height={500}>
         <DataGrid

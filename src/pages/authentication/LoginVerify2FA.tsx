@@ -12,6 +12,7 @@ import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useToken } from '../../hooks/useToken';
 import { useRedirect } from '../../hooks/useRedirect';
+import Head from '../../components/common/Head';
 
 const locationStateSchema = z.object({
   credentials: credentialsSchema,
@@ -67,6 +68,7 @@ export default function LoginVerify2FA() {
 
   return (
     <Container maxWidth="sm">
+      <Head pageTitle="Verify identity" />
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack>

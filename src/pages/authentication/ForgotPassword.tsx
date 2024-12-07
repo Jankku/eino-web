@@ -10,6 +10,7 @@ import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useForgotPassword } from '../../data/auth/useForgotPassword';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
+import Head from '../../components/common/Head';
 
 const emailFormSchema = z.object({
   email: zodFields.email,
@@ -48,6 +49,7 @@ export default function ForgotPassword() {
 
   return (
     <Container maxWidth="sm">
+      <Head pageTitle="Forgot Password" />
       <Box sx={{ textAlign: 'center' }}>
         <h1>Find your account</h1>
       </Box>
