@@ -16,7 +16,7 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
-import { Outlet, useParams, useSearchParams } from 'react-router-dom';
+import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';

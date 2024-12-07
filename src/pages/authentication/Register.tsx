@@ -1,5 +1,5 @@
 import { Container, Typography, Stack, Box } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import ErrorMessage from '../../components/authentication/ErrorMessage.tsx';
 import { LoadingButton } from '@mui/lab';

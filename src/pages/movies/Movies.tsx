@@ -15,7 +15,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
-import { Outlet, useParams, useSearchParams } from 'react-router-dom';
+import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';

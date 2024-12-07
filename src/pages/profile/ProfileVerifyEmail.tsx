@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Container, Stack, Typography } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import { FormProvider, useForm } from 'react-hook-form';
 import TextField from '../../components/form/TextField';

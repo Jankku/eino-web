@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';

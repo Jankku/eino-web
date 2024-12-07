@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import getStatusIcon from '../../utils/listItemUtil';
 

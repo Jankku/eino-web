@@ -1,5 +1,5 @@
 import { lazy, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useCustomSnackbar } from './hooks/useCustomSnackbar';

@@ -14,7 +14,7 @@ import ImportDialog from './ImportDialog';
 import ChangeEmailDialog from './ChangeEmailDialog';
 import Enable2FADialog from './Enable2FADialog';
 import Disable2FADialog from './Disable2FADialog';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 type AccountActionsProps = {
   email: string | null;

@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import Drawer from './Drawer';
 import Appbar from './Appbar';
 import OfflineAlert from '../common/OfflineAlert';

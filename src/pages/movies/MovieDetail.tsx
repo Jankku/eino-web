@@ -1,7 +1,7 @@
 import { Button, capitalize } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime } from 'luxon';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';

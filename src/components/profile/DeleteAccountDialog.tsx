@@ -1,5 +1,5 @@
 import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import BaseDialog from '../common/BaseDialog';
 import { DeleteAccountBody, useDeleteAccount } from '../../data/profile/useDeleteAccount';
 import { LoadingButton } from '@mui/lab';

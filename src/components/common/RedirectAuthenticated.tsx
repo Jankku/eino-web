@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import { useRedirect } from '../../hooks/useRedirect';
 

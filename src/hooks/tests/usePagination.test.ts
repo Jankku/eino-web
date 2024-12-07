@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { usePagination } from '../usePagination';
 import { renderHook } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 
 describe('usePagination', () => {
   it('should have correct initial state when items are empty', () => {

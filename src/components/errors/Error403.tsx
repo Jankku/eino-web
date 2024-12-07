@@ -1,5 +1,5 @@
 import { Button, Container, Typography, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 export default function Error403() {
   return (
