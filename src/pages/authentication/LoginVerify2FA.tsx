@@ -11,7 +11,6 @@ import { credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useToken } from '../../hooks/useToken';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
 import { useRedirect } from '../../hooks/useRedirect';
 
 const locationStateSchema = z.object({
@@ -27,7 +26,6 @@ export default function LoginVerify2FA() {
   const redirectTo = useRedirect();
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
-  const { setIsLoggedIn } = useAuthContext();
   const formMethods = useForm({
     defaultValues: {
       twoFactorCode: '',
@@ -55,7 +53,6 @@ export default function LoginVerify2FA() {
         onSuccess: (data) => {
           setToken(data.accessToken);
           setRefreshToken(data.refreshToken);
-          setIsLoggedIn(true);
           navigate(redirectTo, { replace: true });
         },
         onError: async (error) => {

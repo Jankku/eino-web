@@ -1,7 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router';
 import { useToken } from '../../hooks/useToken';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
 import { LoadingButton } from '@mui/lab';
@@ -19,7 +18,6 @@ export default function Login() {
   const navigate = useNavigate();
   const redirectTo = useRedirect();
   const { setToken, setRefreshToken } = useToken();
-  const { setIsLoggedIn } = useAuthContext();
   const formMethods = useForm({
     defaultValues: {
       username: '',
@@ -45,7 +43,6 @@ export default function Login() {
             onSuccess: (data) => {
               setToken(data.accessToken);
               setRefreshToken(data.refreshToken);
-              setIsLoggedIn(true);
               navigate(redirectTo);
             },
             onError: async (error) => {

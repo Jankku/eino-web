@@ -1,4 +1,4 @@
-import { lazy, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -28,6 +28,11 @@ const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 
+export const clearQueryClientChannel = {
+  name: 'queryClientChannel',
+  message: 'clearQueryClient',
+};
+
 function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
   const [queryClient] = useState(
@@ -48,6 +53,18 @@ function App() {
         },
       }),
   );
+
+  useEffect(() => {
+    const clearQueryClient = () => queryClient.clear();
+    const channel = new BroadcastChannel(clearQueryClientChannel.name);
+    channel.onmessage = (event) => {
+      if (event.data === clearQueryClientChannel.message) clearQueryClient();
+    };
+
+    return () => {
+      channel.close();
+    };
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

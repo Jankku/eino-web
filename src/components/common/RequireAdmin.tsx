@@ -6,6 +6,6 @@ type RequireAdminProps = {
 };
 
 export default function RequireAdmin({ children }: RequireAdminProps) {
-  const { getRole } = useToken();
-  return getRole() === 'admin' ? children : <Error403 />;
+  const { role } = useToken();
+  return role === 'admin' ? children : <Error403 />;
 }

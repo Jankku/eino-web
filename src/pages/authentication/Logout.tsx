@@ -1,16 +1,17 @@
 import { useToken } from '../../hooks/useToken';
 import { Navigate } from 'react-router';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { clearQueryClientChannel } from '../../App';
 
 export default function Logout() {
   const { removeTokens } = useToken();
-  const { setIsLoggedIn } = useAuthContext();
-  const queryClient = useQueryClient();
 
-  setIsLoggedIn(false);
-  removeTokens();
-  queryClient.clear();
+  useEffect(() => {
+    removeTokens();
+    const channel = new BroadcastChannel(clearQueryClientChannel.name);
+    channel.postMessage(clearQueryClientChannel.message);
+    channel.close();
+  }, [removeTokens]);
 
   return <Navigate to={'/'} replace />;
 }
