@@ -38,7 +38,8 @@ export default function ListItemImage({
       component="li"
       variant="outlined"
       sx={(theme) => ({
-        border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
+        outline: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
+        outlineOffset: '-1px',
         aspectRatio: 0.7,
       })}
     >
