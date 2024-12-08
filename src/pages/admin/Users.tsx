@@ -19,7 +19,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { User, useUsers } from '../../data/admin/useUsers';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
-import { useDeleteUser } from '../../data/admin/useDeleteUser';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
 import { HTTPError } from 'ky';
@@ -28,6 +27,7 @@ import { DateTime } from 'luxon';
 import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
+import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
 
 type UpdatedRow = User & { isNew: boolean };
 
@@ -48,51 +48,19 @@ const initialState: GridInitialStateCommunity = {
   },
 };
 
+const getRowId = (row: User) => row.user_id;
+
 export default function Users() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const { data } = useUsers();
   const updateUser = useUpdateUser();
-  const deleteUser = useDeleteUser();
   const [rows, setRows] = useState<User[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
 
   useLayoutEffect(() => {
     setRows(data);
   }, [data]);
-
-  const getRowId = useCallback((row: User) => row.user_id, []);
-
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id: GridRowId) => () => {
-    deleteUser.mutate(id as string, {
-      onSuccess: (message) => {
-        showSuccessSnackbar(message);
-      },
-      onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
-        showErrorSnackbar(errors[0].message);
-      },
-    });
-  };
-
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.user_id === id) as UpdatedRow;
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.user_id !== id));
-    }
-  };
 
   const processRowUpdate = useCallback(
     (newRow: User, oldRow: User) => {
@@ -111,9 +79,10 @@ export default function Users() {
     [showErrorSnackbar, showSuccessSnackbar, updateUser],
   );
 
-  const processRowUpdateError = useCallback(async (error: Error) => {
-    showErrorSnackbar(error.message);
-  }, []);
+  const processRowUpdateError = useCallback(
+    (error: Error) => showErrorSnackbar(error.message),
+    [showErrorSnackbar],
+  );
 
   const handleRowModesModelChange = useCallback((newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
@@ -206,6 +175,30 @@ export default function Users() {
         getActions: ({ id }) => {
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
+          const handleEditClick = (id: GridRowId) => () => {
+            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+          };
+
+          const handleSaveClick = (id: GridRowId) => () => {
+            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+          };
+
+          const handleDeleteClick = (id: GridRowId) => () => {
+            setRowIdToDelete(id);
+          };
+
+          const handleCancelClick = (id: GridRowId) => () => {
+            setRowModesModel({
+              ...rowModesModel,
+              [id]: { mode: GridRowModes.View, ignoreModifications: true },
+            });
+
+            const editedRow = rows.find((row) => row.user_id === id) as UpdatedRow;
+            if (editedRow.isNew) {
+              setRows(rows.filter((row) => row.user_id !== id));
+            }
+          };
+
           if (isInEditMode) {
             return [
               <GridActionsCellItem
@@ -244,30 +237,38 @@ export default function Users() {
         },
       },
     ],
-    [rowModesModel],
+    [rowModesModel, rows],
   );
 
   return (
-    <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
-      <Head pageTitle="Users" />
-      <h1>Users</h1>
-      <Box height={500}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          getRowId={getRowId}
-          editMode="row"
-          disableRowSelectionOnClick
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={processRowUpdateError}
-          slots={slots}
-          slotProps={slotProps}
-          initialState={initialState}
-        />
-      </Box>
-    </Container>
+    <>
+      <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
+        <Head pageTitle="Users" />
+        <h1>Users</h1>
+        <Box height={500}>
+          <DataGrid
+            disableRowSelectionOnClick
+            rows={rows}
+            columns={columns}
+            getRowId={getRowId}
+            editMode="row"
+            rowModesModel={rowModesModel}
+            onRowModesModelChange={handleRowModesModelChange}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={processRowUpdateError}
+            slots={slots}
+            slotProps={slotProps}
+            initialState={initialState}
+          />
+        </Box>
+      </Container>
+      <DeleteUserDialog
+        visible={!!rowIdToDelete}
+        userId={rowIdToDelete as string}
+        username={rows.find((row) => row.user_id === rowIdToDelete)?.username as string}
+        onClose={() => setRowIdToDelete(undefined)}
+      />
+    </>
   );
 }
