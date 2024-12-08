@@ -10,6 +10,7 @@ import {
   GridRowEditStopReasons,
   GridRowId,
   GridRowModesModel,
+  GridCellParams,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import SaveIcon from '@mui/icons-material/Save';
@@ -22,12 +23,13 @@ import { getProfilePictureUrl } from '../../utils/profileUtil';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
 import { HTTPError } from 'ky';
-import { dateValueFormatter } from '../../utils/tableUtils';
+import { booleanFormatter, dateValueFormatter } from '../../utils/tableUtils';
 import { DateTime } from 'luxon';
 import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
 import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
+import { useChangeUserState } from '../../data/admin/useChangeUserState';
 
 type UpdatedRow = User & { isNew: boolean };
 
@@ -42,6 +44,12 @@ const slots = { toolbar: GridToolbar };
 const slotProps = { toolbar: { showQuickFilter: true } };
 
 const initialState: GridInitialStateCommunity = {
+  columns: {
+    columnVisibilityModel: {
+      email_verified_on: false,
+      created_on: false,
+    },
+  },
   sorting: { sortModel: [{ field: 'username', sort: 'asc' }] },
   pagination: {
     paginationModel: { pageSize: 25, page: 0 },
@@ -54,6 +62,7 @@ export default function Users() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const { data } = useUsers();
   const updateUser = useUpdateUser();
+  const toggleUserState = useChangeUserState();
   const [rows, setRows] = useState<User[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
@@ -88,6 +97,26 @@ export default function Users() {
     setRowModesModel(newRowModesModel);
   }, []);
 
+  const onCellDoubleClick = useCallback(
+    (params: GridCellParams) => {
+      if (params.field === 'disabled_on') {
+        toggleUserState.mutate(
+          { id: params.id as string, disabled: !!params.value },
+          {
+            onSuccess: (message) => {
+              showSuccessSnackbar(message);
+            },
+            onError: async (error) => {
+              const errors = await parseError(error as HTTPError);
+              showErrorSnackbar(errors[0].message);
+            },
+          },
+        );
+      }
+    },
+    [showErrorSnackbar, showSuccessSnackbar, toggleUserState],
+  );
+
   const columns: GridColDef[] = useMemo(
     () => [
       {
@@ -96,17 +125,10 @@ export default function Users() {
         width: 60,
         type: 'string',
         editable: true,
+        hideSortIcons: true,
         renderCell: ({ value }) => (
           <Avatar src={getProfilePictureUrl(value)} sx={{ mt: 1, width: 40, height: 40 }} />
         ),
-      },
-      {
-        field: 'username',
-        headerName: 'Username',
-        minWidth: 200,
-        flex: 2,
-        type: 'string',
-        editable: true,
       },
       {
         field: 'role_id',
@@ -119,6 +141,7 @@ export default function Users() {
           { value: 3, label: 'Demo' },
         ],
         editable: true,
+        hideSortIcons: true,
         renderCell: ({ row }) => (
           <Chip
             color="primary"
@@ -135,8 +158,23 @@ export default function Users() {
           />
         ),
       },
-
-      { field: 'email', headerName: 'Email', width: 200, type: 'string', editable: true },
+      {
+        field: 'username',
+        headerName: 'Username',
+        maxWidth: 300,
+        flex: 2,
+        type: 'string',
+        editable: true,
+        hideSortIcons: true,
+      },
+      {
+        field: 'email',
+        headerName: 'Email',
+        width: 200,
+        type: 'string',
+        editable: true,
+        hideSortIcons: true,
+      },
       {
         field: 'email_verified_on',
         headerName: 'Email verified',
@@ -145,6 +183,7 @@ export default function Users() {
         valueFormatter: dateValueFormatter,
         type: 'dateTime',
         editable: true,
+        hideSortIcons: true,
       },
       {
         field: 'totp_enabled_on',
@@ -153,24 +192,36 @@ export default function Users() {
         valueFormatter: dateValueFormatter,
         type: 'dateTime',
         editable: true,
+        hideSortIcons: true,
       },
       {
         field: 'last_login_on',
         headerName: 'Last login',
         width: 150,
+        hideSortIcons: true,
         valueFormatter: dateValueFormatter,
       },
       {
         field: 'created_on',
         headerName: 'Registered',
         width: 150,
+        hideSortIcons: true,
         valueFormatter: dateValueFormatter,
+      },
+      {
+        field: 'disabled_on',
+        headerName: 'Disabled',
+        type: 'boolean',
+        minWidth: 80,
+        hideSortIcons: true,
+        valueFormatter: booleanFormatter,
       },
       {
         field: 'actions',
         type: 'actions',
         headerName: 'Actions',
-        width: 100,
+        width: 120,
+        hideSortIcons: true,
         cellClassName: 'actions',
         getActions: ({ id }) => {
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -253,6 +304,7 @@ export default function Users() {
             getRowId={getRowId}
             editMode="row"
             rowModesModel={rowModesModel}
+            onCellDoubleClick={onCellDoubleClick}
             onRowModesModelChange={handleRowModesModelChange}
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}

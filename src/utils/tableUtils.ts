@@ -8,3 +8,5 @@ export const dateValueFormatter = (value: string | Date | null) => {
   if (value instanceof Date) return value;
   return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_SHORT);
 };
+
+export const booleanFormatter = (value: unknown) => !!value;
