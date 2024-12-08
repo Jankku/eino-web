@@ -20,6 +20,7 @@ import TextField from '../form/TextField';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useGenerate2FAUrl } from '../../data/profile/useGenerate2FAUrl';
 import { useEnable2FA } from '../../data/profile/useEnable2FA';
+import CodeBlock from '../common/CodeBlock';
 
 const totpFormSchema = z.object({
   twoFactorCode: zodFields.otp,
@@ -100,26 +101,7 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
                     style={{ width: '100%' }}
                   />
                 </Box>
-                <Box
-                  sx={(theme) => ({
-                    backgroundColor: '#eee',
-                    wordBreak: 'break-all',
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    ...theme.applyStyles('dark', {
-                      backgroundColor: '#303030',
-                    }),
-                  })}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {data.totpUrl}
-                  </Typography>
-                </Box>
+                <CodeBlock>{data.totpUrl}</CodeBlock>
                 <Stack spacing={1}>
                   <TextField
                     name="twoFactorCode"
