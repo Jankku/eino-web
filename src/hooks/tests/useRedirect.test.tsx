@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { useRedirect } from '../useRedirect';
 import { renderHook } from '@testing-library/react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router';
 
 const ValidRouter = ({ children }: { children: React.ReactNode }) => (
   <MemoryRouter initialEntries={['/?redirectTo=/profile']}>{children}</MemoryRouter>

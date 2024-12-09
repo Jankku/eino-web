@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 const DEFAULT_REDIRECT = '/books';
 const ALLOWED_REDIRECTS = ['/books', '/movies', '/profile'];

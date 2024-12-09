@@ -13,7 +13,8 @@ export const api = ky.create({
           request.url.includes('movies') ||
           request.url.includes('profile') ||
           request.url.includes('email') ||
-          request.url.includes('2fa')
+          request.url.includes('2fa') ||
+          request.url.includes('admin')
         ) {
           const accessToken = localStorage.getItem('accessToken');
           if (!accessToken) return request;
@@ -23,13 +24,20 @@ export const api = ky.create({
     ],
     afterResponse: [
       async (input, options, response) => {
-        if (response.status === 401) {
+        if ([401, 403].includes(response.status)) {
           const error = await response.json();
           const parsedError = errorSchema.parse(error);
-          if (!(parsedError.errors[0].name === 'authorization_error')) return Promise.reject(error);
-          const accessToken = await fetchNewToken(response);
-          localStorage.setItem('accessToken', accessToken);
-          return ky(input, options);
+          const errorName = parsedError.errors[0].name;
+          switch (errorName) {
+            case 'authorization_error':
+              localStorage.setItem('accessToken', await fetchNewToken(response));
+              return ky(input, options);
+            case 'account_disabled':
+              window.location.href = '/logout';
+              break;
+            default:
+              return Promise.reject(error);
+          }
         }
       },
     ],

@@ -1,88 +1,97 @@
 import { jwtDecode } from 'jwt-decode';
 import { DateTime } from 'luxon';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 type DecodedToken = {
   userId: string;
   username: string;
+  role: 'admin' | 'basic' | 'demo';
   email: string | null;
   is2FAEnabled: boolean;
 };
 
+const ACCESS_TOKEN_KEY = 'accessToken';
+const REFRESH_TOKEN_KEY = 'refreshToken';
+
+const getAccessTokenFromLocalStorage = () => localStorage.getItem(ACCESS_TOKEN_KEY) as string;
+
+const getRefreshTokenFromLocalStorage = () => localStorage.getItem(REFRESH_TOKEN_KEY) as string;
+
+const isAccessTokenValid = (token: string) => {
+  try {
+    jwtDecode(token, { header: true });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const isRefreshTokenValid = (token: string) => {
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded.exp) return DateTime.fromSeconds(decoded.exp) > DateTime.now();
+    return false;
+  } catch {
+    return false;
+  }
+};
+
+const subscribe = (callback: () => void): (() => void) => {
+  window.addEventListener('storage', callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+  };
+};
+
 export function useToken() {
-  const token = localStorage.getItem('accessToken') as string;
-  const refreshToken = localStorage.getItem('refreshToken') as string;
+  const token = useSyncExternalStore(subscribe, getAccessTokenFromLocalStorage);
+  const refreshToken = useSyncExternalStore(subscribe, getRefreshTokenFromLocalStorage);
 
-  const getUsername = () => {
-    if (!token) return '';
-    const decoded = jwtDecode(token) as DecodedToken;
-    return decoded.username || '';
-  };
+  const decodedToken = useMemo(() => (token ? (jwtDecode(token) as DecodedToken) : null), [token]);
 
-  const getEmail = () => {
-    if (!token) return null;
-    const decoded = jwtDecode(token) as DecodedToken;
-    return decoded.email;
-  };
+  const username = decodedToken?.username || '';
+  const email = decodedToken?.email;
+  const role = decodedToken?.role;
+  const is2FAEnabled = decodedToken?.is2FAEnabled || false;
+  const isLoggedIn = useMemo(
+    () => isAccessTokenValid(token) && isRefreshTokenValid(refreshToken),
+    [token, refreshToken],
+  );
 
-  const getIs2FAEnabled = () => {
-    if (!token) return false;
-    const decoded = jwtDecode(token) as DecodedToken;
-    return decoded.is2FAEnabled;
-  };
-
-  const setToken = (accessToken: string) => {
+  const setToken = useCallback((accessToken: string) => {
     try {
-      localStorage.setItem('accessToken', accessToken);
-    } catch (err) {
-      console.error(err);
+      localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+      window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }, []);
 
-  const setRefreshToken = (refreshToken: string) => {
+  const setRefreshToken = useCallback((refreshToken: string) => {
     try {
-      localStorage.setItem('refreshToken', refreshToken);
-    } catch (err) {
-      console.error(err);
+      localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+      window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }, []);
 
-  const isAccessTokenValid = () => {
-    try {
-      jwtDecode(token, { header: true });
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  const isRefreshTokenValid = () => {
-    try {
-      const decoded = jwtDecode(refreshToken);
-      if (decoded.exp) {
-        const expTime = DateTime.fromSeconds(decoded.exp);
-        return expTime > DateTime.now();
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  };
-
-  const removeTokens = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  };
+  const removeTokens = useCallback(() => {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    window.dispatchEvent(new Event('storage'));
+  }, []);
 
   return {
     token,
     refreshToken,
-    getUsername,
-    getEmail,
-    getIs2FAEnabled,
+    username,
+    email,
+    role,
+    isLoggedIn,
+    is2FAEnabled,
     setToken,
     setRefreshToken,
-    isAccessTokenValid,
-    isRefreshTokenValid,
     removeTokens,
   };
 }

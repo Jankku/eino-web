@@ -1,5 +1,4 @@
-import { Button, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, Stack, Typography } from '@mui/material';
 import Refresh from '@mui/icons-material/Refresh';
 
 type PageFallbackProps = {
@@ -8,10 +7,11 @@ type PageFallbackProps = {
 
 export default function PageFallback({ resetErrorBoundary }: PageFallbackProps) {
   return (
-    <Box
+    <Stack
       sx={{
         mt: 8,
-        textAlign: 'center',
+        alignItems: 'center',
+        gap: 2,
       }}
     >
       <Typography variant="h5" component="p">
@@ -20,6 +20,6 @@ export default function PageFallback({ resetErrorBoundary }: PageFallbackProps) 
       <Button startIcon={<Refresh />} variant="contained" onClick={() => resetErrorBoundary()}>
         Try again
       </Button>
-    </Box>
+    </Stack>
   );
 }

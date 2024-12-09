@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import './css/index.css';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { ThemeProvider } from './providers/ThemeProvider.tsx';
 import { AuthenticationProvider } from './providers/AuthenticationProvider.tsx';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <ThemeProvider>
         <AuthenticationProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <BrowserRouter>
             <SnackbarProvider
               TransitionComponent={Fade}
               // @ts-expect-error -- Valid

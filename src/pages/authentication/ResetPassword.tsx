@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { ResetPasswordBody, useResetPassword } from '../../data/auth/useResetPassword';
 import PasswordField from '../../components/form/PasswordField';
+import Head from '../../components/common/Head';
 
 const newPasswordFormSchema = z.object({
   newPassword: zodFields.password,
@@ -58,6 +59,7 @@ export default function ResetPassword() {
 
   return (
     <Container maxWidth="sm">
+      <Head pageTitle="Reset Password" />
       <Box sx={{ textAlign: 'center' }}>
         <h1>Reset password</h1>
       </Box>

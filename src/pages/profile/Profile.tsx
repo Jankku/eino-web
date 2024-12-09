@@ -4,12 +4,14 @@ import { BookStats } from '../../components/profile/stats/BookStats';
 import { MovieStats } from '../../components/profile/stats/MovieStats';
 import { UserInfo } from '../../components/profile/UserInfo';
 import { useProfile } from '../../data/profile/useProfile';
+import Head from '../../components/common/Head';
 
 export default function Profile() {
   const { data } = useProfile();
 
   return (
     <Container maxWidth="md" sx={{ paddingBottom: 4 }}>
+      <Head pageTitle="Profile" />
       <h1>Profile</h1>
       {data ? (
         <>

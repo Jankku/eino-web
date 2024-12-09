@@ -1,5 +1,5 @@
 import { ListItemText, MenuItem } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 type CustomNavLinkProps = {
   item: { name: string; path: string; icon: React.ReactNode };

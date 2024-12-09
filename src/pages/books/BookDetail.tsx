@@ -1,22 +1,22 @@
 import { Button, capitalize } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime } from 'luxon';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useReducer } from 'react';
 import { useBookDetail } from '../../data/books/useBookDetail';
 import { useDeleteBook } from '../../data/books/useDeleteBook';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteButton from '../../components/common/DeleteButton';
 import BaseDetailLayout from '../../components/layout/BaseDetailLayout';
+import { useToggle } from '@uidotdev/usehooks';
 
 export default function BookDetail() {
   const navigate = useNavigate();
   const bookId = useParams().bookId!;
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const [editDialogOpen, toggleEditDialog] = useReducer((open) => !open, false);
+  const [editDialogOpen, toggleEditDialog] = useToggle(false);
   const { data } = useBookDetail(bookId);
   const deleteBook = useDeleteBook();
 
@@ -56,7 +56,7 @@ export default function BookDetail() {
           <Button
             variant="contained"
             color="primary"
-            onClick={toggleEditDialog}
+            onClick={toggleEditDialog as () => void}
             startIcon={<CreateIcon />}
             sx={{ margin: '0.5em' }}
           >

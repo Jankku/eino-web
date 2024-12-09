@@ -1,4 +1,3 @@
-import { useReducer } from 'react';
 import { Button, Card, CardContent, Grid } from '@mui/material';
 import DeleteAccountDialog from './DeleteAccountDialog';
 import ExportDialog from './ExportDialog';
@@ -14,7 +13,8 @@ import ImportDialog from './ImportDialog';
 import ChangeEmailDialog from './ChangeEmailDialog';
 import Enable2FADialog from './Enable2FADialog';
 import Disable2FADialog from './Disable2FADialog';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
+import { useToggle } from '@uidotdev/usehooks';
 
 type AccountActionsProps = {
   email: string | null;
@@ -23,13 +23,13 @@ type AccountActionsProps = {
 };
 
 export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: AccountActionsProps) {
-  const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useReducer((open) => !open, false);
-  const [shareDialogOpen, toggleShareDialog] = useReducer((open) => !open, false);
-  const [exportDialogOpen, toggleExportDialog] = useReducer((open) => !open, false);
-  const [importDialogOpen, toggleImportDialog] = useReducer((open) => !open, false);
-  const [changeEmailDialogOpen, toggleChangeEmailDialog] = useReducer((open) => !open, false);
-  const [enable2FADialogOpen, toggleEnable2FADialog] = useReducer((open) => !open, false);
-  const [disable2FADialogOpen, toggleDisable2FADialog] = useReducer((open) => !open, false);
+  const [deleteAccountDialogOpen, toggleDeleteAccountDialog] = useToggle(false);
+  const [shareDialogOpen, toggleShareDialog] = useToggle(false);
+  const [exportDialogOpen, toggleExportDialog] = useToggle(false);
+  const [importDialogOpen, toggleImportDialog] = useToggle(false);
+  const [changeEmailDialogOpen, toggleChangeEmailDialog] = useToggle(false);
+  const [enable2FADialogOpen, toggleEnable2FADialog] = useToggle(false);
+  const [disable2FADialogOpen, toggleDisable2FADialog] = useToggle(false);
 
   return (
     <>
@@ -43,7 +43,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                   startIcon={<RemoveModeratorIcon />}
                   variant="contained"
                   color="secondary"
-                  onClick={toggleDisable2FADialog}
+                  onClick={toggleDisable2FADialog as () => void}
                 >
                   Disable 2FA
                 </Button>
@@ -54,7 +54,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                   startIcon={<ShieldOutlined />}
                   variant="contained"
                   color="primary"
-                  onClick={toggleEnable2FADialog}
+                  onClick={toggleEnable2FADialog as () => void}
                 >
                   Enable 2FA
                 </Button>
@@ -82,7 +82,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                     startIcon={<AlternateEmailIcon />}
                     variant="contained"
                     color="primary"
-                    onClick={toggleChangeEmailDialog}
+                    onClick={toggleChangeEmailDialog as () => void}
                   >
                     Update email
                   </Button>
@@ -94,7 +94,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                   startIcon={<AlternateEmailIcon />}
                   variant="contained"
                   color="primary"
-                  onClick={toggleChangeEmailDialog}
+                  onClick={toggleChangeEmailDialog as () => void}
                 >
                   Add email
                 </Button>
@@ -105,7 +105,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                 startIcon={<ShareRounded />}
                 variant="contained"
                 color="primary"
-                onClick={toggleShareDialog}
+                onClick={toggleShareDialog as () => void}
               >
                 Share
               </Button>
@@ -115,7 +115,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                 startIcon={<Download />}
                 variant="contained"
                 color="primary"
-                onClick={toggleExportDialog}
+                onClick={toggleExportDialog as () => void}
               >
                 Export
               </Button>
@@ -125,7 +125,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                 startIcon={<Upload />}
                 variant="contained"
                 color="primary"
-                onClick={toggleImportDialog}
+                onClick={toggleImportDialog as () => void}
               >
                 Import
               </Button>
@@ -135,7 +135,7 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
                 startIcon={<PersonRemoveIcon />}
                 variant="contained"
                 color="secondary"
-                onClick={toggleDeleteAccountDialog}
+                onClick={toggleDeleteAccountDialog as () => void}
               >
                 Delete account
               </Button>

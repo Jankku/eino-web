@@ -1,11 +1,12 @@
-import { lazy, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { lazy, useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useCustomSnackbar } from './hooks/useCustomSnackbar';
 import Home from './pages/Home';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/common/RequireAuth';
+import RequireAdmin from './components/common/RequireAdmin';
 import PageBoundary from './components/common/PageBoundary';
 import Logout from './pages/authentication/Logout';
 import Privacy from './pages/Privacy';
@@ -23,6 +24,14 @@ const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
+
+const Users = lazy(() => import('./pages/admin/Users'));
+const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
+
+export const clearQueryClientChannel = {
+  name: 'queryClientChannel',
+  message: 'clearQueryClient',
+};
 
 function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
@@ -44,6 +53,18 @@ function App() {
         },
       }),
   );
+
+  useEffect(() => {
+    const clearQueryClient = () => queryClient.clear();
+    const channel = new BroadcastChannel(clearQueryClientChannel.name);
+    channel.onmessage = (event) => {
+      if (event.data === clearQueryClientChannel.message) clearQueryClient();
+    };
+
+    return () => {
+      channel.close();
+    };
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -169,6 +190,32 @@ function WrappedApp() {
               }
             />
           </Route>
+
+          <Route
+            path="users"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <Users />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="audits"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <AuditLog />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
 
           <Route path="/*" element={<Error404 />} />
         </Route>

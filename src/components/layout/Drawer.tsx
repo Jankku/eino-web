@@ -1,5 +1,5 @@
 import { Button, Divider, Drawer, Grid, MenuItem, MenuList, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import Home from '@mui/icons-material/Home';
@@ -7,6 +7,7 @@ import MenuBook from '@mui/icons-material/MenuBook';
 import LocalMovies from '@mui/icons-material/LocalMovies';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LoginIcon from '@mui/icons-material/Login';
+import TerminalIcon from '@mui/icons-material/Terminal';
 import { Box } from '@mui/system';
 import CustomNavLink from '../common/CustomNavLink.tsx';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
@@ -21,6 +22,11 @@ const routeArray = [
 const authRouteArray = [
   { name: 'Register', path: '/register', icon: <VpnKeyIcon sx={{ mr: 1 }} /> },
   { name: 'Login', path: '/login', icon: <LoginIcon sx={{ mr: 1 }} /> },
+];
+
+const adminRouteArray = [
+  { name: 'Users', path: '/users', icon: <PersonIcon sx={{ mr: 1 }} /> },
+  { name: 'Audit log', path: '/audits', icon: <TerminalIcon sx={{ mr: 1 }} /> },
 ];
 
 type HeaderProps = {
@@ -39,7 +45,9 @@ export default function Header({
   children,
 }: HeaderProps) {
   const navigate = useNavigate();
-  const { username, isLoggedIn } = useAuthContext();
+  const { username, role, isLoggedIn } = useAuthContext();
+
+  const isAdmin = role === 'admin';
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -51,6 +59,16 @@ export default function Header({
             toggleDrawer={toggleDrawer}
             item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }}
           />
+
+          {isLoggedIn && isAdmin
+            ? [
+                <Divider key={99} />,
+                adminRouteArray.map((item, index) => (
+                  <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
+                )),
+                <Divider key={999} />,
+              ]
+            : null}
 
           {isLoggedIn
             ? routeArray.map((item, index) => (

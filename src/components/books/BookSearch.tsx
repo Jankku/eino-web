@@ -1,6 +1,6 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import SearchTextField from '../common/SearchTextField';
 import { useBookSearch } from '../../data/books/useBookSearch';
 import SearchResult from '../common/SearchResult';

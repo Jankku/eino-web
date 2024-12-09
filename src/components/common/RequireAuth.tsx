@@ -6,6 +6,6 @@ type RequireAuthProps = {
 };
 
 export default function RequireAuth({ children }: RequireAuthProps) {
-  const { isRefreshTokenValid } = useToken();
-  return isRefreshTokenValid() ? children : <Error401 />;
+  const { isLoggedIn } = useToken();
+  return isLoggedIn ? children : <Error401 />;
 }

@@ -1,5 +1,6 @@
 import { Box, Container, Link, Stack, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import Head from '../components/common/Head';
 
 export default function Privacy() {
   const lastUpdated = DateTime.fromISO('2024-09-01T00:00:00+03:00').toLocaleString(
@@ -8,6 +9,7 @@ export default function Privacy() {
 
   return (
     <Container maxWidth="sm" sx={{ paddingBottom: 4 }}>
+      <Head pageTitle="Privacy policy" />
       <h1>Privacy Policy</h1>
       <Typography component="p">Last updated: {lastUpdated}</Typography>
       <Stack>

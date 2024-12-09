@@ -1,4 +1,4 @@
-import { useReducer, startTransition, useLayoutEffect } from 'react';
+import { startTransition, useLayoutEffect } from 'react';
 import {
   Box,
   Grid,
@@ -12,20 +12,21 @@ import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/common/ListDetailLayout';
-import { Outlet, useParams, useSearchParams } from 'react-router-dom';
+import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
-import useBookCount from './useBookCount';
+import useBookCount from '../../hooks/useBookCount';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
 import MoreButton from '../../components/common/MoreButton';
+import Head from '../../components/common/Head';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -34,7 +35,7 @@ export default function Books() {
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
   const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
-  const [addDialogOpen, toggleAddDialog] = useReducer((open) => !open, false);
+  const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useBooksSuspense({
     status,
     sort: searchparams.get('sort'),
@@ -85,116 +86,119 @@ export default function Books() {
   }, [searchparams, setSearchParams]);
 
   return (
-    <ListDetailLayout
-      id={bookId}
-      list={
-        <Box
-          sx={{
-            my: 2,
-            mx: isMobile ? 2 : undefined,
-          }}
-        >
-          <Grid
-            container
-            component="header"
+    <>
+      <Head pageTitle="Books" />
+      <ListDetailLayout
+        id={bookId}
+        list={
+          <Box
             sx={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 2,
-              rowGap: 1,
+              my: 2,
+              mx: isMobile ? 2 : undefined,
             }}
           >
-            <Grid item>
-              <Box
-                component="h1"
-                sx={{
-                  m: 0,
-                }}
-              >
-                Books
-              </Box>
-            </Grid>
-            <Grid item>
-              <Grid
-                container
-                item
-                component="ul"
-                aria-label="Actions"
-                sx={{
-                  gap: 1,
-                  p: 0,
-                  listStyle: 'none',
-                }}
-              >
-                {!isMobile ? (
+            <Grid
+              container
+              component="header"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mb: 2,
+                rowGap: 1,
+              }}
+            >
+              <Grid item>
+                <Box
+                  component="h1"
+                  sx={{
+                    m: 0,
+                  }}
+                >
+                  Books
+                </Box>
+              </Grid>
+              <Grid item>
+                <Grid
+                  container
+                  item
+                  component="ul"
+                  aria-label="Actions"
+                  sx={{
+                    gap: 1,
+                    p: 0,
+                    listStyle: 'none',
+                  }}
+                >
+                  {!isMobile ? (
+                    <Box
+                      component="li"
+                      sx={{
+                        display: 'inline-flex',
+                      }}
+                    >
+                      <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
+                        Create
+                      </ResponsiveButton>
+                    </Box>
+                  ) : null}
                   <Box
                     component="li"
                     sx={{
                       display: 'inline-flex',
                     }}
                   >
-                    <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog}>
-                      Create
-                    </ResponsiveButton>
+                    <SortButton fieldOptions={bookSortFields} onChange={onSort} />
                   </Box>
-                ) : null}
-                <Box
-                  component="li"
-                  sx={{
-                    display: 'inline-flex',
-                  }}
-                >
-                  <SortButton fieldOptions={bookSortFields} onChange={onSort} />
-                </Box>
-                <Box
-                  component="li"
-                  sx={{
-                    display: 'inline-flex',
-                  }}
-                >
-                  <SmallSelect label="Status" value={status} onChange={onStatusChange}>
-                    {bookSortStatuses.map((option, itemIdx) => (
-                      <option key={itemIdx} value={option.value}>
-                        {option.name} ({countByStatus[option.value]})
-                      </option>
-                    ))}
-                  </SmallSelect>
-                </Box>
-                <Box
-                  component="li"
-                  sx={{
-                    display: 'inline-flex',
-                  }}
-                >
-                  <MoreButton>
-                    <List disablePadding>
-                      <ListItem disablePadding>
-                        <ListItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard}>
-                          <ListItemText primary="Copy" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemButton onClick={toggleItemType}>
-                          <ListItemText
-                            primary={itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    </List>
-                  </MoreButton>
-                </Box>
+                  <Box
+                    component="li"
+                    sx={{
+                      display: 'inline-flex',
+                    }}
+                  >
+                    <SmallSelect label="Status" value={status} onChange={onStatusChange}>
+                      {bookSortStatuses.map((option, itemIdx) => (
+                        <option key={itemIdx} value={option.value}>
+                          {option.name} ({countByStatus[option.value]})
+                        </option>
+                      ))}
+                    </SmallSelect>
+                  </Box>
+                  <Box
+                    component="li"
+                    sx={{
+                      display: 'inline-flex',
+                    }}
+                  >
+                    <MoreButton>
+                      <List disablePadding>
+                        <ListItem disablePadding>
+                          <ListItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard}>
+                            <ListItemText primary="Copy" />
+                          </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding>
+                          <ListItemButton onClick={toggleItemType}>
+                            <ListItemText
+                              primary={itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      </List>
+                    </MoreButton>
+                  </Box>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
 
-          {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
+            {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
 
-          <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
+            <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
 
-          {isMobile ? <CreateFab onClick={toggleAddDialog} /> : null}
-        </Box>
-      }
-      detail={<Outlet />}
-    />
+            {isMobile ? <CreateFab onClick={toggleAddDialog as () => void} /> : null}
+          </Box>
+        }
+        detail={<Outlet />}
+      />
+    </>
   );
 }

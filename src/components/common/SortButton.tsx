@@ -2,7 +2,7 @@ import { Popover, Stack } from '@mui/material';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import SmallSelect from './SmallSelect';
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import ResponsiveButton from './ResponsiveButton';
 
 type SortButtonProps = {

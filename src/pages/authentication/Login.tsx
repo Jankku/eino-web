@@ -1,7 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useToken } from '../../hooks/useToken';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
 import { LoadingButton } from '@mui/lab';
@@ -14,12 +13,12 @@ import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { useLoginConfig } from '../../data/auth/useLoginConfig';
 import { useRedirect } from '../../hooks/useRedirect';
+import Head from '../../components/common/Head';
 
 export default function Login() {
   const navigate = useNavigate();
   const redirectTo = useRedirect();
   const { setToken, setRefreshToken } = useToken();
-  const { setIsLoggedIn } = useAuthContext();
   const formMethods = useForm({
     defaultValues: {
       username: '',
@@ -45,7 +44,6 @@ export default function Login() {
             onSuccess: (data) => {
               setToken(data.accessToken);
               setRefreshToken(data.refreshToken);
-              setIsLoggedIn(true);
               navigate(redirectTo);
             },
             onError: async (error) => {
@@ -68,6 +66,7 @@ export default function Login() {
 
   return (
     <Container maxWidth="md">
+      <Head pageTitle="Login" />
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack>

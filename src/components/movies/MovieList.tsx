@@ -2,7 +2,7 @@ import { Box, ImageList, Pagination, PaginationItem } from '@mui/material';
 import { useColumnCalculator } from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import { usePagination } from '../../hooks/usePagination';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router';
 import ListItemImage from '../common/ListItemImage';
 import { listItemTypes } from '../../hooks/useListItemType';
 import { useFilterSearchParams } from '../../hooks/useFilterSearchParams';

@@ -37,6 +37,7 @@ export const zodFields = {
     .min(0)
     .max(6, { message: 'OTP should be 6 digits long' })
     .nullable(),
+  optionalDate: z.string().datetime({ offset: true }).nullable(),
 };
 
 export const errorSchema = z.object({

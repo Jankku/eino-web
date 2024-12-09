@@ -1,5 +1,5 @@
-import { useBooksSuspense } from '../../data/books/useBooksSuspense';
-import { bookSortStatuses } from '../../models/bookSortOptions';
+import { useBooksSuspense } from '../data/books/useBooksSuspense';
+import { bookSortStatuses } from '../models/bookSortOptions';
 
 export default function useBookCount() {
   const { data } = useBooksSuspense({ status: 'all' });
