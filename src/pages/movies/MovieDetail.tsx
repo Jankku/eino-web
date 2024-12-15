@@ -49,6 +49,7 @@ export default function MovieDetail() {
             text={DateTime.fromISO(data.start_date).toLocaleString()}
           />
           <DetailItem title="End date" text={DateTime.fromISO(data.end_date).toLocaleString()} />
+          <DetailItem multiline title="Note" text={data.note} />
         </>
       }
       actions={

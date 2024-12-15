@@ -33,6 +33,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
             ),
           }}
         />
+        <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
         <Grid
           container
           sx={{

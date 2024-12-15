@@ -14,6 +14,7 @@ export const movieSchema = z.object({
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
   status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']).default('watching'),
   score: z.coerce.number().nonnegative().max(10).default(0),
+  note: z.string().nullish().default(''),
   start_date: z.string(),
   end_date: z.string(),
 });
@@ -36,6 +37,7 @@ export const movieDefaults = movieSchema.parse({
   year: DateTime.now().year,
   status: 'watching',
   score: 0,
+  note: '',
   start_date: DateTime.now().toISO(),
   end_date: DateTime.now().toISO(),
 });

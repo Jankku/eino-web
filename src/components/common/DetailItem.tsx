@@ -3,10 +3,11 @@ import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 type DetailItemProps = {
   title: string;
-  text: string | number;
+  text: string | number | null | undefined;
+  multiline?: boolean;
 };
 
-export default function DetailItem({ title, text }: DetailItemProps) {
+export default function DetailItem({ title, text, multiline }: DetailItemProps) {
   return (
     <Grid
       container
@@ -21,7 +22,6 @@ export default function DetailItem({ title, text }: DetailItemProps) {
         variant="body1"
         noWrap
         sx={{
-          alignSelf: 'center',
           fontWeight: 700,
           minWidth: '5em',
         }}
@@ -31,7 +31,7 @@ export default function DetailItem({ title, text }: DetailItemProps) {
       <Typography
         component="dd"
         variant="body2"
-        noWrap
+        noWrap={!multiline}
         sx={{
           minWidth: 0,
           ml: 2,
