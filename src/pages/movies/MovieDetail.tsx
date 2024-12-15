@@ -7,33 +7,56 @@ import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useMovieDetail } from '../../data/movies/useMovieDetail';
 import { useDeleteMovie } from '../../data/movies/useDeleteMovie';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteButton from '../../components/common/DeleteButton';
 import BaseDetailLayout from '../../components/layout/BaseDetailLayout';
 import { useToggle } from '@uidotdev/usehooks';
+import { useUpdateMovie } from '../../data/movies/useUpdateMovie';
+import { movieSchema } from '../../models/movie';
+import DoneIcon from '@mui/icons-material/Done';
+import CompleteDialog from '../../components/common/CompleteDialog';
 
 export default function MovieDetail() {
   const navigate = useNavigate();
   const movieId = useParams().movieId!;
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useToggle(false);
+  const [completeDialogOpen, toggleCompleteDialog] = useToggle(false);
   const { data } = useMovieDetail(movieId);
+  const updateMovie = useUpdateMovie(movieId);
   const deleteMovie = useDeleteMovie();
+
+  const isCompleted = data.status === 'completed';
 
   const copyToClipboard = async () => {
     try {
       const contents = data.director ? `${data.director} - ${data.title}` : data.title;
       await navigator.clipboard.writeText(contents);
-      showSuccessSnackbar('Copied');
+      showSuccessSnackbar('Title and director copied to clipboard');
     } catch {
       showErrorSnackbar('Failed to copy');
     }
+  };
+
+  const onComplete = (score: number) => {
+    updateMovie.mutate(
+      movieSchema.parse({ ...data, score, status: 'completed', end_date: DateTime.now().toISO() }),
+      {
+        onSuccess: () => {
+          showSuccessSnackbar('Movie marked as completed');
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to mark movie as completed');
+        },
+      },
+    );
   };
 
   return (
     <BaseDetailLayout
       backButtonDefaultUrl="/movies"
       imageUrl={data.image_url}
+      copyText="Copy title and director"
+      onCopy={copyToClipboard}
       details={
         <>
           <DetailItem title="Title" text={data.title} />
@@ -54,29 +77,28 @@ export default function MovieDetail() {
       }
       actions={
         <>
+          {!isCompleted ? (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={toggleCompleteDialog as () => void}
+              startIcon={<DoneIcon />}
+            >
+              Complete
+            </Button>
+          ) : undefined}
           <Button
             variant="contained"
             color="primary"
             onClick={toggleEditDialog as () => void}
             startIcon={<CreateIcon />}
-            sx={{ margin: '0.5em' }}
           >
             Edit
           </Button>
-          <Button
-            variant="contained"
-            color="inherit"
-            onClick={copyToClipboard}
-            startIcon={<ContentCopyIcon />}
-            sx={{ margin: '0.5em' }}
-          >
-            Copy
-          </Button>
           <DeleteButton
             loading={deleteMovie.isPending}
-            variant="contained"
+            variant="outlined"
             color="secondary"
-            sx={{ margin: '0.5em' }}
             onClick={() => {
               deleteMovie.mutate(movieId, {
                 onSuccess: () => {
@@ -93,6 +115,12 @@ export default function MovieDetail() {
       }
     >
       <EditMovieDialog visible={editDialogOpen} closeDialog={toggleEditDialog} movieId={movieId} />
+
+      <CompleteDialog
+        visible={completeDialogOpen}
+        closeDialog={toggleCompleteDialog}
+        onComplete={onComplete}
+      />
     </BaseDetailLayout>
   );
 }

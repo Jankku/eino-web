@@ -9,6 +9,7 @@ function BaseDialog({ title, children, ...props }: BaseDialogProps) {
   const theme = useTheme();
   const fullscreenBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const open = props.open;
+
   useEffect(() => {
     if (!open) return;
 

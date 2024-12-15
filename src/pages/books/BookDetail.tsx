@@ -7,33 +7,56 @@ import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useBookDetail } from '../../data/books/useBookDetail';
 import { useDeleteBook } from '../../data/books/useDeleteBook';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteButton from '../../components/common/DeleteButton';
 import BaseDetailLayout from '../../components/layout/BaseDetailLayout';
 import { useToggle } from '@uidotdev/usehooks';
+import DoneIcon from '@mui/icons-material/Done';
+import CompleteDialog from '../../components/common/CompleteDialog';
+import { useUpdateBook } from '../../data/books/useUpdateBook';
+import { bookSchema } from '../../models/book';
 
 export default function BookDetail() {
   const navigate = useNavigate();
   const bookId = useParams().bookId!;
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useToggle(false);
+  const [completeDialogOpen, toggleCompleteDialog] = useToggle(false);
   const { data } = useBookDetail(bookId);
+  const updateBook = useUpdateBook(bookId);
   const deleteBook = useDeleteBook();
+
+  const isCompleted = data.status === 'completed';
 
   const copyToClipboard = async () => {
     try {
       const contents = data.author ? `${data.author} - ${data.title}` : data.title;
       await navigator.clipboard.writeText(contents);
-      showSuccessSnackbar('Copied');
+      showSuccessSnackbar('Title and author copied to clipboard');
     } catch {
       showErrorSnackbar('Failed to copy');
     }
+  };
+
+  const onComplete = (score: number) => {
+    updateBook.mutate(
+      bookSchema.parse({ ...data, score, status: 'completed', end_date: DateTime.now().toISO() }),
+      {
+        onSuccess: () => {
+          showSuccessSnackbar('Book marked as completed');
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to mark book as completed');
+        },
+      },
+    );
   };
 
   return (
     <BaseDetailLayout
       backButtonDefaultUrl="/books"
       imageUrl={data.image_url}
+      copyText="Copy title and author"
+      onCopy={copyToClipboard}
       details={
         <>
           <DetailItem title="Title" text={data.title} />
@@ -54,29 +77,28 @@ export default function BookDetail() {
       }
       actions={
         <>
+          {!isCompleted ? (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={toggleCompleteDialog as () => void}
+              startIcon={<DoneIcon />}
+            >
+              Complete
+            </Button>
+          ) : undefined}
           <Button
             variant="contained"
             color="primary"
             onClick={toggleEditDialog as () => void}
             startIcon={<CreateIcon />}
-            sx={{ margin: '0.5em' }}
           >
             Edit
           </Button>
-          <Button
-            variant="contained"
-            color="inherit"
-            onClick={copyToClipboard}
-            startIcon={<ContentCopyIcon />}
-            sx={{ margin: '0.5em' }}
-          >
-            Copy
-          </Button>
           <DeleteButton
             loading={deleteBook.isPending}
-            variant="contained"
+            variant="outlined"
             color="secondary"
-            sx={{ margin: '0.5em' }}
             onClick={() => {
               deleteBook.mutate(bookId, {
                 onSuccess: () => {
@@ -93,6 +115,12 @@ export default function BookDetail() {
       }
     >
       <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
+
+      <CompleteDialog
+        visible={completeDialogOpen}
+        closeDialog={toggleCompleteDialog}
+        onComplete={onComplete}
+      />
     </BaseDetailLayout>
   );
 }

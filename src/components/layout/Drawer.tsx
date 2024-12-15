@@ -107,10 +107,9 @@ export default function Header({
                 <Button
                   fullWidth
                   size="small"
-                  variant="contained"
+                  variant="outlined"
                   color="secondary"
                   startIcon={<LogoutIcon />}
-                  sx={{ mt: 1 }}
                   onClick={() => navigate('/logout')}
                 >
                   Log out
