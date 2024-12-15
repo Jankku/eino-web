@@ -1,7 +1,18 @@
-import { Box, Card, CardActions, CardContent, Container, Grid, IconButton } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 type BaseDetailLayoutProps = {
   backButtonDefaultUrl: string;
@@ -9,6 +20,8 @@ type BaseDetailLayoutProps = {
   details: React.ReactNode;
   children: React.ReactNode;
   actions: React.ReactNode;
+  copyText: string;
+  onCopy: () => void;
 };
 
 export default function BaseDetailLayout({
@@ -17,6 +30,8 @@ export default function BaseDetailLayout({
   details,
   children,
   actions,
+  copyText,
+  onCopy,
 }: BaseDetailLayoutProps) {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -41,12 +56,26 @@ export default function BaseDetailLayout({
           borderRadius: 2,
         }}
       >
-        <CardContent sx={{ pb: 0 }}>
+        <CardContent sx={{ pb: 0, position: 'relative' }}>
           {isMobile ? (
-            <IconButton onClick={onBackButtonClick} sx={{ position: 'absolute' }}>
+            <IconButton
+              aria-label="Back"
+              onClick={onBackButtonClick}
+              sx={{ position: 'absolute', left: 16 }}
+            >
               <ArrowBackIcon />
             </IconButton>
           ) : null}
+
+          <Tooltip
+            arrow
+            title={<Typography variant="body2">{copyText}</Typography>}
+            sx={{ position: 'absolute', right: 16 }}
+          >
+            <IconButton onClick={onCopy}>
+              <ContentCopyIcon />
+            </IconButton>
+          </Tooltip>
           <Grid
             container
             sx={{
@@ -113,7 +142,9 @@ export default function BaseDetailLayout({
           </Grid>
         </CardContent>
         <CardActions sx={{ m: 0, pt: 2, pl: 2, pb: 2 }}>
-          <Grid container>{actions}</Grid>
+          <Grid container>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>{actions}</Box>
+          </Grid>
         </CardActions>
       </Card>
       {children}
