@@ -21,12 +21,12 @@ import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
-import useBookCount from '../../hooks/useBookCount';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
 import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
+import { useBookCount } from '../../data/books/useBookCount';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -158,7 +158,8 @@ export default function Books() {
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {bookSortStatuses.map((option, itemIdx) => (
                         <option key={itemIdx} value={option.value}>
-                          {option.name} ({countByStatus[option.value]})
+                          {option.name} ({countByStatus[option.value as keyof typeof countByStatus]}
+                          )
                         </option>
                       ))}
                     </SmallSelect>

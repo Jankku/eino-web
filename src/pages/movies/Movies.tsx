@@ -21,12 +21,12 @@ import ListDetailLayout from '../../components/common/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
-import useMovieCount from '../../hooks/useMovieCount';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
 import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
+import { useMovieCount } from '../../data/movies/useMovieCount';
 
 export default function Movies() {
   const isMobile = useIsMobile();
@@ -158,7 +158,8 @@ export default function Movies() {
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {movieSortStatuses.map((option, itemIdx) => (
                         <option key={itemIdx} value={option.value}>
-                          {option.name} ({countByStatus[option.value]})
+                          {option.name} ({countByStatus[option.value as keyof typeof countByStatus]}
+                          )
                         </option>
                       ))}
                     </SmallSelect>
