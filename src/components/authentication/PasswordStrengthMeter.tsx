@@ -34,7 +34,10 @@ function PasswordStrengthMeterBar({ active, color }: { active: boolean; color: s
         height: 8,
         borderRadius: theme.shape.borderRadius,
         width: '100%',
-        backgroundColor: active ? color : theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
+        backgroundColor: active ? color : 'grey.300',
+        ...theme.applyStyles('dark', {
+          backgroundColor: active ? color : 'grey.800',
+        }),
       })}
     ></Box>
   );

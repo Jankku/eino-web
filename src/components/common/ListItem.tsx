@@ -7,12 +7,12 @@ import {
   Grid,
   Stack,
   Typography,
+  useColorScheme,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Link, useLocation } from 'react-router';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import getStatusIcon from '../../utils/listItemUtil';
-import { useThemeContext } from '../../providers/ThemeProvider';
 
 type ListItemProps = {
   title: string;
@@ -36,7 +36,8 @@ export default function ListItem({
   lighten,
 }: ListItemProps) {
   const location = useLocation();
-  const { isDark } = useThemeContext();
+  const { mode } = useColorScheme();
+  const isDark = mode === 'dark';
   const isActive = location.pathname.includes(itemId);
 
   return (
@@ -122,12 +123,14 @@ export default function ListItem({
                     color={isDark ? 'default' : 'primary'}
                     size="small"
                     label={score}
+                    sx={{ border: 'none' }}
                   />
                   <Chip
                     icon={getStatusIcon(status)}
                     variant={isDark ? 'outlined' : 'filled'}
                     size="small"
                     label={capitalize(status)}
+                    sx={{ border: 'none' }}
                   />
                 </Stack>
                 <Typography
