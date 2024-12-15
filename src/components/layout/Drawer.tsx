@@ -151,13 +151,15 @@ export default function Header({
       container={container}
       variant="permanent"
       anchor="left"
-      sx={{
+      sx={(theme) => ({
         display: { xs: 'none', xl: 'block' },
         '& .MuiDrawer-paper': {
-          boxSizing: 'border-box',
           width: drawerWidth,
+          ...theme.applyStyles('dark', {
+            bgcolor: 'background.default',
+          }),
         },
-      }}
+      })}
     >
       {drawerItems}
     </Drawer>

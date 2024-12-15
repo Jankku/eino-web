@@ -18,7 +18,9 @@ export default function CustomNavLink({ item, toggleDrawer }: CustomNavLinkProps
                   bgcolor: `${theme.palette.primary.light} !important`,
                   color: `${theme.palette.primary.contrastText} !important`,
                 }
-              : null
+              : {
+                  color: `${theme.palette.text.primary}`,
+                }
           }
         >
           {item.icon}

@@ -1,68 +1,100 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  ReactNode,
-  useSyncExternalStore,
-  useCallback,
-} from 'react';
-import { CssBaseline, ThemeProvider as MuiThemeProvider, useMediaQuery } from '@mui/material';
+import { ReactNode } from 'react';
+import { createTheme, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { StyledEngineProvider } from '@mui/system';
-import { dark } from '../themes/dark';
-import { light } from '../themes/light';
+import { blue, red } from '@mui/material/colors';
+import '../css/fonts.css';
 
-const THEME_KEY = 'dark_theme';
-
-const getThemeFromLocalStorage = (defaultValue: boolean) => () => {
-  const theme = localStorage.getItem(THEME_KEY);
-  return theme === null ? defaultValue : JSON.parse(theme);
-};
-
-const subscribe = (callback: () => void) => {
-  window.addEventListener('storage', callback);
-  return () => {
-    window.removeEventListener('storage', callback);
-  };
-};
-
-const ThemeContext = createContext<{ isDark: boolean; toggleTheme: () => void }>({
-  isDark: false,
-  toggleTheme: () => {},
+const theme = createTheme({
+  cssVariables: { disableCssColorScheme: true, colorSchemeSelector: 'class' },
+  colorSchemes: {
+    light: {
+      palette: {
+        mode: 'light',
+        background: {
+          default: '#edf8ff',
+          paper: '#FFF',
+        },
+        primary: {
+          main: blue[500],
+        },
+        secondary: {
+          main: red[500],
+        },
+      },
+    },
+    dark: {
+      palette: {
+        mode: 'dark',
+        background: {
+          default: '#191b21',
+          paper: '#25272c',
+        },
+        primary: {
+          main: blue[300],
+        },
+        secondary: {
+          main: red[300],
+        },
+      },
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: 'fonts.css',
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          position: 'fixed',
+          bottom: '16px',
+          right: '16px',
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          margin: '0.3em 0em',
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'none',
+          color: 'palette.text.primary',
+          margin: '0.5em 0em',
+          borderRadius: 6,
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        filled: {
+          alignSelf: 'end',
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
+  },
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const getTheme = useCallback(
-    () => getThemeFromLocalStorage(prefersDarkMode)(),
-    [prefersDarkMode],
-  );
-  const isDark = useSyncExternalStore(subscribe, getTheme);
-
-  const toggleTheme = useCallback(() => {
-    const previousTheme = localStorage.getItem(THEME_KEY);
-    const newValue = previousTheme === null ? !prefersDarkMode : !JSON.parse(previousTheme);
-    localStorage.setItem(THEME_KEY, JSON.stringify(newValue));
-    window.dispatchEvent(new Event('storage'));
-  }, [prefersDarkMode]);
-
-  const theme = useMemo(() => (isDark ? dark : light), [isDark]);
-
   return (
-    <ThemeContext value={{ isDark, toggleTheme }}>
-      <StyledEngineProvider injectFirst>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline enableColorScheme />
-          {children}
-        </MuiThemeProvider>
-      </StyledEngineProvider>
-    </ThemeContext>
+    <StyledEngineProvider injectFirst>
+      <MuiThemeProvider theme={theme} defaultMode="dark" noSsr>
+        <CssBaseline enableColorScheme />
+        {children}
+      </MuiThemeProvider>
+    </StyledEngineProvider>
   );
 }
-
-export const useThemeContext = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useThemeContext must be used within EinoThemeProvider');
-  }
-  return context;
-};

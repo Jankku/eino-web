@@ -36,9 +36,9 @@ export function AccountActions({ email, emailVerifiedOn, totpEnabledOn }: Accoun
       <Card component="section" variant="outlined" sx={{ flexGrow: 1 }}>
         <CardContent sx={{ p: 0, px: 2 }}>
           <h2>Actions</h2>
-          <Grid container spacing={2}>
+          <Grid container gap={2}>
             {totpEnabledOn ? (
-              <Grid item>
+              <Grid item p={0}>
                 <Button
                   startIcon={<RemoveModeratorIcon />}
                   variant="contained"

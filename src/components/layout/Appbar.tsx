@@ -1,11 +1,18 @@
-import { AppBar, Grid, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import {
+  AppBar,
+  Grid,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+  useColorScheme,
+} from '@mui/material';
 import { Link, useLocation } from 'react-router';
 import MenuIcon from '@mui/icons-material/Menu';
 import WbSunnyRounded from '@mui/icons-material/WbSunnyRounded';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
 import BookSearch from '../books/BookSearch';
 import MovieSearch from '../movies/MovieSearch';
-import { useThemeContext } from '../../providers/ThemeProvider';
 
 type AppbarProps = {
   drawerWidth: number;
@@ -14,19 +21,28 @@ type AppbarProps = {
 
 export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
   const location = useLocation();
-  const { isDark, toggleTheme } = useThemeContext();
+  const { mode, setMode } = useColorScheme();
   const isBookPath = location.pathname.includes('/books');
   const isMoviePath = location.pathname.includes('/movies');
+
+  const isDark = mode === 'dark';
+
+  const toggleTheme = () => {
+    setMode(mode === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <AppBar
       position="sticky"
-      sx={{
+      sx={(theme) => ({
         width: {
           xl: `calc(100% - ${drawerWidth}px)`,
         },
         ml: { xl: `${drawerWidth}px` },
-      }}
+        ...theme.applyStyles('dark', {
+          backgroundColor: theme.palette.background.default,
+        }),
+      })}
     >
       <Toolbar>
         <IconButton
