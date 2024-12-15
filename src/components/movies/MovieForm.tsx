@@ -33,6 +33,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
             ),
           }}
         />
+        <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
         <Grid
           container
           sx={{
