@@ -15,7 +15,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
-import ListDetailLayout from '../../components/common/ListDetailLayout';
+import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';

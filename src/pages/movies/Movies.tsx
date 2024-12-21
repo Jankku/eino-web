@@ -17,7 +17,7 @@ import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
-import ListDetailLayout from '../../components/common/ListDetailLayout';
+import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';

@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
-import { useIsMobile } from '../../hooks/useIsMobile';
-import PanelContainer from './PanelContainer.tsx';
+import { useIsMobile } from '../../hooks/useIsMobile.ts';
+import PanelContainer from '../common/PanelContainer.tsx';
 
 type ListDetailLayoutProps = {
   list: React.ReactNode;
