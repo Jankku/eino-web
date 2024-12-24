@@ -27,6 +27,7 @@ const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail
 
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
+const Bulletins = lazy(() => import('./pages/admin/Bulletins'));
 
 export const clearQueryClientChannel = {
   name: 'queryClientChannel',
@@ -211,6 +212,19 @@ function WrappedApp() {
                 <RequireAdmin>
                   <PageBoundary>
                     <AuditLog />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="bulletins"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <Bulletins />
                   </PageBoundary>
                 </RequireAdmin>
               </RequireAuth>

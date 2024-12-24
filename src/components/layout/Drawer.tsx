@@ -8,10 +8,16 @@ import LocalMovies from '@mui/icons-material/LocalMovies';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LoginIcon from '@mui/icons-material/Login';
 import TerminalIcon from '@mui/icons-material/Terminal';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Box } from '@mui/system';
 import CustomNavLink from '../common/CustomNavLink.tsx';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import Footer from './Footer.tsx';
+
+const authRouteArray = [
+  { name: 'Register', path: '/register', icon: <VpnKeyIcon sx={{ mr: 1 }} /> },
+  { name: 'Login', path: '/login', icon: <LoginIcon sx={{ mr: 1 }} /> },
+];
 
 const routeArray = [
   { name: 'Books', path: '/books', icon: <MenuBook sx={{ mr: 1 }} /> },
@@ -19,14 +25,10 @@ const routeArray = [
   { name: 'Profile', path: '/profile', icon: <PersonIcon sx={{ mr: 1 }} /> },
 ];
 
-const authRouteArray = [
-  { name: 'Register', path: '/register', icon: <VpnKeyIcon sx={{ mr: 1 }} /> },
-  { name: 'Login', path: '/login', icon: <LoginIcon sx={{ mr: 1 }} /> },
-];
-
 const adminRouteArray = [
   { name: 'Users', path: '/users', icon: <PersonIcon sx={{ mr: 1 }} /> },
   { name: 'Audit log', path: '/audits', icon: <TerminalIcon sx={{ mr: 1 }} /> },
+  { name: 'Bulletins', path: '/bulletins', icon: <NotificationsIcon sx={{ mr: 1 }} /> },
 ];
 
 type HeaderProps = {

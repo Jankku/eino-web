@@ -148,13 +148,7 @@ export default function Users() {
             variant="filled"
             size="small"
             label={capitalize(row.role)}
-            sx={(theme) => ({
-              fontWeight: 500,
-              ...theme.applyStyles('dark', {
-                backgroundColor: theme.palette.primary.main,
-                color: theme.palette.primary.contrastText,
-              }),
-            })}
+            sx={{ fontWeight: 500 }}
           />
         ),
       },

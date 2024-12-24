@@ -28,22 +28,24 @@ export default function Bulletins({ drawerWidth }: BulletinsProps) {
           : { width: `calc(100% - ${drawerWidth}px)`, marginLeft: `${drawerWidth}px` }
       }
     >
-      {bulletinsToShow?.map(({ id, title, content }) => (
+      {bulletinsToShow?.map(({ id, title, message, type }) => (
         <Alert
           key={id}
-          severity="info"
+          severity={type}
           variant="filled"
           onClose={() => closeBulletin(id)}
           sx={{
             '&.MuiAlert-filled.MuiAlert-colorInfo': {
-              backgroundColor: theme.palette.background.default,
+              ...theme.applyStyles('dark', {
+                backgroundColor: theme.palette.background.default,
+              }),
             },
           }}
         >
-          {title && content ? (
+          {title && message ? (
             <>
               <AlertTitle>{title}</AlertTitle>
-              {content}
+              {message}
             </>
           ) : (
             <>{title}</>
