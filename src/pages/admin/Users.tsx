@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { Avatar, capitalize, Chip, Container } from '@mui/material';
 import {
   DataGrid,
@@ -247,6 +246,7 @@ export default function Users() {
           if (isInEditMode) {
             return [
               <GridActionsCellItem
+                key={0}
                 icon={<SaveIcon />}
                 label="Save"
                 sx={{
@@ -255,6 +255,7 @@ export default function Users() {
                 onClick={handleSaveClick(id)}
               />,
               <GridActionsCellItem
+                key={2}
                 icon={<CancelIcon />}
                 label="Cancel"
                 className="textPrimary"
@@ -266,6 +267,7 @@ export default function Users() {
 
           return [
             <GridActionsCellItem
+              key={0}
               icon={<EditIcon />}
               label="Edit"
               className="textPrimary"
@@ -273,6 +275,7 @@ export default function Users() {
               onClick={handleEditClick(id)}
             />,
             <GridActionsCellItem
+              key={1}
               icon={<DeleteIcon />}
               label="Delete"
               color="inherit"
