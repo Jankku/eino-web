@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
 import { useState } from 'react';
+import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
 
 const slots = { toolbar: GridToolbar };
 
@@ -38,7 +39,7 @@ const initialState: GridInitialStateCommunity = {
 export default function Bulletins() {
   const { data } = useAllBulletins();
   const [createBulletinDialogVisible, toggleCreateBulletinDialog] = useToggle(false);
-  const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
+  const [rowIdToDelete, setRowIdToDelete] = useState<string>();
 
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Title', width: 150 },
@@ -117,7 +118,7 @@ export default function Bulletins() {
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const handleDeleteClick = (id: GridRowId) => () => {
-          setRowIdToDelete(id);
+          setRowIdToDelete(id as string);
         };
 
         return [
@@ -161,6 +162,12 @@ export default function Bulletins() {
       <CreateBulletinDialog
         visible={createBulletinDialogVisible}
         onClose={toggleCreateBulletinDialog}
+      />
+      <DeleteBulletinDialog
+        bulletinId={rowIdToDelete!}
+        bulletinName={data.find((row) => row.id === rowIdToDelete)?.title}
+        visible={rowIdToDelete !== undefined}
+        onClose={() => setRowIdToDelete(undefined)}
       />
     </>
   );

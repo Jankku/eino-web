@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { api } from '../api';
 import { ApiResponse } from '../types';
 import { DbBulletin } from '../../models/bulletin';
@@ -9,7 +9,7 @@ const allBulletinsQuery = async () => {
 };
 
 export const useAllBulletins = () => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['all_bulletins'],
     queryFn: allBulletinsQuery,
   });
