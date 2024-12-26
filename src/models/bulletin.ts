@@ -12,6 +12,7 @@ export type DbBulletin = {
   start_date: string;
   end_date: string;
   created_on: string;
+  updated_on: string;
 };
 
 export const bulletinTypes = ['success', 'info', 'warning', 'error'] as const;
@@ -25,12 +26,8 @@ export const bulletinSchema = z.object({
   type: z.enum(bulletinTypes),
   visibility: z.enum(bulletinVisibilities),
   condition: z.string().nullish(),
-  start_date: z.string().refine((value) => new Date(value).getTime() >= Date.now(), {
-    message: 'Start date must be in the future',
-  }),
-  end_date: z.string().refine((value) => new Date(value).getTime() >= Date.now(), {
-    message: 'End date must be in the future',
-  }),
+  start_date: z.string(),
+  end_date: z.string(),
 });
 
 export type Bulletin = z.infer<typeof bulletinSchema>;

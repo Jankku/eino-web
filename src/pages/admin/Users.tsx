@@ -22,8 +22,11 @@ import { getProfilePictureUrl } from '../../utils/profileUtil';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
 import { HTTPError } from 'ky';
-import { booleanFormatter, dateValueFormatter } from '../../utils/tableUtils';
-import { DateTime } from 'luxon';
+import {
+  booleanFormatter,
+  dateToISOStringParser,
+  dateValueFormatter,
+} from '../../utils/tableUtils';
 import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
@@ -172,7 +175,7 @@ export default function Users() {
         field: 'email_verified_on',
         headerName: 'Email verified',
         width: 150,
-        valueParser: (value) => DateTime.fromJSDate(value as Date).toISO(),
+        valueParser: dateToISOStringParser,
         valueFormatter: dateValueFormatter,
         type: 'dateTime',
         editable: true,

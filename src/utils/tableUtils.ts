@@ -10,3 +10,5 @@ export const dateValueFormatter = (value: string | Date | null) => {
 };
 
 export const booleanFormatter = (value: unknown) => !!value;
+
+export const dateToISOStringParser = (value: Date) => DateTime.fromJSDate(value).toISO();
