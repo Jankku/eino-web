@@ -27,6 +27,7 @@ function MovieSearch() {
       clearOnEscape
       blurOnSelect
       clearOnBlur
+      disableClearable
       size="small"
       sx={{ width: '100%' }}
       open={isOpen}
@@ -35,7 +36,7 @@ function MovieSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.movie_id === value.movie_id}
-      value={selectedItem}
+      value={selectedItem as MovieWithId}
       onChange={(_event, newValue) => setSelecteditem(newValue as MovieWithId)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as MovieWithId).title}
@@ -44,6 +45,7 @@ function MovieSearch() {
         if (reason === 'input') setSearchTerm(value ?? '');
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
       }}
+      id="search-input"
       renderInput={(params) => <SearchTextField params={{ ...params }} label="Search movies" />}
       renderOption={(props, option: MovieWithId) => (
         <SearchResult

@@ -67,6 +67,19 @@ function App() {
     };
   }, [queryClient]);
 
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        document.getElementById('search-input')?.focus();
+      }
+    };
+    document.addEventListener('keydown', focusSearch);
+    return () => {
+      document.removeEventListener('keydown', focusSearch);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
