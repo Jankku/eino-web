@@ -22,7 +22,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
 import { DbBulletin } from '../../models/bulletin';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -49,6 +49,7 @@ const initialState: GridInitialStateCommunity = {
     columnVisibilityModel: {
       name: false,
       condition: false,
+      updated_on: false,
     },
   },
   pagination: {
@@ -97,170 +98,173 @@ export default function Bulletins() {
     setRowModesModel(newRowModesModel);
   }, []);
 
-  const columns: GridColDef[] = [
-    { field: 'title', headerName: 'Title', width: 150, editable: true, hideSortIcons: true },
-    { field: 'message', headerName: 'Message', width: 250, editable: true, hideSortIcons: true },
-    { field: 'name', headerName: 'Name', width: 80, editable: true, hideSortIcons: true },
-    {
-      field: 'type',
-      headerName: 'Type',
-      width: 90,
-      editable: true,
-      hideSortIcons: true,
-      type: 'singleSelect',
-      valueOptions: [
-        { value: 'success', label: 'Success' },
-        { value: 'info', label: 'Info' },
-        { value: 'warning', label: 'Warning' },
-        { value: 'error', label: 'Error' },
-      ],
-      renderCell: ({ row }) => (
-        <Chip
-          color={row.type}
-          variant="filled"
-          size="small"
-          label={capitalize(row.type)}
-          sx={{ fontWeight: 500 }}
-        />
-      ),
-    },
-    {
-      field: 'visibility',
-      headerName: 'Visibility',
-      minWidth: 90,
-      editable: false,
-      hideSortIcons: true,
-      type: 'singleSelect',
-      valueOptions: [
-        { value: 'public', label: 'Public' },
-        { value: 'user', label: 'User' },
-        { value: 'condition', label: 'Condition' },
-      ],
-      renderCell: ({ row }) => (
-        <Chip
-          color="primary"
-          variant="filled"
-          size="small"
-          label={capitalize(row.visibility)}
-          sx={{ fontWeight: 500 }}
-        />
-      ),
-    },
-    {
-      field: 'condition',
-      editable: true,
-      hideSortIcons: true,
-      headerName: 'Condition',
-      minWidth: 100,
-    },
-    {
-      field: 'start_date',
-      headerName: 'Start date',
-      editable: true,
-      hideSortIcons: true,
-      width: 160,
-      type: 'dateTime',
-      valueFormatter: dateValueFormatter,
-      valueParser: dateToISOStringParser,
-    },
-    {
-      field: 'end_date',
-      headerName: 'End date',
-      editable: true,
-      hideSortIcons: true,
-      width: 160,
-      type: 'dateTime',
-      valueFormatter: dateValueFormatter,
-      valueParser: dateToISOStringParser,
-    },
-    {
-      field: 'created_on',
-      headerName: 'Created',
-      width: 160,
-      valueFormatter: dateValueFormatter,
-    },
-    {
-      field: 'updated_on',
-      headerName: 'Updated',
-      width: 160,
-      valueFormatter: dateValueFormatter,
-    },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 120,
-      hideSortIcons: true,
-      cellClassName: 'actions',
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+  const columns: GridColDef[] = useMemo(
+    () => [
+      { field: 'title', headerName: 'Title', width: 150, editable: true, hideSortIcons: true },
+      { field: 'message', headerName: 'Message', width: 250, editable: true, hideSortIcons: true },
+      { field: 'name', headerName: 'Name', width: 80, editable: true, hideSortIcons: true },
+      {
+        field: 'type',
+        headerName: 'Type',
+        width: 90,
+        editable: true,
+        hideSortIcons: true,
+        type: 'singleSelect',
+        valueOptions: [
+          { value: 'success', label: 'Success' },
+          { value: 'info', label: 'Info' },
+          { value: 'warning', label: 'Warning' },
+          { value: 'error', label: 'Error' },
+        ],
+        renderCell: ({ row }) => (
+          <Chip
+            color={row.type}
+            variant="filled"
+            size="small"
+            label={capitalize(row.type)}
+            sx={{ fontWeight: 500 }}
+          />
+        ),
+      },
+      {
+        field: 'visibility',
+        headerName: 'Visibility',
+        minWidth: 90,
+        editable: false,
+        hideSortIcons: true,
+        type: 'singleSelect',
+        valueOptions: [
+          { value: 'public', label: 'Public' },
+          { value: 'user', label: 'User' },
+          { value: 'condition', label: 'Condition' },
+        ],
+        renderCell: ({ row }) => (
+          <Chip
+            color="primary"
+            variant="filled"
+            size="small"
+            label={capitalize(row.visibility)}
+            sx={{ fontWeight: 500 }}
+          />
+        ),
+      },
+      {
+        field: 'condition',
+        editable: true,
+        hideSortIcons: true,
+        headerName: 'Condition',
+        minWidth: 100,
+      },
+      {
+        field: 'start_date',
+        headerName: 'Start date',
+        editable: true,
+        hideSortIcons: true,
+        width: 160,
+        type: 'dateTime',
+        valueFormatter: dateValueFormatter,
+        valueParser: dateToISOStringParser,
+      },
+      {
+        field: 'end_date',
+        headerName: 'End date',
+        editable: true,
+        hideSortIcons: true,
+        width: 160,
+        type: 'dateTime',
+        valueFormatter: dateValueFormatter,
+        valueParser: dateToISOStringParser,
+      },
+      {
+        field: 'created_on',
+        headerName: 'Created',
+        width: 160,
+        valueFormatter: dateValueFormatter,
+      },
+      {
+        field: 'updated_on',
+        headerName: 'Updated',
+        width: 160,
+        valueFormatter: dateValueFormatter,
+      },
+      {
+        field: 'actions',
+        type: 'actions',
+        headerName: 'Actions',
+        width: 120,
+        hideSortIcons: true,
+        cellClassName: 'actions',
+        getActions: ({ id }) => {
+          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
-        const handleEditClick = (id: GridRowId) => () => {
-          setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-        };
+          const handleEditClick = (id: GridRowId) => () => {
+            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+          };
 
-        const handleSaveClick = (id: GridRowId) => () => {
-          setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-        };
+          const handleSaveClick = (id: GridRowId) => () => {
+            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+          };
 
-        const handleDeleteClick = (id: GridRowId) => () => {
-          setRowIdToDelete(id as string);
-        };
+          const handleDeleteClick = (id: GridRowId) => () => {
+            setRowIdToDelete(id as string);
+          };
 
-        const handleCancelClick = (id: GridRowId) => () => {
-          setRowModesModel({
-            ...rowModesModel,
-            [id]: { mode: GridRowModes.View, ignoreModifications: true },
-          });
+          const handleCancelClick = (id: GridRowId) => () => {
+            setRowModesModel({
+              ...rowModesModel,
+              [id]: { mode: GridRowModes.View, ignoreModifications: true },
+            });
 
-          const editedRow = rows.find((row) => row.id === id) as UpdatedRow;
-          if (editedRow.isNew) {
-            setRows(rows.filter((row) => row.id !== id));
+            const editedRow = rows.find((row) => row.id === id) as UpdatedRow;
+            if (editedRow.isNew) {
+              setRows(rows.filter((row) => row.id !== id));
+            }
+          };
+
+          if (isInEditMode) {
+            return [
+              <GridActionsCellItem
+                key={0}
+                icon={<SaveIcon />}
+                label="Save"
+                sx={{
+                  color: 'primary.main',
+                }}
+                onClick={handleSaveClick(id)}
+              />,
+              <GridActionsCellItem
+                key={2}
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />,
+            ];
           }
-        };
 
-        if (isInEditMode) {
           return [
             <GridActionsCellItem
               key={0}
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: 'primary.main',
-              }}
-              onClick={handleSaveClick(id)}
+              icon={<EditIcon />}
+              label="Edit"
+              className="textPrimary"
+              color="inherit"
+              onClick={handleEditClick(id)}
             />,
             <GridActionsCellItem
-              key={2}
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
+              key={1}
+              icon={<DeleteIcon />}
+              label="Delete"
               color="inherit"
+              onClick={handleDeleteClick(id)}
             />,
           ];
-        }
-
-        return [
-          <GridActionsCellItem
-            key={0}
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            color="inherit"
-            onClick={handleEditClick(id)}
-          />,
-          <GridActionsCellItem
-            key={1}
-            icon={<DeleteIcon />}
-            label="Delete"
-            color="inherit"
-            onClick={handleDeleteClick(id)}
-          />,
-        ];
+        },
       },
-    },
-  ];
+    ],
+    [rowModesModel, rows],
+  );
 
   return (
     <>

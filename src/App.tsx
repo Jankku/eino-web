@@ -24,6 +24,7 @@ const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
+const Settings = lazy(() => import('./pages/Settings'));
 
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
@@ -146,6 +147,16 @@ function WrappedApp() {
           />
           <Route path="/logout" element={<Logout />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <Settings />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
           <Route
             path="/profile"
             element={

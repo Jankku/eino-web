@@ -9,6 +9,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LoginIcon from '@mui/icons-material/Login';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Box } from '@mui/system';
 import CustomNavLink from '../common/CustomNavLink.tsx';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
@@ -23,6 +24,7 @@ const routeArray = [
   { name: 'Books', path: '/books', icon: <MenuBook sx={{ mr: 1 }} /> },
   { name: 'Movies', path: '/movies', icon: <LocalMovies sx={{ mr: 1 }} /> },
   { name: 'Profile', path: '/profile', icon: <PersonIcon sx={{ mr: 1 }} /> },
+  { name: 'Settings', path: '/settings', icon: <SettingsIcon sx={{ mr: 1 }} /> },
 ];
 
 const adminRouteArray = [
