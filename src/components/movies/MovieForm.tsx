@@ -73,6 +73,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
         container
         sx={{
           justifyContent: 'space-between',
+          mt: 2,
         }}
       >
         <Grid item>

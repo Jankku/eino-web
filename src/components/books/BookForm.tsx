@@ -72,6 +72,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
         container
         sx={{
           justifyContent: 'space-between',
+          mt: 2,
         }}
       >
         <Grid item>

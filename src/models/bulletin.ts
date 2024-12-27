@@ -16,8 +16,17 @@ export type DbBulletin = {
 };
 
 export const bulletinTypes = ['success', 'info', 'warning', 'error'] as const;
+export type BulletinType = (typeof bulletinTypes)[number];
+
 export const bulletinVisibilities = ['public', 'user', 'condition'] as const;
-export const bulletinConditions = ['2fa_not_enabled', 'email_not_verified'] as const;
+export type BulletinVisibility = (typeof bulletinVisibilities)[number];
+
+export const bulletinConditions = [
+  '2fa_not_enabled',
+  'email_not_verified',
+  'account_anniversary',
+] as const;
+export type BulletinCondition = (typeof bulletinConditions)[number];
 
 export const bulletinSchema = z.object({
   title: z.string().min(1),

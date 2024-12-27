@@ -5,6 +5,7 @@ type SelectProps = {
   name: string;
   label: string;
   children: React.ReactNode;
+  [key: string]: unknown;
 };
 
 export default function Select({ name, label, children, ...rest }: SelectProps) {
@@ -15,7 +16,7 @@ export default function Select({ name, label, children, ...rest }: SelectProps) 
       name={name}
       control={control}
       render={({ field }) => (
-        <FormControl fullWidth sx={{ mt: 2 }}>
+        <FormControl fullWidth>
           <InputLabel htmlFor={name}>{label}</InputLabel>
           <MUISelect {...field} {...rest} native label={label} inputProps={{ name, id: name }}>
             {children}

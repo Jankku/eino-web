@@ -4,9 +4,14 @@ import { useIsMobile } from '../../hooks/useIsMobile';
 type SearchTextFieldProps = {
   params: TextFieldProps;
   label: string;
+  showShortcut?: boolean;
 };
 
-export default function SearchTextField({ params, label }: SearchTextFieldProps) {
+export default function SearchTextField({
+  params,
+  label,
+  showShortcut = false,
+}: SearchTextFieldProps) {
   const isMobile = useIsMobile();
 
   return (
@@ -34,7 +39,7 @@ export default function SearchTextField({ params, label }: SearchTextFieldProps)
           }),
         })}
       />
-      {!isMobile ? (
+      {!isMobile && showShortcut ? (
         <Typography
           aria-hidden
           component="span"

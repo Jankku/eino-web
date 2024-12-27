@@ -43,6 +43,8 @@ const filterOptions = createFilterOptions<User>({
   trim: true,
 });
 
+const underscoreToSpace = (value: string) => value.replace(/_/g, ' ');
+
 export default function CreateBulletinDialog({ visible, onClose }: CreateBulletinDialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();
   const createBulletin = useCreateBulletin();
@@ -90,7 +92,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <TextField margin="dense" name="title" label="Title" />
+            <TextField margin="dense" name="title" label="Title" sx={{ mb: 1 }} />
             <TextField
               multiline
               minRows={2}
@@ -98,9 +100,10 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
               margin="dense"
               name="message"
               label="Message"
+              sx={{ mb: 1 }}
             />
-            <TextField margin="dense" name="name" label="Name" />
-            <Stack direction="row" spacing={1} py={1}>
+            <TextField margin="dense" name="name" label="Name" sx={{ mb: 1 }} />
+            <Stack direction="row" spacing={1} sx={{ my: 1 }}>
               <Select name="type" label="Type">
                 {bulletinTypes.map((type, itemIdx) => (
                   <option key={itemIdx} value={type}>
@@ -108,7 +111,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                   </option>
                 ))}
               </Select>
-              <Select name="visibility" label="Visibility">
+              <Select name="visibility" label="Visibility" sx={{ mb: 1 }}>
                 {bulletinVisibilities.map((visibility, itemIdx) => (
                   <option key={itemIdx} value={visibility}>
                     {capitalize(visibility)}
@@ -121,7 +124,6 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                 multiple
                 limitTags={3}
                 freeSolo
-                sx={{ width: '100%' }}
                 open={isOpen}
                 onOpen={() => setIsOpen(true)}
                 onClose={() => setIsOpen(false)}
@@ -131,6 +133,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                 onChange={(_event, newValue, reason) => {
                   if (['selectOption', 'removeOption'].includes(reason)) {
                     setSelecteditem(newValue);
+                    setSearchTerm('');
                   }
                   if (reason === 'clear') {
                     setSelecteditem([]);
@@ -146,24 +149,20 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                 renderInput={(params) => (
                   <SearchTextField params={{ ...params }} label="Search users" />
                 )}
+                sx={{ mb: 1 }}
               />
             ) : undefined}
             {showConditionSelect ? (
-              <Select name="condition" label="Visibility condition">
+              <Select name="condition" label="Visibility condition" sx={{ mb: 1 }}>
                 {bulletinConditions.map((condition, itemIdx) => (
                   <option key={itemIdx} value={condition}>
-                    {capitalize(condition)}
+                    {capitalize(underscoreToSpace(condition))}
                   </option>
                 ))}
               </Select>
             ) : undefined}
-            <DateTimePicker
-              fullWidth
-              name="start_date"
-              label="Start date"
-              sx={{ marginTop: 1, flexGrow: 1 }}
-            />
-            <DateTimePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
+            <DateTimePicker fullWidth name="start_date" label="Start date" sx={{ mb: 1 }} />
+            <DateTimePicker fullWidth name="end_date" label="End date" />
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
