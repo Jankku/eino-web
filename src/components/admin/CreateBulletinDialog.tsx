@@ -30,6 +30,7 @@ import { useState } from 'react';
 import { useFindUser, User } from '../../data/admin/useUsers';
 import SearchTextField from '../common/SearchTextField';
 import DateTimePicker from '../form/DateTimePicker';
+import { underscoreToSpace } from '../../utils/stringUtil';
 
 type CreateBulletinDialogProps = {
   visible: boolean;
@@ -42,8 +43,6 @@ const filterOptions = createFilterOptions<User>({
   stringify: (option) => option.username,
   trim: true,
 });
-
-const underscoreToSpace = (value: string) => value.replace(/_/g, ' ');
 
 export default function CreateBulletinDialog({ visible, onClose }: CreateBulletinDialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();

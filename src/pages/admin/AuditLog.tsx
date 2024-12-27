@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { capitalize, Chip, Container } from '@mui/material';
 import { DataGrid, GridToolbar, GridColDef, GridRowId } from '@mui/x-data-grid';
 import { useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
@@ -7,6 +7,7 @@ import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateComm
 import Head from '../../components/common/Head';
 import DiffDialog from '../../components/admin/DiffDialog';
 import { useState } from 'react';
+import { underscoreToSpace } from '../../utils/stringUtil';
 
 const slots = { toolbar: GridToolbar };
 
@@ -21,8 +22,21 @@ const initialState: GridInitialStateCommunity = {
 };
 
 const columns: GridColDef[] = [
+  {
+    field: 'action',
+    headerName: 'Action',
+    width: 180,
+    renderCell: ({ row }) => (
+      <Chip
+        color="primary"
+        variant="filled"
+        size="small"
+        label={capitalize(underscoreToSpace(row.action))}
+        sx={{ fontWeight: 500 }}
+      />
+    ),
+  },
   { field: 'username', headerName: 'Username', width: 150 },
-  { field: 'action', headerName: 'Action', width: 150 },
   { field: 'table_name', headerName: 'Table', width: 80 },
   { field: 'record_id', headerName: 'Record ID', width: 100, sortable: false },
   {
@@ -44,7 +58,7 @@ const columns: GridColDef[] = [
   {
     field: 'created_on',
     headerName: 'Time',
-    width: 180,
+    width: 160,
     valueFormatter: dateValueFormatter,
   },
 ];
