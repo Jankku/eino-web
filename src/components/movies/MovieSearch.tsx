@@ -46,7 +46,9 @@ function MovieSearch() {
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
       }}
       id="search-input"
-      renderInput={(params) => <SearchTextField params={{ ...params }} label="Search movies" />}
+      renderInput={(params) => (
+        <SearchTextField showShortcut params={{ ...params }} label="Search movies" />
+      )}
       renderOption={(props, option: MovieWithId) => (
         <SearchResult
           {...props}

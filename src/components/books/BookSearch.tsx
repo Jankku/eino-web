@@ -46,7 +46,7 @@ function BookSearch() {
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
       }}
       id="search-input"
-      renderInput={(params) => <SearchTextField params={{ ...params }} label="Search books" />}
+      renderInput={(params) => <SearchTextField showShortcut params={{ ...params }} label="Search books" />}
       renderOption={(props, option: BookWithId) => (
         <SearchResult
           {...props}
