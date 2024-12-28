@@ -27,6 +27,7 @@ function BookSearch() {
       clearOnEscape
       blurOnSelect
       clearOnBlur
+      disableClearable
       size="small"
       sx={{ width: '100%' }}
       open={isOpen}
@@ -35,7 +36,7 @@ function BookSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.book_id === value.book_id}
-      value={selectedItem}
+      value={selectedItem as BookWithId}
       onChange={(_event, newValue) => setSelecteditem(newValue as BookWithId)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as BookWithId).title}
@@ -44,6 +45,7 @@ function BookSearch() {
         if (reason === 'input') setSearchTerm(value ?? '');
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
       }}
+      id="search-input"
       renderInput={(params) => <SearchTextField params={{ ...params }} label="Search books" />}
       renderOption={(props, option: BookWithId) => (
         <SearchResult

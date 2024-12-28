@@ -49,6 +49,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
           name="drawer"
           color="inherit"
           edge="start"
+          aria-label="Open drawer"
           sx={{ mr: 2, display: { xl: 'none' } }}
           onClick={toggleDrawer}
           size="large"

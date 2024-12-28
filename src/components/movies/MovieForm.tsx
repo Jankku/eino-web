@@ -26,7 +26,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={onShowPosters}>
+                <IconButton aria-label="Search cover" onClick={onShowPosters}>
                   <AddCircle />
                 </IconButton>
               </InputAdornment>
@@ -73,6 +73,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
         container
         sx={{
           justifyContent: 'space-between',
+          mt: 2,
         }}
       >
         <Grid item>

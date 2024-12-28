@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { DatePicker as MUIDatepicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker as MUIDateTimepicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DateTime } from 'luxon';
 
 interface DatePickerProps {
@@ -8,7 +8,7 @@ interface DatePickerProps {
   [key: string]: unknown;
 }
 
-export default function DatePicker({ name, label, ...rest }: DatePickerProps) {
+export default function DateTimePicker({ name, label, ...rest }: DatePickerProps) {
   const { control } = useFormContext();
 
   return (
@@ -16,8 +16,9 @@ export default function DatePicker({ name, label, ...rest }: DatePickerProps) {
       name={name}
       control={control}
       render={({ field: { value, name, onChange, ref }, fieldState: { error } }) => (
-        <MUIDatepicker
+        <MUIDateTimepicker
           {...rest}
+          ampm={false}
           value={DateTime.fromISO(value) ?? null}
           onChange={(date) => onChange(DateTime.fromISO(date as unknown as string).toISO())}
           label={label}
@@ -29,6 +30,7 @@ export default function DatePicker({ name, label, ...rest }: DatePickerProps) {
               helperText: error?.message,
             },
           }}
+          sx={{ width: '100%', py: 1 }}
         />
       )}
     />

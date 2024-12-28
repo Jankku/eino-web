@@ -3,19 +3,14 @@ import { jwtDecode } from 'jwt-decode';
 import { z } from 'zod';
 import { errorSchema } from '../utils/zodUtil.ts';
 
+const API_URL = new URL('/api', import.meta.env.VITE_BASE_URL).toString();
+
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_BASE_URL,
   hooks: {
     beforeRequest: [
       async (request) => {
-        if (
-          request.url.includes('books') ||
-          request.url.includes('movies') ||
-          request.url.includes('profile') ||
-          request.url.includes('email') ||
-          request.url.includes('2fa') ||
-          request.url.includes('admin')
-        ) {
+        if (request.url.startsWith(API_URL)) {
           const accessToken = localStorage.getItem('accessToken');
           if (!accessToken) return request;
           request.headers.set('Authorization', `Bearer ${accessToken}`);

@@ -5,6 +5,7 @@ import Appbar from './Appbar';
 import OfflineAlert from '../common/OfflineAlert';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { useToggle } from '@uidotdev/usehooks';
+import Bulletins from '../common/Bulletins';
 
 export default function Layout() {
   const isMobile = useIsMobile();
@@ -15,6 +16,7 @@ export default function Layout() {
 
   return (
     <>
+      <Bulletins drawerWidth={drawerWidth} />
       <OfflineAlert drawerWidth={drawerWidth} />
       <Appbar drawerWidth={drawerWidth} toggleDrawer={toggleDrawer} />
       <Drawer drawerWidth={drawerWidth} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer}>

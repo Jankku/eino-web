@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { ApiResponse } from '../types';
 import { api } from '../api';
 
@@ -24,4 +24,14 @@ export const useUsers = () => {
     queryKey: ['users'],
     queryFn: usersQuery,
   });
+};
+
+export const useFindUser = (query: string) => {
+  const { data } = useQuery({
+    enabled: query.length > 0,
+    queryKey: ['users'],
+    queryFn: usersQuery,
+    staleTime: Infinity,
+  });
+  return { users: data || [], user: data?.find(({ username }) => username.includes(query)) };
 };

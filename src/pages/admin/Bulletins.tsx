@@ -1,39 +1,36 @@
-import { Avatar, capitalize, Chip, Container } from '@mui/material';
+import { Button, capitalize, Chip, Container, Stack } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
   GridColDef,
+  GridRowId,
   GridActionsCellItem,
+  GridRowModesModel,
   GridRowModes,
   GridEventListener,
   GridRowEditStopReasons,
-  GridRowId,
-  GridRowModesModel,
-  GridCellParams,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
-import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { User, useUsers } from '../../data/admin/useUsers';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { getProfilePictureUrl } from '../../utils/profileUtil';
-import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { parseError } from '../../utils/zodUtil';
-import { HTTPError } from 'ky';
-import {
-  booleanFormatter,
-  dateToISOStringParser,
-  dateValueFormatter,
-} from '../../utils/tableUtils';
-import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
+import { dateToISOStringParser, dateValueFormatter } from '../../utils/tableUtils';
 import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
-import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
-import { useChangeUserState } from '../../data/admin/useChangeUserState';
+import { useAllBulletins } from '../../data/admin/useAllBulletins';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
+import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
+import { useToggle } from '@uidotdev/usehooks';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
+import { DbBulletin } from '../../models/bulletin';
+import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
+import { updateBulletinSchema, useUpdateBulletin } from '../../data/admin/useUpdateBulletin';
+import { parseError } from '../../utils/zodUtil';
+import { HTTPError } from 'ky';
 
-type UpdatedRow = User & { isNew: boolean };
+type UpdatedRow = DbBulletin & { isNew: boolean };
 
 const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -46,37 +43,39 @@ const slots = { toolbar: GridToolbar };
 const slotProps = { toolbar: { showQuickFilter: true } };
 
 const initialState: GridInitialStateCommunity = {
+  density: 'compact',
+  sorting: { sortModel: [{ field: 'created_on', sort: 'desc' }] },
   columns: {
     columnVisibilityModel: {
-      email_verified_on: false,
-      created_on: false,
+      name: false,
+      condition: false,
+      updated_on: false,
     },
   },
-  sorting: { sortModel: [{ field: 'username', sort: 'asc' }] },
   pagination: {
     paginationModel: { pageSize: 25, page: 0 },
   },
 };
 
-const getRowId = (row: User) => row.user_id;
+const getRowId = (row: DbBulletin) => row.id;
 
-export default function Users() {
+export default function Bulletins() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const { data } = useUsers();
-  const updateUser = useUpdateUser();
-  const toggleUserState = useChangeUserState();
-  const [rows, setRows] = useState<User[]>([]);
+  const { data } = useAllBulletins();
+  const updateBulletin = useUpdateBulletin();
+  const [rows, setRows] = useState<DbBulletin[]>([]);
+  const [createBulletinDialogVisible, toggleCreateBulletinDialog] = useToggle(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
-  const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
+  const [rowIdToDelete, setRowIdToDelete] = useState<string>();
 
   useLayoutEffect(() => {
     setRows(data);
   }, [data]);
 
   const processRowUpdate = useCallback(
-    (newRow: User, oldRow: User) => {
-      const parsedUser = updateUserSchema.parse(newRow);
-      updateUser.mutate(parsedUser, {
+    (newRow: DbBulletin, oldRow: DbBulletin) => {
+      const parsedBulletin = updateBulletinSchema.parse(newRow);
+      updateBulletin.mutate(parsedBulletin, {
         onSuccess: (message) => {
           showSuccessSnackbar(message);
         },
@@ -87,7 +86,7 @@ export default function Users() {
       });
       return oldRow;
     },
-    [showErrorSnackbar, showSuccessSnackbar, updateUser],
+    [showErrorSnackbar, showSuccessSnackbar, updateBulletin],
   );
 
   const processRowUpdateError = useCallback(
@@ -99,118 +98,94 @@ export default function Users() {
     setRowModesModel(newRowModesModel);
   }, []);
 
-  const onCellDoubleClick = useCallback(
-    (params: GridCellParams) => {
-      if (params.field === 'disabled_on') {
-        toggleUserState.mutate(
-          { id: params.id as string, disabled: !!params.value },
-          {
-            onSuccess: (message) => {
-              showSuccessSnackbar(message);
-            },
-            onError: async (error) => {
-              const errors = await parseError(error as HTTPError);
-              showErrorSnackbar(errors[0].message);
-            },
-          },
-        );
-      }
-    },
-    [showErrorSnackbar, showSuccessSnackbar, toggleUserState],
-  );
-
   const columns: GridColDef[] = useMemo(
     () => [
+      { field: 'title', headerName: 'Title', width: 150, editable: true, hideSortIcons: true },
+      { field: 'message', headerName: 'Message', width: 250, editable: true, hideSortIcons: true },
+      { field: 'name', headerName: 'Name', width: 80, editable: true, hideSortIcons: true },
       {
-        field: 'profile_picture_path',
-        headerName: 'Profile picture',
-        width: 60,
-        type: 'string',
+        field: 'type',
+        headerName: 'Type',
+        width: 90,
         editable: true,
         hideSortIcons: true,
-        renderCell: ({ value }) => (
-          <Avatar src={getProfilePictureUrl(value)} sx={{ mt: 1, width: 40, height: 40 }} />
-        ),
-      },
-      {
-        field: 'role_id',
-        headerName: 'Role',
-        width: 80,
         type: 'singleSelect',
         valueOptions: [
-          { value: 1, label: 'Admin' },
-          { value: 2, label: 'Basic' },
-          { value: 3, label: 'Demo' },
+          { value: 'success', label: 'Success' },
+          { value: 'info', label: 'Info' },
+          { value: 'warning', label: 'Warning' },
+          { value: 'error', label: 'Error' },
         ],
-        editable: true,
-        hideSortIcons: true,
         renderCell: ({ row }) => (
           <Chip
-            color="primary"
+            color={row.type}
             variant="filled"
             size="small"
-            label={capitalize(row.role)}
+            label={capitalize(row.type)}
             sx={{ fontWeight: 500 }}
           />
         ),
       },
       {
-        field: 'username',
-        headerName: 'Username',
-        maxWidth: 300,
-        flex: 2,
-        type: 'string',
-        editable: true,
+        field: 'visibility',
+        headerName: 'Visibility',
+        minWidth: 90,
+        editable: false,
         hideSortIcons: true,
+        type: 'singleSelect',
+        valueOptions: [
+          { value: 'public', label: 'Public' },
+          { value: 'user', label: 'User' },
+          { value: 'condition', label: 'Condition' },
+        ],
+        renderCell: ({ row }) => (
+          <Chip
+            color="primary"
+            variant="filled"
+            size="small"
+            label={capitalize(row.visibility)}
+            sx={{ fontWeight: 500 }}
+          />
+        ),
       },
       {
-        field: 'email',
-        headerName: 'Email',
-        width: 200,
-        type: 'string',
+        field: 'condition',
         editable: true,
         hideSortIcons: true,
+        headerName: 'Condition',
+        minWidth: 100,
       },
       {
-        field: 'email_verified_on',
-        headerName: 'Email verified',
-        width: 150,
+        field: 'start_date',
+        headerName: 'Start date',
+        editable: true,
+        hideSortIcons: true,
+        width: 160,
+        type: 'dateTime',
+        valueFormatter: dateValueFormatter,
         valueParser: dateToISOStringParser,
-        valueFormatter: dateValueFormatter,
-        type: 'dateTime',
-        editable: true,
-        hideSortIcons: true,
       },
       {
-        field: 'totp_enabled_on',
-        headerName: '2FA enabled',
-        width: 150,
-        valueFormatter: dateValueFormatter,
-        type: 'dateTime',
+        field: 'end_date',
+        headerName: 'End date',
         editable: true,
         hideSortIcons: true,
-      },
-      {
-        field: 'last_login_on',
-        headerName: 'Last login',
-        width: 150,
-        hideSortIcons: true,
+        width: 160,
+        type: 'dateTime',
         valueFormatter: dateValueFormatter,
+        valueParser: dateToISOStringParser,
       },
       {
         field: 'created_on',
-        headerName: 'Registered',
-        width: 150,
-        hideSortIcons: true,
+        headerName: 'Created',
+        width: 160,
         valueFormatter: dateValueFormatter,
       },
       {
-        field: 'disabled_on',
-        headerName: 'Disabled',
-        type: 'boolean',
-        minWidth: 80,
-        hideSortIcons: true,
-        valueFormatter: booleanFormatter,
+        field: 'updated_on',
+        headerName: 'Updated',
+        width: 160,
+        valueFormatter: dateValueFormatter,
       },
       {
         field: 'actions',
@@ -231,7 +206,7 @@ export default function Users() {
           };
 
           const handleDeleteClick = (id: GridRowId) => () => {
-            setRowIdToDelete(id);
+            setRowIdToDelete(id as string);
           };
 
           const handleCancelClick = (id: GridRowId) => () => {
@@ -240,9 +215,9 @@ export default function Users() {
               [id]: { mode: GridRowModes.View, ignoreModifications: true },
             });
 
-            const editedRow = rows.find((row) => row.user_id === id) as UpdatedRow;
+            const editedRow = rows.find((row) => row.id === id) as UpdatedRow;
             if (editedRow.isNew) {
-              setRows(rows.filter((row) => row.user_id !== id));
+              setRows(rows.filter((row) => row.id !== id));
             }
           };
 
@@ -294,17 +269,25 @@ export default function Users() {
   return (
     <>
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
-        <Head pageTitle="Users" />
-        <h1>Users</h1>
+        <Head pageTitle="Bulletins" />
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <h1>Bulletins</h1>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={toggleCreateBulletinDialog as () => void}
+          >
+            Create
+          </Button>
+        </Stack>
         <Box height={500}>
           <DataGrid
             disableRowSelectionOnClick
-            rows={rows}
+            rows={data}
             columns={columns}
             getRowId={getRowId}
             editMode="row"
             rowModesModel={rowModesModel}
-            onCellDoubleClick={onCellDoubleClick}
             onRowModesModelChange={handleRowModesModelChange}
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
@@ -315,10 +298,14 @@ export default function Users() {
           />
         </Box>
       </Container>
-      <DeleteUserDialog
-        visible={!!rowIdToDelete}
-        userId={rowIdToDelete as string}
-        username={rows.find((row) => row.user_id === rowIdToDelete)?.username as string}
+      <CreateBulletinDialog
+        visible={createBulletinDialogVisible}
+        onClose={toggleCreateBulletinDialog}
+      />
+      <DeleteBulletinDialog
+        bulletinId={rowIdToDelete!}
+        bulletinName={data.find((row) => row.id === rowIdToDelete)?.title}
+        visible={rowIdToDelete !== undefined}
         onClose={() => setRowIdToDelete(undefined)}
       />
     </>

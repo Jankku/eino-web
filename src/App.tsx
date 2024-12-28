@@ -24,9 +24,11 @@ const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
+const Settings = lazy(() => import('./pages/Settings'));
 
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
+const Bulletins = lazy(() => import('./pages/admin/Bulletins'));
 
 export const clearQueryClientChannel = {
   name: 'queryClientChannel',
@@ -65,6 +67,19 @@ function App() {
       channel.close();
     };
   }, [queryClient]);
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        document.getElementById('search-input')?.focus();
+      }
+    };
+    document.addEventListener('keydown', focusSearch);
+    return () => {
+      document.removeEventListener('keydown', focusSearch);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -132,6 +147,16 @@ function WrappedApp() {
           />
           <Route path="/logout" element={<Logout />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <Settings />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -211,6 +236,19 @@ function WrappedApp() {
                 <RequireAdmin>
                   <PageBoundary>
                     <AuditLog />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="bulletins"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <Bulletins />
                   </PageBoundary>
                 </RequireAdmin>
               </RequireAuth>

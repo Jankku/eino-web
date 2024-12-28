@@ -26,7 +26,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={onShowCovers}>
+                <IconButton aria-label="Search cover" onClick={onShowCovers}>
                   <AddCircle />
                 </IconButton>
               </InputAdornment>
@@ -72,6 +72,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
         container
         sx={{
           justifyContent: 'space-between',
+          mt: 2,
         }}
       >
         <Grid item>
