@@ -21,7 +21,6 @@ module.exports = {
     '@tanstack/query',
     'react-refresh',
     'testing-library',
-    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -31,10 +30,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: {
-    'no-unused-vars': 'off',
-    'prettier/prettier': ['warn', { endOfLine: 'auto' }],
-  },
+  rules: {},
   settings: {
     react: {
       version: 'detect',

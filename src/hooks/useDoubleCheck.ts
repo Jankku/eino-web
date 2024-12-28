@@ -18,7 +18,8 @@ export function useDoubleCheck() {
       ...props,
       onBlur: callAll(onBlur, props?.onBlur),
       onClick: doubleCheck
-        ? (e: any) => {
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (e: any) => {
             props?.onClick?.(e);
             onBlur(e);
           }
