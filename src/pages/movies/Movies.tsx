@@ -1,4 +1,4 @@
-import { startTransition, useLayoutEffect } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import {
   Box,
   Grid,
@@ -33,11 +33,12 @@ export default function Movies() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
+  const deferredStatus = useDeferredValue(status);
   const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
   const [searchparams, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useMoviesSuspense({
-    status,
+    status: deferredStatus,
     sort: searchparams.get('sort'),
     order: searchparams.get('order'),
   });
@@ -70,12 +71,10 @@ export default function Movies() {
   };
 
   const onStatusChange = (e: SelectChangeEvent) => {
-    startTransition(() => {
-      setStatus(e.target.value);
-      setSearchParams((prevParams) => {
-        prevParams.delete('page');
-        return prevParams;
-      });
+    setStatus(e.target.value);
+    setSearchParams((prevParams) => {
+      prevParams.delete('page');
+      return prevParams;
     });
   };
 
