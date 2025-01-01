@@ -12,13 +12,15 @@ import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { FileValidationError, imageValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
 import { useUploadProfilePicture } from '../../data/profile/useUploadProfilePicture';
 import Dropzone from './Dropzone';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Cropper from '../common/Cropper';
+import { CropperCanvas } from 'cropperjs';
 
 type ProfilePictureDialogProps = {
   visible: boolean;
@@ -33,6 +35,7 @@ export default function ProfilePictureDialog({
   profilePictureUrl,
   onClose,
 }: ProfilePictureDialogProps) {
+  const cropperRef = useRef<CropperCanvas>(null);
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [fileErrors, setFileErrors] = useState<FileValidationError[]>([]);
   const formMethods = useForm();
@@ -46,10 +49,11 @@ export default function ProfilePictureDialog({
   const { showSuccessSnackbar } = useCustomSnackbar();
 
   const thumbnails = files.map((file) => (
-    <Avatar
+    <Cropper
       key={file.name}
       src={file.preview}
-      style={{ width: 128, height: 128 }}
+      alt="Profile picture preview"
+      ref={cropperRef}
       onLoad={() => {
         URL.revokeObjectURL(file.preview);
       }}
@@ -70,12 +74,19 @@ export default function ProfilePictureDialog({
     }
   };
 
+  const getCanvasBlob = async () => {
+    const canvas = await cropperRef.current?.$toCanvas();
+    return new Promise<Blob | null>((resolve) =>
+      canvas?.toBlob(resolve, files[0].type, 0.9),
+    ) as Promise<Blob>;
+  };
+
   const onSubmit = async () => {
     if (files.length === 0) return;
 
-    const fileBlob = new Blob([files[0]], { type: files[0].type });
+    const blob = await getCanvasBlob();
 
-    uploadProfilePicture.mutate(fileBlob, {
+    uploadProfilePicture.mutate(blob, {
       onSuccess: (result) => {
         showSuccessSnackbar(result.message);
         resetState();
