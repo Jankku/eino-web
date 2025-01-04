@@ -35,7 +35,7 @@ export default function Books() {
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
   const deferredStatus = useDeferredValue(status);
-  const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.CARD);
+  const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.IMAGE);
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useBooksSuspense({
     status: deferredStatus,

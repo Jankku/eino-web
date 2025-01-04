@@ -34,7 +34,7 @@ export default function Movies() {
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
   const deferredStatus = useDeferredValue(status);
-  const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.CARD);
+  const { itemType, toggleItemType } = useListItemType('movieItemType', listItemTypes.IMAGE);
   const [searchparams, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useMoviesSuspense({
