@@ -15,6 +15,7 @@ export const bookSchema = z.object({
   status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']).default('reading'),
   score: z.coerce.number().nonnegative().max(10).default(0),
   note: z.string().nullish().default(''),
+  language_code: z.string().nullish().default(null),
   start_date: z.string(),
   end_date: z.string(),
 });
@@ -38,6 +39,7 @@ export const bookDefaults = bookSchema.parse({
   status: 'reading',
   score: 0,
   note: '',
+  language_code: '',
   start_date: DateTime.now().toISO(),
   end_date: DateTime.now().toISO(),
 });

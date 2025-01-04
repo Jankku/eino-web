@@ -1,6 +1,6 @@
 import { Grid, IconButton, InputAdornment } from '@mui/material';
-import score from '../../models/score';
-import movieStatus from '../../models/movieStatus';
+import { score } from '../../models/score';
+import { movieStatus } from '../../models/movieStatus';
 import { AddCircle } from '@mui/icons-material';
 import TextField from '../form/TextField';
 import DatePicker from '../form/DatePicker';

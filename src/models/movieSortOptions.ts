@@ -1,4 +1,4 @@
-import movieStatus from './movieStatus';
+import { movieStatus } from './movieStatus';
 
 export const movieSortStatuses = [{ value: 'all', name: 'All' }, ...movieStatus];
 

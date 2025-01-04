@@ -41,7 +41,7 @@ export default function SearchTextField({
       />
       {!isMobile && showShortcut ? (
         <Typography
-          aria-hidden
+          aria-hidden="true"
           component="span"
           variant="body2"
           sx={(theme) => ({

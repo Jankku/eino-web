@@ -28,7 +28,6 @@ import TextField from '../form/TextField';
 import Select from '../form/Select';
 import { useState } from 'react';
 import { useFindUser, User } from '../../data/admin/useUsers';
-import SearchTextField from '../common/SearchTextField';
 import DateTimePicker from '../form/DateTimePicker';
 import { underscoreToSpace } from '../../utils/stringUtil';
 
@@ -145,9 +144,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                   if (reason === 'input') setSearchTerm(value ?? '');
                   if (['clear', 'reset'].includes(reason)) setSearchTerm('');
                 }}
-                renderInput={(params) => (
-                  <SearchTextField params={{ ...params }} label="Search users" />
-                )}
+                renderInput={(params) => <TextField {...params} name="" label="Search users" />}
                 sx={{ mb: 1 }}
               />
             ) : undefined}

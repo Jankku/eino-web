@@ -14,6 +14,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import CompleteDialog from '../../components/common/CompleteDialog';
 import { useUpdateBook } from '../../data/books/useUpdateBook';
 import { bookSchema } from '../../models/book';
+import { languageCodeToName } from '../../utils/languages';
 
 export default function BookDetail() {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ export default function BookDetail() {
           <DetailItem title="Title" text={data.title} />
           <DetailItem title="Author" text={data.author} />
           <DetailItem title="Publisher" text={data.publisher} />
+          <DetailItem title="Language" text={languageCodeToName(data.language_code)} />
           <DetailItem title="ISBN" text={data.isbn} />
           <DetailItem title="Pages" text={data.pages} />
           <DetailItem title="Released" text={data.year} />

@@ -1,10 +1,11 @@
 import { Grid, IconButton, InputAdornment } from '@mui/material';
-import score from '../../models/score';
-import bookStatus from '../../models/bookStatus';
+import { score } from '../../models/score';
+import { bookStatus } from '../../models/bookStatus';
 import AddCircle from '@mui/icons-material/AddCircle';
 import TextField from '../form/TextField';
 import DatePicker from '../form/DatePicker';
 import Select from '../form/Select';
+import LanguageAutocomplete from '../form/LanguageAutocomplete';
 
 type BookFormProps = {
   onShowCovers: () => void;
@@ -73,6 +74,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
         sx={{
           justifyContent: 'space-between',
           mt: 2,
+          gap: 1,
         }}
       >
         <Grid item>
@@ -83,6 +85,9 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
               </option>
             ))}
           </Select>
+        </Grid>
+        <Grid item flexGrow={2}>
+          <LanguageAutocomplete name="language_code" label="Language" />
         </Grid>
         <Grid item>
           <Select name="status" label="Status">

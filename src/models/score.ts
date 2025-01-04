@@ -1,5 +1,5 @@
-const score = [
-  { value: 0, name: 'Select' },
+export const score = [
+  { value: 0, name: 'Select...' },
   { value: 1, name: '(1) Appalling' },
   { value: 2, name: '(2) Horrible' },
   { value: 3, name: '(3) Very bad' },
@@ -11,5 +11,3 @@ const score = [
   { value: 9, name: '(9) Great' },
   { value: 10, name: '(10) Masterpiece' },
 ];
-
-export default score;

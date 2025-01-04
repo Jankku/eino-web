@@ -1,4 +1,4 @@
-import bookStatus from './bookStatus';
+import { bookStatus } from './bookStatus';
 
 export const bookSortStatuses = [{ value: 'all', name: 'All' }, ...bookStatus];
 

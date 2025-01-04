@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import scoreOptions from '../../models/score';
+import { score as scoreOptions } from '../../models/score';
 
 type CompleteDialogProps = {
   visible: boolean;
