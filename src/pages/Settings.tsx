@@ -9,7 +9,7 @@ export default function Settings() {
   const clearClosedBulletins = () => {
     localStorage.removeItem('closedBulletins');
     window.dispatchEvent(new Event('storage'));
-    showSuccessSnackbar('Closed bulletins list cleared');
+    showSuccessSnackbar('Closed bulletins cleared');
   };
 
   return (

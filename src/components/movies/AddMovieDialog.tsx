@@ -53,7 +53,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   };
 
   return (
-    <BaseDialog title="Add new movie" open={visible} onClose={onCancel}>
+    <BaseDialog title="Create movie" open={visible} onClose={onCancel}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>

@@ -19,7 +19,7 @@ export default function ListEmpty() {
             pt: 1,
           }}
         >
-          Try to add an item!
+          Create a new item to get started!
         </Typography>
       </Grid>
     </Grid>

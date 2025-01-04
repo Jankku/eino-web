@@ -54,7 +54,7 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   };
 
   return (
-    <BaseDialog title="Add new book" open={visible} onClose={onCancel}>
+    <BaseDialog title="Create book" open={visible} onClose={onCancel}>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
