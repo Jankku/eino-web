@@ -16,26 +16,14 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
   const cellAlign = isMobile ? 'right' : undefined;
 
   return (
-    <Table size="small" aria-label="Book count table">
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell>
-            <Typography
-              sx={{
-                fontWeight: 500,
-              }}
-            >
-              Status
-            </Typography>
+            <Typography sx={{ fontWeight: 500 }}>Status</Typography>
           </TableCell>
           <TableCell align={cellAlign}>
-            <Typography
-              sx={{
-                fontWeight: 500,
-              }}
-            >
-              Count
-            </Typography>
+            <Typography sx={{ fontWeight: 500 }}>Count</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
@@ -43,22 +31,9 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
         {statuses.map((status) => (
           <TableRow hover key={status}>
             <TableCell padding="none">
-              <Grid
-                container
-                sx={{
-                  alignItems: 'center',
-                  gap: 1,
-                }}
-              >
+              <Grid container sx={{ alignItems: 'center', gap: 1, pl: 2 }}>
                 <StatusIndicator color={statusColors[status as keyof typeof statusColors]} />
-                <Typography
-                  component="p"
-                  sx={{
-                    p: 0,
-                    m: 0,
-                    textTransform: 'capitalize',
-                  }}
-                >
+                <Typography component="p" sx={{ p: 0, m: 0, textTransform: 'capitalize' }}>
                   {status}
                 </Typography>
               </Grid>
