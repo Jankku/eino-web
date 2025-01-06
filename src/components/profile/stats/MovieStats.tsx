@@ -5,12 +5,13 @@ import { BarChart } from './BarChart';
 import { StatsItem } from './StatsItem';
 import { StatusProgressBar } from './StatusProgressBar';
 import { Profile } from '../../../data/profile/profile.types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ItemListDialog from '../ItemListDialog';
 import { getProgressValues } from '../../../utils/chartUtils';
 import { useMovies } from '../../../data/movies/useMovies';
 import ListItem from '../../common/ListItem';
 import { useToggle } from '@uidotdev/usehooks';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 
 const formatter = new Intl.NumberFormat();
 
@@ -21,6 +22,7 @@ type MovieStatsProps = {
 };
 
 export function MovieStats({ stats }: MovieStatsProps) {
+  const isMobile = useIsMobile();
   const [listDialogOpen, toggleListDialog] = useToggle(false);
   const [selectedScore, setSelectedScore] = useState<number>();
   const { data, isLoading, isSuccess } = useMovies({
@@ -29,9 +31,15 @@ export function MovieStats({ stats }: MovieStatsProps) {
     filter: `score:=:${selectedScore}`,
   });
 
-  const scoreCounts = stats.score_distribution.map((item) => item.count);
-
-  const progressValues = getProgressValues(stats.count);
+  const labels = useMemo(
+    () => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (isMobile ? score : `⭐${score}`)),
+    [isMobile],
+  );
+  const scoreCounts = useMemo(
+    () => stats.score_distribution.map((item) => item.count),
+    [stats.score_distribution],
+  );
+  const progressValues = useMemo(() => getProgressValues(stats.count), [stats.count]);
 
   const onBarClick = (index: number) => {
     setSelectedScore(index + 1);
@@ -87,11 +95,10 @@ export function MovieStats({ stats }: MovieStatsProps) {
                   <StatsStatusTable stats={stats} statuses={statuses} />
                 </Grid>
               </Grid>
-              <BarChart
-                labels={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                data={scoreCounts}
-                onClick={onBarClick}
-              />
+              <BarChart labels={labels} data={scoreCounts} onClick={onBarClick} />
+              <Typography variant="body2" color="textSecondary" width="100%" textAlign="center">
+                Click on a bar to view movies with that score
+              </Typography>
             </Grid>
           </Box>
         </CardContent>

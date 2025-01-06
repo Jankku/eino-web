@@ -13,7 +13,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title);
 
 type BarChartProps = {
-  labels: number[];
+  labels: (number | string)[];
   data: number[];
   onClick: (index: number) => void;
 };
