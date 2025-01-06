@@ -40,7 +40,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
     try {
       updateBook.mutate(formData, {
         onSuccess: () => {
-          showSuccessSnackbar('Book saved');
+          showSuccessSnackbar('Book updated');
         },
         onError: () => {
           showErrorSnackbar('Failed to save book');
