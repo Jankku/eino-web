@@ -15,7 +15,11 @@ export const bookSchema = z.object({
   status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']).default('reading'),
   score: z.coerce.number().nonnegative().max(10).default(0),
   note: z.string().nullish().default(''),
-  language_code: z.string().nullish().default(null),
+  language_code: z
+    .string()
+    .nullish()
+    .default(null)
+    .transform((v) => (typeof v === 'string' && v?.length === 0 ? null : v)),
   start_date: z.string(),
   end_date: z.string(),
 });
