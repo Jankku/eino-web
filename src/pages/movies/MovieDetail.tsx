@@ -1,7 +1,7 @@
 import { Button, capitalize } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime } from 'luxon';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -17,6 +17,7 @@ import CompleteDialog from '../../components/common/CompleteDialog';
 
 export default function MovieDetail() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const movieId = useParams().movieId!;
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useToggle(false);
@@ -103,7 +104,7 @@ export default function MovieDetail() {
               deleteMovie.mutate(movieId, {
                 onSuccess: () => {
                   showSuccessSnackbar('Movie deleted');
-                  navigate(-1);
+                  navigate({ pathname: '/movies', search: searchParams.toString() });
                 },
                 onError: () => {
                   showErrorSnackbar('Failed to delete movie');

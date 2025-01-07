@@ -1,7 +1,7 @@
 import { Button, capitalize } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime } from 'luxon';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import EditBookDialog from '../../components/books/EditBookDialog';
 import DetailItem from '../../components/common/DetailItem';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -18,6 +18,7 @@ import { languageCodeToName } from '../../utils/languages';
 
 export default function BookDetail() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const bookId = useParams().bookId!;
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [editDialogOpen, toggleEditDialog] = useToggle(false);
@@ -105,7 +106,7 @@ export default function BookDetail() {
               deleteBook.mutate(bookId, {
                 onSuccess: () => {
                   showSuccessSnackbar('Book deleted');
-                  navigate(-1);
+                  navigate({ pathname: '/books', search: searchParams.toString() });
                 },
                 onError: () => {
                   showErrorSnackbar('Failed to delete book');
