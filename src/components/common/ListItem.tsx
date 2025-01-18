@@ -1,4 +1,5 @@
 import {
+  Box,
   capitalize,
   Card,
   CardActionArea,
@@ -13,6 +14,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { Link, useLocation } from 'react-router';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 import getStatusIcon from '../../utils/listItemUtil';
+import SrOnly from './SrOnly';
 
 type ListItemProps = {
   title: string;
@@ -23,6 +25,7 @@ type ListItemProps = {
   imageUrl: string | null;
   disableClick?: boolean;
   lighten?: boolean;
+  onNavigate: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
 export default function ListItem({
@@ -34,6 +37,7 @@ export default function ListItem({
   imageUrl,
   disableClick,
   lighten,
+  onNavigate,
 }: ListItemProps) {
   const location = useLocation();
   const { mode } = useColorScheme();
@@ -45,46 +49,30 @@ export default function ListItem({
       component="li"
       variant={lighten ? 'elevation' : 'outlined'}
       sx={(theme) => ({
-        border: isActive ? `1px solid ${theme.palette.primary.dark}` : undefined,
+        position: 'relative',
+        outline: isActive ? `2px solid ${theme.palette.primary.dark}` : undefined,
+        outlineOffset: '-2px',
       })}
     >
-      <CardActionArea
-        component={Link}
-        disabled={disableClick}
-        to={`./${itemId}${location.search}`}
-        sx={{ display: 'block' }}
-        draggable="false"
-      >
+      <CardActionArea disabled={disableClick} component="div" tabIndex={-1} role={undefined}>
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
-          <Grid
-            container
-            item
-            zeroMinWidth
-            sx={{
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-            }}
-          >
+          <Grid container item zeroMinWidth sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
             <Grid
               container
-              sx={[
-                {
-                  width: '10em',
-                  minHeight: '10em',
-                },
-                (theme) => ({
-                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  ...theme.applyStyles('dark', {
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                  }),
+              sx={(theme) => ({
+                width: '10em',
+                minHeight: '10em',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                ...theme.applyStyles('dark', {
+                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
                 }),
-              ]}
+              })}
             >
               {imageUrl ? (
                 <img
                   draggable="false"
                   loading={'lazy'}
-                  alt="Book cover"
+                  aria-hidden="true"
                   referrerPolicy="no-referrer"
                   src={imageUrl}
                   width="100%"
@@ -93,30 +81,9 @@ export default function ListItem({
                 />
               ) : null}
             </Grid>
-            <Grid
-              container
-              item
-              zeroMinWidth
-              sx={{
-                flexDirection: 'column',
-                ml: 1,
-                mt: 1,
-              }}
-            >
-              <Grid
-                container
-                sx={{
-                  alignContent: 'flex-start',
-                  flex: '1 1 0px',
-                }}
-              >
-                <Stack
-                  direction="row"
-                  spacing={0.5}
-                  sx={{
-                    mb: 1,
-                  }}
-                >
+            <Grid container item zeroMinWidth sx={{ flexDirection: 'column', ml: 1, mt: 1 }}>
+              <Grid container sx={{ alignContent: 'flex-start', flex: '1 1 0px' }}>
+                <Stack direction="row" spacing={0.5} sx={{ mb: 1 }}>
                   <Chip
                     icon={<StarIcon />}
                     variant={isDark ? 'outlined' : 'filled'}
@@ -133,30 +100,35 @@ export default function ListItem({
                     sx={{ border: 'none' }}
                   />
                 </Stack>
-                <Typography
-                  noWrap
-                  variant="body1"
-                  sx={{
-                    width: '100%',
-                    fontWeight: 500,
-                  }}
-                >
+                <Typography noWrap variant="body1" sx={{ width: '100%', fontWeight: 500 }}>
                   {stringOrPlaceholder(title)}
                 </Typography>
-                <Typography
-                  noWrap
-                  variant="body2"
-                  sx={{
-                    width: '100%',
-                    color: 'text.secondary',
-                  }}
-                >
+                <Typography noWrap variant="body2" sx={{ width: '100%', color: 'text.secondary' }}>
                   {stringOrPlaceholder(detailText)}
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
         </CardContent>
+        <Box
+          component={Link}
+          draggable={false}
+          id={itemId}
+          to={`./${itemId}${location.search}`}
+          onClick={onNavigate}
+          sx={(theme) => ({
+            position: 'absolute',
+            inset: 0,
+            '&:focus-visible': {
+              outline: `2px solid ${theme.palette.primary.main}`,
+              outlineOffset: '-2px',
+            },
+          })}
+        >
+          <SrOnly>
+            {title}, {detailText}
+          </SrOnly>
+        </Box>
       </CardActionArea>
     </Card>
   );
