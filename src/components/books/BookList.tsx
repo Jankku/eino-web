@@ -8,6 +8,7 @@ import { listItemTypes } from '../../hooks/useListItemType';
 import { useFilterSearchParams } from '../../hooks/useFilterSearchParams';
 import { getPaginationUrl } from '../../utils/paginationUtil';
 import { BookWithId } from '../../models/book';
+import { useRestoreItemFocus } from '../../hooks/useRestoreItemFocus';
 
 const itemsPerPage = 21;
 
@@ -22,6 +23,7 @@ export default function BookList({ books, itemType }: BookListProps) {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const newSearchParams = useFilterSearchParams(searchParams, 'page');
+  const { saveFocusedItem } = useRestoreItemFocus('bookFocusedItemId');
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
@@ -60,6 +62,7 @@ export default function BookList({ books, itemType }: BookListProps) {
             score={book.score}
             itemId={book.book_id}
             imageUrl={book.image_url}
+            onNavigate={() => saveFocusedItem(book.book_id)}
           />
         ))}
       </ImageList>

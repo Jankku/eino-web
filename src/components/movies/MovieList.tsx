@@ -8,6 +8,7 @@ import { listItemTypes } from '../../hooks/useListItemType';
 import { useFilterSearchParams } from '../../hooks/useFilterSearchParams';
 import { getPaginationUrl } from '../../utils/paginationUtil';
 import { MovieWithId } from '../../models/movie';
+import { useRestoreItemFocus } from '../../hooks/useRestoreItemFocus';
 
 const itemsPerPage = 21;
 
@@ -22,6 +23,7 @@ export default function MovieList({ itemType, movies }: MovieListProps) {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const newSearchParams = useFilterSearchParams(searchParams, 'page');
+  const { saveFocusedItem } = useRestoreItemFocus('movieFocusedItemId');
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
@@ -60,6 +62,7 @@ export default function MovieList({ itemType, movies }: MovieListProps) {
             score={movie.score}
             itemId={movie.movie_id}
             imageUrl={movie.image_url}
+            onNavigate={() => saveFocusedItem(movie.movie_id)}
           />
         ))}
       </ImageList>

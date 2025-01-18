@@ -9,13 +9,13 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { useMemo } from 'react';
 
 type BaseDetailLayoutProps = {
-  backButtonDefaultUrl: string;
   imageUrl: string | null;
   details: React.ReactNode;
   children: React.ReactNode;
@@ -25,7 +25,6 @@ type BaseDetailLayoutProps = {
 };
 
 export default function BaseDetailLayout({
-  backButtonDefaultUrl,
   imageUrl,
   details,
   children,
@@ -34,16 +33,12 @@ export default function BaseDetailLayout({
   onCopy,
 }: BaseDetailLayoutProps) {
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const onBackButtonClick = () => {
-    const canGoBack = window.history.state.idx !== 0;
-    if (canGoBack) {
-      navigate(-1);
-    } else {
-      navigate(backButtonDefaultUrl);
-    }
-  };
+  const backUrl = useMemo(
+    () => location.pathname.split('/').slice(0, -1).join('/') + location.search,
+    [location],
+  );
 
   return (
     <Container fixed disableGutters={!isMobile} maxWidth="sm">
@@ -59,8 +54,9 @@ export default function BaseDetailLayout({
         <CardContent sx={{ pb: 0, position: 'relative' }}>
           {isMobile ? (
             <IconButton
+              component={Link}
+              to={backUrl}
               aria-label="Back"
-              onClick={onBackButtonClick}
               sx={{ position: 'absolute', left: 16 }}
             >
               <ArrowBackIcon />
@@ -72,7 +68,7 @@ export default function BaseDetailLayout({
             title={<Typography variant="body2">{copyText}</Typography>}
             sx={{ position: 'absolute', right: 16 }}
           >
-            <IconButton onClick={onCopy}>
+            <IconButton aria-label={copyText} onClick={onCopy}>
               <ContentCopyIcon />
             </IconButton>
           </Tooltip>

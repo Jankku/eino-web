@@ -55,7 +55,6 @@ export default function BookDetail() {
 
   return (
     <BaseDetailLayout
-      backButtonDefaultUrl="/books"
       imageUrl={data.image_url}
       copyText="Copy title and author"
       onCopy={copyToClipboard}

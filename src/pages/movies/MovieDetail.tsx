@@ -54,7 +54,6 @@ export default function MovieDetail() {
 
   return (
     <BaseDetailLayout
-      backButtonDefaultUrl="/movies"
       imageUrl={data.image_url}
       copyText="Copy title and director"
       onCopy={copyToClipboard}
