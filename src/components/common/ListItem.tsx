@@ -25,7 +25,7 @@ type ListItemProps = {
   imageUrl: string | null;
   disableClick?: boolean;
   lighten?: boolean;
-  onNavigate: React.MouseEventHandler<HTMLAnchorElement>;
+  onNavigate?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
 export default function ListItem({
