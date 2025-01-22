@@ -1,6 +1,5 @@
 import { Box, Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
 import { useImportData } from '../../data/profile/useImportData';
@@ -126,14 +125,14 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
             >
               Cancel
             </Button>
-            <LoadingButton
+            <Button
               loading={importData.isPending}
               disabled={importButtonDisabled}
               color="primary"
               type="submit"
             >
               Import
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

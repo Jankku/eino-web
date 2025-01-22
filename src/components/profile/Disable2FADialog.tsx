@@ -1,6 +1,5 @@
 import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -92,9 +91,9 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
             >
               Cancel
             </Button>
-            <LoadingButton loading={disable2FA.isPending} color="primary" type="submit">
+            <Button loading={disable2FA.isPending} color="primary" type="submit">
               Disable 2FA
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

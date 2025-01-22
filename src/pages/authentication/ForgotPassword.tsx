@@ -1,7 +1,6 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
@@ -67,24 +66,20 @@ export default function ForgotPassword() {
               Enter the email associated with your account to change your password.
             </Typography>
 
-            <Stack
-              sx={{
-                gap: 1,
-              }}
-            >
+            <Stack sx={{ gap: 1 }}>
               <TextField autoFocus name="email" type="email" label="Email" />
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />
               ) : null}
             </Stack>
-            <LoadingButton
+            <Button
               loading={forgotPassword.isPending}
               type="submit"
               variant="contained"
               color="primary"
             >
               Continue
-            </LoadingButton>
+            </Button>
           </Stack>
         </form>
       </FormProvider>

@@ -13,7 +13,6 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { movieSchema, movieDefaults, Movie } from '../../models/movie';
 import { useUpdateMovie, useUpdateMovieFormData } from '../../data/movies/useUpdateMovie';
 import PosterDialog from './PosterDialog';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -95,15 +94,14 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <Button color="secondary" onClick={onCancel}>
               Cancel
             </Button>
-
-            <LoadingButton
+            <Button
               loading={updateMovie.isPending}
               type="submit"
               disabled={loadMovie.isLoading || loadMovie.isLoadingError || updateMovie.isPending}
               color="primary"
             >
               Submit changes
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

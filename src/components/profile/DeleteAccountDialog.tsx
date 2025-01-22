@@ -2,7 +2,6 @@ import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/ma
 import { useNavigate } from 'react-router';
 import BaseDialog from '../common/BaseDialog';
 import { DeleteAccountBody, useDeleteAccount } from '../../data/profile/useDeleteAccount';
-import { LoadingButton } from '@mui/lab';
 import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -114,9 +113,9 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
             >
               Cancel
             </Button>
-            <LoadingButton loading={deleteAccount.isPending} color="primary" type="submit">
+            <Button loading={deleteAccount.isPending} color="primary" type="submit">
               Delete account
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

@@ -1,9 +1,8 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router';
 import { useToken } from '../../hooks/useToken';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
@@ -105,14 +104,14 @@ export default function Login() {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <LoadingButton
+                  <Button
                     loading={loginConfig.isPending || loginUser.isPending}
                     type="submit"
                     variant="contained"
                     color="primary"
                   >
                     Login
-                  </LoadingButton>
+                  </Button>
                   <Typography component="p" align="left">
                     <Typography component={Link} to="/forgot-password">
                       <Box

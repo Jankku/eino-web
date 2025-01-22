@@ -1,6 +1,5 @@
 import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -114,9 +113,9 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
             >
               Cancel
             </Button>
-            <LoadingButton loading={updateEmail.isPending} color="primary" type="submit">
+            <Button loading={updateEmail.isPending} color="primary" type="submit">
               Update email
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

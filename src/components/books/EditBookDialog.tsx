@@ -14,7 +14,6 @@ import { bookSchema, bookDefaults, Book } from '../../models/book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -98,15 +97,14 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <Button color="secondary" onClick={onCancel}>
               Cancel
             </Button>
-
-            <LoadingButton
+            <Button
               loading={updateBook.isPending}
               type="submit"
               disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isPending}
               color="primary"
             >
               Submit changes
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

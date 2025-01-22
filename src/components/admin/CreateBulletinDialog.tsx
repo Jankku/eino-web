@@ -8,7 +8,6 @@ import {
   Stack,
 } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { HTTPError } from 'ky';
 import { parseError } from '../../utils/zodUtil';
@@ -167,9 +166,9 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
             <Button color="secondary" onClick={handleClose}>
               Close
             </Button>
-            <LoadingButton loading={createBulletin.isPending} color="primary" type="submit">
+            <Button loading={createBulletin.isPending} color="primary" type="submit">
               Create
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

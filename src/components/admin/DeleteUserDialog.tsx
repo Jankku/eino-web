@@ -1,6 +1,5 @@
 import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { useDeleteUser } from '../../data/admin/useDeleteUser';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { HTTPError } from 'ky';
@@ -66,9 +65,9 @@ export default function DeleteUserDialog({
           <Button color="primary" onClick={onClose}>
             Close
           </Button>
-          <LoadingButton loading={deleteUser.isPending} color="secondary" type="submit">
+          <Button loading={deleteUser.isPending} color="secondary" type="submit">
             Delete user
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </BaseDialog>

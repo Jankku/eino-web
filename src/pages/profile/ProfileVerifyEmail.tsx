@@ -1,11 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import { FormProvider, useForm } from 'react-hook-form';
 import TextField from '../../components/form/TextField';
 import { useEffect, useState } from 'react';
-import { LoadingButton } from '@mui/lab';
 import { useSendEmailConfirmation } from '../../data/profile/useSendEmailConfirmation';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { HTTPError } from 'ky';
@@ -87,14 +86,14 @@ export default function ProfileVerifyEmail() {
             <Typography component="p">
               Email to verify: {email ? email : 'No email found'}
             </Typography>
-            <LoadingButton
+            <Button
               loading={sendConfirmation.isPending}
               variant="contained"
               color="primary"
               onClick={onSendConfirmation}
             >
               Send confirmation
-            </LoadingButton>
+            </Button>
           </Stack>
         ) : undefined}
         <FormProvider {...formMethods}>
@@ -114,14 +113,14 @@ export default function ProfileVerifyEmail() {
                   label="Enter your one-time code"
                   autoComplete="one-time-code"
                 />
-                <LoadingButton
+                <Button
                   loading={verifyEmail.isPending}
                   variant="contained"
                   color="primary"
                   type="submit"
                 >
                   Verify email
-                </LoadingButton>
+                </Button>
               </Stack>
             ) : undefined}
           </form>

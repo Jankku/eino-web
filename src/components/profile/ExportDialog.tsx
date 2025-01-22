@@ -4,7 +4,6 @@ import { useExportData } from '../../data/profile/useExportData';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
 import PasswordField from '../form/PasswordField';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -126,9 +125,9 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
             >
               Cancel
             </Button>
-            <LoadingButton loading={exportData.isPending} color="primary" type="submit">
+            <Button loading={exportData.isPending} color="primary" type="submit">
               Export
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -152,7 +151,7 @@ export default function ProfilePictureDialog({
                     alt="Profile picture"
                     sx={{ width: 128, height: 128, alignSelf: 'center' }}
                   ></Avatar>
-                  <LoadingButton
+                  <Button
                     loading={deleteProfilePicture.isPending}
                     color="secondary"
                     size="small"
@@ -161,7 +160,7 @@ export default function ProfilePictureDialog({
                     onClick={deleteCurrentProfilePicture}
                   >
                     Delete picture
-                  </LoadingButton>
+                  </Button>
                 </Stack>
               ) : undefined}
               {thumbnails}
@@ -208,14 +207,14 @@ export default function ProfilePictureDialog({
             >
               Cancel
             </Button>
-            <LoadingButton
+            <Button
               loading={uploadProfilePicture.isPending}
               disabled={saveButtonDisabled}
               color="primary"
               type="submit"
             >
               Save
-            </LoadingButton>
+            </Button>
           </DialogActions>
         </form>
       </FormProvider>

@@ -1,4 +1,4 @@
-import { LoadingButton } from '@mui/lab';
+import { Button } from '@mui/material';
 import { useDoubleCheck } from '../../hooks/useDoubleCheck';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -12,15 +12,15 @@ export default function DeleteButton({ onClick, onBlur, ...rest }: DeleteButtonP
   const { doubleCheck, getButtonProps } = useDoubleCheck();
 
   return (
-    <LoadingButton
+    <Button
       variant="contained"
-      // @ts-expect-error -- Valid
-      color="secondary"
+      // @ts-expect-error - It's valid
+      color="error"
       startIcon={<DeleteIcon />}
       {...rest}
       {...getButtonProps({ onClick, onBlur })}
     >
       {doubleCheck ? 'You sure?' : 'Delete'}
-    </LoadingButton>
+    </Button>
   );
 }

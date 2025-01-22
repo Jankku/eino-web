@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
 import { HTTPError } from 'ky';
 import { useDeleteBulletin } from '../../data/admin/useDeleteBulletin';
-import { LoadingButton } from '@mui/lab';
 
 type DeleteBulletinDialogProps = {
   bulletinId: string;
@@ -66,9 +65,9 @@ export default function DeleteBulletinDialog({
           <Button color="primary" onClick={onClose}>
             Close
           </Button>
-          <LoadingButton loading={deleteBulletin.isPending} color="secondary" type="submit">
+          <Button loading={deleteBulletin.isPending} color="secondary" type="submit">
             Delete
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </BaseDialog>

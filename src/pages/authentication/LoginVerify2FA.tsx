@@ -1,8 +1,7 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
@@ -94,14 +93,14 @@ export default function LoginVerify2FA() {
                   <ErrorMessage message={errors.root.serverError.message} />
                 ) : null}
               </Stack>
-              <LoadingButton
+              <Button
                 loading={loginUser.isPending}
                 type="submit"
                 variant="contained"
                 color="primary"
               >
                 Continue
-              </LoadingButton>
+              </Button>
             </Stack>
           </Stack>
         </form>

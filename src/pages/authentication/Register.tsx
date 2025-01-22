@@ -1,8 +1,7 @@
-import { Container, Typography, Stack, Box } from '@mui/material';
+import { Container, Typography, Stack, Box, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import ErrorMessage from '../../components/authentication/ErrorMessage.tsx';
-import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -78,14 +77,7 @@ export default function Register() {
             <Box sx={{ textAlign: 'center' }}>
               <h1>Register</h1>
             </Box>
-            <Stack
-              sx={{
-                gap: 4,
-                width: '100%',
-                maxWidth: 'sm',
-                alignSelf: 'center',
-              }}
-            >
+            <Stack sx={{ gap: 4, width: '100%', maxWidth: 'sm', alignSelf: 'center' }}>
               <TextField
                 autoFocus
                 name="username"
@@ -101,13 +93,7 @@ export default function Register() {
                   helperText="Password should be 8-255 characters long"
                   autoComplete="new-password"
                 />
-                <Stack
-                  direction="column"
-                  sx={{
-                    gap: 1,
-                    pt: 2,
-                  }}
-                >
+                <Stack direction="column" sx={{ gap: 1, pt: 2 }}>
                   <PasswordStrengthMeter score={passwordScore} />
                   <Typography
                     variant="caption"
@@ -119,11 +105,7 @@ export default function Register() {
                   </Typography>
                 </Stack>
               </Stack>
-              <Stack
-                sx={{
-                  gap: 1,
-                }}
-              >
+              <Stack sx={{ gap: 1 }}>
                 <PasswordField
                   name="password2"
                   label="Confirm password"
@@ -137,28 +119,22 @@ export default function Register() {
               <Stack>
                 <Stack
                   direction="row"
-                  sx={{
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between',
-                  }}
+                  sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
                 >
-                  <LoadingButton
+                  <Button
                     loading={registerUser.isPending}
                     disabled={passwordScore < 3}
                     type="submit"
                     variant="contained"
                   >
                     Register
-                  </LoadingButton>
+                  </Button>
                   <Typography component="p" align="left">
                     Already have an account?{' '}
                     <Typography component={Link} to="/login">
                       <Box
                         component="span"
-                        sx={{
-                          color: 'text.secondary',
-                          textDecoration: 'underline',
-                        }}
+                        sx={{ color: 'text.secondary', textDecoration: 'underline' }}
                       >
                         Login
                       </Box>
