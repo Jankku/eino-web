@@ -1,6 +1,6 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import SearchTextField from '../common/SearchTextField';
 import { useMovieSearch } from '../../data/movies/useMovieSearch';
 import SearchResult from '../common/SearchResult';
@@ -8,12 +8,13 @@ import { useSearch } from '../../hooks/useSearch';
 import { MovieWithId } from '../../models/movie';
 
 function MovieSearch() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { isPending, mutate } = useMovieSearch();
 
   const onSelect = (item: MovieWithId) => {
-    navigate(`./movies/${item.movie_id}`);
+    navigate({ pathname: `./movies/${item.movie_id}`, search: searchParams.toString() });
   };
 
   const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } =

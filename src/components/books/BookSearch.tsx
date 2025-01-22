@@ -1,6 +1,6 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import SearchTextField from '../common/SearchTextField';
 import { useBookSearch } from '../../data/books/useBookSearch';
 import SearchResult from '../common/SearchResult';
@@ -8,12 +8,13 @@ import { useSearch } from '../../hooks/useSearch';
 import { BookWithId } from '../../models/book';
 
 function BookSearch() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { isPending, mutate } = useBookSearch();
 
   const onSelect = (item: BookWithId) => {
-    navigate(`./books/${item.book_id}`);
+    navigate({ pathname: `./books/${item.book_id}`, search: searchParams.toString() });
   };
 
   const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } =
@@ -46,7 +47,9 @@ function BookSearch() {
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
       }}
       id="search-input"
-      renderInput={(params) => <SearchTextField showShortcut params={{ ...params }} label="Search books" />}
+      renderInput={(params) => (
+        <SearchTextField showShortcut params={{ ...params }} label="Search books" />
+      )}
       renderOption={(props, option: BookWithId) => (
         <SearchResult
           {...props}
