@@ -72,31 +72,25 @@ export default function BaseDetailLayout({
               <ContentCopyIcon />
             </IconButton>
           </Tooltip>
-          <Grid
-            container
-            sx={{
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            {imageUrl ? (
-              <Grid
-                container
-                item
-                zeroMinWidth
-                sx={[
-                  {
-                    flexShrink: 2,
-                    mb: { xs: 1, md: 0 },
-                  },
-                  (theme) => ({
-                    maxWidth: isMobile ? '50%' : '40%',
-                    aspectRatio: 0.7,
-                    borderRadius: 1,
-                    boxShadow: theme.palette.mode === 'light' ? theme.shadows[4] : undefined,
-                  }),
-                ]}
-              >
+          <Grid container sx={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Grid
+              container
+              item
+              zeroMinWidth
+              sx={(theme) => ({
+                maxWidth: isMobile ? '50%' : '40%',
+                aspectRatio: 0.7,
+                borderRadius: 1,
+                flexShrink: 2,
+                mb: 1,
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                ...theme.applyStyles('light', {
+                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  boxShadow: theme.shadows[2],
+                }),
+              })}
+            >
+              {imageUrl ? (
                 <img
                   draggable="false"
                   alt="Book cover"
@@ -110,36 +104,33 @@ export default function BaseDetailLayout({
                     aspectRatio: 0.7,
                   }}
                 />
-              </Grid>
-            ) : null}
+              ) : (
+                <Box
+                  sx={{
+                    height: '200px',
+                    width: '100%',
+                    borderRadius: 'inherit',
+                    objectFit: 'cover',
+                    aspectRatio: 0.7,
+                  }}
+                ></Box>
+              )}
+            </Grid>
 
             <Grid
               container
               item
               zeroMinWidth
               columns={1}
-              sx={{
-                alignSelf: 'start',
-                pl: 2,
-                pt: imageUrl ? 1 : isMobile ? 6 : 1,
-              }}
+              sx={{ alignSelf: 'start', pl: 2, pt: imageUrl ? 1 : isMobile ? 6 : 1 }}
             >
-              <Box
-                component="dl"
-                aria-label="Book details"
-                sx={{
-                  maxWidth: '100%',
-                  m: 0,
-                }}
-              >
-                {details}
-              </Box>
+              <Box sx={{ width: '100%', m: 0 }}>{details}</Box>
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions sx={{ m: 0, pt: 2, pl: 2, pb: 2 }}>
+        <CardActions sx={{ m: 0, pt: 1, pb: 3, pl: 3 }}>
           <Grid container>
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>{actions}</Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', rowGap: 2, columnGap: 1 }}>{actions}</Box>
           </Grid>
         </CardActions>
       </Card>

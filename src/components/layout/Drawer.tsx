@@ -1,4 +1,15 @@
-import { Button, Divider, Drawer, Grid, MenuItem, MenuList, Typography } from '@mui/material';
+import {
+  Button,
+  Box,
+  Divider,
+  Drawer as MuiDrawer,
+  Grid,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
@@ -10,162 +21,189 @@ import LoginIcon from '@mui/icons-material/Login';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box } from '@mui/system';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CustomNavLink from '../common/CustomNavLink.tsx';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
 import Footer from './Footer.tsx';
+import { useIsMobile } from '../../hooks/useIsMobile.ts';
 
 const authRouteArray = [
-  { name: 'Register', path: '/register', icon: <VpnKeyIcon sx={{ mr: 1 }} /> },
-  { name: 'Login', path: '/login', icon: <LoginIcon sx={{ mr: 1 }} /> },
+  { name: 'Register', path: '/register', icon: <VpnKeyIcon /> },
+  { name: 'Login', path: '/login', icon: <LoginIcon /> },
 ];
 
 const routeArray = [
-  { name: 'Books', path: '/books', icon: <MenuBook sx={{ mr: 1 }} /> },
-  { name: 'Movies', path: '/movies', icon: <LocalMovies sx={{ mr: 1 }} /> },
-  { name: 'Profile', path: '/profile', icon: <PersonIcon sx={{ mr: 1 }} /> },
-  { name: 'Settings', path: '/settings', icon: <SettingsIcon sx={{ mr: 1 }} /> },
+  { name: 'Books', path: '/books', icon: <MenuBook /> },
+  { name: 'Movies', path: '/movies', icon: <LocalMovies /> },
+  { name: 'Profile', path: '/profile', icon: <PersonIcon /> },
+  { name: 'Settings', path: '/settings', icon: <SettingsIcon /> },
 ];
 
 const adminRouteArray = [
-  { name: 'Users', path: '/users', icon: <PersonIcon sx={{ mr: 1 }} /> },
-  { name: 'Audit log', path: '/audits', icon: <TerminalIcon sx={{ mr: 1 }} /> },
-  { name: 'Bulletins', path: '/bulletins', icon: <NotificationsIcon sx={{ mr: 1 }} /> },
+  { name: 'Users', path: '/users', icon: <PersonIcon /> },
+  { name: 'Audit log', path: '/audits', icon: <TerminalIcon /> },
+  { name: 'Bulletins', path: '/bulletins', icon: <NotificationsIcon /> },
 ];
 
-type HeaderProps = {
-  window?: () => Window;
+type DrawerProps = {
   drawerWidth: number;
   drawerOpen: boolean;
   toggleDrawer: () => void;
+  drawerExpanded: boolean;
+  onDrawerExpand: () => void;
   children: React.ReactNode;
 };
 
-export default function Header({
-  window,
+export default function Drawer({
   drawerWidth,
   drawerOpen,
   toggleDrawer,
+  drawerExpanded,
+  onDrawerExpand,
   children,
-}: HeaderProps) {
+}: DrawerProps) {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { username, role, isLoggedIn } = useAuthContext();
 
   const isAdmin = role === 'admin';
-
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const isNavLinkSmall = isMobile ? false : !drawerExpanded;
 
   const drawerItems = (
     <>
-      <Box role="presentation" sx={{ margin: '0em 0.5em' }}>
-        <MenuList>
-          <CustomNavLink
-            toggleDrawer={toggleDrawer}
-            item={{ name: 'Home', path: '/', icon: <Home sx={{ mr: 1 }} /> }}
-          />
+      <MenuList disablePadding sx={{ px: 1 }}>
+        <CustomNavLink
+          toggleDrawer={toggleDrawer}
+          isSmall={isNavLinkSmall}
+          item={{ name: 'Home', path: '/', icon: <Home /> }}
+        />
 
-          {isLoggedIn && isAdmin
-            ? [
-                <Divider key={99} />,
-                adminRouteArray.map((item, index) => (
-                  <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
-                )),
-                <Divider key={999} />,
-              ]
-            : null}
+        {isLoggedIn && isAdmin
+          ? [
+              <Divider key={99} />,
+              adminRouteArray.map((item, index) => (
+                <CustomNavLink
+                  toggleDrawer={toggleDrawer}
+                  isSmall={isNavLinkSmall}
+                  item={item}
+                  key={index}
+                />
+              )),
+              <Divider key={999} />,
+            ]
+          : null}
 
-          {isLoggedIn
-            ? routeArray.map((item, index) => (
-                <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
-              ))
-            : null}
+        {isLoggedIn
+          ? routeArray.map((item, index) => (
+              <CustomNavLink
+                toggleDrawer={toggleDrawer}
+                isSmall={isNavLinkSmall}
+                item={item}
+                key={index}
+              />
+            ))
+          : null}
 
-          <Divider />
+        {!isNavLinkSmall ? <Divider /> : undefined}
 
-          {!isLoggedIn
-            ? authRouteArray.map((item, index) => (
-                <CustomNavLink toggleDrawer={toggleDrawer} item={item} key={index} />
-              ))
-            : null}
+        {!isLoggedIn ? (
+          <>
+            {authRouteArray.map((item, index) => (
+              <CustomNavLink
+                toggleDrawer={toggleDrawer}
+                isSmall={isNavLinkSmall}
+                item={item}
+                key={index}
+              />
+            ))}
+          </>
+        ) : null}
 
-          {isLoggedIn ? (
-            <Grid
-              sx={{
-                justifyContent: 'space-between',
-              }}
-            >
-              <Grid item>
-                <MenuItem sx={{ mt: 0.5 }}>
-                  <Typography
-                    noWrap
-                    sx={{
-                      fontWeight: 500,
-                    }}
-                  >
-                    {username}
-                  </Typography>
-                </MenuItem>
-              </Grid>
-
-              <Grid item>
-                <Button
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  color="secondary"
-                  startIcon={<LogoutIcon />}
-                  onClick={() => navigate('/logout')}
-                >
-                  Log out
-                </Button>
-              </Grid>
+        {isLoggedIn && !isNavLinkSmall ? (
+          <Grid sx={{ justifyContent: 'space-between' }}>
+            <Grid item>
+              <MenuItem sx={{ mt: 0.5 }}>
+                <Typography noWrap sx={{ fontWeight: 500 }}>
+                  {username}
+                </Typography>
+              </MenuItem>
             </Grid>
-          ) : null}
-        </MenuList>
-      </Box>
-      <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>
-        <Grid item sx={{ alignSelf: 'flex-end' }}>
-          <Footer toggleDrawer={toggleDrawer} />
+
+            <Grid item>
+              <Button
+                fullWidth
+                size="small"
+                variant="outlined"
+                color="secondary"
+                startIcon={<LogoutIcon />}
+                onClick={() => navigate('/logout')}
+              >
+                Log out
+              </Button>
+            </Grid>
+          </Grid>
+        ) : undefined}
+      </MenuList>
+      {!isNavLinkSmall ? (
+        <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>
+          <Grid item sx={{ alignSelf: 'flex-end' }}>
+            <Footer toggleDrawer={toggleDrawer} />
+          </Grid>
         </Grid>
-      </Grid>
+      ) : undefined}
     </>
   );
 
   const mobileDrawer = (
-    <Drawer
-      container={container}
+    <MuiDrawer
       elevation={0}
       sx={{
-        display: { xs: 'block', xl: 'none' },
+        display: { xs: 'block', md: 'none' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
       }}
       open={drawerOpen}
       onClose={toggleDrawer}
-      ModalProps={{
-        keepMounted: true,
-      }}
     >
       {drawerItems}
-    </Drawer>
+    </MuiDrawer>
   );
 
   const permanentDrawer = (
-    <Drawer
-      container={container}
+    <MuiDrawer
       variant="permanent"
       anchor="left"
       sx={(theme) => ({
-        display: { xs: 'none', xl: 'block' },
+        display: { xs: 'none', md: 'block' },
         '& .MuiDrawer-paper': {
           width: drawerWidth,
+          transition: 'width 0.2s',
           ...theme.applyStyles('dark', {
             bgcolor: 'background.default',
           }),
         },
       })}
     >
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', pt: 2, pb: 1 }}>
+        {drawerExpanded ? (
+          <Button
+            variant="text"
+            color="inherit"
+            startIcon={drawerExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            onClick={onDrawerExpand}
+          >
+            Collapse
+          </Button>
+        ) : (
+          <Tooltip arrow title={<Typography variant="body2">Expand</Typography>} placement="right">
+            <IconButton onClick={onDrawerExpand} sx={{ justifyContent: 'center' }}>
+              {drawerExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </Tooltip>
+        )}
+      </Box>
       {drawerItems}
-    </Drawer>
+    </MuiDrawer>
   );
 
   return (
@@ -174,8 +212,9 @@ export default function Header({
         <Box
           component="nav"
           sx={{
-            width: { xl: drawerWidth },
-            flexShrink: { xl: 0 },
+            width: { md: drawerWidth },
+            flexShrink: { lg: 0 },
+            transition: 'width 0.2s',
           }}
         >
           {mobileDrawer}
@@ -187,6 +226,7 @@ export default function Header({
             flexGrow: 1,
             minHeight: '100%',
             width: { xs: `calc(100% - ${drawerWidth}px)` },
+            transition: 'width 0.2s',
           }}
         >
           {children}

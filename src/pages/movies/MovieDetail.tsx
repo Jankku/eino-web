@@ -1,4 +1,4 @@
-import { Button, capitalize } from '@mui/material';
+import { Box, Button, capitalize, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
@@ -14,6 +14,10 @@ import { useUpdateMovie } from '../../data/movies/useUpdateMovie';
 import { movieSchema } from '../../models/movie';
 import DoneIcon from '@mui/icons-material/Done';
 import CompleteDialog from '../../components/common/CompleteDialog';
+import ScoreChip from '../../components/common/ScoreChip';
+import StatusChip from '../../components/common/StatusChip';
+
+const numberFormatter = new Intl.NumberFormat();
 
 export default function MovieDetail() {
   const navigate = useNavigate();
@@ -52,6 +56,18 @@ export default function MovieDetail() {
     );
   };
 
+  const onDelete = () => {
+    deleteMovie.mutate(movieId, {
+      onSuccess: () => {
+        showSuccessSnackbar('Movie deleted');
+        navigate({ pathname: '/movies', search: searchParams.toString() });
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to delete movie');
+      },
+    });
+  };
+
   return (
     <BaseDetailLayout
       imageUrl={data.image_url}
@@ -59,20 +75,39 @@ export default function MovieDetail() {
       onCopy={copyToClipboard}
       details={
         <>
-          <DetailItem title="Title" text={data.title} />
-          <DetailItem title="Studio" text={data.studio} />
-          <DetailItem title="Director" text={data.director} />
-          <DetailItem title="Writer" text={data.writer} />
-          <DetailItem title="Duration" text={`${data.duration} minutes`} />
-          <DetailItem title="Released" text={data.year} />
-          <DetailItem title="Status" text={capitalize(String(data.status))} />
-          <DetailItem title="Score" text={data.score} />
-          <DetailItem
-            title="Start date"
-            text={DateTime.fromISO(data.start_date).toLocaleString()}
-          />
-          <DetailItem title="End date" text={DateTime.fromISO(data.end_date).toLocaleString()} />
-          <DetailItem multiline title="Note" text={data.note} />
+          <Stack direction="row" mb={0.5}>
+            <ScoreChip score={data.score} />
+            <StatusChip
+              status={data.status}
+              chipText={
+                data.status === 'completed' && data.end_date
+                  ? `${capitalize(data.status)} ${DateTime.fromISO(data.end_date).toRelative()}`
+                  : capitalize(data.status)
+              }
+              tooltipText={`Watched: ${
+                data.start_date === data.end_date
+                  ? DateTime.fromISO(data.start_date).toLocaleString()
+                  : `${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()}`
+              }`}
+            />
+          </Stack>
+          <Stack mb={2}>
+            <Box component="span" sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
+              {data.title}
+            </Box>
+            <Box component="span">{[data.director, data.year].filter(Boolean).join(', ')}</Box>
+          </Stack>
+          <Box component="dl">
+            {data.writer ? <DetailItem title="Writer" value={data.writer} /> : undefined}
+            {data.studio ? <DetailItem title="Studio" value={data.studio} /> : undefined}
+            {data.duration ? (
+              <DetailItem
+                title="Duration"
+                value={`${numberFormatter.format(data.duration)} minutes`}
+              />
+            ) : undefined}
+            {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
+          </Box>
         </>
       }
       actions={
@@ -99,17 +134,7 @@ export default function MovieDetail() {
             loading={deleteMovie.isPending}
             variant="outlined"
             color="secondary"
-            onClick={() => {
-              deleteMovie.mutate(movieId, {
-                onSuccess: () => {
-                  showSuccessSnackbar('Movie deleted');
-                  navigate({ pathname: '/movies', search: searchParams.toString() });
-                },
-                onError: () => {
-                  showErrorSnackbar('Failed to delete movie');
-                },
-              });
-            }}
+            onClick={onDelete}
           />
         </>
       }

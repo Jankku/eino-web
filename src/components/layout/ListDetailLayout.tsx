@@ -24,20 +24,10 @@ export default function ListDetailLayout({ list, detail, id }: ListDetailLayoutP
           overflow: 'hidden',
         }}
       >
-        <Grid
-          item
-          sx={{
-            minWidth: '65%',
-          }}
-        >
+        <Grid item sx={{ minWidth: { xs: '55%', lg: '65%' } }}>
           <PanelContainer>{list}</PanelContainer>
         </Grid>
-        <Grid
-          item
-          sx={{
-            minWidth: '35%',
-          }}
-        >
+        <Grid item sx={{ minWidth: 'max(35%, 400px)' }}>
           <PanelContainer>{detail}</PanelContainer>
         </Grid>
       </Grid>

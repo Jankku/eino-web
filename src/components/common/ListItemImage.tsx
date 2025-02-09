@@ -11,7 +11,7 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import { Link, useLocation } from 'react-router';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
-import getStatusIcon from '../../utils/listItemUtil';
+import { getStatusIcon } from '../../utils/listItemUtil';
 import SrOnly from './SrOnly';
 
 type ListItemImageProps = {

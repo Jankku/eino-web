@@ -32,7 +32,7 @@ $ npm install
 Start development server.
 
 ```sh
-$ npm start
+$ npm run dev
 ```
 
 ## Build

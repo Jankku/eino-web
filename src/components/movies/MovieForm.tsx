@@ -47,7 +47,7 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
               flexGrow: 2,
             }}
           >
-            <TextField type="number" margin="dense" name="duration" label="Duration" />
+            <TextField type="number" margin="dense" name="duration" label="Duration in minutes" />
           </Grid>
           <Grid
             item

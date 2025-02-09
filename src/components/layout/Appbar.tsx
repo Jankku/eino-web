@@ -36,9 +36,9 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
       position="sticky"
       sx={(theme) => ({
         width: {
-          xl: `calc(100% - ${drawerWidth}px)`,
+          md: `calc(100% - ${drawerWidth}px)`,
         },
-        ml: { xl: `${drawerWidth}px` },
+        ml: { md: `${drawerWidth}px` },
         ...theme.applyStyles('dark', {
           backgroundColor: theme.palette.background.default,
         }),
@@ -50,7 +50,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
           color="inherit"
           edge="start"
           aria-label="Open drawer"
-          sx={{ mr: 2, display: { xl: 'none' } }}
+          sx={{ mr: 2, display: { md: 'none' } }}
           onClick={toggleDrawer}
           size="large"
         >
@@ -61,19 +61,13 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
           sx={{
             alignItems: 'center',
             gap: { sm: 2 },
-
-            justifyContent: {
-              sm: 'space-between',
-            },
+            justifyContent: { sm: 'space-between' },
           }}
         >
           <Link to="/">
             <Typography
               sx={{
-                display: {
-                  xs: 'none',
-                  sm: 'block',
-                },
+                display: { xs: 'none', sm: 'block' },
                 margin: '0em 0em 0.2em 0em',
                 fontFamily: 'Pacifico, cursive',
                 fontSize: '32px',
@@ -87,21 +81,12 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               eino
             </Typography>
           </Link>
-          <Grid
-            item
-            sx={{
-              flexGrow: 2,
-            }}
-          >
+          <Grid item sx={{ flexGrow: 2 }}>
             <Grid
               container
               sx={{
                 alignItems: 'center',
-
-                justifyContent: {
-                  sm: 'flex-end',
-                },
-
+                justifyContent: { sm: 'flex-end' },
                 gap: 2,
               }}
             >
@@ -111,7 +96,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               </Grid>
               <Grid item>
                 <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
-                  <IconButton onClick={() => toggleTheme()} size="large">
+                  <IconButton onClick={toggleTheme} size="large">
                     {isDark ? (
                       <WbSunnyRounded />
                     ) : (

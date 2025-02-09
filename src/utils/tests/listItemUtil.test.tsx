@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import getStatusIcon from '../listItemUtil';
+import { getStatusIcon } from '../listItemUtil';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 

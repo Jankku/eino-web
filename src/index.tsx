@@ -17,9 +17,8 @@ createRoot(document.getElementById('root')!).render(
         <AuthenticationProvider>
           <BrowserRouter>
             <SnackbarProvider
+              maxSnack={1}
               TransitionComponent={Fade}
-              // @ts-expect-error -- Valid
-              sx={{ mt: '3em' }}
               anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
               <App />
