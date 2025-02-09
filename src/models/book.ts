@@ -41,7 +41,7 @@ export const getBookDefaults = () => {
     image_url: '',
     pages: 0,
     year: DateTime.now().year,
-    status: JSON.parse(localStorage.getItem('newBookStatus') ?? 'planned'),
+    status: JSON.parse(localStorage.getItem('newBookStatus')!) || 'planned',
     score: 0,
     note: '',
     language_code: '',

@@ -36,7 +36,7 @@ export const getMovieDefaults = () => {
     image_url: '',
     duration: 0,
     year: DateTime.now().year,
-    status: JSON.parse(localStorage.getItem('newMovieStatus') ?? 'planned'),
+    status: JSON.parse(localStorage.getItem('newMovieStatus')!) || 'planned',
     score: 0,
     note: '',
     start_date: DateTime.now().toISO(),
