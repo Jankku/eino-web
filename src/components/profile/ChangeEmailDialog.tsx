@@ -56,8 +56,8 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
   const onSubmit = (body: UpdateEmailBody) => {
     updateEmail.mutate(body, {
       onSuccess: () => {
-        closeDialog();
         showSuccessSnackbar('Email updated successfully');
+        closeDialog();
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);

@@ -35,18 +35,18 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
   const updateMovie = useUpdateMovie(movieId);
 
   const onSubmit = (formData: Movie) => {
-    try {
-      updateMovie.mutate(formData, {
-        onSuccess: () => {
-          showSuccessSnackbar('Movie updated');
-        },
-        onError: () => showErrorSnackbar('Failed to save movie'),
-      });
-      closeDialog();
-      resetForm();
-    } catch {
-      showErrorSnackbar('Failed to save movie');
-    }
+    updateMovie.mutate(formData, {
+      onSuccess: () => {
+        showSuccessSnackbar('Movie updated');
+        closeDialog();
+        resetForm();
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to save movie');
+        closeDialog();
+        resetForm();
+      },
+    });
   };
 
   const onSelectPoster = (posterUrl: string) => {

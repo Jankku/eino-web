@@ -32,7 +32,7 @@ export function getStatusColor(status: string, theme: Theme) {
     case 'reading':
       return palette.primary[variant];
     case 'watching':
-      return palette.secondary[variant];
+      return palette.primary[variant];
     case 'completed':
       return palette.success[variant];
     case 'on-hold':

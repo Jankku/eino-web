@@ -42,8 +42,8 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
   const onSubmit = ({ twoFactorCode }: { twoFactorCode: string }) => {
     disable2FA.mutate(twoFactorCode, {
       onSuccess: () => {
-        closeDialog();
         showSuccessSnackbar('2FA disabled successfully');
+        closeDialog();
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -36,20 +36,16 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
   const updateBook = useUpdateBook(bookId);
 
   const onSubmit = (formData: Book) => {
-    try {
-      updateBook.mutate(formData, {
-        onSuccess: () => {
-          showSuccessSnackbar('Book updated');
-        },
-        onError: () => {
-          showErrorSnackbar('Failed to save book');
-        },
-      });
-      closeDialog();
-    } catch (error) {
-      console.error(error);
-      showErrorSnackbar('Failed to save book');
-    }
+    updateBook.mutate(formData, {
+      onSuccess: () => {
+        showSuccessSnackbar('Book updated');
+        closeDialog();
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to save book');
+        closeDialog();
+      },
+    });
   };
 
   const onSelectCover = (coverUrl: string) => {

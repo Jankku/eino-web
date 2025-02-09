@@ -30,23 +30,12 @@ export default function CoverDialog({ visible, query, closeDialog, onSelect }: C
       closeDialog={closeDialog}
     >
       {bookCovers.isLoading ? (
-        <Grid
-          container
-          sx={{
-            justifyContent: 'center',
-          }}
-        >
+        <Grid container sx={{ justifyContent: 'center' }}>
           <CircularProgress />
         </Grid>
       ) : null}
       {bookCovers.isLoadingError ? (
-        <Typography
-          sx={{
-            pt: 2,
-          }}
-        >
-          Failed to load covers.
-        </Typography>
+        <Typography sx={{ pt: 2 }}>Failed to load covers.</Typography>
       ) : null}
       {bookCovers.isSuccess && bookCovers.data?.length > 0 ? (
         <ImageList cols={3}>
@@ -78,13 +67,7 @@ export default function CoverDialog({ visible, query, closeDialog, onSelect }: C
         </ImageList>
       ) : null}
       {bookCovers.isSuccess && bookCovers.data?.length === 0 ? (
-        <Typography
-          sx={{
-            pt: 2,
-          }}
-        >
-          No covers found.
-        </Typography>
+        <Typography sx={{ pt: 2 }}>No covers found.</Typography>
       ) : null}
     </ImageDialog>
   );

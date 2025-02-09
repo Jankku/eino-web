@@ -51,9 +51,9 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
   const onSubmit = (body: DeleteAccountBody) => {
     deleteAccount.mutate(body, {
       onSuccess: (message) => {
-        closeDialog();
-        navigate('/logout');
         showSuccessSnackbar(message);
+        navigate('/logout');
+        closeDialog();
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);

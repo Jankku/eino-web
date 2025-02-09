@@ -25,20 +25,18 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   const addMovie = useAddMovie();
 
   const onSubmit = (formData: Movie) => {
-    try {
-      addMovie.mutate(formData, {
-        onSuccess: () => {
-          showSuccessSnackbar('Movie created');
-        },
-        onError: () => {
-          showErrorSnackbar('Failed to create movie');
-        },
-      });
-      closeDialog();
-      resetForm();
-    } catch {
-      showErrorSnackbar('Failed to create movie');
-    }
+    addMovie.mutate(formData, {
+      onSuccess: () => {
+        showSuccessSnackbar('Movie created');
+        closeDialog();
+        resetForm();
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to create movie');
+        closeDialog();
+        resetForm();
+      },
+    });
   };
 
   const onCancel = () => {
