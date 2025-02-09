@@ -12,7 +12,7 @@ export const movieSchema = z.object({
   ]),
   duration: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
-  status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']).default('watching'),
+  status: z.enum(['watching', 'completed', 'on-hold', 'dropped', 'planned']),
   score: z.coerce.number().nonnegative().max(10).default(0),
   note: z.string().nullish().default(''),
   start_date: z.string(),
@@ -27,17 +27,19 @@ export type Movie = z.infer<typeof movieSchema>;
 
 export type MovieWithId = z.infer<typeof movieWithIdSchema>;
 
-export const movieDefaults = movieSchema.parse({
-  title: '',
-  studio: '',
-  director: '',
-  writer: '',
-  image_url: '',
-  duration: 0,
-  year: DateTime.now().year,
-  status: 'watching',
-  score: 0,
-  note: '',
-  start_date: DateTime.now().toISO(),
-  end_date: DateTime.now().toISO(),
-});
+export const getMovieDefaults = () => {
+  return movieSchema.parse({
+    title: '',
+    studio: '',
+    director: '',
+    writer: '',
+    image_url: '',
+    duration: 0,
+    year: DateTime.now().year,
+    status: JSON.parse(localStorage.getItem('newMovieStatus') ?? 'planned'),
+    score: 0,
+    note: '',
+    start_date: DateTime.now().toISO(),
+    end_date: DateTime.now().toISO(),
+  });
+};

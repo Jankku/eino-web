@@ -35,7 +35,7 @@ export default function Books() {
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
   const deferredStatus = useDeferredValue(status);
-  const { itemType, toggleItemType } = useListItemType('bookItemType', listItemTypes.IMAGE);
+  const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data } = useBooksSuspense({
     status: deferredStatus,
@@ -158,7 +158,9 @@ export default function Books() {
 
             {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
 
-            <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
+            {addDialogOpen ? (
+              <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
+            ) : undefined}
 
             {isMobile ? <CreateFab onClick={toggleAddDialog as () => void} /> : null}
           </Box>

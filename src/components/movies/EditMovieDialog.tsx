@@ -10,7 +10,7 @@ import {
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { movieSchema, movieDefaults, Movie } from '../../models/movie';
+import { movieSchema, getMovieDefaults, Movie } from '../../models/movie';
 import { useUpdateMovie, useUpdateMovieFormData } from '../../data/movies/useUpdateMovie';
 import PosterDialog from './PosterDialog';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -27,7 +27,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
   const [showPosters, setShowPosters] = useState(false);
   const loadMovie = useUpdateMovieFormData(visible, movieId);
   const formMethods = useForm({
-    defaultValues: movieDefaults,
+    defaultValues: getMovieDefaults(),
     values: movieSchema.parse(loadMovie.data),
     resolver: zodResolver(movieSchema),
   });

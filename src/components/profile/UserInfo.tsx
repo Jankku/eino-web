@@ -272,32 +272,48 @@ export function UserInfo({
         </CardContent>
       </Card>
 
-      <ProfilePictureDialog
-        visible={editProfilePictureDialogOpen}
-        profilePictureUrl={getProfilePictureUrl(profilePicturePath)}
-        onClose={toggleEditProfilePictureDialog}
-      />
+      {editProfilePictureDialogOpen ? (
+        <ProfilePictureDialog
+          visible={editProfilePictureDialogOpen}
+          profilePictureUrl={getProfilePictureUrl(profilePicturePath)}
+          onClose={toggleEditProfilePictureDialog}
+        />
+      ) : undefined}
 
-      <ChangeEmailDialog
-        email={email}
-        visible={changeEmailDialogOpen}
-        closeDialog={toggleChangeEmailDialog}
-      />
+      {changeEmailDialogOpen ? (
+        <ChangeEmailDialog
+          email={email}
+          visible={changeEmailDialogOpen}
+          closeDialog={toggleChangeEmailDialog}
+        />
+      ) : undefined}
 
-      <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
+      {shareDialogOpen ? (
+        <ShareDialog visible={shareDialogOpen} closeDialog={toggleShareDialog} />
+      ) : undefined}
 
-      <Enable2FADialog visible={enable2FADialogOpen} closeDialog={toggleEnable2FADialog} />
+      {enable2FADialogOpen ? (
+        <Enable2FADialog visible={enable2FADialogOpen} closeDialog={toggleEnable2FADialog} />
+      ) : undefined}
 
-      <Disable2FADialog visible={disable2FADialogOpen} closeDialog={toggleDisable2FADialog} />
+      {disable2FADialogOpen ? (
+        <Disable2FADialog visible={disable2FADialogOpen} closeDialog={toggleDisable2FADialog} />
+      ) : undefined}
 
-      <ExportDialog visible={exportDialogOpen} closeDialog={toggleExportDialog} />
+      {exportDialogOpen ? (
+        <ExportDialog visible={exportDialogOpen} closeDialog={toggleExportDialog} />
+      ) : undefined}
 
-      <ImportDialog visible={importDialogOpen} closeDialog={toggleImportDialog} />
+      {importDialogOpen ? (
+        <ImportDialog visible={importDialogOpen} closeDialog={toggleImportDialog} />
+      ) : undefined}
 
-      <DeleteAccountDialog
-        visible={deleteAccountDialogOpen}
-        closeDialog={toggleDeleteAccountDialog}
-      />
+      {deleteAccountDialogOpen ? (
+        <DeleteAccountDialog
+          visible={deleteAccountDialogOpen}
+          closeDialog={toggleDeleteAccountDialog}
+        />
+      ) : undefined}
     </>
   );
 }

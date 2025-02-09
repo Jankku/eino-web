@@ -35,7 +35,7 @@ export const clearQueryClientChannel = {
   message: 'clearQueryClient',
 };
 
-function App() {
+export default function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
   const [queryClient] = useState(
     () =>
@@ -57,10 +57,11 @@ function App() {
   );
 
   useEffect(() => {
-    const clearQueryClient = () => queryClient.clear();
     const channel = new BroadcastChannel(clearQueryClientChannel.name);
     channel.onmessage = (event) => {
-      if (event.data === clearQueryClientChannel.message) clearQueryClient();
+      if (event.data === clearQueryClientChannel.message) {
+        queryClient.clear();
+      }
     };
 
     return () => {
@@ -261,5 +262,3 @@ function WrappedApp() {
     </div>
   );
 }
-
-export default App;

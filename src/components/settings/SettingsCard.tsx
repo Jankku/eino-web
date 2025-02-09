@@ -1,19 +1,20 @@
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 
 type SettingsCardProps = {
+  actionsAsRow?: boolean;
   title: string;
   message: string;
   actions: React.ReactNode;
 };
 
-export default function SettingsCard({ title, message, actions }: SettingsCardProps) {
+export default function SettingsCard({ actionsAsRow, title, message, actions }: SettingsCardProps) {
   return (
     <Card component="section">
       <CardContent>
         <Box
           component="h2"
           sx={(theme) => ({
-            fontSize: theme.typography.fontSize * 1.5,
+            fontSize: theme.typography.htmlFontSize * 1.25,
             marginTop: 0,
             marginBottom: 1,
           })}
@@ -21,17 +22,18 @@ export default function SettingsCard({ title, message, actions }: SettingsCardPr
           {title}
         </Box>
         <Stack
-          direction="row"
-          spacing={{ xs: 4 }}
-          justifyContent="space-between"
-          alignItems="center"
+          direction={actionsAsRow ? 'column' : 'row'}
+          spacing={3}
+          alignItems={actionsAsRow ? 'flex-start' : 'center'}
         >
-          <Box>
-            <Typography variant="body1" sx={{ maxWidth: '22em' }}>
-              {message}
-            </Typography>
-          </Box>
-          {actions ? <>{actions}</> : undefined}
+          <Typography variant="body1" sx={{ textWrap: 'balance' }}>
+            {message}
+          </Typography>
+          {actions ? (
+            <Stack direction="row" gap={1}>
+              {actions}
+            </Stack>
+          ) : undefined}
         </Stack>
       </CardContent>
     </Card>

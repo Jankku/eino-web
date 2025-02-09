@@ -5,8 +5,8 @@ export const listItemTypes = {
   IMAGE: 'image',
 };
 
-export function useListItemType(key: string, defaultValue: string) {
-  const [itemType, setItemType] = useLocalStorage(key, defaultValue);
+export function useListItemType(key: string) {
+  const [itemType, setItemType] = useLocalStorage(key, listItemTypes.IMAGE);
 
   const toggleItemType = () => {
     setItemType((prev) => (prev === listItemTypes.CARD ? listItemTypes.IMAGE : listItemTypes.CARD));

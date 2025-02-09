@@ -136,13 +136,17 @@ export default function BookDetail() {
         </>
       }
     >
-      <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
+      {editDialogOpen ? (
+        <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
+      ) : undefined}
 
-      <CompleteDialog
-        visible={completeDialogOpen}
-        closeDialog={toggleCompleteDialog}
-        onComplete={onComplete}
-      />
+      {completeDialogOpen ? (
+        <CompleteDialog
+          visible={completeDialogOpen}
+          closeDialog={toggleCompleteDialog}
+          onComplete={onComplete}
+        />
+      ) : undefined}
     </BaseDetailLayout>
   );
 }

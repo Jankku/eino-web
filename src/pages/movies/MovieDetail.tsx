@@ -139,13 +139,21 @@ export default function MovieDetail() {
         </>
       }
     >
-      <EditMovieDialog visible={editDialogOpen} closeDialog={toggleEditDialog} movieId={movieId} />
+      {editDialogOpen ? (
+        <EditMovieDialog
+          visible={editDialogOpen}
+          closeDialog={toggleEditDialog}
+          movieId={movieId}
+        />
+      ) : undefined}
 
-      <CompleteDialog
-        visible={completeDialogOpen}
-        closeDialog={toggleCompleteDialog}
-        onComplete={onComplete}
-      />
+      {completeDialogOpen ? (
+        <CompleteDialog
+          visible={completeDialogOpen}
+          closeDialog={toggleCompleteDialog}
+          onComplete={onComplete}
+        />
+      ) : undefined}
     </BaseDetailLayout>
   );
 }

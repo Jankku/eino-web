@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 
 type InfoCardProps = {
   title: string;
@@ -19,30 +19,12 @@ export default function InfoCard({ title, icon, children }: InfoCardProps) {
       }}
     >
       <CardContent>
-        <Grid
-          container
-          sx={{
-            marginBottom: '0.3em',
-            alignItems: 'center',
-          }}
-        >
-          <Grid item>
-            <Box
-              sx={{
-                marginRight: '0.5em',
-                height: '24px',
-              }}
-            >
-              {icon}
-            </Box>
-          </Grid>
-          <Grid item>
-            <Typography component="h3" variant="h6">
-              {title}
-            </Typography>
-          </Grid>
-        </Grid>
-
+        <Stack direction="row" mb="0.3em" alignItems="center">
+          <Box sx={{ marginRight: '0.5em', height: '24px' }}>{icon}</Box>
+          <Typography component="h3" variant="h6">
+            {title}
+          </Typography>
+        </Stack>
         {children}
       </CardContent>
     </Card>

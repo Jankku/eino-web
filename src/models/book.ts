@@ -12,7 +12,7 @@ export const bookSchema = z.object({
   ]),
   pages: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
-  status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']).default('reading'),
+  status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']),
   score: z.coerce.number().nonnegative().max(10).default(0),
   note: z.string().nullish().default(''),
   language_code: z
@@ -32,18 +32,20 @@ export type Book = z.infer<typeof bookSchema>;
 
 export type BookWithId = z.infer<typeof bookWithIdSchema>;
 
-export const bookDefaults = bookSchema.parse({
-  isbn: '',
-  title: '',
-  author: '',
-  publisher: '',
-  image_url: '',
-  pages: 0,
-  year: DateTime.now().year,
-  status: 'reading',
-  score: 0,
-  note: '',
-  language_code: '',
-  start_date: DateTime.now().toISO(),
-  end_date: DateTime.now().toISO(),
-});
+export const getBookDefaults = () => {
+  return bookSchema.parse({
+    isbn: '',
+    title: '',
+    author: '',
+    publisher: '',
+    image_url: '',
+    pages: 0,
+    year: DateTime.now().year,
+    status: JSON.parse(localStorage.getItem('newBookStatus') ?? 'planned'),
+    score: 0,
+    note: '',
+    language_code: '',
+    start_date: DateTime.now().toISO(),
+    end_date: DateTime.now().toISO(),
+  });
+};

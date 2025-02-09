@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -10,7 +10,7 @@ import {
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { bookSchema, bookDefaults, Book } from '../../models/book';
+import { bookSchema, Book, getBookDefaults } from '../../models/book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
@@ -28,7 +28,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
   const [showCovers, setShowCovers] = useState(false);
   const loadBook = useUpdateBookFormData(visible, bookId);
   const formMethods = useForm({
-    defaultValues: bookDefaults,
+    defaultValues: getBookDefaults(),
     values: bookSchema.parse(loadBook.data),
     resolver: zodResolver(bookSchema),
   });

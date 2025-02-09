@@ -3,7 +3,7 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { movieSchema, movieDefaults, Movie } from '../../models/movie';
+import { movieSchema, getMovieDefaults, Movie } from '../../models/movie';
 import { useAddMovie } from '../../data/movies/useAddMovie';
 import PosterDialog from './PosterDialog';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -18,7 +18,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [showPosters, setShowPosters] = useState(false);
   const formMethods = useForm({
-    defaultValues: movieDefaults,
+    defaultValues: getMovieDefaults(),
     resolver: zodResolver(movieSchema),
   });
   const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;

@@ -4,4 +4,4 @@ export const movieStatus = [
   { value: 'on-hold', name: 'On-hold' },
   { value: 'dropped', name: 'Dropped' },
   { value: 'planned', name: 'Planned' },
-];
+] as const;

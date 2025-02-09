@@ -3,7 +3,7 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { bookSchema, bookDefaults, Book } from '../../models/book';
+import { bookSchema, getBookDefaults, Book } from '../../models/book';
 import { useAddBook } from '../../data/books/useAddBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
@@ -19,7 +19,7 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
   const formMethods = useForm({
-    defaultValues: bookDefaults,
+    defaultValues: getBookDefaults(),
     resolver: zodResolver(bookSchema),
   });
   const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
