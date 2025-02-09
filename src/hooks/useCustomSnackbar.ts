@@ -1,4 +1,4 @@
-import { useSnackbar } from 'notistack';
+import { useSnackbar, closeSnackbar } from 'notistack';
 import { useCallback } from 'react';
 
 export function useCustomSnackbar() {
@@ -9,6 +9,9 @@ export function useCustomSnackbar() {
       enqueueSnackbar(message, {
         variant: 'success',
         autoHideDuration: 4000,
+        SnackbarProps: {
+          onClick: () => closeSnackbar(),
+        },
       }),
     [enqueueSnackbar],
   );
@@ -18,6 +21,9 @@ export function useCustomSnackbar() {
       enqueueSnackbar(message, {
         variant: 'error',
         autoHideDuration: 4000,
+        SnackbarProps: {
+          onClick: () => closeSnackbar(),
+        },
       }),
     [enqueueSnackbar],
   );
