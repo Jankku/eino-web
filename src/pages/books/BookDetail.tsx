@@ -33,6 +33,24 @@ export default function BookDetail() {
 
   const isCompleted = data.status === 'completed';
 
+  const readingTimeRelative = DateTime.fromISO(data.end_date)
+    .diff(DateTime.fromISO(data.start_date), 'days')
+    .toHuman();
+
+  const endDateRelativeToNow = DateTime.fromISO(data.end_date).toRelative();
+
+  const formattedStatus = capitalize(data.status);
+
+  const statusChipText = isCompleted
+    ? `${formattedStatus} ${endDateRelativeToNow} in ${readingTimeRelative}`
+    : data.status === 'dropped' && data.end_date
+      ? `${formattedStatus} ${endDateRelativeToNow}`
+      : data.status === 'reading'
+        ? `${formattedStatus} for ${readingTimeRelative}`
+        : data.status === 'on-hold' && data.end_date
+          ? `${formattedStatus} for ${endDateRelativeToNow?.replace('ago', '')}`
+          : formattedStatus;
+
   const copyToClipboard = async () => {
     try {
       const contents = data.author ? `${data.author} - ${data.title}` : data.title;
@@ -80,12 +98,8 @@ export default function BookDetail() {
             <ScoreChip score={data.score} />
             <StatusChip
               status={data.status}
-              chipText={
-                data.status === 'completed' && data.end_date
-                  ? `${capitalize(data.status)} ${DateTime.fromISO(data.end_date).toRelative()}`
-                  : capitalize(data.status)
-              }
-              tooltipText={`Reading time: ${DateTime.fromISO(data.end_date).diff(DateTime.fromISO(data.start_date), 'days').toHuman()} (${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()})`}
+              chipText={statusChipText}
+              tooltipText={`Reading time: ${readingTimeRelative} (${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()})`}
             />
           </Stack>
           <Stack mb={2}>

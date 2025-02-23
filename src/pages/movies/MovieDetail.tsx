@@ -32,6 +32,17 @@ export default function MovieDetail() {
 
   const isCompleted = data.status === 'completed';
 
+  const endDateRelativeToNow = DateTime.fromISO(data.end_date).toRelative();
+
+  const formattedStatus = capitalize(data.status);
+
+  const statusChipText =
+    (isCompleted || data.status === 'dropped') && data.end_date
+      ? `${formattedStatus} ${endDateRelativeToNow}`
+      : data.status === 'on-hold' && data.end_date
+        ? `${formattedStatus} for ${endDateRelativeToNow?.replace('ago', '')}`
+        : formattedStatus;
+
   const copyToClipboard = async () => {
     try {
       const contents = data.director ? `${data.director} - ${data.title}` : data.title;
@@ -79,11 +90,7 @@ export default function MovieDetail() {
             <ScoreChip score={data.score} />
             <StatusChip
               status={data.status}
-              chipText={
-                data.status === 'completed' && data.end_date
-                  ? `${capitalize(data.status)} ${DateTime.fromISO(data.end_date).toRelative()}`
-                  : capitalize(data.status)
-              }
+              chipText={statusChipText}
               tooltipText={`Watched: ${
                 data.start_date === data.end_date
                   ? DateTime.fromISO(data.start_date).toLocaleString()
