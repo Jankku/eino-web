@@ -4,7 +4,7 @@ import { ApiResponse, Result } from '../types';
 
 export type DeleteAccountBody = {
   password: string;
-  twoFactorCode?: string;
+  twoFactorCode?: string | null;
 };
 
 const deleteAccountQuery = async (body: DeleteAccountBody) => {

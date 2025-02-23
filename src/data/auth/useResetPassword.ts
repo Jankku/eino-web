@@ -6,7 +6,7 @@ export type ResetPasswordBody = {
   email: string;
   newPassword: string;
   otp: string;
-  twoFactorCode?: string;
+  twoFactorCode?: string | null;
 };
 
 const resetPasswordQuery = async (body: ResetPasswordBody) => {

@@ -55,7 +55,8 @@ export default function ProfileVerifyEmail() {
     });
   };
 
-  const onVerify = async ({ otp }: { otp: string }) => {
+  const onVerify = async ({ otp }: { otp?: string }) => {
+    if (!otp) return;
     clearErrors('root.serverError');
     verifyEmail.mutate(otp, {
       onSuccess: () => {
