@@ -9,7 +9,6 @@ import RequireAuth from './components/common/RequireAuth';
 import RequireAdmin from './components/common/RequireAdmin';
 import PageBoundary from './components/common/PageBoundary';
 import Logout from './pages/authentication/Logout';
-import Privacy from './pages/Privacy';
 import Error404 from './components/errors/Error404';
 import RedirectAuthenticated from './components/common/RedirectAuthenticated';
 
@@ -25,6 +24,7 @@ const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail'));
 const Settings = lazy(() => import('./pages/Settings'));
+const About = lazy(() => import('./pages/About'));
 
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
@@ -147,7 +147,7 @@ function WrappedApp() {
             }
           />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/settings"
             element={

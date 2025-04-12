@@ -9,6 +9,7 @@ import {
   MenuList,
   Tooltip,
   Typography,
+  Link,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -23,9 +24,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import InfoIcon from '@mui/icons-material/Info';
 import CustomNavLink from '../common/CustomNavLink.tsx';
 import { useAuthContext } from '../../providers/AuthenticationProvider';
-import Footer from './Footer.tsx';
 import { useIsMobile } from '../../hooks/useIsMobile.ts';
 
 const authRouteArray = [
@@ -38,6 +39,7 @@ const routeArray = [
   { name: 'Movies', path: '/movies', icon: <LocalMovies /> },
   { name: 'Profile', path: '/profile', icon: <PersonIcon /> },
   { name: 'Settings', path: '/settings', icon: <SettingsIcon /> },
+  { name: 'About', path: '/about', icon: <InfoIcon /> },
 ];
 
 const adminRouteArray = [
@@ -148,7 +150,21 @@ export default function Drawer({
       {!isNavLinkSmall ? (
         <GridLegacy container sx={{ flexGrow: 1, justifyContent: 'center' }}>
           <GridLegacy item sx={{ alignSelf: 'flex-end' }}>
-            <Footer toggleDrawer={toggleDrawer} />
+            <Typography
+              component="p"
+              variant="subtitle2"
+              sx={{
+                textAlign: 'center',
+                marginBottom: '2em',
+                color: 'text.secondary',
+              }}
+            >
+              Made by{' '}
+              <Link href="https://github.com/Jankku" rel="noreferrer">
+                Jankku
+              </Link>{' '}
+              ✨
+            </Typography>
           </GridLegacy>
         </GridLegacy>
       ) : undefined}

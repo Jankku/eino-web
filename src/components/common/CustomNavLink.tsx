@@ -12,25 +12,18 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
     <MenuItem
       sx={[
         {
-          paddingY: 1.5,
+          paddingY: isSmall ? 1.5 : 1.2,
           paddingX: isSmall ? 0 : 2,
           justifyContent: 'center',
         },
-        !isSmall
-          ? {
-              gap: 1,
-              borderRadius: 2,
-            }
-          : {},
+        !isSmall ? { gap: 1, borderRadius: 2 } : {},
         (theme) =>
           isActive
             ? {
                 bgcolor: `${theme.vars.palette.primary.light} !important`,
                 color: `${theme.vars.palette.primary.contrastText} !important`,
               }
-            : {
-                color: `${theme.vars.palette.text.primary}`,
-              },
+            : { color: `${theme.vars.palette.text.primary}` },
       ]}
     >
       {item.icon}

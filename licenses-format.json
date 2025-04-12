@@ -1,0 +1,11 @@
+{
+  "name": false,
+  "version": false,
+  "email": false,
+  "path": false,
+  "copyright": false,
+  "description": false,
+  "licenseFile": false,
+  "licenseText": false,
+  "licenseModified": false
+}
