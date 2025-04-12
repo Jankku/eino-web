@@ -11,10 +11,14 @@ import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { HTTPError } from 'ky';
 import { ProfileExport } from '../../data/profile/profile.types';
+import Checkbox from '../form/Checkbox';
 
-const passwordFormSchema = z.object({
+const exportFormSchema = z.object({
   password: zodFields.password,
+  includeAuditLog: z.boolean(),
 });
+
+type ExportForm = z.infer<typeof exportFormSchema>;
 
 type ExportDialogProps = {
   visible: boolean;
@@ -26,8 +30,9 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
   const formMethods = useForm({
     defaultValues: {
       password: '',
+      includeAuditLog: false,
     },
-    resolver: zodResolver(passwordFormSchema),
+    resolver: zodResolver(exportFormSchema),
   });
   const {
     handleSubmit,
@@ -59,8 +64,8 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
     closeDialog();
   };
 
-  const onSubmit = ({ password }: { password: string }) => {
-    exportData.mutate(password, {
+  const onSubmit = (form: ExportForm) => {
+    exportData.mutate(form, {
       onSuccess: (data) => {
         downloadJsonExport(data);
       },
@@ -85,22 +90,15 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
-            <Typography
-              component="p"
-              sx={{
-                mb: 2,
-              }}
-            >
-              All account data is downloaded as a JSON file. Please confirm your password to
-              continue.
+            <Typography component="p" sx={{ mb: 1 }}>
+              All account data is downloaded as a JSON file. Including audit logs will increase the
+              file size significantly.
+            </Typography>
+            <Typography component="p" sx={{ mb: 2 }}>
+              Please confirm your password to export your data.
             </Typography>
             {exportData.isSuccess ? (
-              <Typography
-                component="p"
-                sx={{
-                  mb: 1,
-                }}
-              >
+              <Typography component="p" sx={{ mb: 1 }}>
                 Download didn&apos;t work?{' '}
                 <Link
                   download={generateExportFileName()}
@@ -112,6 +110,7 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
               </Typography>
             ) : null}
             <PasswordField autoFocus name="password" label="Confirm password" />
+            <Checkbox name="includeAuditLog" label="Include audit logs" />
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
