@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -187,9 +188,11 @@ export default function About() {
             <Typography fontWeight="600">Licenses</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Table size="small">
-              <TableBody>{tableRows}</TableBody>
-            </Table>
+            <TableContainer>
+              <Table size="small">
+                <TableBody>{tableRows}</TableBody>
+              </Table>
+            </TableContainer>
           </AccordionDetails>
         </Accordion>
       </Stack>
