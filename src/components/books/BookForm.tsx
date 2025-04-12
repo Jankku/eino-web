@@ -1,4 +1,4 @@
-import { Grid, IconButton, InputAdornment } from '@mui/material';
+import { GridLegacy, IconButton, InputAdornment } from '@mui/material';
 import { score } from '../../models/score';
 import { bookStatus } from '../../models/bookStatus';
 import AddCircle from '@mui/icons-material/AddCircle';
@@ -14,7 +14,7 @@ type BookFormProps = {
 export default function BookForm({ onShowCovers }: BookFormProps) {
   return (
     <>
-      <Grid container>
+      <GridLegacy container>
         <TextField margin="dense" name="title" label="Title" />
         <TextField margin="dense" name="author" label="Author" />
         <TextField margin="dense" name="publisher" label="Publisher" />
@@ -35,30 +35,30 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
-        <Grid
+        <GridLegacy
           container
           sx={{
             gap: 1,
           }}
         >
-          <Grid
+          <GridLegacy
             item
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="pages" label="Pages" />
-          </Grid>
-          <Grid
+          </GridLegacy>
+          <GridLegacy
             item
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="year" label="Released" />
-          </Grid>
-        </Grid>
-        <Grid
+          </GridLegacy>
+        </GridLegacy>
+        <GridLegacy
           container
           sx={{
             gap: 1,
@@ -67,9 +67,9 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
         >
           <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
-        </Grid>
-      </Grid>
-      <Grid
+        </GridLegacy>
+      </GridLegacy>
+      <GridLegacy
         container
         sx={{
           justifyContent: 'space-between',
@@ -77,7 +77,7 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
           gap: 1,
         }}
       >
-        <Grid item>
+        <GridLegacy item>
           <Select name="score" label="Score">
             {score.map((item, itemIdx) => (
               <option key={itemIdx} value={item.value}>
@@ -85,11 +85,11 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
               </option>
             ))}
           </Select>
-        </Grid>
-        <Grid item flexGrow={2}>
+        </GridLegacy>
+        <GridLegacy item flexGrow={2}>
           <LanguageAutocomplete name="language_code" label="Language" />
-        </Grid>
-        <Grid item>
+        </GridLegacy>
+        <GridLegacy item>
           <Select name="status" label="Status">
             {bookStatus.map((item, itemIdx) => {
               return (
@@ -99,8 +99,8 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
               );
             })}
           </Select>
-        </Grid>
-      </Grid>
+        </GridLegacy>
+      </GridLegacy>
     </>
   );
 }

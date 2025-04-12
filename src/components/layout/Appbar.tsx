@@ -1,6 +1,6 @@
 import {
   AppBar,
-  Grid,
+  GridLegacy,
   IconButton,
   Toolbar,
   Tooltip,
@@ -40,7 +40,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
         },
         ml: { md: `${drawerWidth}px` },
         ...theme.applyStyles('dark', {
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.vars.palette.background.default,
         }),
       })}
     >
@@ -56,7 +56,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
         >
           <MenuIcon />
         </IconButton>
-        <Grid
+        <GridLegacy
           container
           sx={{
             alignItems: 'center',
@@ -81,8 +81,8 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               eino
             </Typography>
           </Link>
-          <Grid item sx={{ flexGrow: 2 }}>
-            <Grid
+          <GridLegacy item sx={{ flexGrow: 2 }}>
+            <GridLegacy
               container
               sx={{
                 alignItems: 'center',
@@ -90,11 +90,11 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
                 gap: 2,
               }}
             >
-              <Grid item sx={{ flexGrow: 1, maxWidth: '25em' }}>
+              <GridLegacy item sx={{ flexGrow: 1, maxWidth: '25em' }}>
                 {isBookPath ? <BookSearch /> : null}
                 {isMoviePath ? <MovieSearch /> : null}
-              </Grid>
-              <Grid item>
+              </GridLegacy>
+              <GridLegacy item>
                 <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
                   <IconButton onClick={toggleTheme} size="large">
                     {isDark ? (
@@ -106,10 +106,10 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </GridLegacy>
+            </GridLegacy>
+          </GridLegacy>
+        </GridLegacy>
       </Toolbar>
     </AppBar>
   );

@@ -4,7 +4,7 @@ import {
   CardActions,
   CardContent,
   Container,
-  Grid,
+  GridLegacy,
   IconButton,
   Tooltip,
   Typography,
@@ -72,8 +72,8 @@ export default function BaseDetailLayout({
               <ContentCopyIcon />
             </IconButton>
           </Tooltip>
-          <Grid container sx={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Grid
+          <GridLegacy container sx={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <GridLegacy
               container
               item
               zeroMinWidth
@@ -115,9 +115,9 @@ export default function BaseDetailLayout({
                   }}
                 ></Box>
               )}
-            </Grid>
+            </GridLegacy>
 
-            <Grid
+            <GridLegacy
               container
               item
               zeroMinWidth
@@ -125,13 +125,13 @@ export default function BaseDetailLayout({
               sx={{ alignSelf: 'start', pl: 2, pt: imageUrl ? 1 : isMobile ? 6 : 1 }}
             >
               <Box sx={{ width: '100%', m: 0 }}>{details}</Box>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </CardContent>
         <CardActions sx={{ m: 0, pt: 1, pb: 3, pl: 3 }}>
-          <Grid container>
+          <GridLegacy container>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', rowGap: 2, columnGap: 1 }}>{actions}</Box>
-          </Grid>
+          </GridLegacy>
         </CardActions>
       </Card>
       {children}

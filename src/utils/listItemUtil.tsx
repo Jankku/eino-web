@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import BookIcon from '@mui/icons-material/Book';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import UpdateIcon from '@mui/icons-material/Update';
-import { SvgIconOwnProps } from '@mui/material/SvgIcon/SvgIcon';
+import { SvgIconOwnProps } from '@mui/material/SvgIcon';
 import { Theme } from '@mui/material';
 
 export function getStatusIcon(status: string, color?: string) {
@@ -25,21 +25,21 @@ export function getStatusIcon(status: string, color?: string) {
 }
 
 export function getStatusColor(status: string, theme: Theme) {
-  const { palette } = theme;
+  const { palette, vars } = theme;
   const isDark = palette.mode === 'dark';
   const variant = isDark ? 'light' : 'dark';
   switch (status) {
     case 'reading':
-      return palette.primary[variant];
+      return vars.palette.primary[variant];
     case 'watching':
-      return palette.primary[variant];
+      return vars.palette.primary[variant];
     case 'completed':
-      return palette.success[variant];
+      return vars.palette.success[variant];
     case 'on-hold':
-      return isDark ? palette.warning[variant] : 'text.primary';
+      return isDark ? vars.palette.warning[variant] : 'text.primary';
     case 'dropped':
-      return palette.error[variant];
+      return vars.palette.error[variant];
     case 'planned':
-      return palette.text.primary;
+      return vars.palette.text.primary;
   }
 }

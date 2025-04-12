@@ -22,19 +22,19 @@ export default function SearchTextField({
         sx={(theme) => ({
           ...theme.applyStyles('light', {
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: `${theme.palette.primary.contrastText} !important`,
+              borderColor: `${theme.vars.palette.primary.contrastText} !important`,
             },
             '& .Mui-focused': {
-              color: `${theme.palette.primary.contrastText} !important`,
+              color: `${theme.vars.palette.primary.contrastText} !important`,
             },
             '& .MuiInputLabel-root': {
-              color: `${theme.palette.primary.contrastText} !important`,
+              color: `${theme.vars.palette.primary.contrastText} !important`,
             },
             '& .MuiOutlinedInput-input': {
-              color: `${theme.palette.primary.contrastText} !important`,
+              color: `${theme.vars.palette.primary.contrastText} !important`,
             },
             '& .MuiSvgIcon-root': {
-              color: `${theme.palette.primary.contrastText} !important`,
+              color: `${theme.vars.palette.primary.contrastText} !important`,
             },
           }),
         })}
@@ -51,13 +51,13 @@ export default function SearchTextField({
             padding: '0 4px',
             fontWeight: 'bold',
             borderRadius: 1,
-            backgroundColor: theme.palette.primary.dark,
-            color: theme.palette.common.white,
-            outline: `1px solid ${theme.palette.primary.light}`,
+            backgroundColor: theme.vars.palette.primary.dark,
+            color: theme.vars.palette.common.white,
+            outline: `1px solid ${theme.vars.palette.primary.light}`,
             ...theme.applyStyles('dark', {
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.text.secondary,
-              outline: `1px solid ${theme.palette.grey[800]}`,
+              backgroundColor: theme.vars.palette.background.paper,
+              color: theme.vars.palette.text.secondary,
+              outline: `1px solid ${theme.vars.palette.grey[800]}`,
             }),
           })}
         >

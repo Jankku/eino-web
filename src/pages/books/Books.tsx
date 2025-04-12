@@ -1,7 +1,7 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import {
   Box,
-  Grid,
+  GridLegacy,
   List,
   ListItem,
   ListItemButton,
@@ -91,7 +91,7 @@ export default function Books() {
         id={bookId}
         list={
           <Box sx={{ my: 2, mx: isMobile ? 2 : undefined }}>
-            <Grid
+            <GridLegacy
               container
               component="header"
               sx={{
@@ -101,13 +101,13 @@ export default function Books() {
                 rowGap: 1,
               }}
             >
-              <Grid item>
+              <GridLegacy item>
                 <Box component="h1" sx={{ m: 0 }}>
                   Books
                 </Box>
-              </Grid>
-              <Grid item>
-                <Grid
+              </GridLegacy>
+              <GridLegacy item>
+                <GridLegacy
                   container
                   item
                   component="ul"
@@ -152,9 +152,9 @@ export default function Books() {
                       </List>
                     </MoreButton>
                   </Box>
-                </Grid>
-              </Grid>
-            </Grid>
+                </GridLegacy>
+              </GridLegacy>
+            </GridLegacy>
 
             {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
 

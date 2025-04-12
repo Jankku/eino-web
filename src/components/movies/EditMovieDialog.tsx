@@ -4,7 +4,7 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  Grid,
+  GridLegacy,
   Typography,
 } from '@mui/material';
 import MovieForm from './MovieForm';
@@ -68,14 +68,14 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             {loadMovie.isLoading ? (
-              <Grid
+              <GridLegacy
                 container
                 sx={{
                   justifyContent: 'center',
                 }}
               >
                 <CircularProgress />
-              </Grid>
+              </GridLegacy>
             ) : null}
 
             {loadMovie.isLoadingError ? (
@@ -85,7 +85,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <PosterDialog
               visible={showPosters}
               closeDialog={() => setShowPosters((prev) => !prev)}
-              query={getValues('title')}
+              query={getValues('title')!}
               onSelect={onSelectPoster}
             />
           </DialogContent>

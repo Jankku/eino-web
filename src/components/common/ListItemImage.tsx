@@ -4,7 +4,7 @@ import {
   Card,
   CardActionArea,
   Chip,
-  Grid,
+  GridLegacy,
   Stack,
   Typography,
 } from '@mui/material';
@@ -60,7 +60,7 @@ export default function ListItemImage({
             style={{ objectFit: 'cover', aspectRatio: 0.7 }}
           />
         ) : null}
-        <Grid
+        <GridLegacy
           sx={{
             px: 2,
             pb: 2,
@@ -110,7 +110,7 @@ export default function ListItemImage({
               })}
             />
           </Stack>
-          <Grid container>
+          <GridLegacy container>
             <Typography
               noWrap
               variant="body1"
@@ -121,8 +121,8 @@ export default function ListItemImage({
             <Typography noWrap variant="body2" sx={{ width: '100%', color: '#ddd' }}>
               {stringOrPlaceholder(detailText)}
             </Typography>
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
         <Box
           component={Link}
           draggable={false}

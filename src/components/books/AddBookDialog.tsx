@@ -61,7 +61,7 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
             <CoverDialog
               visible={showCovers}
               closeDialog={() => setShowCovers((prev) => !prev)}
-              query={formatBookSearchQuery(getValues('title'), getValues('author'))}
+              query={formatBookSearchQuery(getValues('title')!, getValues('author')!)}
               onSelect={onSelectCover}
             />
           </DialogContent>

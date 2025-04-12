@@ -1,7 +1,7 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import {
   Box,
-  Grid,
+  GridLegacy,
   List,
   ListItem,
   ListItemButton,
@@ -96,7 +96,7 @@ export default function Movies() {
               mx: isMobile ? 2 : undefined,
             }}
           >
-            <Grid
+            <GridLegacy
               container
               component="header"
               sx={{
@@ -106,7 +106,7 @@ export default function Movies() {
                 rowGap: 1,
               }}
             >
-              <Grid item>
+              <GridLegacy item>
                 <Box
                   component="h1"
                   sx={{
@@ -115,9 +115,9 @@ export default function Movies() {
                 >
                   Movies
                 </Box>
-              </Grid>
-              <Grid item>
-                <Grid
+              </GridLegacy>
+              <GridLegacy item>
+                <GridLegacy
                   container
                   item
                   component="ul"
@@ -186,9 +186,9 @@ export default function Movies() {
                       </List>
                     </MoreButton>
                   </Box>
-                </Grid>
-              </Grid>
-            </Grid>
+                </GridLegacy>
+              </GridLegacy>
+            </GridLegacy>
 
             {isEmptyList ? <ListEmpty /> : <MovieList movies={data} itemType={itemType} />}
 

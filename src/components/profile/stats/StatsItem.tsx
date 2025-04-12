@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { GridLegacy, Typography } from '@mui/material';
 import { stringOrPlaceholder } from '../../../utils/stringUtil';
 
 type StatsItemProps = {
@@ -8,8 +8,8 @@ type StatsItemProps = {
 
 export function StatsItem({ title, text }: StatsItemProps) {
   return (
-    <Grid item>
-      <Grid
+    <GridLegacy item>
+      <GridLegacy
         container
         sx={{
           gap: 1,
@@ -21,7 +21,7 @@ export function StatsItem({ title, text }: StatsItemProps) {
         <Typography component="dd" variant="body1" sx={{ fontWeight: 700 }}>
           {stringOrPlaceholder(text)}
         </Typography>
-      </Grid>
-    </Grid>
+      </GridLegacy>
+    </GridLegacy>
   );
 }

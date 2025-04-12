@@ -5,7 +5,7 @@ import {
   ButtonBase,
   Card,
   CardContent,
-  Grid,
+  GridLegacy,
   Stack,
   Tooltip,
   Typography,
@@ -64,7 +64,7 @@ export function UserInfo({
       <Card component="section" variant="outlined">
         <CardContent sx={{ overflowWrap: 'anywhere' }}>
           <Stack gap={{ xs: 4, sm: 3 }}>
-            <Grid
+            <GridLegacy
               container
               direction={{ xs: 'column', sm: 'row' }}
               rowGap={1}
@@ -105,7 +105,7 @@ export function UserInfo({
               >
                 Share profile
               </Button>
-            </Grid>
+            </GridLegacy>
             <ProfileDetailItem
               title={'Username'}
               text={
@@ -248,7 +248,7 @@ export function UserInfo({
               title={'Manage account data'}
               text={'Export or import your data'}
               actions={
-                <Grid container gap={1}>
+                <GridLegacy container gap={1}>
                   <Button
                     startIcon={<DownloadIcon />}
                     variant="contained"
@@ -265,7 +265,7 @@ export function UserInfo({
                   >
                     Import
                   </Button>
-                </Grid>
+                </GridLegacy>
               }
             />
           </Stack>

@@ -3,7 +3,7 @@ import {
   Box,
   Divider,
   Drawer as MuiDrawer,
-  Grid,
+  GridLegacy,
   IconButton,
   MenuItem,
   MenuList,
@@ -121,16 +121,16 @@ export default function Drawer({
         ) : null}
 
         {isLoggedIn && !isNavLinkSmall ? (
-          <Grid sx={{ justifyContent: 'space-between' }}>
-            <Grid item>
+          <GridLegacy sx={{ justifyContent: 'space-between' }}>
+            <GridLegacy item>
               <MenuItem sx={{ mt: 0.5 }}>
                 <Typography noWrap sx={{ fontWeight: 500 }}>
                   {username}
                 </Typography>
               </MenuItem>
-            </Grid>
+            </GridLegacy>
 
-            <Grid item>
+            <GridLegacy item>
               <Button
                 fullWidth
                 size="small"
@@ -141,16 +141,16 @@ export default function Drawer({
               >
                 Log out
               </Button>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         ) : undefined}
       </MenuList>
       {!isNavLinkSmall ? (
-        <Grid container sx={{ flexGrow: 1, justifyContent: 'center' }}>
-          <Grid item sx={{ alignSelf: 'flex-end' }}>
+        <GridLegacy container sx={{ flexGrow: 1, justifyContent: 'center' }}>
+          <GridLegacy item sx={{ alignSelf: 'flex-end' }}>
             <Footer toggleDrawer={toggleDrawer} />
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       ) : undefined}
     </>
   );

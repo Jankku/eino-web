@@ -4,7 +4,7 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  Grid,
+  GridLegacy,
   Typography,
 } from '@mui/material';
 import BookForm from './BookForm';
@@ -67,14 +67,14 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             {loadBook.isLoading ? (
-              <Grid
+              <GridLegacy
                 container
                 sx={{
                   justifyContent: 'center',
                 }}
               >
                 <CircularProgress />
-              </Grid>
+              </GridLegacy>
             ) : null}
 
             {loadBook.isLoadingError ? (
@@ -84,7 +84,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <CoverDialog
               visible={showCovers}
               closeDialog={() => setShowCovers((prev) => !prev)}
-              query={formatBookSearchQuery(getValues('title'), getValues('author'))}
+              query={formatBookSearchQuery(getValues('title')!, getValues('author')!)}
               onSelect={onSelectCover}
             />
           </DialogContent>

@@ -1,8 +1,8 @@
-import { Grid, Typography } from '@mui/material';
+import { GridLegacy, Typography } from '@mui/material';
 
 export default function ListEmpty() {
   return (
-    <Grid
+    <GridLegacy
       container
       sx={{
         flexDirection: 'column',
@@ -10,10 +10,10 @@ export default function ListEmpty() {
         pt: 3,
       }}
     >
-      <Grid item>
+      <GridLegacy item>
         <Typography variant="h6">List empty</Typography>
-      </Grid>
-      <Grid item>
+      </GridLegacy>
+      <GridLegacy item>
         <Typography
           sx={{
             pt: 1,
@@ -21,7 +21,7 @@ export default function ListEmpty() {
         >
           Create a new item to get started!
         </Typography>
-      </Grid>
-    </Grid>
+      </GridLegacy>
+    </GridLegacy>
   );
 }

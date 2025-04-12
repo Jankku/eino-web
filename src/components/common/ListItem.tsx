@@ -5,7 +5,7 @@ import {
   CardActionArea,
   CardContent,
   Chip,
-  Grid,
+  GridLegacy,
   Stack,
   Typography,
   useColorScheme,
@@ -56,8 +56,8 @@ export default function ListItem({
     >
       <CardActionArea disabled={disableClick} component="div" tabIndex={-1} role={undefined}>
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
-          <Grid container item zeroMinWidth sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
-            <Grid
+          <GridLegacy container item zeroMinWidth sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
+            <GridLegacy
               container
               sx={(theme) => ({
                 width: '10em',
@@ -80,9 +80,9 @@ export default function ListItem({
                   style={{ objectFit: 'cover' }}
                 />
               ) : null}
-            </Grid>
-            <Grid container item zeroMinWidth sx={{ flexDirection: 'column', ml: 1, mt: 1 }}>
-              <Grid container sx={{ alignContent: 'flex-start', flex: '1 1 0px' }}>
+            </GridLegacy>
+            <GridLegacy container item zeroMinWidth sx={{ flexDirection: 'column', ml: 1, mt: 1 }}>
+              <GridLegacy container sx={{ alignContent: 'flex-start', flex: '1 1 0px' }}>
                 <Stack direction="row" spacing={0.5} sx={{ mb: 1 }}>
                   <Chip
                     icon={<StarIcon />}
@@ -106,9 +106,9 @@ export default function ListItem({
                 <Typography noWrap variant="body2" sx={{ width: '100%', color: 'text.secondary' }}>
                   {stringOrPlaceholder(detailText)}
                 </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+              </GridLegacy>
+            </GridLegacy>
+          </GridLegacy>
         </CardContent>
         <Box
           component={Link}

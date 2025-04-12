@@ -3,9 +3,10 @@ import { createTheme, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mu
 import { StyledEngineProvider } from '@mui/system';
 import { blue, red } from '@mui/material/colors';
 import '../css/fonts.css';
+import type {} from '@mui/material/themeCssVarsAugmentation';
 
 const theme = createTheme({
-  cssVariables: { disableCssColorScheme: true, colorSchemeSelector: 'class' },
+  cssVariables: { colorSchemeSelector: 'class' },
   colorSchemes: {
     light: {
       palette: {
@@ -91,7 +92,7 @@ const theme = createTheme({
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <StyledEngineProvider injectFirst>
-      <MuiThemeProvider theme={theme} defaultMode="dark" noSsr>
+      <MuiThemeProvider theme={theme} defaultMode="dark" noSsr forceThemeRerender>
         <CssBaseline enableColorScheme />
         {children}
       </MuiThemeProvider>

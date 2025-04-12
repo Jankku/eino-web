@@ -1,4 +1,4 @@
-import { Grid, IconButton, InputAdornment } from '@mui/material';
+import { GridLegacy, IconButton, InputAdornment } from '@mui/material';
 import { score } from '../../models/score';
 import { movieStatus } from '../../models/movieStatus';
 import { AddCircle } from '@mui/icons-material';
@@ -13,7 +13,7 @@ type MovieFormProps = {
 export default function MovieForm({ onShowPosters }: MovieFormProps) {
   return (
     <>
-      <Grid container>
+      <GridLegacy container>
         <TextField margin="dense" name="title" label="Title" />
         <TextField margin="dense" name="studio" label="Studio" />
         <TextField margin="dense" name="director" label="Director" />
@@ -34,31 +34,31 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
-        <Grid
+        <GridLegacy
           container
           sx={{
             gap: 1,
             justifyContent: 'space-between',
           }}
         >
-          <Grid
+          <GridLegacy
             item
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="duration" label="Duration in minutes" />
-          </Grid>
-          <Grid
+          </GridLegacy>
+          <GridLegacy
             item
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="year" label="Released" />
-          </Grid>
-        </Grid>
-        <Grid
+          </GridLegacy>
+        </GridLegacy>
+        <GridLegacy
           container
           sx={{
             gap: 1,
@@ -67,16 +67,16 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
         >
           <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
-        </Grid>
-      </Grid>
-      <Grid
+        </GridLegacy>
+      </GridLegacy>
+      <GridLegacy
         container
         sx={{
           justifyContent: 'space-between',
           mt: 2,
         }}
       >
-        <Grid item>
+        <GridLegacy item>
           <Select name="score" label="Score">
             {score.map((item, itemIdx) => (
               <option key={itemIdx} value={item.value}>
@@ -84,8 +84,8 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
               </option>
             ))}
           </Select>
-        </Grid>
-        <Grid item>
+        </GridLegacy>
+        <GridLegacy item>
           <Select name="status" label="Status">
             {movieStatus.map((item, itemIdx) => {
               return (
@@ -95,8 +95,8 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
               );
             })}
           </Select>
-        </Grid>
-      </Grid>
+        </GridLegacy>
+      </GridLegacy>
     </>
   );
 }

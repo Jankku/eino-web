@@ -60,7 +60,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
             <PosterDialog
               visible={showPosters}
               closeDialog={() => setShowPosters((prev) => !prev)}
-              query={getValues('title')}
+              query={getValues('title')!}
               onSelect={onSelectPoster}
             />
           </DialogContent>

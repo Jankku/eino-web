@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { GridLegacy } from '@mui/material';
 
 type StatusProgressBarItem = {
   title: string;
@@ -13,10 +13,10 @@ type StatusProgressBarProps = {
 
 export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
   return (
-    <Grid container aria-label="Status bar" sx={{ flexWrap: 'nowrap' }}>
+    <GridLegacy container aria-label="Status bar" sx={{ flexWrap: 'nowrap' }}>
       {total ? (
         data.map((item, index) => (
-          <Grid
+          <GridLegacy
             key={index}
             item
             aria-label={`${item.title}, ${item.value} of ${total}`}
@@ -26,10 +26,10 @@ export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
               height: '10px',
               backgroundColor: item.color,
             }}
-          ></Grid>
+          ></GridLegacy>
         ))
       ) : (
-        <Grid
+        <GridLegacy
           item
           aria-label="No data"
           style={{
@@ -37,8 +37,8 @@ export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
             height: '10px',
             backgroundColor: '#858585',
           }}
-        ></Grid>
+        ></GridLegacy>
       )}
-    </Grid>
+    </GridLegacy>
   );
 }

@@ -25,11 +25,11 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
         (theme) =>
           isActive
             ? {
-                bgcolor: `${theme.palette.primary.light} !important`,
-                color: `${theme.palette.primary.contrastText} !important`,
+                bgcolor: `${theme.vars.palette.primary.light} !important`,
+                color: `${theme.vars.palette.primary.contrastText} !important`,
               }
             : {
-                color: `${theme.palette.text.primary}`,
+                color: `${theme.vars.palette.text.primary}`,
               },
       ]}
     >

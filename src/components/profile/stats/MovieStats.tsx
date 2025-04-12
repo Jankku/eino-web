@@ -1,4 +1,11 @@
-import { Card, CardContent, CircularProgress, Grid, ImageList, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+  GridLegacy,
+  ImageList,
+  Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { StatsStatusTable } from './StatsStatusTable';
 import { BarChart } from './BarChart';
@@ -56,20 +63,20 @@ export function MovieStats({ stats }: MovieStatsProps) {
             }}
           >
             <h2>Movie stats</h2>
-            <Grid
+            <GridLegacy
               container
               columns={1}
               sx={{
                 rowGap: 2,
               }}
             >
-              <Grid
+              <GridLegacy
                 container
                 sx={{
                   rowGap: 1,
                 }}
               >
-                <Grid
+                <GridLegacy
                   component="dl"
                   container
                   sx={{
@@ -82,8 +89,8 @@ export function MovieStats({ stats }: MovieStatsProps) {
                     text={`${formatter.format(stats.watch_time)} hours`}
                   />
                   <StatsItem title={'Average score:'} text={stats.score_average} />
-                </Grid>
-                <Grid
+                </GridLegacy>
+                <GridLegacy
                   container
                   item
                   sx={{
@@ -93,13 +100,13 @@ export function MovieStats({ stats }: MovieStatsProps) {
                 >
                   <StatusProgressBar data={progressValues} total={stats.count.all} />
                   <StatsStatusTable stats={stats} statuses={statuses} />
-                </Grid>
-              </Grid>
+                </GridLegacy>
+              </GridLegacy>
               <BarChart labels={labels} data={scoreCounts} onClick={onBarClick} />
               <Typography variant="body2" color="textSecondary" width="100%" textAlign="center">
                 Click on a bar to view movies with that score
               </Typography>
-            </Grid>
+            </GridLegacy>
           </Box>
         </CardContent>
       </Card>
@@ -109,14 +116,14 @@ export function MovieStats({ stats }: MovieStatsProps) {
         closeDialog={toggleListDialog}
       >
         {isLoading ? (
-          <Grid
+          <GridLegacy
             container
             sx={{
               justifyContent: 'center',
             }}
           >
             <CircularProgress />
-          </Grid>
+          </GridLegacy>
         ) : null}
         {!isLoading && data?.length ? (
           <ImageList cols={1} gap={12}>
