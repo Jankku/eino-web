@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { formatItemDates } from '../../utils/itemDateUtil';
 import { api } from '../api';
 import { getBookDetailQuery } from './useBookDetail';
 import { Book, BookWithId } from '../../models/book';
@@ -7,7 +6,7 @@ import { ApiResponse } from '../types';
 
 const updateBookQuery = async (bookId: string, book: Book) => {
   const res = await api
-    .put(`api/v1/list/books/update/${bookId}`, { json: formatItemDates(book) })
+    .put(`api/v1/list/books/update/${bookId}`, { json: book })
     .json<ApiResponse<BookWithId[]>>();
   return res.results[0];
 };

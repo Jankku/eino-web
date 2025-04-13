@@ -65,8 +65,8 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
             justifyContent: 'space-between',
           }}
         >
-          <DatePicker name="start_date" label="Start date" sx={{ marginTop: 1, flexGrow: 1 }} />
-          <DatePicker name="end_date" label="End date" sx={{ marginTop: 1, flexGrow: 1 }} />
+          <DatePicker name="start_date" label="Started" sx={{ marginTop: 1, flexGrow: 1 }} />
+          <DatePicker name="end_date" label="Finished" sx={{ marginTop: 1, flexGrow: 1 }} />
         </GridLegacy>
       </GridLegacy>
       <GridLegacy

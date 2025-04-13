@@ -1,5 +1,6 @@
 import { Box, Button, capitalize, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
+import BookIcon from '@mui/icons-material/Book';
 import { DateTime } from 'luxon';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import EditBookDialog from '../../components/books/EditBookDialog';
@@ -31,11 +32,19 @@ export default function BookDetail() {
   const updateBook = useUpdateBook(bookId);
   const deleteBook = useDeleteBook();
 
+  const isReading = data.status === 'reading';
+  const isPlanned = data.status === 'planned';
   const isCompleted = data.status === 'completed';
 
+  const diffInDays = DateTime.fromISO(data.end_date).diff(
+    DateTime.fromISO(data.start_date),
+    'days',
+  ).days;
+  const diffLongerThanYear = diffInDays >= 365;
+
   const readingTimeRelative = DateTime.fromISO(data.end_date)
-    .diff(DateTime.fromISO(data.start_date), 'days')
-    .toHuman();
+    .diff(DateTime.fromISO(data.start_date), diffLongerThanYear ? 'years' : 'days')
+    .toHuman({ maximumFractionDigits: 0 });
 
   const endDateRelativeToNow = DateTime.fromISO(data.end_date).toRelative();
 
@@ -59,6 +68,26 @@ export default function BookDetail() {
     } catch {
       showErrorSnackbar('Failed to copy');
     }
+  };
+
+  const onReading = () => {
+    const isoDatetime = DateTime.now().toISO();
+    updateBook.mutate(
+      bookSchema.parse({
+        ...data,
+        status: 'reading',
+        start_date: isoDatetime,
+        end_date: isoDatetime,
+      }),
+      {
+        onSuccess: () => {
+          showSuccessSnackbar('Book marked as reading');
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to mark book as reading');
+        },
+      },
+    );
   };
 
   const onComplete = (score: number) => {
@@ -123,7 +152,7 @@ export default function BookDetail() {
       }
       actions={
         <>
-          {!isCompleted ? (
+          {isReading ? (
             <Button
               variant="contained"
               color="success"
@@ -131,6 +160,16 @@ export default function BookDetail() {
               startIcon={<DoneIcon />}
             >
               Complete
+            </Button>
+          ) : undefined}
+          {isPlanned ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onReading}
+              startIcon={<BookIcon />}
+            >
+              Start
             </Button>
           ) : undefined}
           <Button

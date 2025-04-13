@@ -1,5 +1,4 @@
 import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
-import { formatItemDates } from '../../utils/itemDateUtil';
 import { api } from '../api';
 import { MovieWithId } from '../../models/movie';
 import { ApiResponse } from '../types';
@@ -8,7 +7,7 @@ export const getMovieDetailQuery = async (movieId: string) => {
   const res = await api
     .get(`api/v1/list/movies/movie/${movieId}`)
     .json<ApiResponse<MovieWithId[]>>();
-  return formatItemDates(res.results[0]);
+  return res.results[0];
 };
 
 export const useMovieDetail = (movieId: string) => {
