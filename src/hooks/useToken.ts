@@ -6,7 +6,6 @@ type DecodedToken = {
   userId: string;
   username: string;
   role: 'admin' | 'basic' | 'demo';
-  email: string | null;
   is2FAEnabled: boolean;
 };
 
@@ -50,7 +49,6 @@ export function useToken() {
   const decodedToken = useMemo(() => (token ? (jwtDecode(token) as DecodedToken) : null), [token]);
 
   const username = decodedToken?.username || '';
-  const email = decodedToken?.email;
   const role = decodedToken?.role;
   const is2FAEnabled = decodedToken?.is2FAEnabled || false;
   const isLoggedIn = useMemo(
@@ -86,7 +84,6 @@ export function useToken() {
     token,
     refreshToken,
     username,
-    email,
     role,
     isLoggedIn,
     is2FAEnabled,
