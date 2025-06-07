@@ -1,7 +1,6 @@
 import { Avatar, capitalize, Chip, Container } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
   GridColDef,
   GridActionsCellItem,
   GridRowModes,
@@ -10,6 +9,7 @@ import {
   GridRowId,
   GridRowModesModel,
   GridCellParams,
+  GridInitialState,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import SaveIcon from '@mui/icons-material/Save';
@@ -28,7 +28,6 @@ import {
   dateValueFormatter,
 } from '../../utils/tableUtils';
 import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser';
-import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
 import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
 import { useChangeUserState } from '../../data/admin/useChangeUserState';
@@ -41,11 +40,9 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   }
 };
 
-const slots = { toolbar: GridToolbar };
-
 const slotProps = { toolbar: { showQuickFilter: true } };
 
-const initialState: GridInitialStateCommunity = {
+const initialState: GridInitialState = {
   columns: {
     columnVisibilityModel: {
       email_verified_on: false,
@@ -252,9 +249,7 @@ export default function Users() {
                 key={0}
                 icon={<SaveIcon />}
                 label="Save"
-                sx={{
-                  color: 'primary.main',
-                }}
+                color="primary"
                 onClick={handleSaveClick(id)}
               />,
               <GridActionsCellItem
@@ -299,6 +294,7 @@ export default function Users() {
         <Box height={500}>
           <DataGrid
             disableRowSelectionOnClick
+            showToolbar
             rows={rows}
             columns={columns}
             getRowId={getRowId}
@@ -309,7 +305,6 @@ export default function Users() {
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
             onProcessRowUpdateError={processRowUpdateError}
-            slots={slots}
             slotProps={slotProps}
             initialState={initialState}
           />

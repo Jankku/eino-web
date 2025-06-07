@@ -29,7 +29,7 @@ export const bookWithIdSchema = bookSchema.extend({
 });
 
 export type Book = z.infer<typeof bookSchema>;
-
+export type BookFormSchema = Omit<Book, 'status' | 'score' | 'start_date' | 'end_date'>;
 export type BookWithId = z.infer<typeof bookWithIdSchema>;
 
 export const getBookDefaults = () => {
