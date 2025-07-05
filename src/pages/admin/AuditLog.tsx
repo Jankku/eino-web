@@ -1,19 +1,16 @@
 import { capitalize, Chip, Container } from '@mui/material';
-import { DataGrid, GridToolbar, GridColDef, GridRowId } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowId, GridInitialState } from '@mui/x-data-grid';
 import { useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
 import { dateValueFormatter, jsonValueFormatter } from '../../utils/tableUtils';
-import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
 import DiffDialog from '../../components/admin/DiffDialog';
 import { useState } from 'react';
 import { underscoreToSpace } from '../../utils/stringUtil';
 
-const slots = { toolbar: GridToolbar };
-
 const slotProps = { toolbar: { showQuickFilter: true } };
 
-const initialState: GridInitialStateCommunity = {
+const initialState: GridInitialState = {
   density: 'compact',
   sorting: { sortModel: [{ field: 'created_on', sort: 'desc' }] },
   pagination: {
@@ -75,9 +72,9 @@ export default function AuditLog() {
         <Box height={500}>
           <DataGrid
             disableRowSelectionOnClick
+            showToolbar
             rows={data}
             columns={columns}
-            slots={slots}
             slotProps={slotProps}
             initialState={initialState}
             onCellDoubleClick={({ field, id }) => {

@@ -1,7 +1,6 @@
 import { Button, capitalize, Chip, Container, Stack } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
   GridColDef,
   GridRowId,
   GridActionsCellItem,
@@ -9,10 +8,10 @@ import {
   GridRowModes,
   GridEventListener,
   GridRowEditStopReasons,
+  GridInitialState,
 } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import { dateToISOStringParser, dateValueFormatter } from '../../utils/tableUtils';
-import { GridInitialStateCommunity } from '@mui/x-data-grid/models/gridStateCommunity';
 import Head from '../../components/common/Head';
 import { useAllBulletins } from '../../data/admin/useAllBulletins';
 import AddIcon from '@mui/icons-material/Add';
@@ -38,11 +37,9 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   }
 };
 
-const slots = { toolbar: GridToolbar };
-
 const slotProps = { toolbar: { showQuickFilter: true } };
 
-const initialState: GridInitialStateCommunity = {
+const initialState: GridInitialState = {
   density: 'compact',
   sorting: { sortModel: [{ field: 'created_on', sort: 'desc' }] },
   columns: {
@@ -227,9 +224,7 @@ export default function Bulletins() {
                 key={0}
                 icon={<SaveIcon />}
                 label="Save"
-                sx={{
-                  color: 'primary.main',
-                }}
+                color="primary"
                 onClick={handleSaveClick(id)}
               />,
               <GridActionsCellItem
@@ -283,6 +278,7 @@ export default function Bulletins() {
         <Box height={500}>
           <DataGrid
             disableRowSelectionOnClick
+            showToolbar
             rows={data}
             columns={columns}
             getRowId={getRowId}
@@ -292,7 +288,6 @@ export default function Bulletins() {
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
             onProcessRowUpdateError={processRowUpdateError}
-            slots={slots}
             slotProps={slotProps}
             initialState={initialState}
           />
