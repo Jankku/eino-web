@@ -8,6 +8,7 @@ const columns = {
     md: 2,
     lg: 2,
     xl: 3,
+    xxl: 4,
   },
   [listItemTypes.IMAGE]: {
     xs: 2,
@@ -15,12 +16,14 @@ const columns = {
     md: 3,
     lg: 4,
     xl: 5,
+    xxl: 5,
   },
 };
 
 export function useColumnCalculator(itemType?: string) {
   const { breakpoints } = useTheme();
 
+  const matchesXxl = useMediaQuery(breakpoints.only('xxl'));
   const matchesXl = useMediaQuery(breakpoints.only('xl'));
   const matchesLg = useMediaQuery(breakpoints.only('lg'));
   const matchesMd = useMediaQuery(breakpoints.up('md'));
@@ -29,14 +32,16 @@ export function useColumnCalculator(itemType?: string) {
 
   // For home page
   if (!itemType) {
-    if (matchesXl) return 3;
+    if (matchesXxl) return 3;
+    else if (matchesXl) return 3;
     else if (matchesLg) return 3;
     else if (matchesMd) return 3;
     else if (matchesSm) return 2;
     else if (matchesXs) return 1;
   }
 
-  if (matchesXl) return columns[itemType!].xl;
+  if (matchesXxl) return columns[itemType!].xxl;
+  else if (matchesXl) return columns[itemType!].xl;
   else if (matchesLg) return columns[itemType!].lg;
   else if (matchesMd) return columns[itemType!].md;
   else if (matchesSm) return columns[itemType!].sm;

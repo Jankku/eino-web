@@ -25,7 +25,7 @@ export default function ListDetailLayout({ list, detail, id }: ListDetailLayoutP
         }}
       >
         <GridLegacy item sx={{ minWidth: { xs: '55%', lg: '65%' } }}>
-          <PanelContainer>{list}</PanelContainer>
+          <PanelContainer list>{list}</PanelContainer>
         </GridLegacy>
         <GridLegacy item sx={{ minWidth: 'max(35%, 400px)' }}>
           <PanelContainer>{detail}</PanelContainer>

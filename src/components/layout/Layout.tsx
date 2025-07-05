@@ -6,16 +6,19 @@ import OfflineAlert from '../common/OfflineAlert';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import Bulletins from '../common/Bulletins';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 export default function Layout() {
   const isMobile = useIsMobile();
+  const { breakpoints } = useTheme();
+  const matchesXxl = useMediaQuery(breakpoints.only('xxl'));
   const [drawerOpen, setDrawerOpen] = useToggle(false);
   const [drawerExpanded, setDrawerExpansed] = useLocalStorage('drawerExpanded', false);
   const toggleDrawer = useCallback(() => setDrawerOpen(), [setDrawerOpen]);
 
   const drawerWidth = useMemo(
-    () => (isMobile ? 240 : !drawerExpanded ? 64 : 210),
-    [isMobile, drawerExpanded],
+    () => (isMobile ? 240 : !drawerExpanded ? 64 : matchesXxl ? 240 : 210),
+    [isMobile, drawerExpanded, matchesXxl],
   );
 
   return (
