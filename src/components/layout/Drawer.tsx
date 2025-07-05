@@ -125,7 +125,7 @@ export default function Drawer({
         {isLoggedIn && !isNavLinkSmall ? (
           <GridLegacy sx={{ justifyContent: 'space-between' }}>
             <GridLegacy item>
-              <MenuItem sx={{ mt: 0.5 }}>
+              <MenuItem sx={{ mt: 0.5, paddingY: 1.2, paddingX: 2 }}>
                 <Typography noWrap sx={{ fontWeight: 500 }}>
                   {username}
                 </Typography>
@@ -135,7 +135,7 @@ export default function Drawer({
             <GridLegacy item>
               <Button
                 fullWidth
-                size="small"
+                size="medium"
                 variant="outlined"
                 color="secondary"
                 startIcon={<LogoutIcon />}
