@@ -25,7 +25,7 @@ export const bookSchema = z.object({
 });
 
 export const bookWithIdSchema = bookSchema.extend({
-  book_id: z.string().uuid(),
+  book_id: z.uuid(),
 });
 
 export type Book = z.infer<typeof bookSchema>;

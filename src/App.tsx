@@ -85,7 +85,7 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools /> */}
+      <ReactQueryDevtools />
       <WrappedApp />
     </QueryClientProvider>
   );
