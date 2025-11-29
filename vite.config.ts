@@ -11,7 +11,11 @@ export default defineConfig(() => ({
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
     checker({ typescript: { tsconfigPath: 'tsconfig.app.json' }, overlay: false }),
     compress({ algorithm: 'brotliCompress', verbose: false }),
   ],
