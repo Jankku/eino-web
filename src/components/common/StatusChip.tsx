@@ -15,7 +15,7 @@ export default function StatusChip({
       enterTouchDelay={0}
       leaveTouchDelay={50_000}
       arrow
-      title={<Typography variant="body2">{tooltipText}</Typography>}
+      title={tooltipText ? <Typography variant="body2">{tooltipText}</Typography> : undefined}
       placement="top-start"
       slotProps={{
         popper: {

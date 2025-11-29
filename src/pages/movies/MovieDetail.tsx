@@ -34,12 +34,21 @@ export default function MovieDetail() {
 
   const formattedStatus = capitalize(data.status);
 
-  const statusChipText =
+  const statusText =
     (isCompleted || data.status === 'dropped') && data.end_date
       ? `${formattedStatus} ${endDateRelativeToNow}`
       : data.status === 'on-hold' && data.end_date
         ? `${formattedStatus} for ${endDateRelativeToNow?.replace('ago', '')}`
         : formattedStatus;
+
+  const start = DateTime.fromISO(data.start_date);
+  const end = DateTime.fromISO(data.end_date);
+  const sameDay = start.hasSame(end, 'day');
+  const statusTooltipText = isCompleted
+    ? `Watched: ${
+        sameDay ? start.toLocaleString() : `${start.toLocaleString()}–${end.toLocaleString()}`
+      }`
+    : '';
 
   const overOneHour = data.duration >= 60;
   const overTwoHours = data.duration >= 120;
@@ -97,12 +106,8 @@ export default function MovieDetail() {
             <ScoreChip score={data.score} />
             <StatusChip
               status={data.status}
-              chipText={statusChipText}
-              tooltipText={`Watched: ${
-                data.start_date === data.end_date
-                  ? DateTime.fromISO(data.start_date).toLocaleString()
-                  : `${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()}`
-              }`}
+              chipText={statusText}
+              tooltipText={statusTooltipText}
             />
           </Stack>
           <Stack mb={2}>
