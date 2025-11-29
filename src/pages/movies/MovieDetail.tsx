@@ -1,6 +1,6 @@
 import { Box, Button, capitalize, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import EditMovieDialog from '../../components/movies/EditMovieDialog';
 import DetailItem from '../../components/common/DetailItem';
@@ -16,8 +16,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import CompleteDialog from '../../components/common/CompleteDialog';
 import ScoreChip from '../../components/common/ScoreChip';
 import StatusChip from '../../components/common/StatusChip';
-
-const numberFormatter = new Intl.NumberFormat();
 
 export default function MovieDetail() {
   const navigate = useNavigate();
@@ -42,6 +40,15 @@ export default function MovieDetail() {
       : data.status === 'on-hold' && data.end_date
         ? `${formattedStatus} for ${endDateRelativeToNow?.replace('ago', '')}`
         : formattedStatus;
+
+  const overOneHour = data.duration >= 60;
+  const overTwoHours = data.duration >= 120;
+  const noMinutes = data.duration % 60 === 0;
+  const hourPart = overOneHour ? `h '${overTwoHours ? 'hours' : 'hour'}'` : undefined;
+  const minutePart = noMinutes ? undefined : `m 'minutes'`;
+  const duration = Duration.fromObject({ minutes: data.duration }).toFormat(
+    [hourPart, minutePart].filter(Boolean).join(', '),
+  );
 
   const copyToClipboard = async () => {
     try {
@@ -107,12 +114,7 @@ export default function MovieDetail() {
           <Box component="dl">
             {data.writer ? <DetailItem title="Writer" value={data.writer} /> : undefined}
             {data.studio ? <DetailItem title="Studio" value={data.studio} /> : undefined}
-            {data.duration ? (
-              <DetailItem
-                title="Duration"
-                value={`${numberFormatter.format(data.duration)} minutes`}
-              />
-            ) : undefined}
+            {data.duration ? <DetailItem title="Duration" value={duration} /> : undefined}
             {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
           </Box>
         </>
