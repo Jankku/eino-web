@@ -114,7 +114,7 @@ export default function Books() {
                   item
                   component="ul"
                   aria-label="Actions"
-                  sx={{ gap: 1, p: 0, listStyle: 'none' }}
+                  sx={{ p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
                     <Box component="li" sx={{ display: 'inline-flex' }}>
