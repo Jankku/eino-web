@@ -123,11 +123,16 @@ export default function Books() {
                       </ResponsiveButton>
                     </Box>
                   ) : null}
-                  <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <ResponsiveButton icon={<QrCodeScannerIcon />} onClick={() => navigate('/scan')}>
-                      Scan
-                    </ResponsiveButton>
-                  </Box>
+                  {isMobile ? (
+                    <Box component="li" sx={{ display: 'inline-flex' }}>
+                      <ResponsiveButton
+                        icon={<QrCodeScannerIcon />}
+                        onClick={() => navigate('/scan')}
+                      >
+                        Scan
+                      </ResponsiveButton>
+                    </Box>
+                  ) : null}
                   <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SortButton fieldOptions={bookSortFields} onChange={onSort} />
                   </Box>
