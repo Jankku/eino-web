@@ -1,7 +1,6 @@
 import { lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useCustomSnackbar } from './hooks/useCustomSnackbar';
 import Home from './pages/Home';
 import Layout from './components/layout/Layout';
@@ -18,6 +17,7 @@ const LoginVerify2FA = lazy(() => import('./pages/authentication/LoginVerify2FA'
 const ForgotPassword = lazy(() => import('./pages/authentication/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/authentication/ResetPassword'));
 const Books = lazy(() => import('./pages/books/Books'));
+const BookScanner = lazy(() => import('./pages/books/BookScanner'));
 const BookDetail = lazy(() => import('./pages/books/BookDetail'));
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const MovieDetail = lazy(() => import('./pages/movies/MovieDetail'));
@@ -49,7 +49,7 @@ export default function App() {
         }),
         defaultOptions: {
           queries: {
-            staleTime: 20 * 1000,
+            staleTime: 60 * 1000, // 60 seconds
             retry: 2,
           },
         },
@@ -84,7 +84,6 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
       <WrappedApp />
     </QueryClientProvider>
   );
@@ -148,6 +147,16 @@ function WrappedApp() {
           />
           <Route path="/logout" element={<Logout />} />
           <Route path="/about" element={<About />} />
+          <Route
+            path="/scan"
+            element={
+              <RequireAuth>
+                <PageBoundary>
+                  <BookScanner />
+                </PageBoundary>
+              </RequireAuth>
+            }
+          />
           <Route
             path="/settings"
             element={

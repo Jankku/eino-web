@@ -32,6 +32,7 @@ import { useIsMobile } from '../../hooks/useIsMobile.ts';
 const authRouteArray = [
   { name: 'Register', path: '/register', icon: <VpnKeyIcon /> },
   { name: 'Login', path: '/login', icon: <LoginIcon /> },
+  { name: 'About', path: '/about', icon: <InfoIcon /> },
 ];
 
 const routeArray = [

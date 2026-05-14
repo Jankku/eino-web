@@ -4,15 +4,14 @@ import { z } from 'zod';
 export const zodFields = {
   username: z
     .string({
-      required_error: 'Username is required',
+      error: (issue) => (issue.input === undefined ? 'Username is required' : 'Invalid username'),
     })
     .trim()
     .min(3, 'Username should be at least 3 characters long')
     .max(255, 'Username should be at most 255 characters long'),
   email: z
-    .string()
-    .trim()
     .email('Invalid email')
+    .trim()
     .max(255, { message: 'Email should be at most 255 characters long' }),
   optionalEmail: z
     .string()
@@ -22,12 +21,14 @@ export const zodFields = {
     .nullable(),
   password: z
     .string({
-      required_error: 'Password is required',
+      error: (issue) => (issue.input === undefined ? 'Password is required' : 'Invalid password'),
     })
     .min(8, 'Password should be at least 8 characters long')
     .max(255, 'Password should be at most 255 characters long'),
   otp: z
-    .string({ required_error: 'OTP is required' })
+    .string({
+      error: (issue) => (issue.input === undefined ? 'OTP is required' : 'Invalid OTP'),
+    })
     .trim()
     .min(6, 'OTP should be 6 digits long')
     .max(6, 'OTP should be 6 digits long'),
@@ -37,7 +38,7 @@ export const zodFields = {
     .min(0)
     .max(6, { message: 'OTP should be 6 digits long' })
     .nullable(),
-  optionalDate: z.string().datetime({ offset: true }).nullable(),
+  optionalDate: z.iso.datetime({ offset: true }).nullable(),
 };
 
 export const errorSchema = z.object({

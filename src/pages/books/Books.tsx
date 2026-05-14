@@ -15,8 +15,9 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
-import { Outlet, useParams, useSearchParams } from 'react-router';
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router';
 import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
@@ -30,6 +31,7 @@ import { useBookCount } from '../../data/books/useBookCount';
 
 export default function Books() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { bookId } = useParams();
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [searchparams, setSearchParams] = useSearchParams();
@@ -112,12 +114,22 @@ export default function Books() {
                   item
                   component="ul"
                   aria-label="Actions"
-                  sx={{ gap: 1, p: 0, listStyle: 'none' }}
+                  sx={{ p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
                     <Box component="li" sx={{ display: 'inline-flex' }}>
                       <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
                         Create
+                      </ResponsiveButton>
+                    </Box>
+                  ) : null}
+                  {isMobile ? (
+                    <Box component="li" sx={{ display: 'inline-flex' }}>
+                      <ResponsiveButton
+                        icon={<QrCodeScannerIcon />}
+                        onClick={() => navigate('/scan')}
+                      >
+                        Scan
                       </ResponsiveButton>
                     </Box>
                   ) : null}

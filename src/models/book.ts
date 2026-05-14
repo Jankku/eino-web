@@ -6,10 +6,7 @@ export const bookSchema = z.object({
   title: z.string().min(0).max(255).trim().default(''),
   author: z.string().min(0).max(255).trim().default(''),
   publisher: z.string().min(0).max(255).trim().default(''),
-  image_url: z.union([
-    z.string().url().trim().startsWith('https').nullable().default(null),
-    z.literal(''),
-  ]),
+  image_url: z.union([z.url().trim().nullable().default(null), z.literal('')]),
   pages: z.coerce.number().nonnegative().default(0),
   year: z.coerce.number().nonnegative().default(DateTime.now().year),
   status: z.enum(['reading', 'completed', 'on-hold', 'dropped', 'planned']),
@@ -25,14 +22,14 @@ export const bookSchema = z.object({
 });
 
 export const bookWithIdSchema = bookSchema.extend({
-  book_id: z.string().uuid(),
+  book_id: z.uuid(),
 });
 
 export type Book = z.infer<typeof bookSchema>;
-
+export type BookFormSchema = Omit<Book, 'status' | 'score' | 'start_date' | 'end_date'>;
 export type BookWithId = z.infer<typeof bookWithIdSchema>;
 
-export const getBookDefaults = () => {
+export const getBookDefaults = (initialValues?: Partial<Book>) => {
   return bookSchema.parse({
     isbn: '',
     title: '',
@@ -47,5 +44,6 @@ export const getBookDefaults = () => {
     language_code: '',
     start_date: DateTime.now().toISO(),
     end_date: DateTime.now().toISO(),
+    ...initialValues,
   });
 };

@@ -5,7 +5,7 @@ import { zodFields } from '../../utils/zodUtil';
 import { z } from 'zod';
 
 export const updateUserSchema = z.object({
-  user_id: z.string().uuid(),
+  user_id: z.uuid(),
   username: zodFields.username,
   email: zodFields.optionalEmail,
   email_verified_on: zodFields.optionalDate,
