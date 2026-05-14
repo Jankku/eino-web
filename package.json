@@ -13,6 +13,7 @@
     "test:e2e": "playwright test",
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write ./src",
     "prepare": "husky"
   },
@@ -28,7 +29,6 @@
     "@mui/x-data-grid": "^8.27.5",
     "@mui/x-date-pickers": "^8.27.2",
     "@tanstack/react-query": "^5.96.2",
-    "@tanstack/react-query-devtools": "^5.96.2",
     "@uidotdev/usehooks": "^2.4.1",
     "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",

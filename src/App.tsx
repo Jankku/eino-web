@@ -1,7 +1,6 @@
 import { lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useCustomSnackbar } from './hooks/useCustomSnackbar';
 import Home from './pages/Home';
 import Layout from './components/layout/Layout';
@@ -85,7 +84,6 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
       <WrappedApp />
     </QueryClientProvider>
   );

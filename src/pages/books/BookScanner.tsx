@@ -1,53 +1,47 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Quagga from '@ericblade/quagga2';
 import { BarcodeScanner } from '../../components/common/BarcodeScanner';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  DialogActions,
-  DialogContent,
-  Fab,
-  Grid,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Container, Fab, FormControl, InputLabel, Select } from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-import FlashOffIcon from '@mui/icons-material/FlashOff';
-import BaseDialog from '../../components/common/BaseDialog';
 import { useBookIsbnSearch } from '../../data/books/useBookIsbnSearch';
-import DetailItem from '../../components/common/DetailItem';
-import { languageCodeToName } from '../../utils/languages';
-import { useAddBook } from '../../data/books/useAddBook';
-import { Book, bookSchema, getBookDefaults } from '../../models/book';
-import { useLocation, useNavigate } from 'react-router';
+import { Book } from '../../models/book';
+import { useNavigate } from 'react-router';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
+import ScanBookAddDialog from '../../components/books/ScanBookAddDialog';
+import { stopQuaggaCamera } from '../../utils/quaggaUtil';
 
-export default function Scanner() {
-  const location = useLocation();
+const backCameraLabelPattern = /back|rear|environment|facing back/i;
+
+const findBackCamera = (cameras: MediaDeviceInfo[]) => {
+  const backCameras = cameras
+    .filter((camera) => backCameraLabelPattern.test(camera.label))
+    .toSorted((a, b) => a.label.localeCompare(b.label));
+  return backCameras.length > 0 ? backCameras[0] : undefined;
+};
+
+type TorchMediaTrackConstraintSet = MediaTrackConstraintSet & {
+  torch?: boolean;
+};
+
+export default function BookScanner() {
   const navigate = useNavigate();
-  const { showSuccessSnackbar } = useCustomSnackbar();
-  const addBookMutation = useAddBook();
+  const { showErrorSnackbar } = useCustomSnackbar();
   const isbnSearchMutation = useBookIsbnSearch();
   const scannerRef = useRef<HTMLDivElement>(null);
+  const isScanLockedRef = useRef(false);
+  const isRedirectingRef = useRef(false);
   const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
   const [cameraId, setCameraId] = useState<string>();
+  const [cameraReady, setCameraReady] = useState(false);
   const [cameraError, setCameraError] = useState<Error>();
-  const [code, setCode] = useState<string>();
-  const [torchOn, setTorch] = useState(false);
+  const [initialValues, setInitialValues] = useState<Partial<Book>>();
+  const torchOnRef = useRef(false);
   const [scannerKey, setScannerKey] = useState(0);
-  const [visible, setVisible] = useState(false);
-
-  const book = isbnSearchMutation.data;
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   useEffect(() => {
-    const enableCamera = async () => {
-      await Quagga.CameraAccess.request(null, {});
-    };
-    const disableCamera = async () => {
-      await Quagga.CameraAccess.release();
-    };
+    let cancelled = false;
+
     const enumerateCameras = async () => {
       const cameras = await Quagga.CameraAccess.enumerateVideoDevices();
       return cameras;
@@ -55,69 +49,100 @@ export default function Scanner() {
 
     const initCamera = async () => {
       try {
-        await enableCamera();
+        if (cancelled) {
+          return;
+        }
+
         const cameras = await enumerateCameras();
+        if (cancelled) {
+          return;
+        }
+
         if (cameras.length > 0) {
           setCameras(cameras);
-          //setCameraId(cameras[0].deviceId);
+          setCameraId(findBackCamera(cameras)?.deviceId);
         }
-        await disableCamera();
       } catch (error) {
         setCameraError(error as Error);
+      } finally {
+        setCameraReady(true);
       }
     };
 
     initCamera();
 
     return () => {
-      disableCamera();
+      console.log('stopping cameras');
+      cancelled = true;
+      stopQuaggaCamera();
     };
   }, []);
 
+  const restartScanner = useCallback(() => {
+    stopQuaggaCamera();
+    setInitialValues(undefined);
+    setCreateDialogOpen(false);
+    isbnSearchMutation.reset();
+    isScanLockedRef.current = false;
+    setScannerKey((prev) => prev + 1);
+  }, [isbnSearchMutation]);
+
   const onTorchClick = useCallback(async () => {
-    const newTorch = !torchOn;
-    if (newTorch) {
-      const track = Quagga.CameraAccess.getActiveTrack();
-      if (track?.getCapabilities && 'torch' in track.getCapabilities()) {
-        await Quagga.CameraAccess.enableTorch();
-        setTorch(newTorch);
-      }
-    } else {
-      await Quagga.CameraAccess.disableTorch();
-      setTorch(newTorch);
+    const newTorch = !torchOnRef.current;
+
+    const track = Quagga.CameraAccess.getActiveTrack();
+    const supportsTorch = track?.getCapabilities && 'torch' in track.getCapabilities();
+
+    if (track && supportsTorch) {
+      const torchConstraint: TorchMediaTrackConstraintSet = { torch: newTorch };
+      await track.applyConstraints({ advanced: [torchConstraint] });
+      torchOnRef.current = newTorch;
     }
-  }, [torchOn, setTorch]);
+  }, []);
 
   const onDetected = useCallback(
     (isbn: string) => {
-      setCode(isbn);
-      setVisible(true);
-      Quagga.stop();
-      isbnSearchMutation.mutate(isbn, {});
+      if (isScanLockedRef.current) {
+        return;
+      }
+
+      isScanLockedRef.current = true;
+      setInitialValues({ isbn });
+      setCreateDialogOpen(true);
+      stopQuaggaCamera();
+
+      isbnSearchMutation.mutate(isbn, {
+        onSuccess: (book) => {
+          if (!book) {
+            return;
+          }
+          setInitialValues((prev) => ({
+            ...prev,
+            ...book,
+            isbn: prev?.isbn ?? book.isbn,
+          }));
+        },
+        onError: () => {
+          showErrorSnackbar('Failed to fetch book details for scanned ISBN');
+        },
+      });
     },
-    [isbnSearchMutation],
+    [isbnSearchMutation, showErrorSnackbar],
   );
 
-  const onImportBook = () => {
-    if (!book) return;
-
-    const data = {
-      ...getBookDefaults(),
-      ...book,
-    } satisfies Book;
-    addBookMutation.mutate(bookSchema.parse(data), {
-      onSuccess: () => {
-        navigate(`/books${location.search}`);
-        showSuccessSnackbar('Book imported');
-      },
-    });
+  const onCreateSuccess = () => {
+    isRedirectingRef.current = true;
+    navigate('/books');
   };
 
-  const onClose = () => {
-    setVisible(false);
-    setCode(undefined);
-    isbnSearchMutation.reset();
-    setScannerKey((prev) => prev + 1);
+  const onCloseDialog = () => {
+    if (isRedirectingRef.current) {
+      isScanLockedRef.current = false;
+      setCreateDialogOpen(false);
+      return;
+    }
+    console.log('restarting scanner');
+    restartScanner();
   };
 
   return (
@@ -137,7 +162,7 @@ export default function Scanner() {
         ref={scannerRef}
         sx={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}
       >
-        {scannerRef.current ? (
+        {cameraReady && !createDialogOpen ? (
           <BarcodeScanner
             key={scannerKey}
             scannerRef={scannerRef}
@@ -146,94 +171,40 @@ export default function Scanner() {
           />
         ) : null}
       </Box>
-      <Box position="fixed" bottom={48}>
-        <form style={{ position: 'absolute', top: '0px', left: '0px' }}>
-          <select onChange={(event) => setCameraId(event.target.value)}>
+      <Box position="fixed" bottom={16} left={16} zIndex={2}>
+        <FormControl fullWidth>
+          <InputLabel id="camera-label">Camera</InputLabel>
+          <Select
+            native
+            label="Camera"
+            labelId="camera-label"
+            value={cameraId}
+            onChange={(event) => setCameraId(event.target.value)}
+          >
             {cameras.map((camera) => (
               <option key={camera.deviceId} value={camera.deviceId}>
                 {camera.label || camera.deviceId}
               </option>
             ))}
-          </select>
-        </form>
+          </Select>
+        </FormControl>
       </Box>
       <Fab
         color="primary"
-        aria-label={torchOn ? 'Disable Torch' : 'Enable Torch'}
+        aria-label={'Enable/disable Torch'}
         onClick={onTorchClick}
+        sx={{ position: 'fixed', right: 16, bottom: 16, zIndex: 2 }}
       >
-        {torchOn ? <FlashOffIcon /> : <FlashOnIcon />}
+        <FlashOnIcon />
       </Fab>
-      {visible ? (
-        <BaseDialog maxWidth="sm" title="Scan complete" open={visible} onClose={onClose}>
-          <DialogContent sx={{ pt: 0 }}>
-            <Stack gap={2}>
-              {isbnSearchMutation.isPending ? (
-                <Stack gap={2} alignItems="center" justifyContent="center">
-                  <CircularProgress size={48} />
-                  <Typography>Searching for ISBN {code}</Typography>
-                </Stack>
-              ) : undefined}
-              {isbnSearchMutation.isError ? (
-                <Typography color="error">
-                  Failed to search for the book. Please try again.
-                </Typography>
-              ) : undefined}
-              {isbnSearchMutation.isSuccess && book ? (
-                <>
-                  <Grid container gap={2}>
-                    {book.image_url ? (
-                      <Grid size={4}>
-                        <img
-                          draggable="false"
-                          loading={'lazy'}
-                          aria-hidden="true"
-                          referrerPolicy="no-referrer"
-                          src={book.image_url}
-                          width="100%"
-                          height="100%"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </Grid>
-                    ) : null}
-                    <Grid container direction="column" gap={2}>
-                      <Grid container direction="column">
-                        <Box component="span" sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
-                          {book.title}
-                        </Box>
-                        <Box component="span">
-                          {[book.author, book.year].filter(Boolean).join(', ')}
-                        </Box>
-                      </Grid>
-                      <Grid>
-                        {book.publisher ? (
-                          <DetailItem title="Publisher" value={book.publisher} />
-                        ) : undefined}
-                        {book.pages ? <DetailItem title="Pages" value={book.pages} /> : undefined}
-                        {book.isbn ? <DetailItem title="ISBN" value={book.isbn} /> : undefined}
-                        {book.language_code ? (
-                          <DetailItem
-                            title="Language"
-                            value={languageCodeToName(book.language_code)}
-                          />
-                        ) : undefined}
-                        {book.note ? <DetailItem title="Note" value={book.note} /> : undefined}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </>
-              ) : undefined}
-            </Stack>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={onClose}>
-              Close
-            </Button>
-            <Button color="primary" disabled={isbnSearchMutation.isError} onClick={onImportBook}>
-              Import
-            </Button>
-          </DialogActions>
-        </BaseDialog>
+      {createDialogOpen ? (
+        <ScanBookAddDialog
+          visible={createDialogOpen}
+          closeDialog={onCloseDialog}
+          initialValues={initialValues}
+          onSuccess={onCreateSuccess}
+          prefillLoading={isbnSearchMutation.isPending}
+        />
       ) : undefined}
     </Container>
   );

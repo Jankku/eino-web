@@ -1,9 +1,11 @@
-import { useCallback, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Quagga, {
   type QuaggaJSCodeReader,
   type QuaggaJSResultObject,
   type QuaggaJSResultObject_CodeResult,
 } from '@ericblade/quagga2';
+import { normalizeValidIsbn } from '../../utils/isbnUtil';
+import { stopQuaggaCamera } from '../../utils/quaggaUtil';
 
 function getMedian(arr: number[]) {
   const newArr = arr.toSorted((a, b) => a - b);
@@ -26,6 +28,8 @@ const locator = {
 };
 
 const decoders = ['ean_reader'] satisfies QuaggaJSCodeReader[];
+const maxAcceptedErrorRate = 0.15;
+const minimumStableDetections = 3;
 
 interface ScannerProps {
   scannerRef: React.RefObject<HTMLDivElement | null>;
@@ -34,21 +38,43 @@ interface ScannerProps {
 }
 
 export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProps) {
+  const detectionHistoryRef = useRef<string[]>([]);
+
   const errorCheck = useCallback(
     (result: QuaggaJSResultObject) => {
       const { code } = result.codeResult;
       if (!code) {
         return;
       }
+
+      const isbn = normalizeValidIsbn(code);
+      if (!isbn) {
+        detectionHistoryRef.current = [];
+        return;
+      }
+
       const errorRate = getMedianOfCodeErrors(result.codeResult.decodedCodes);
-      if (errorRate < 0.25) {
-        onDetected?.(code);
+      if (errorRate > maxAcceptedErrorRate) {
+        return;
+      }
+
+      detectionHistoryRef.current = [...detectionHistoryRef.current, isbn].slice(
+        -minimumStableDetections,
+      );
+
+      const isStableDetection =
+        detectionHistoryRef.current.length === minimumStableDetections &&
+        detectionHistoryRef.current.every((detectedIsbn) => detectedIsbn === isbn);
+
+      if (isStableDetection) {
+        detectionHistoryRef.current = [];
+        onDetected?.(isbn);
       }
     },
     [onDetected],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let ignoreStart = false;
     const init = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1));
@@ -60,7 +86,9 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
           inputStream: {
             type: 'LiveStream',
             constraints: {
-              ...(cameraId ? { deviceId: cameraId } : { facingMode: 'environment' }),
+              ...(cameraId
+                ? { deviceId: { exact: cameraId } }
+                : { facingMode: { ideal: 'environment' } }),
             },
             // @ts-expect-error -- works
             target: scannerRef.current,
@@ -74,9 +102,17 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
           if (err) {
             return console.error('Error starting Quagga:', err);
           }
+          if (ignoreStart) {
+            await stopQuaggaCamera();
+            return;
+          }
           Quagga.start();
         },
       );
+      if (ignoreStart) {
+        await stopQuaggaCamera();
+        return;
+      }
       Quagga.onDetected(errorCheck);
     };
 
@@ -84,10 +120,11 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
 
     return () => {
       ignoreStart = true;
-      Quagga.stop();
+      detectionHistoryRef.current = [];
       Quagga.offDetected(errorCheck);
+      stopQuaggaCamera();
     };
-  }, [cameraId, onDetected, scannerRef, errorCheck, locator, decoders]);
+  }, [cameraId, onDetected, scannerRef, errorCheck]);
 
   return null;
 }
