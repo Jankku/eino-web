@@ -29,7 +29,7 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
       {item.icon}
       <ListItemText
         primary={item.name}
-        slotProps={{ primary: { fontWeight: 500 } }}
+        slotProps={{ primary: { sx: { fontWeight: 500 } } }}
         sx={{ display: isSmall ? 'none' : 'block' }}
       />
     </MenuItem>

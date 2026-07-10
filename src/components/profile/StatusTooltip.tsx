@@ -41,11 +41,6 @@ export default function StatusTooltip({
       arrow
       title={<Typography variant="body2">{title}</Typography>}
       placement="top-start"
-      slotProps={{
-        popper: {
-          modifiers: [{ name: 'offset', options: { offset: [0, -10] } }],
-        },
-      }}
     >
       <Box component="span" sx={{ paddingLeft: '4px', display: 'flex', alignContent: 'center' }}>
         {icon}

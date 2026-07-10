@@ -121,18 +121,6 @@ export function UserInfo({
                       </Typography>
                     }
                     placement="top-start"
-                    slotProps={{
-                      popper: {
-                        modifiers: [
-                          {
-                            name: 'offset',
-                            options: {
-                              offset: [0, -10],
-                            },
-                          },
-                        ],
-                      },
-                    }}
                   >
                     <Box
                       component="span"

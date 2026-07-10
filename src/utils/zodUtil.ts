@@ -51,7 +51,6 @@ export const errorSchema = z.object({
 });
 
 export async function parseError(error: HTTPError) {
-  const json = await error.response.json();
-  const parsedErrors = errorSchema.parse(json);
+  const parsedErrors = errorSchema.parse(error.data);
   return parsedErrors.errors;
 }

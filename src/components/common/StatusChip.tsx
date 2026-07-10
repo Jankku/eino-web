@@ -17,11 +17,6 @@ export default function StatusChip({
       arrow
       title={tooltipText ? <Typography variant="body2">{tooltipText}</Typography> : undefined}
       placement="top-start"
-      slotProps={{
-        popper: {
-          modifiers: [{ name: 'offset', options: { offset: [0, -10] } }],
-        },
-      }}
     >
       <Chip
         icon={getStatusIcon(status, 'white')}

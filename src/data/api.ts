@@ -6,10 +6,10 @@ import { errorSchema } from '../utils/zodUtil.ts';
 const API_URL = new URL('/api', import.meta.env.VITE_BASE_URL).toString();
 
 export const api = ky.create({
-  prefixUrl: import.meta.env.VITE_BASE_URL,
+  prefix: import.meta.env.VITE_BASE_URL,
   hooks: {
     beforeRequest: [
-      async (request) => {
+      async ({ request }) => {
         if (request.url.startsWith(API_URL)) {
           const accessToken = localStorage.getItem('accessToken');
           if (!accessToken) return request;
@@ -18,7 +18,7 @@ export const api = ky.create({
       },
     ],
     afterResponse: [
-      async (input, options, response) => {
+      async ({ request, options, response }) => {
         if ([401, 403].includes(response.status)) {
           const error = await response.json();
           const parsedError = errorSchema.parse(error);
@@ -26,7 +26,7 @@ export const api = ky.create({
           switch (errorName) {
             case 'authorization_error':
               localStorage.setItem('accessToken', await fetchNewToken(response));
-              return ky(input, options);
+              return ky(request, options);
             case 'account_disabled':
               window.location.href = '/logout';
               break;
