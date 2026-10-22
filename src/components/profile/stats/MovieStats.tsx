@@ -19,8 +19,7 @@ import { useMovies } from '../../../data/movies/useMovies';
 import ListItem from '../../common/ListItem';
 import { useToggle } from '@uidotdev/usehooks';
 import { useIsMobile } from '../../../hooks/useIsMobile';
-
-const formatter = new Intl.NumberFormat();
+import { formatWatchTime } from '../../../utils/profileUtil';
 
 const statuses = ['completed', 'watching', 'on-hold', 'dropped', 'planned'];
 
@@ -84,10 +83,7 @@ export function MovieStats({ stats }: MovieStatsProps) {
                     m: 0,
                   }}
                 >
-                  <StatsItem
-                    title={'Watch time:'}
-                    text={`${formatter.format(stats.watch_time)} hours`}
-                  />
+                  <StatsItem title={'Watch time:'} text={formatWatchTime(stats.watch_time)} />
                   <StatsItem title={'Average score:'} text={stats.score_average} />
                 </GridLegacy>
                 <GridLegacy

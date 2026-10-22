@@ -7,6 +7,17 @@ export const statusColors = {
   planned: '#858585',
 };
 
+const watchTimeFormatter = new Intl.NumberFormat();
+
+export const formatWatchTime = (totalHours: number) => {
+  const days = Math.floor(totalHours / 24);
+  const hours = totalHours % 24;
+  const formattedHours = `${watchTimeFormatter.format(hours)} ${hours === 1 ? 'hour' : 'hours'}`;
+  if (days === 0) return formattedHours;
+  const formattedDays = `${watchTimeFormatter.format(days)} ${days === 1 ? 'day' : 'days'}`;
+  return hours === 0 ? formattedDays : `${formattedDays}, ${formattedHours}`;
+};
+
 export const getProfilePictureUrl = (path: string | null | undefined) => {
   if (!path) return undefined;
   const baseUrl = import.meta.env.VITE_BASE_URL;
