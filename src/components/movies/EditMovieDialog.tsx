@@ -13,7 +13,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { movieSchema, getMovieDefaults, Movie } from '../../models/movie';
 import { useUpdateMovie, useUpdateMovieFormData } from '../../data/movies/useUpdateMovie';
 import PosterDialog from './PosterDialog';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 type EditMovieDialogProps = {
@@ -31,7 +31,8 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
     values: movieSchema.parse(loadMovie.data),
     resolver: zodResolver(movieSchema),
   });
-  const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
+  const { handleSubmit, setValue, reset: resetForm } = formMethods;
+  const title = useWatch({ control: formMethods.control, name: 'title' });
   const updateMovie = useUpdateMovie(movieId);
 
   const onSubmit = (formData: Movie) => {
@@ -85,7 +86,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <PosterDialog
               visible={showPosters}
               closeDialog={() => setShowPosters((prev) => !prev)}
-              query={getValues('title')!}
+              query={title ?? ''}
               onSelect={onSelectPoster}
             />
           </DialogContent>

@@ -6,7 +6,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { movieSchema, getMovieDefaults, Movie } from '../../models/movie';
 import { useAddMovie } from '../../data/movies/useAddMovie';
 import PosterDialog from './PosterDialog';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 type AddMovieDialogProps = {
@@ -21,7 +21,8 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
     defaultValues: getMovieDefaults(),
     resolver: zodResolver(movieSchema),
   });
-  const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
+  const { handleSubmit, setValue, reset: resetForm } = formMethods;
+  const title = useWatch({ control: formMethods.control, name: 'title' });
   const addMovie = useAddMovie();
 
   const onSubmit = (formData: Movie) => {
@@ -60,7 +61,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
             <PosterDialog
               visible={showPosters}
               closeDialog={() => setShowPosters((prev) => !prev)}
-              query={getValues('title')!}
+              query={title ?? ''}
               onSelect={onSelectPoster}
             />
           </DialogContent>

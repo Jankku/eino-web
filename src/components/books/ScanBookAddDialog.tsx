@@ -7,7 +7,7 @@ import { bookSchema, getBookDefaults, Book } from '../../models/book';
 import { useAddBook } from '../../data/books/useAddBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -65,6 +65,7 @@ export default function ScanBookAddDialog({
     reset: resetForm,
     formState: { dirtyFields },
   } = formMethods;
+  const [title, author] = useWatch({ control: formMethods.control, name: ['title', 'author'] });
   const addBookMutation = useAddBook();
 
   useEffect(() => {
@@ -137,7 +138,7 @@ export default function ScanBookAddDialog({
             <CoverDialog
               visible={showCovers}
               closeDialog={() => setShowCovers((prev) => !prev)}
-              query={formatBookSearchQuery(getValues('title')!, getValues('author')!)}
+              query={formatBookSearchQuery(title ?? '', author ?? '')}
               onSelect={onSelectCover}
             />
           </DialogContent>

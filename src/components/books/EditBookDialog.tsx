@@ -14,7 +14,7 @@ import { bookSchema, Book, getBookDefaults } from '../../models/book';
 import { useUpdateBook, useUpdateBookFormData } from '../../data/books/useUpdateBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 type EditBookDialogProps = {
@@ -32,7 +32,8 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
     values: bookSchema.parse(loadBook.data),
     resolver: zodResolver(bookSchema),
   });
-  const { handleSubmit, setValue, getValues, reset: resetForm } = formMethods;
+  const { handleSubmit, setValue, reset: resetForm } = formMethods;
+  const [title, author] = useWatch({ control: formMethods.control, name: ['title', 'author'] });
   const updateBook = useUpdateBook(bookId);
 
   const onSubmit = (formData: Book) => {
@@ -84,7 +85,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <CoverDialog
               visible={showCovers}
               closeDialog={() => setShowCovers((prev) => !prev)}
-              query={formatBookSearchQuery(getValues('title')!, getValues('author')!)}
+              query={formatBookSearchQuery(title ?? '', author ?? '')}
               onSelect={onSelectCover}
             />
           </DialogContent>
