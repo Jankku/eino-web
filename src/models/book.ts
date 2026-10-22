@@ -29,6 +29,28 @@ export type Book = z.infer<typeof bookSchema>;
 export type BookFormSchema = Omit<Book, 'status' | 'score' | 'start_date' | 'end_date'>;
 export type BookWithId = z.infer<typeof bookWithIdSchema>;
 
+export const getNewBookValues = (
+  book: Book,
+  dirtyFields: Partial<Record<keyof Book, boolean>>,
+): Book => {
+  const now = DateTime.now();
+  const time = {
+    hour: now.hour,
+    minute: now.minute,
+    second: now.second,
+    millisecond: now.millisecond,
+  };
+  return {
+    ...book,
+    start_date: dirtyFields.start_date
+      ? DateTime.fromISO(book.start_date).set(time).toISO()!
+      : now.toISO(),
+    end_date: dirtyFields.end_date
+      ? DateTime.fromISO(book.end_date).set(time).toISO()!
+      : now.toISO(),
+  };
+};
+
 export const getBookDefaults = (initialValues?: Partial<Book>) => {
   return bookSchema.parse({
     isbn: '',

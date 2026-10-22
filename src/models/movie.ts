@@ -27,6 +27,28 @@ export type Movie = z.infer<typeof movieSchema>;
 
 export type MovieWithId = z.infer<typeof movieWithIdSchema>;
 
+export const getNewMovieValues = (
+  movie: Movie,
+  dirtyFields: Partial<Record<keyof Movie, boolean>>,
+): Movie => {
+  const now = DateTime.now();
+  const time = {
+    hour: now.hour,
+    minute: now.minute,
+    second: now.second,
+    millisecond: now.millisecond,
+  };
+  return {
+    ...movie,
+    start_date: dirtyFields.start_date
+      ? DateTime.fromISO(movie.start_date).set(time).toISO()!
+      : now.toISO(),
+    end_date: dirtyFields.end_date
+      ? DateTime.fromISO(movie.end_date).set(time).toISO()!
+      : now.toISO(),
+  };
+};
+
 export const getMovieDefaults = () => {
   return movieSchema.parse({
     title: '',

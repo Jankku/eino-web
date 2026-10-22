@@ -3,7 +3,7 @@ import { Button, DialogActions, DialogContent, Typography } from '@mui/material'
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { bookSchema, getBookDefaults, Book } from '../../models/book';
+import { bookSchema, getBookDefaults, getNewBookValues, Book } from '../../models/book';
 import { useAddBook } from '../../data/books/useAddBook';
 import CoverDialog from './CoverDialog';
 import { formatBookSearchQuery } from '../../utils/imageQueryUtil';
@@ -98,7 +98,7 @@ export default function ScanBookAddDialog({
   }, [dirtyFields, getValues, initialValues, resetForm, visible]);
 
   const onSubmit = (formData: Book) => {
-    addBookMutation.mutate(formData, {
+    addBookMutation.mutate(getNewBookValues(formData, dirtyFields), {
       onSuccess: () => {
         showSuccessSnackbar('Book created');
         onSuccess?.();

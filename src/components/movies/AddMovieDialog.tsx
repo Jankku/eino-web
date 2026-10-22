@@ -3,7 +3,7 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { movieSchema, getMovieDefaults, Movie } from '../../models/movie';
+import { movieSchema, getMovieDefaults, getNewMovieValues, Movie } from '../../models/movie';
 import { useAddMovie } from '../../data/movies/useAddMovie';
 import PosterDialog from './PosterDialog';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
@@ -21,12 +21,17 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
     defaultValues: getMovieDefaults(),
     resolver: zodResolver(movieSchema),
   });
-  const { handleSubmit, setValue, reset: resetForm } = formMethods;
+  const {
+    handleSubmit,
+    setValue,
+    reset: resetForm,
+    formState: { dirtyFields },
+  } = formMethods;
   const title = useWatch({ control: formMethods.control, name: 'title' });
   const addMovie = useAddMovie();
 
   const onSubmit = (formData: Movie) => {
-    addMovie.mutate(formData, {
+    addMovie.mutate(getNewMovieValues(formData, dirtyFields), {
       onSuccess: () => {
         showSuccessSnackbar('Movie created');
         closeDialog();
