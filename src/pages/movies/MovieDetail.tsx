@@ -70,8 +70,15 @@ export default function MovieDetail() {
   };
 
   const onComplete = (score: number) => {
+    const completedAt = DateTime.now().toISO();
     updateMovie.mutate(
-      movieSchema.parse({ ...data, score, status: 'completed', end_date: DateTime.now().toISO() }),
+      movieSchema.parse({
+        ...data,
+        score,
+        status: 'completed',
+        start_date: completedAt,
+        end_date: completedAt,
+      }),
       {
         onSuccess: () => {
           showSuccessSnackbar('Movie marked as completed');
