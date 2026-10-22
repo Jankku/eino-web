@@ -1,13 +1,17 @@
 import { ListItemText, MenuItem, Tooltip, Typography } from '@mui/material';
-import { NavLink } from 'react-router';
+import { Link, useLocation, useMatch } from 'react-router';
 
 type CustomNavLinkProps = {
-  item: { name: string; path: string; icon: React.ReactNode };
+  item: { name: string; path: string; icon: React.ReactNode; activePaths?: string[] };
   isSmall: boolean;
   toggleDrawer: () => void;
 };
 
 export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNavLinkProps) {
+  const { pathname } = useLocation();
+  const isAliasActive = item.activePaths?.includes(pathname) ?? false;
+  const routeMatch = useMatch({ path: item.path, end: item.path === '/' });
+  const isActive = Boolean(routeMatch) || isAliasActive;
   const menuItem = (isActive: boolean) => (
     <MenuItem
       sx={[
@@ -43,9 +47,15 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
       title={<Typography variant="body2">{item.name}</Typography>}
       placement="right"
     >
-      <NavLink draggable={false} to={item.path} onClick={toggleDrawer}>
-        {({ isActive }) => <>{menuItem(isActive)}</>}
-      </NavLink>
+      <Link
+        draggable={false}
+        to={item.path}
+        onClick={toggleDrawer}
+        className={isActive ? 'active' : undefined}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        {menuItem(isActive)}
+      </Link>
     </Tooltip>
   );
 }

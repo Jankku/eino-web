@@ -64,7 +64,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
             justifyContent: { sm: 'space-between' },
           }}
         >
-          <Link to="/">
+          <Link to="/home">
             <Typography
               sx={{
                 display: { xs: 'none', sm: 'block' },

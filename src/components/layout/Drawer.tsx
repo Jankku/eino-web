@@ -79,7 +79,7 @@ export default function Drawer({
         <CustomNavLink
           toggleDrawer={toggleDrawer}
           isSmall={isNavLinkSmall}
-          item={{ name: 'Home', path: '/', icon: <Home /> }}
+          item={{ name: 'Home', path: '/home', icon: <Home />, activePaths: ['/'] }}
         />
 
         {isLoggedIn && isAdmin

@@ -20,7 +20,7 @@ export default function Error403() {
             Unauthorized
           </Typography>
           <p>You do not have permission to access this page.</p>
-          <Button variant="contained" color="primary" component={Link} to="/">
+          <Button variant="contained" color="primary" component={Link} to="/home">
             Home
           </Button>
         </Box>

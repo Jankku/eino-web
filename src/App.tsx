@@ -94,7 +94,15 @@ function WrappedApp() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route
+            index
+            element={
+              <RedirectAuthenticated>
+                <Home />
+              </RedirectAuthenticated>
+            }
+          />
+          <Route path="/home" element={<Home />} />
           <Route
             path="/register"
             element={
