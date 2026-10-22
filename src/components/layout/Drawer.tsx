@@ -85,12 +85,12 @@ export default function Drawer({
         {isLoggedIn && isAdmin
           ? [
               <Divider key={99} />,
-              adminRouteArray.map((item, index) => (
+              adminRouteArray.map((item) => (
                 <CustomNavLink
                   toggleDrawer={toggleDrawer}
                   isSmall={isNavLinkSmall}
                   item={item}
-                  key={index}
+                  key={item.name}
                 />
               )),
               <Divider key={999} />,
@@ -98,12 +98,12 @@ export default function Drawer({
           : null}
 
         {isLoggedIn
-          ? routeArray.map((item, index) => (
+          ? routeArray.map((item) => (
               <CustomNavLink
                 toggleDrawer={toggleDrawer}
                 isSmall={isNavLinkSmall}
                 item={item}
-                key={index}
+                key={item.name}
               />
             ))
           : null}
@@ -112,12 +112,12 @@ export default function Drawer({
 
         {!isLoggedIn ? (
           <>
-            {authRouteArray.map((item, index) => (
+            {authRouteArray.map((item) => (
               <CustomNavLink
                 toggleDrawer={toggleDrawer}
                 isSmall={isNavLinkSmall}
                 item={item}
-                key={index}
+                key={item.name}
               />
             ))}
           </>

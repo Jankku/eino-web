@@ -77,6 +77,7 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
   useEffect(() => {
     let ignoreStart = false;
     const init = async () => {
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-timeout
       await new Promise((resolve) => setTimeout(resolve, 1));
       if (ignoreStart) {
         return;

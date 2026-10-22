@@ -11,7 +11,7 @@ import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { HTTPError } from 'ky';
 import { parseError } from '../../utils/zodUtil';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useCreateBulletin } from '../../data/admin/useCreateBulletin';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,19 +50,20 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
     resolver: zodResolver(bulletinSchema),
   });
   const {
+    control,
     handleSubmit,
     setError,
     formState: { errors },
     reset,
-    watch,
   } = formMethods;
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedItem, setSelecteditem] = useState<(string | User)[]>([]);
+  const [selectedItem, setSelectedItem] = useState<(string | User)[]>([]);
   const { users } = useFindUser(searchTerm);
-  const showUserAutocomplete = watch('visibility') === 'user';
-  const showConditionSelect = watch('visibility') === 'condition';
+  const visibility = useWatch({ control, name: 'visibility' });
+  const showUserAutocomplete = visibility === 'user';
+  const showConditionSelect = visibility === 'condition';
 
   const onSubmit = (body: Bulletin) => {
     createBulletin.mutate(body, {
@@ -102,15 +103,15 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
             <TextField margin="dense" name="name" label="Name" sx={{ mb: 1 }} />
             <Stack direction="row" spacing={1} sx={{ my: 1 }}>
               <Select name="type" label="Type">
-                {bulletinTypes.map((type, itemIdx) => (
-                  <option key={itemIdx} value={type}>
+                {bulletinTypes.map((type) => (
+                  <option key={type} value={type}>
                     {capitalize(type)}
                   </option>
                 ))}
               </Select>
               <Select name="visibility" label="Visibility" sx={{ mb: 1 }}>
-                {bulletinVisibilities.map((visibility, itemIdx) => (
-                  <option key={itemIdx} value={visibility}>
+                {bulletinVisibilities.map((visibility) => (
+                  <option key={visibility} value={visibility}>
                     {capitalize(visibility)}
                   </option>
                 ))}
@@ -129,11 +130,11 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                 isOptionEqualToValue={(option, value) => option?.user_id === value?.user_id}
                 onChange={(_event, newValue, reason) => {
                   if (['selectOption', 'removeOption'].includes(reason)) {
-                    setSelecteditem(newValue);
+                    setSelectedItem(newValue);
                     setSearchTerm('');
                   }
                   if (reason === 'clear') {
-                    setSelecteditem([]);
+                    setSelectedItem([]);
                   }
                 }}
                 filterOptions={filterOptions}
@@ -149,8 +150,8 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
             ) : undefined}
             {showConditionSelect ? (
               <Select name="condition" label="Visibility condition" sx={{ mb: 1 }}>
-                {bulletinConditions.map((condition, itemIdx) => (
-                  <option key={itemIdx} value={condition}>
+                {bulletinConditions.map((condition) => (
+                  <option key={condition} value={condition}>
                     {capitalize(underscoreToSpace(condition))}
                   </option>
                 ))}

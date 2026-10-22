@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { User, useUsers } from '../../data/admin/useUsers';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
@@ -31,8 +31,6 @@ import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser'
 import Head from '../../components/common/Head';
 import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
 import { useChangeUserState } from '../../data/admin/useChangeUserState';
-
-type UpdatedRow = User & { isNew: boolean };
 
 const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -62,13 +60,8 @@ export default function Users() {
   const { data } = useUsers();
   const updateUser = useUpdateUser();
   const toggleUserState = useChangeUserState();
-  const [rows, setRows] = useState<User[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
-
-  useLayoutEffect(() => {
-    setRows(data);
-  }, [data]);
 
   const processRowUpdate = useCallback(
     (newRow: User, oldRow: User) => {
@@ -237,10 +230,6 @@ export default function Users() {
               [id]: { mode: GridRowModes.View, ignoreModifications: true },
             });
 
-            const editedRow = rows.find((row) => row.user_id === id) as UpdatedRow;
-            if (editedRow.isNew) {
-              setRows(rows.filter((row) => row.user_id !== id));
-            }
           };
 
           if (isInEditMode) {
@@ -283,7 +272,7 @@ export default function Users() {
         },
       },
     ],
-    [rowModesModel, rows],
+    [rowModesModel],
   );
 
   return (
@@ -295,7 +284,7 @@ export default function Users() {
           <DataGrid
             disableRowSelectionOnClick
             showToolbar
-            rows={rows}
+            rows={data}
             columns={columns}
             getRowId={getRowId}
             editMode="row"
@@ -313,7 +302,7 @@ export default function Users() {
       <DeleteUserDialog
         visible={!!rowIdToDelete}
         userId={rowIdToDelete as string}
-        username={rows.find((row) => row.user_id === rowIdToDelete)?.username as string}
+        username={data.find((row) => row.user_id === rowIdToDelete)?.username as string}
         onClose={() => setRowIdToDelete(undefined)}
       />
     </>

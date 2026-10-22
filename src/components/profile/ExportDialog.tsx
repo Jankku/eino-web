@@ -42,6 +42,10 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
   } = formMethods;
   const exportData = useExportData();
 
+  const generateExportUrl = () => {
+    return URL.createObjectURL(createJsonBlob(exportData.data));
+  };
+
   const downloadJsonExport = (data: ProfileExport) => {
     try {
       const blob = createJsonBlob(data);
@@ -102,7 +106,7 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
                 Download didn&apos;t work?{' '}
                 <Link
                   download={generateExportFileName()}
-                  href={URL.createObjectURL(createJsonBlob(exportData.data))}
+                  href={generateExportUrl()}
                   onClick={() => resetState()}
                 >
                   Click here to download

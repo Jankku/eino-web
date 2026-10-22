@@ -8,7 +8,6 @@ export function useSearch<T>(
 ) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<T[]>([]);
-  const [selectedItem, setSelecteditem] = useState<T | null>(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 200);
 
   useEffect(() => {
@@ -23,10 +22,9 @@ export function useSearch<T>(
     handleSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, mutate]);
 
-  useEffect(() => {
-    if (selectedItem) onSelect(selectedItem);
-    setSelecteditem(null);
-  }, [onSelect, selectedItem]);
+  const setSelectedItem = (item: T | null) => {
+    if (item) onSelect(item);
+  };
 
-  return { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem };
+  return { searchTerm, setSearchTerm, searchResults, selectedItem: null, setSelectedItem };
 }

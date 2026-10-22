@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import { FormProvider, useForm } from 'react-hook-form';
 import TextField from '../../components/form/TextField';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSendEmailConfirmation } from '../../data/profile/useSendEmailConfirmation';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { HTTPError } from 'ky';
@@ -34,11 +34,7 @@ export default function ProfileVerifyEmail() {
   const sendConfirmation = useSendEmailConfirmation();
   const verifyEmail = useVerifyEmail();
   const [showOtpField, setShowOtpField] = useState(false);
-  const [email, setEmail] = useState();
-
-  useEffect(() => {
-    if (state?.email) setEmail(state.email);
-  }, [state]);
+  const email = state?.email;
 
   const onSendConfirmation = () => {
     clearErrors('root.serverError');

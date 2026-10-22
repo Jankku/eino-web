@@ -17,7 +17,7 @@ function BookSearch() {
     navigate({ pathname: `./books/${item.book_id}`, search: searchParams.toString() });
   };
 
-  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } =
+  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelectedItem } =
     useSearch<BookWithId>(mutate, onSelect);
 
   return (
@@ -37,8 +37,8 @@ function BookSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.book_id === value.book_id}
-      value={selectedItem as BookWithId}
-      onChange={(_event, newValue) => setSelecteditem(newValue as BookWithId)}
+      value={selectedItem as unknown as BookWithId}
+      onChange={(_event, newValue) => setSelectedItem(newValue as BookWithId)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as BookWithId).title}
       inputValue={String(searchTerm)}

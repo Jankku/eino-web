@@ -108,6 +108,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                 }}
               >
                 {fileErrors.map((e, index) => (
+                  // eslint-disable-next-line @eslint-react/no-array-index-key
                   <ErrorMessage key={index} message={e.message} />
                 ))}
               </Box>

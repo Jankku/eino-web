@@ -17,6 +17,7 @@ export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
       {total ? (
         data.map((item, index) => (
           <GridLegacy
+            // eslint-disable-next-line @eslint-react/no-array-index-key
             key={index}
             item
             aria-label={`${item.title}, ${item.value} of ${total}`}

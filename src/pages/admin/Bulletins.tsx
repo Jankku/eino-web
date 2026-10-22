@@ -21,15 +21,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
 import { DbBulletin } from '../../models/bulletin';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { updateBulletinSchema, useUpdateBulletin } from '../../data/admin/useUpdateBulletin';
 import { parseError } from '../../utils/zodUtil';
 import { HTTPError } from 'ky';
-
-type UpdatedRow = DbBulletin & { isNew: boolean };
 
 const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -60,14 +58,9 @@ export default function Bulletins() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const { data } = useAllBulletins();
   const updateBulletin = useUpdateBulletin();
-  const [rows, setRows] = useState<DbBulletin[]>([]);
   const [createBulletinDialogVisible, toggleCreateBulletinDialog] = useToggle(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<string>();
-
-  useLayoutEffect(() => {
-    setRows(data);
-  }, [data]);
 
   const processRowUpdate = useCallback(
     (newRow: DbBulletin, oldRow: DbBulletin) => {
@@ -212,10 +205,6 @@ export default function Bulletins() {
               [id]: { mode: GridRowModes.View, ignoreModifications: true },
             });
 
-            const editedRow = rows.find((row) => row.id === id) as UpdatedRow;
-            if (editedRow.isNew) {
-              setRows(rows.filter((row) => row.id !== id));
-            }
           };
 
           if (isInEditMode) {
@@ -258,7 +247,7 @@ export default function Bulletins() {
         },
       },
     ],
-    [rowModesModel, rows],
+    [rowModesModel],
   );
 
   return (

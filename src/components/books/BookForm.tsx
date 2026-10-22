@@ -79,8 +79,8 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
       >
         <GridLegacy item>
           <Select name="score" label="Score">
-            {score.map((item, itemIdx) => (
-              <option key={itemIdx} value={item.value}>
+            {score.map((item) => (
+              <option key={item.value} value={item.value}>
                 {item.name}
               </option>
             ))}
@@ -91,9 +91,9 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
         </GridLegacy>
         <GridLegacy item>
           <Select name="status" label="Status">
-            {bookStatus.map((item, itemIdx) => {
+            {bookStatus.map((item) => {
               return (
-                <option key={itemIdx} value={item.value}>
+                <option key={item.value} value={item.value}>
                   {item.name}
                 </option>
               );

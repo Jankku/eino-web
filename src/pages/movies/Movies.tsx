@@ -155,8 +155,8 @@ export default function Movies() {
                     }}
                   >
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
-                      {movieSortStatuses.map((option, itemIdx) => (
-                        <option key={itemIdx} value={option.value}>
+                      {movieSortStatuses.map((option) => (
+                        <option key={option.value} value={option.value}>
                           {option.name} ({countByStatus[option.value as keyof typeof countByStatus]}
                           )
                         </option>

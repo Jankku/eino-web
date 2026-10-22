@@ -48,8 +48,8 @@ export default function CompleteDialog({ visible, closeDialog, onComplete }: Com
             onChange={(e) => setScore(Number(e.target.value))}
             inputProps={{ id: 'score' }}
           >
-            {scoreOptions.map((item, itemIdx) => (
-              <option key={itemIdx} value={item.value}>
+            {scoreOptions.map((item) => (
+              <option key={item.value} value={item.value}>
                 {item.name}
               </option>
             ))}

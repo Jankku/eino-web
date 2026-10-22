@@ -5,7 +5,7 @@ import { usePagination } from '../../hooks/usePagination';
 import { Link, useLocation, useSearchParams } from 'react-router';
 import ListItemImage from '../common/ListItemImage';
 import { listItemTypes } from '../../hooks/useListItemType';
-import { useFilterSearchParams } from '../../hooks/useFilterSearchParams';
+import { filterSearchParams } from '../../utils/searchParams';
 import { getPaginationUrl } from '../../utils/paginationUtil';
 import { BookWithId } from '../../models/book';
 import { useRestoreItemFocus } from '../../hooks/useRestoreItemFocus';
@@ -22,7 +22,7 @@ export default function BookList({ books, itemType }: BookListProps) {
   const [items, page, pageCount] = usePagination(books, itemsPerPage);
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
-  const newSearchParams = useFilterSearchParams(searchParams, 'page');
+  const newSearchParams = filterSearchParams(searchParams, 'page');
   const { saveFocusedItem } = useRestoreItemFocus('bookFocusedItemId');
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;

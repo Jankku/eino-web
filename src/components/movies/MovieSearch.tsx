@@ -17,7 +17,7 @@ function MovieSearch() {
     navigate({ pathname: `./movies/${item.movie_id}`, search: searchParams.toString() });
   };
 
-  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelecteditem } =
+  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelectedItem } =
     useSearch<MovieWithId>(mutate, onSelect);
 
   return (
@@ -37,8 +37,8 @@ function MovieSearch() {
       onClose={() => setIsOpen(false)}
       options={searchResults}
       isOptionEqualToValue={(option, value) => option.movie_id === value.movie_id}
-      value={selectedItem as MovieWithId}
-      onChange={(_event, newValue) => setSelecteditem(newValue as MovieWithId)}
+      value={selectedItem as unknown as MovieWithId}
+      onChange={(_event, newValue) => setSelectedItem(newValue as MovieWithId)}
       filterOptions={filterOptions}
       getOptionLabel={(option) => (option as MovieWithId).title}
       inputValue={String(searchTerm)}

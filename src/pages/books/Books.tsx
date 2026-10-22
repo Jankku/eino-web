@@ -114,7 +114,7 @@ export default function Books() {
                   item
                   component="ul"
                   aria-label="Actions"
-                  sx={{ p: 0, listStyle: 'none' }}
+                  sx={{ gap: 1, p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
                     <Box component="li" sx={{ display: 'inline-flex' }}>
@@ -138,8 +138,8 @@ export default function Books() {
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
-                      {bookSortStatuses.map((option, itemIdx) => (
-                        <option key={itemIdx} value={option.value}>
+                      {bookSortStatuses.map((option) => (
+                        <option key={option.value} value={option.value}>
                           {option.name} ({countByStatus[option.value as keyof typeof countByStatus]}
                           )
                         </option>

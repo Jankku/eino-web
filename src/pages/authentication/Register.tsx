@@ -2,7 +2,7 @@ import { Container, Typography, Stack, Box, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import ErrorMessage from '../../components/authentication/ErrorMessage.tsx';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField.tsx';
@@ -44,13 +44,13 @@ export default function Register() {
     resolver: zodResolver(registerSchema),
   });
   const {
+    control,
     handleSubmit,
     formState: { errors },
     setError,
-    watch,
   } = formMethods;
   const registerUser = useRegisterUser();
-  const watchPassword = watch('password');
+  const watchPassword = useWatch({ control, name: 'password' });
   const debouncedPassword = useDebounce(watchPassword, 200);
   const { data: passwordStrength } = usePasswordStrength(debouncedPassword);
   const passwordScore = watchPassword.length ? (passwordStrength?.score ?? 0) : 0;

@@ -53,8 +53,8 @@ export default function SortButton({ fieldOptions, onChange }: SortButtonProps) 
             value={searchParams.get('sort')!}
             onChange={(e) => onSelectChange('sort', e.target.value)}
           >
-            {fieldOptions.map((option, index) => (
-              <option key={index} value={option.value}>
+            {fieldOptions.map((option) => (
+              <option key={option.value} value={option.value}>
                 {option.name}
               </option>
             ))}

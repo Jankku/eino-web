@@ -57,8 +57,8 @@ export default function Settings() {
                     setNewBookStatus(e.target.value as Book['status']);
                   }}
                 >
-                  {bookStatus.map((option, index) => (
-                    <option key={index} value={option.value}>
+                  {bookStatus.map((option) => (
+                    <option key={option.value} value={option.value}>
                       {option.name}
                     </option>
                   ))}
@@ -73,8 +73,8 @@ export default function Settings() {
                   defaultValue={newMovieStatus}
                   onChange={(e) => setNewMovieStatus(e.target.value as Movie['status'])}
                 >
-                  {movieStatus.map((option, index) => (
-                    <option key={index} value={option.value}>
+                  {movieStatus.map((option) => (
+                    <option key={option.value} value={option.value}>
                       {option.name}
                     </option>
                   ))}

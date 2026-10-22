@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, use } from 'react';
 import { useToken } from '../hooks/useToken';
 
 const AuthContext = createContext<{
@@ -20,7 +20,7 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
 }
 
 export const useAuthContext = () => {
-  const context = useContext(AuthContext);
+  const context = use(AuthContext);
   if (context === undefined) {
     throw new Error('useAuthContext must be used within AuthenticationProvider');
   }

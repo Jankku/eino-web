@@ -115,7 +115,7 @@ export default function ProfilePictureDialog({
 
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
   }, []);
 
   const saveButtonDisabled = uploadProfilePicture.isPending || files.length === 0;
@@ -130,7 +130,11 @@ export default function ProfilePictureDialog({
       }}
     >
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(event) => {
+            handleSubmit(onSubmit)(event);
+          }}
+        >
           <DialogContent sx={{ pt: 0 }}>
             <Box
               sx={{
@@ -191,6 +195,7 @@ export default function ProfilePictureDialog({
               }}
             >
               {fileErrors.map((e, index) => (
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <ErrorMessage key={index} message={e.message} />
               ))}
             </Box>

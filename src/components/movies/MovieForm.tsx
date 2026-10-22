@@ -78,8 +78,8 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
       >
         <GridLegacy item>
           <Select name="score" label="Score">
-            {score.map((item, itemIdx) => (
-              <option key={itemIdx} value={item.value}>
+            {score.map((item) => (
+              <option key={item.value} value={item.value}>
                 {item.name}
               </option>
             ))}
@@ -87,9 +87,9 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
         </GridLegacy>
         <GridLegacy item>
           <Select name="status" label="Status">
-            {movieStatus.map((item, itemIdx) => {
+            {movieStatus.map((item) => {
               return (
-                <option key={itemIdx} value={item.value}>
+                <option key={item.value} value={item.value}>
                   {item.name}
                 </option>
               );

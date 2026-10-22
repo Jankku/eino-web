@@ -26,21 +26,21 @@ const ZOOM_SCALE_STEP = 0.3;
 const MOVE_STEP = 10;
 
 export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
-  const cropperCanvas = useRef<CropperCanvas>(null);
-  const cropperImage = useRef<CropperImage>(null);
+  const cropperCanvasRef = useRef<CropperCanvas>(null);
+  const cropperImageRef = useRef<CropperImage>(null);
 
   const onImageTransform = (event: CustomEvent) => {
-    if (!cropperCanvas.current || !cropperImage.current) return;
-    const canvasRect = cropperCanvas.current.getBoundingClientRect();
-    const imageNode = cropperImage.current.cloneNode() as CropperImage;
+    if (!cropperCanvasRef.current || !cropperImageRef.current) return;
+    const canvasRect = cropperCanvasRef.current.getBoundingClientRect();
+    const imageNode = cropperImageRef.current.cloneNode() as CropperImage;
 
     const eventMatrix = event.detail.matrix;
     imageNode.style.transform = `matrix(${eventMatrix.join(', ')})`;
     imageNode.style.opacity = '0';
 
-    cropperCanvas.current.appendChild(imageNode);
+    cropperCanvasRef.current.appendChild(imageNode);
     const imageRect = imageNode.getBoundingClientRect();
-    cropperCanvas.current.removeChild(imageNode);
+    cropperCanvasRef.current.removeChild(imageNode);
 
     if (
       imageRect.top > canvasRect.top ||
@@ -53,31 +53,31 @@ export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
   };
 
   const onKeyDown = async (event: KeyboardEvent) => {
-    if (!cropperCanvas.current || !cropperImage.current) return;
+    if (!cropperCanvasRef.current || !cropperImageRef.current) return;
     switch (event.key) {
       case '+':
         event.preventDefault();
-        cropperImage.current.$zoom(ZOOM_SCALE_STEP);
+        cropperImageRef.current.$zoom(ZOOM_SCALE_STEP);
         break;
       case '-':
         event.preventDefault();
-        cropperImage.current.$center().$zoom(-ZOOM_SCALE_STEP);
+        cropperImageRef.current.$center().$zoom(-ZOOM_SCALE_STEP);
         break;
       case 'ArrowLeft':
         event.preventDefault();
-        cropperImage.current.$move(MOVE_STEP, 0);
+        cropperImageRef.current.$move(MOVE_STEP, 0);
         break;
       case 'ArrowRight':
         event.preventDefault();
-        cropperImage.current.$move(-MOVE_STEP, 0);
+        cropperImageRef.current.$move(-MOVE_STEP, 0);
         break;
       case 'ArrowUp':
         event.preventDefault();
-        cropperImage.current.$move(0, MOVE_STEP);
+        cropperImageRef.current.$move(0, MOVE_STEP);
         break;
       case 'ArrowDown':
         event.preventDefault();
-        cropperImage.current.$move(0, -MOVE_STEP);
+        cropperImageRef.current.$move(0, -MOVE_STEP);
         break;
     }
   };
@@ -86,7 +86,7 @@ export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
     <cropper-canvas
       ref={(node: unknown) => {
         if (node) {
-          cropperCanvas.current = node as CropperCanvas;
+          cropperCanvasRef.current = node as CropperCanvas;
           if (ref) ref.current = node as CropperCanvas;
         }
       }}
@@ -95,7 +95,7 @@ export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
       style={{ width: 300, height: 300 }}
     >
       <cropper-image
-        ref={cropperImage}
+        ref={cropperImageRef}
         scalable
         translatable
         tabindex="0"

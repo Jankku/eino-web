@@ -23,7 +23,7 @@ export default function LanguageAutocomplete({ name, label, ...rest }: AutoCompl
   const [searchTerm, setSearchTerm] = useState(
     () => languages.find((l) => l.code === getValues('language_code'))?.englishName ?? '',
   );
-  const [selectedItem, setSelecteditem] = useState<Language | null>(
+  const [selectedItem, setSelectedItem] = useState<Language | null>(
     () => languages.find((l) => l.code === getValues('language_code')) ?? null,
   );
 
@@ -44,11 +44,11 @@ export default function LanguageAutocomplete({ name, label, ...rest }: AutoCompl
             isOptionEqualToValue={(option, value) => option?.code === value?.code}
             onChange={(_event, newValue, reason) => {
               if (['selectOption'].includes(reason)) {
-                setSelecteditem(newValue as Language);
+                setSelectedItem(newValue as Language);
                 setValue('language_code', (newValue as Language)?.code);
               }
               if (reason === 'clear') {
-                setSelecteditem(null);
+                setSelectedItem(null);
                 setValue('language_code', null);
               }
             }}
