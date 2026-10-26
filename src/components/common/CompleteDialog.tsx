@@ -34,7 +34,7 @@ export default function CompleteDialog({ visible, closeDialog, onComplete }: Com
   return (
     <BaseDialog maxWidth="xs" title="Select score" open={visible} onClose={onCancel}>
       <DialogContent sx={{ paddingTop: 0 }}>
-        <Typography variant="body1" pb={2}>
+        <Typography variant="body1" sx={{ pb: 2 }}>
           The status will be set as completed with end date as today.
         </Typography>
         <FormControl fullWidth>

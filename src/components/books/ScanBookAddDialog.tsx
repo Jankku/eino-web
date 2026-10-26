@@ -129,7 +129,7 @@ export default function ScanBookAddDialog({
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
             {prefillLoading ? (
-              <Typography variant="body2" sx={{ mb: 2 }} color="text.secondary">
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                 Fetching book details from ISBN...
               </Typography>
             ) : null}

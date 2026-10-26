@@ -171,7 +171,7 @@ export default function BookScanner() {
           />
         ) : null}
       </Box>
-      <Box position="fixed" bottom={16} left={16} zIndex={2}>
+      <Box sx={{ position: 'fixed', bottom: 16, left: 16, zIndex: 2 }}>
         <FormControl fullWidth>
           <InputLabel id="camera-label">Camera</InputLabel>
           <Select

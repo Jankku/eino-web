@@ -24,13 +24,13 @@ export default function SettingsCard({ actionsAsRow, title, message, actions }: 
         <Stack
           direction={actionsAsRow ? 'column' : 'row'}
           spacing={3}
-          alignItems={actionsAsRow ? 'flex-start' : 'center'}
+          sx={{ alignItems: actionsAsRow ? 'flex-start' : 'center' }}
         >
           <Typography variant="body1" sx={{ textWrap: 'balance' }}>
             {message}
           </Typography>
           {actions ? (
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" sx={{ gap: 1 }}>
               {actions}
             </Stack>
           ) : undefined}

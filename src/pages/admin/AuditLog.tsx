@@ -69,7 +69,7 @@ export default function AuditLog() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Audit log" />
         <h1>Audit log</h1>
-        <Box height={500}>
+        <Box sx={{ height: 500 }}>
           <DataGrid
             disableRowSelectionOnClick
             showToolbar

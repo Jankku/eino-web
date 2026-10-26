@@ -62,7 +62,7 @@ export function UserInfo({
     <>
       <Card component="section" variant="outlined">
         <CardContent sx={{ overflowWrap: 'anywhere' }}>
-          <Stack gap={{ xs: 4, sm: 3 }}>
+          <Stack sx={{ gap: { xs: 4, sm: 3 } }}>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               sx={{
@@ -164,7 +164,7 @@ export function UserInfo({
               }
               actions={
                 email ? (
-                  <Stack direction="row" gap={1} alignItems="center">
+                  <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                     {!emailVerifiedOn ? (
                       <Button
                         component={Link}

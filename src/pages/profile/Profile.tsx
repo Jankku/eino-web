@@ -12,7 +12,7 @@ export default function Profile() {
     <Container maxWidth="md" sx={{ paddingBottom: 4 }}>
       <Head pageTitle="Profile" />
       <h1>Profile</h1>
-      <Box mb={2}>
+      <Box sx={{ mb: 2 }}>
         <UserInfo
           username={data.username}
           email={data.email}

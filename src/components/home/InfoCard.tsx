@@ -19,7 +19,7 @@ export default function InfoCard({ title, icon, children }: InfoCardProps) {
       }}
     >
       <CardContent>
-        <Stack direction="row" mb="0.3em" alignItems="center">
+        <Stack direction="row" sx={{ mb: '0.3em', alignItems: 'center' }}>
           <Box sx={{ marginRight: '0.5em', height: '24px' }}>{icon}</Box>
           <Typography component="h3" variant="h6">
             {title}

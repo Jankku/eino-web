@@ -76,10 +76,10 @@ export default function About() {
   return (
     <Container maxWidth="sm" sx={{ paddingBottom: 4 }}>
       <Head pageTitle="About" />
-      <Stack gap={2} pt={4}>
+      <Stack sx={{ gap: 2, pt: 4 }}>
         <Card component="section">
           <CardContent>
-            <Stack direction="column" alignItems="center" gap={1}>
+            <Stack direction="column" sx={{ alignItems: 'center', gap: 1 }}>
               <Typography
                 component={'h1'}
                 sx={(theme) => ({
@@ -115,13 +115,13 @@ export default function About() {
           slotProps={{ heading: { component: 'h2' }, transition: { unmountOnExit: true } }}
         >
           <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            <Typography fontWeight="600">Privacy policy</Typography>
+            <Typography sx={{ fontWeight: '600' }}>Privacy policy</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Stack gap={3}>
+            <Stack sx={{ gap: 3 }}>
               <Typography component="p">Last updated: {privacyLastUpdated}</Typography>
               <Box>
-                <Typography component="h3" fontWeight="500" mb={1}>
+                <Typography component="h3" sx={{ fontWeight: '500', mb: 1 }}>
                   What data is collected?
                 </Typography>
                 <Box component="ul" sx={{ pl: 2 }}>
@@ -132,7 +132,7 @@ export default function About() {
                   <li>User generated content</li>
                 </Box>
 
-                <Typography component="h3" fontWeight="500" mb={1}>
+                <Typography component="h3" sx={{ fontWeight: '500', mb: 1 }}>
                   Analytics
                 </Typography>
                 <Typography component="p">
@@ -151,7 +151,7 @@ export default function About() {
               </Box>
 
               <Box>
-                <Typography component="h3" fontWeight="500" mb={1}>
+                <Typography component="h3" sx={{ fontWeight: '500', mb: 1 }}>
                   Why do you collect this data?
                 </Typography>
                 <Typography component="p">
@@ -161,14 +161,14 @@ export default function About() {
               </Box>
 
               <Box>
-                <Typography component="h3" fontWeight="500" mb={1}>
+                <Typography component="h3" sx={{ fontWeight: '500', mb: 1 }}>
                   Does this website use cookies?
                 </Typography>
                 <Typography component="p">No, this website does not use cookies.</Typography>
               </Box>
 
               <Box>
-                <Typography component="h3" fontWeight="500" mb={1}>
+                <Typography component="h3" sx={{ fontWeight: '500', mb: 1 }}>
                   Do you share data with third parties?
                 </Typography>
                 <Typography component="p">
@@ -185,7 +185,7 @@ export default function About() {
           slotProps={{ heading: { component: 'h2' }, transition: { unmountOnExit: true } }}
         >
           <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            <Typography fontWeight="600">Licenses</Typography>
+            <Typography sx={{ fontWeight: '600' }}>Licenses</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <TableContainer>

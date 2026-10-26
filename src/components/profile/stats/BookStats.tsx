@@ -72,7 +72,11 @@ export function BookStats({ stats }: BookStatsProps) {
                 </Stack>
               </Stack>
               <BarChart labels={labels} data={scoreCounts} onClick={onBarClick} />
-              <Typography variant="body2" color="textSecondary" width="100%" textAlign="center">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ width: '100%', textAlign: 'center' }}
+              >
                 Click on a bar to view books with that score
               </Typography>
             </Stack>
