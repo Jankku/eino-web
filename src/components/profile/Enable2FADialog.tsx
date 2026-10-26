@@ -53,7 +53,7 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
   const onSubmit = ({ twoFactorCode }: { twoFactorCode: string }) => {
     enable2FA.mutate(twoFactorCode, {
       onSuccess: () => {
-        showSuccessSnackbar('2FA enabled successfully');
+        showSuccessSnackbar('2FA enabled');
         closeDialog();
       },
       onError: async (error) => {
