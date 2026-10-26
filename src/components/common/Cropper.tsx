@@ -22,35 +22,13 @@ type CropperProps = {
   onLoad?: () => void;
 };
 
+const CROP_SIZE = 300;
 const ZOOM_SCALE_STEP = 0.3;
 const MOVE_STEP = 10;
 
 export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
   const cropperCanvasRef = useRef<CropperCanvas>(null);
   const cropperImageRef = useRef<CropperImage>(null);
-
-  const onImageTransform = (event: CustomEvent) => {
-    if (!cropperCanvasRef.current || !cropperImageRef.current) return;
-    const canvasRect = cropperCanvasRef.current.getBoundingClientRect();
-    const imageNode = cropperImageRef.current.cloneNode() as CropperImage;
-
-    const eventMatrix = event.detail.matrix;
-    imageNode.style.transform = `matrix(${eventMatrix.join(', ')})`;
-    imageNode.style.opacity = '0';
-
-    cropperCanvasRef.current.appendChild(imageNode);
-    const imageRect = imageNode.getBoundingClientRect();
-    cropperCanvasRef.current.removeChild(imageNode);
-
-    if (
-      imageRect.top > canvasRect.top ||
-      imageRect.right < canvasRect.right ||
-      imageRect.bottom < canvasRect.bottom ||
-      imageRect.left > canvasRect.left
-    ) {
-      event.preventDefault();
-    }
-  };
 
   const onKeyDown = async (event: KeyboardEvent) => {
     if (!cropperCanvasRef.current || !cropperImageRef.current) return;
@@ -92,28 +70,30 @@ export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
       }}
       background
       scale-step={ZOOM_SCALE_STEP}
-      style={{ width: 300, height: 300 }}
+      style={{ width: CROP_SIZE, height: CROP_SIZE }}
     >
       <cropper-image
         ref={cropperImageRef}
+        initial-fit="cover"
+        max-inset="0"
         scalable
         translatable
         tabindex="0"
         src={src}
         alt={alt}
-        ontransform={onImageTransform}
         onkeydown={onKeyDown}
         onload={onLoad}
       ></cropper-image>
       <cropper-shade
         theme-color="rgba(0, 0, 0, 0.4)"
-        style={{ borderRadius: '50%' }}
+        border-radius="50%"
       ></cropper-shade>
       <cropper-selection
         outlined
-        initial-coverage="1"
+        border-radius="50%"
+        width={CROP_SIZE}
+        height={CROP_SIZE}
         style={{
-          borderRadius: '50%',
           outlineColor: '#fff',
           outlineWidth: '3px',
           outlineOffset: '-3px',
