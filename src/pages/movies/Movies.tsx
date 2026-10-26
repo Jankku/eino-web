@@ -1,12 +1,12 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import {
   Box,
-  GridLegacy,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   SelectChangeEvent,
+  Stack,
 } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
@@ -96,17 +96,19 @@ export default function Movies() {
               mx: isMobile ? 2 : undefined,
             }}
           >
-            <GridLegacy
-              container
+            <Stack
               component="header"
+              direction="row"
               sx={{
+                flexWrap: 'wrap',
+                width: '100%',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 mb: 2,
                 rowGap: 1,
               }}
             >
-              <GridLegacy item>
+              <Box>
                 <Box
                   component="h1"
                   sx={{
@@ -115,18 +117,13 @@ export default function Movies() {
                 >
                   Movies
                 </Box>
-              </GridLegacy>
-              <GridLegacy item>
-                <GridLegacy
-                  container
-                  item
+              </Box>
+              <Box>
+                <Stack
                   component="ul"
                   aria-label="Actions"
-                  sx={{
-                    gap: 1,
-                    p: 0,
-                    listStyle: 'none',
-                  }}
+                  direction="row"
+                  sx={{ flexWrap: 'wrap', width: '100%', gap: 1, m: 0, p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
                     <Box
@@ -186,9 +183,9 @@ export default function Movies() {
                       </List>
                     </MoreButton>
                   </Box>
-                </GridLegacy>
-              </GridLegacy>
-            </GridLegacy>
+                </Stack>
+              </Box>
+            </Stack>
 
             {isEmptyList ? <ListEmpty /> : <MovieList movies={data} itemType={itemType} />}
 

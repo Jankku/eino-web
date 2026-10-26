@@ -1,11 +1,4 @@
-import {
-  CircularProgress,
-  GridLegacy,
-  ImageList,
-  ImageListItem,
-  Link,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, ImageList, ImageListItem, Link, Typography, Stack } from '@mui/material';
 import { useMoviePosters } from '../../data/movies/useMoviePosters';
 import ImageDialog from '../common/ImageDialog';
 
@@ -37,9 +30,9 @@ export default function PosterDialog({ visible, query, closeDialog, onSelect }: 
       closeDialog={closeDialog}
     >
       {moviePosters.isLoading ? (
-        <GridLegacy container sx={{ justifyContent: 'center' }}>
+        <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
           <CircularProgress />
-        </GridLegacy>
+        </Stack>
       ) : null}
       {moviePosters.isLoadingError ? (
         <Typography sx={{ pt: 2 }}>Failed to load posters.</Typography>

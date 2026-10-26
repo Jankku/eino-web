@@ -4,8 +4,8 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  GridLegacy,
   Typography,
+  Stack,
 } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
@@ -68,14 +68,12 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             {loadBook.isLoading ? (
-              <GridLegacy
-                container
-                sx={{
-                  justifyContent: 'center',
-                }}
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}
               >
                 <CircularProgress />
-              </GridLegacy>
+              </Stack>
             ) : null}
 
             {loadBook.isLoadingError ? (

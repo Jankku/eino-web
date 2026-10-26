@@ -1,4 +1,4 @@
-import { GridLegacy } from '@mui/material';
+import { Box } from '@mui/material';
 
 type StatusProgressBarItem = {
   title: string;
@@ -13,33 +13,31 @@ type StatusProgressBarProps = {
 
 export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
   return (
-    <GridLegacy container aria-label="Status bar" sx={{ flexWrap: 'nowrap' }}>
+    <Box aria-label="Status bar" sx={{ display: 'flex', width: '100%', flexWrap: 'nowrap' }}>
       {total ? (
         data.map((item, index) => (
-          <GridLegacy
+          <Box
             // eslint-disable-next-line @eslint-react/no-array-index-key
             key={index}
-            item
             aria-label={`${item.title}, ${item.value} of ${total}`}
-            style={{
+            sx={{
               width: `${(item.value / total) * 100}%`,
-              minWidth: `${item.value ? '5px' : undefined}`,
+              minWidth: item.value ? '5px' : undefined,
               height: '10px',
               backgroundColor: item.color,
             }}
-          ></GridLegacy>
+          ></Box>
         ))
       ) : (
-        <GridLegacy
-          item
+        <Box
           aria-label="No data"
-          style={{
+          sx={{
             width: '100%',
             height: '10px',
             backgroundColor: '#858585',
           }}
-        ></GridLegacy>
+        ></Box>
       )}
-    </GridLegacy>
+    </Box>
   );
 }

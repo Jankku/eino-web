@@ -1,4 +1,4 @@
-import { GridLegacy, IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Stack, Box } from '@mui/material';
 import { score } from '../../models/score';
 import { bookStatus } from '../../models/bookStatus';
 import AddCircle from '@mui/icons-material/AddCircle';
@@ -14,7 +14,7 @@ type BookFormProps = {
 export default function BookForm({ onShowCovers }: BookFormProps) {
   return (
     <>
-      <GridLegacy container>
+      <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%' }}>
         <TextField margin="dense" name="title" label="Title" />
         <TextField margin="dense" name="author" label="Author" />
         <TextField margin="dense" name="publisher" label="Publisher" />
@@ -35,49 +35,35 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
-        <GridLegacy
-          container
-          sx={{
-            gap: 1,
-          }}
-        >
-          <GridLegacy
-            item
+        <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', gap: 1 }}>
+          <Box
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="pages" label="Pages" />
-          </GridLegacy>
-          <GridLegacy
-            item
+          </Box>
+          <Box
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="year" label="Released" />
-          </GridLegacy>
-        </GridLegacy>
-        <GridLegacy
-          container
-          sx={{
-            gap: 1,
-            justifyContent: 'space-between',
-          }}
+          </Box>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: 'wrap', width: '100%', gap: 1, justifyContent: 'space-between' }}
         >
           <DatePicker name="start_date" label="Started" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="Finished" sx={{ marginTop: 1, flexGrow: 1 }} />
-        </GridLegacy>
-      </GridLegacy>
-      <GridLegacy
-        container
-        sx={{
-          justifyContent: 'space-between',
-          mt: 2,
-          gap: 1,
-        }}
+        </Stack>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'space-between', mt: 2, gap: 1 }}
       >
-        <GridLegacy item>
+        <Box>
           <Select name="score" label="Score">
             {score.map((item) => (
               <option key={item.value} value={item.value}>
@@ -85,11 +71,11 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
               </option>
             ))}
           </Select>
-        </GridLegacy>
-        <GridLegacy item flexGrow={2}>
+        </Box>
+        <Box sx={{ flexGrow: 2 }}>
           <LanguageAutocomplete name="language_code" label="Language" />
-        </GridLegacy>
-        <GridLegacy item>
+        </Box>
+        <Box>
           <Select name="status" label="Status">
             {bookStatus.map((item) => {
               return (
@@ -99,8 +85,8 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
               );
             })}
           </Select>
-        </GridLegacy>
-      </GridLegacy>
+        </Box>
+      </Stack>
     </>
   );
 }

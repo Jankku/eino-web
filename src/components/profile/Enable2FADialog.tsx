@@ -4,7 +4,6 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  GridLegacy,
   Stack,
   Typography,
 } from '@mui/material';
@@ -76,14 +75,12 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             {isLoading ? (
-              <GridLegacy
-                container
-                sx={{
-                  justifyContent: 'center',
-                }}
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}
               >
                 <CircularProgress />
-              </GridLegacy>
+              </Stack>
             ) : null}
             {isError ? <Typography component="p">Failed to load QR code</Typography> : undefined}
             {data?.totpUrl ? (

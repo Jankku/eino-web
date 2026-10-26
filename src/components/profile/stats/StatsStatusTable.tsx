@@ -1,12 +1,4 @@
-import {
-  GridLegacy,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack } from '@mui/material';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { statusColors } from '../../../utils/profileUtil';
 import { Profile } from '../../../data/profile/profile.types';
@@ -39,12 +31,15 @@ export function StatsStatusTable({ stats, statuses }: StatsStatusTableProps) {
         {statuses.map((status) => (
           <TableRow hover key={status}>
             <TableCell padding="none">
-              <GridLegacy container sx={{ alignItems: 'center', gap: 1, pl: 2 }}>
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', alignItems: 'center', gap: 1, pl: 2 }}
+              >
                 <StatusIndicator color={statusColors[status as keyof typeof statusColors]} />
                 <Typography component="p" sx={{ p: 0, m: 0, textTransform: 'capitalize' }}>
                   {status}
                 </Typography>
-              </GridLegacy>
+              </Stack>
             </TableCell>
             <TableCell align={cellAlign}>
               <Typography>{formatter.format(stats.count[status])}</Typography>

@@ -3,13 +3,13 @@ import {
   Box,
   Divider,
   Drawer as MuiDrawer,
-  GridLegacy,
   IconButton,
   MenuItem,
   MenuList,
   Tooltip,
   Typography,
   Link,
+  Stack,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -124,16 +124,16 @@ export default function Drawer({
         ) : null}
 
         {isLoggedIn && !isNavLinkSmall ? (
-          <GridLegacy sx={{ justifyContent: 'space-between' }}>
-            <GridLegacy item>
+          <Stack direction="column" sx={{ justifyContent: 'space-between' }}>
+            <Box>
               <MenuItem sx={{ mt: 0.5, paddingY: 1.2, paddingX: 2 }}>
                 <Typography noWrap sx={{ fontWeight: 500 }}>
                   {username}
                 </Typography>
               </MenuItem>
-            </GridLegacy>
+            </Box>
 
-            <GridLegacy item>
+            <Box>
               <Button
                 fullWidth
                 size="medium"
@@ -144,13 +144,16 @@ export default function Drawer({
               >
                 Log out
               </Button>
-            </GridLegacy>
-          </GridLegacy>
+            </Box>
+          </Stack>
         ) : undefined}
       </MenuList>
       {!isNavLinkSmall ? (
-        <GridLegacy container sx={{ flexGrow: 1, justifyContent: 'center' }}>
-          <GridLegacy item sx={{ alignSelf: 'flex-end' }}>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: 'wrap', width: '100%', flexGrow: 1, justifyContent: 'center' }}
+        >
+          <Box sx={{ alignSelf: 'flex-end' }}>
             <Typography
               component="p"
               variant="subtitle2"
@@ -166,8 +169,8 @@ export default function Drawer({
               </Link>{' '}
               ✨
             </Typography>
-          </GridLegacy>
-        </GridLegacy>
+          </Box>
+        </Stack>
       ) : undefined}
     </>
   );

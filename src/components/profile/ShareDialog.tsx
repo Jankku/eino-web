@@ -3,8 +3,8 @@ import {
   CircularProgress,
   DialogActions,
   DialogContent,
-  GridLegacy,
   Typography,
+  Stack,
 } from '@mui/material';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { getShareUrl } from '../../utils/shareUtil';
@@ -64,14 +64,9 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
     <BaseDialog title="Share profile" open={visible} maxWidth={'md'} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
-          <GridLegacy
-            container
-            sx={{
-              justifyContent: 'center',
-            }}
-          >
+          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
             <CircularProgress />
-          </GridLegacy>
+          </Stack>
         ) : null}
         {shareId ? (
           <img

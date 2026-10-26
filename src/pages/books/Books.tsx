@@ -1,12 +1,12 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import {
   Box,
-  GridLegacy,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   SelectChangeEvent,
+  Stack,
 } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
@@ -93,28 +93,29 @@ export default function Books() {
         id={bookId}
         list={
           <Box sx={{ my: 2, mx: isMobile ? 2 : undefined }}>
-            <GridLegacy
-              container
+            <Stack
               component="header"
+              direction="row"
               sx={{
+                flexWrap: 'wrap',
+                width: '100%',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 mb: 2,
                 rowGap: 1,
               }}
             >
-              <GridLegacy item>
+              <Box>
                 <Box component="h1" sx={{ m: 0 }}>
                   Books
                 </Box>
-              </GridLegacy>
-              <GridLegacy item>
-                <GridLegacy
-                  container
-                  item
+              </Box>
+              <Box>
+                <Stack
                   component="ul"
                   aria-label="Actions"
-                  sx={{ gap: 1, p: 0, listStyle: 'none' }}
+                  direction="row"
+                  sx={{ flexWrap: 'wrap', width: '100%', gap: 1, m: 0, p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
                     <Box component="li" sx={{ display: 'inline-flex' }}>
@@ -164,9 +165,9 @@ export default function Books() {
                       </List>
                     </MoreButton>
                   </Box>
-                </GridLegacy>
-              </GridLegacy>
-            </GridLegacy>
+                </Stack>
+              </Box>
+            </Stack>
 
             {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
 

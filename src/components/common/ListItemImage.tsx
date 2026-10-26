@@ -1,13 +1,4 @@
-import {
-  Box,
-  capitalize,
-  Card,
-  CardActionArea,
-  Chip,
-  GridLegacy,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, capitalize, Card, CardActionArea, Chip, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Link, useLocation } from 'react-router';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
@@ -60,7 +51,7 @@ export default function ListItemImage({
             style={{ objectFit: 'cover', aspectRatio: 0.7 }}
           />
         ) : null}
-        <GridLegacy
+        <Box
           sx={{
             px: 2,
             pb: 2,
@@ -110,7 +101,7 @@ export default function ListItemImage({
               })}
             />
           </Stack>
-          <GridLegacy container>
+          <Stack direction="column" sx={{ flexWrap: 'wrap', width: '100%' }}>
             <Typography
               noWrap
               variant="body1"
@@ -121,8 +112,8 @@ export default function ListItemImage({
             <Typography noWrap variant="body2" sx={{ width: '100%', color: '#ddd' }}>
               {stringOrPlaceholder(detailText)}
             </Typography>
-          </GridLegacy>
-        </GridLegacy>
+          </Stack>
+        </Box>
         <Box
           component={Link}
           draggable={false}

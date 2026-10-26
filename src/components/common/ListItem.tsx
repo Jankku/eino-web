@@ -5,7 +5,6 @@ import {
   CardActionArea,
   CardContent,
   Chip,
-  GridLegacy,
   Stack,
   Typography,
   useColorScheme,
@@ -56,10 +55,11 @@ export default function ListItem({
     >
       <CardActionArea disabled={disableClick} component="div" tabIndex={-1} role={undefined}>
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
-          <GridLegacy container item zeroMinWidth sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
-            <GridLegacy
-              container
+          <Stack direction="row" sx={{ width: '100%', minWidth: 0, flexWrap: 'nowrap' }}>
+            <Box
               sx={(theme) => ({
+                display: 'flex',
+                flexWrap: 'wrap',
                 width: '10em',
                 minHeight: '10em',
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -80,9 +80,20 @@ export default function ListItem({
                   style={{ objectFit: 'cover' }}
                 />
               ) : null}
-            </GridLegacy>
-            <GridLegacy container item zeroMinWidth sx={{ flexDirection: 'column', ml: 1, mt: 1 }}>
-              <GridLegacy container sx={{ alignContent: 'flex-start', flex: '1 1 0px' }}>
+            </Box>
+            <Stack
+              direction="column"
+              sx={{ flexWrap: 'wrap', width: '100%', minWidth: 0, ml: 1, mt: 1 }}
+            >
+              <Stack
+                direction="column"
+                sx={{
+                  flexWrap: 'wrap',
+                  width: '100%',
+                  alignContent: 'flex-start',
+                  flex: '1 1 0px',
+                }}
+              >
                 <Stack direction="row" spacing={0.5} sx={{ mb: 1 }}>
                   <Chip
                     icon={<StarIcon />}
@@ -106,9 +117,9 @@ export default function ListItem({
                 <Typography noWrap variant="body2" sx={{ width: '100%', color: 'text.secondary' }}>
                   {stringOrPlaceholder(detailText)}
                 </Typography>
-              </GridLegacy>
-            </GridLegacy>
-          </GridLegacy>
+              </Stack>
+            </Stack>
+          </Stack>
         </CardContent>
         <Box
           component={Link}
