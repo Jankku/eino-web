@@ -59,7 +59,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedItem, setSelectedItem] = useState<(string | User)[]>([]);
+  const [selectedItem, setSelectedItem] = useState<User[]>([]);
   const { users } = useFindUser(searchTerm);
   const visibility = useWatch({ control, name: 'visibility' });
   const showUserAutocomplete = visibility === 'user';
@@ -127,10 +127,12 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                 onClose={() => setIsOpen(false)}
                 options={users}
                 value={selectedItem}
-                isOptionEqualToValue={(option, value) => option?.user_id === value?.user_id}
+                isOptionEqualToValue={(option, value) =>
+                  typeof value !== 'string' && option.user_id === value.user_id
+                }
                 onChange={(_event, newValue, reason) => {
                   if (['selectOption', 'removeOption'].includes(reason)) {
-                    setSelectedItem(newValue);
+                    setSelectedItem(newValue.filter((value) => typeof value !== 'string'));
                     setSearchTerm('');
                   }
                   if (reason === 'clear') {
@@ -138,7 +140,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                   }
                 }}
                 filterOptions={filterOptions}
-                getOptionLabel={(option) => (option as User)?.username ?? ''}
+                getOptionLabel={(option) => (typeof option === 'string' ? option : option.username)}
                 inputValue={String(searchTerm)}
                 onInputChange={(_e, value, reason) => {
                   if (reason === 'input') setSearchTerm(value ?? '');

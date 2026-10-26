@@ -13,7 +13,7 @@
     "test:e2e": "playwright test",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "format": "prettier --write ./src",
     "prepare": "husky"
   },

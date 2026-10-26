@@ -36,11 +36,15 @@ function MovieSearch() {
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       options={searchResults}
-      isOptionEqualToValue={(option, value) => option.movie_id === value.movie_id}
-      value={selectedItem as unknown as MovieWithId}
-      onChange={(_event, newValue) => setSelectedItem(newValue as MovieWithId)}
+      isOptionEqualToValue={(option, value) =>
+        typeof value !== 'string' && option.movie_id === value.movie_id
+      }
+      value={selectedItem ?? ''}
+      onChange={(_event, newValue) => {
+        if (typeof newValue !== 'string') setSelectedItem(newValue);
+      }}
       filterOptions={filterOptions}
-      getOptionLabel={(option) => (option as MovieWithId).title}
+      getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
       inputValue={String(searchTerm)}
       onInputChange={(_e, value, reason) => {
         if (reason === 'input') setSearchTerm(value ?? '');
