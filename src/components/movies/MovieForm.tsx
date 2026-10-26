@@ -23,14 +23,16 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
           name="image_url"
           label="Poster URL"
           placeholder='Click the "+" button to search for posters'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="Search cover" onClick={onShowPosters}>
-                  <AddCircle />
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="Search cover" onClick={onShowPosters}>
+                    <AddCircle />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />

@@ -1,4 +1,4 @@
-import { Box, Grid, ImageList, Pagination, PaginationItem, Typography } from '@mui/material';
+import { Box, Stack, ImageList, Pagination, PaginationItem, Typography } from '@mui/material';
 import { useColumnCalculator } from '../../hooks/useColumnCalculator';
 import ListItem from '../common/ListItem';
 import { usePagination } from '../../hooks/usePagination';
@@ -51,14 +51,10 @@ export default function MovieList({ itemType, movies }: MovieListProps) {
 
   if (movies.length === 0) {
     return (
-      <Grid container sx={{ flexDirection: 'column', alignItems: 'center', pt: 3 }}>
-        <Grid>
-          <Typography variant="h6">No movies for this status</Typography>
-        </Grid>
-        <Grid>
-          <Typography sx={{ pt: 1 }}>Try changing the status filter!</Typography>
-        </Grid>
-      </Grid>
+      <Stack sx={{ alignItems: 'center', pt: 3 }}>
+        <Typography variant="h6">No movies for this status</Typography>
+        <Typography sx={{ pt: 1 }}>Try changing the status filter!</Typography>
+      </Stack>
     );
   }
 

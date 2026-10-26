@@ -24,14 +24,16 @@ export default function BookForm({ onShowCovers }: BookFormProps) {
           name="image_url"
           label="Cover URL"
           placeholder='Click the "+" button to search for covers'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="Search cover" onClick={onShowCovers}>
-                  <AddCircle />
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="Search cover" onClick={onShowCovers}>
+                    <AddCircle />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />

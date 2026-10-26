@@ -1,14 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField as MUITextField } from '@mui/material';
+import { TextField as MUITextField, TextFieldProps as MUITextFieldProps } from '@mui/material';
 
-type TextFieldProps = {
+type TextFieldProps = Omit<MUITextFieldProps, 'name'> & {
   name: string;
   label: string;
-  type?: string;
-  autoFocus?: boolean;
-  autoComplete?: string;
-  helperText?: string;
-  [key: string]: unknown;
 };
 
 export default function TextField({
