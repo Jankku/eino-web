@@ -119,6 +119,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
             </Typography>
             <section>
               <Dropzone
+                label={selection ? 'Change JSON import file' : 'Choose JSON import file'}
                 options={{
                   maxFiles: 1,
                   multiple: false,

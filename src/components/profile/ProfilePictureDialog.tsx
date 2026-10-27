@@ -36,7 +36,8 @@ export default function ProfilePictureDialog({
   const {
     handleSubmit,
     setError,
-    formState: { errors },
+    clearErrors,
+    formState: { errors, isSubmitting },
   } = formMethods;
   const uploadProfilePicture = useUploadProfilePicture();
   const deleteProfilePicture = useUploadProfilePicture();
@@ -73,37 +74,59 @@ export default function ProfilePictureDialog({
     }
   };
 
-  const getCanvasBlob = async () => {
+  const getCanvasBlob = async (): Promise<Blob> => {
+    const file = files[0];
     const canvas = await cropperRef.current?.$toCanvas();
-    const { promise, resolve } = Promise.withResolvers<Blob | null>();
-    canvas?.toBlob(resolve, files[0].type, 0.95);
-    return promise;
+    if (!file || !canvas) {
+      throw new Error('The picture preview is not ready. Please select the picture again.');
+    }
+    return new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob || blob.size === 0) {
+            reject(new Error('Could not encode the picture. Please select the picture again.'));
+            return;
+          }
+          resolve(blob);
+        },
+        file.type,
+        0.95,
+      );
+    });
+  };
+
+  const showPictureError = async (error: unknown) => {
+    let message = 'Could not update the profile picture. Please try again.';
+    if (error instanceof HTTPError) {
+      const errors = await parseError(error).catch(() => []);
+      message = errors[0]?.message || message;
+    } else if (error instanceof Error) {
+      message = error.message || message;
+    }
+    setError('root.serverError', { message });
   };
 
   const onSubmit = async () => {
     if (files.length === 0 || fileErrors.length > 0) return;
+    clearErrors('root.serverError');
 
-    const blob = await getCanvasBlob();
-
-    uploadProfilePicture.mutate(blob, {
-      onSuccess: (result) => {
-        showSuccessSnackbar(result.message);
-        resetState();
-      },
-      onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
-        setError('root.serverError', {
-          message: errors[0].message,
-        });
-      },
-    });
+    try {
+      const blob = await getCanvasBlob();
+      const result = await uploadProfilePicture.mutateAsync(blob);
+      showSuccessSnackbar(result.message);
+      resetState();
+    } catch (error) {
+      await showPictureError(error);
+    }
   };
 
   const deleteCurrentProfilePicture = () => {
+    clearErrors('root.serverError');
     deleteProfilePicture.mutate(undefined, {
       onSuccess: (result) => {
         showSuccessSnackbar(result.message);
       },
+      onError: showPictureError,
     });
   };
 
@@ -119,7 +142,11 @@ export default function ProfilePictureDialog({
   }, []);
 
   const saveButtonDisabled =
-    uploadProfilePicture.isPending || files.length === 0 || fileErrors.length > 0;
+    isSubmitting ||
+    uploadProfilePicture.isPending ||
+    deleteProfilePicture.isPending ||
+    files.length === 0 ||
+    fileErrors.length > 0;
 
   return (
     <BaseDialog
@@ -171,6 +198,7 @@ export default function ProfilePictureDialog({
               {thumbnails}
             </Box>
             <Dropzone
+              label={files.length > 0 ? 'Change profile picture' : 'Choose profile picture'}
               options={{
                 maxFiles: 1,
                 multiple: false,
@@ -178,7 +206,8 @@ export default function ProfilePictureDialog({
                   'image/*': [],
                 },
                 onDrop,
-                disabled: uploadProfilePicture.isPending || deleteProfilePicture.isPending,
+                disabled:
+                  isSubmitting || uploadProfilePicture.isPending || deleteProfilePicture.isPending,
               }}
               compact={files.length > 0}
             >
@@ -240,7 +269,7 @@ export default function ProfilePictureDialog({
               Cancel
             </Button>
             <DialogPrimaryButton
-              loading={uploadProfilePicture.isPending}
+              loading={isSubmitting || uploadProfilePicture.isPending}
               disabled={saveButtonDisabled}
               type="submit"
             >

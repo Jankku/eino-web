@@ -3,16 +3,23 @@ import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 type DropzoneProps = {
   options: DropzoneOptions;
+  label: string;
   children: React.ReactNode;
   compact?: boolean;
   sx?: SxProps<Theme>;
 };
 
-export default function Dropzone({ options, children, compact = false, sx = [] }: DropzoneProps) {
+export default function Dropzone({
+  options,
+  label,
+  children,
+  compact = false,
+  sx = [],
+}: DropzoneProps) {
   const { getRootProps, getInputProps } = useDropzone(options);
   return (
     <Paper
-      {...getRootProps({ role: 'button', 'aria-disabled': options.disabled })}
+      {...getRootProps({ role: 'button', 'aria-label': label, 'aria-disabled': options.disabled })}
       elevation={0}
       sx={[
         {
@@ -38,7 +45,7 @@ export default function Dropzone({ options, children, compact = false, sx = [] }
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps({ 'aria-hidden': true, tabIndex: -1 })} />
       {children}
     </Paper>
   );
