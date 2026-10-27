@@ -48,7 +48,6 @@ export default function PasswordField({
                 <InputAdornment position="end">
                   <IconButton
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    aria-pressed={showPassword}
                     onClick={() => setShowPassword((prev) => !prev)}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
