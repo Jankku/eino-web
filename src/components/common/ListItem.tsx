@@ -1,3 +1,4 @@
+import type { ItemNavigationState } from '../../hooks/useRestoreItemFocus';
 import {
   Box,
   capitalize,
@@ -24,7 +25,7 @@ type ListItemProps = {
   imageUrl: string | null;
   to?: string;
   lighten?: boolean;
-  onNavigate?: React.MouseEventHandler<HTMLAnchorElement>;
+  navigationState?: ItemNavigationState;
 };
 
 export default function ListItem({
@@ -36,7 +37,7 @@ export default function ListItem({
   imageUrl,
   to,
   lighten,
-  onNavigate,
+  navigationState,
 }: ListItemProps) {
   const location = useLocation();
   const { mode } = useColorScheme();
@@ -126,7 +127,7 @@ export default function ListItem({
           draggable={false}
           id={itemId}
           to={to ?? `./${itemId}${location.search}`}
-          onClick={onNavigate}
+          state={navigationState}
           sx={(theme) => ({
             position: 'absolute',
             inset: 0,

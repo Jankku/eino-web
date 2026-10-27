@@ -1,8 +1,10 @@
+import Head from '../common/Head';
 import { Container, Typography, Box } from '@mui/material';
 
 export default function Error404() {
   return (
     <>
+      <Head pageTitle="Page not found" />
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <Box
           sx={{

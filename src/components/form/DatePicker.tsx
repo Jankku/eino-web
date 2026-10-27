@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   DatePicker as MUIDatepicker,
@@ -15,6 +16,7 @@ interface DatePickerProps extends Omit<
 
 export default function DatePicker({ name, label, slotProps, ...rest }: DatePickerProps) {
   const { control } = useFormContext();
+  const inputId = useId();
 
   return (
     <Controller
@@ -37,6 +39,7 @@ export default function DatePicker({ name, label, slotProps, ...rest }: DatePick
                   : slotProps?.textField;
 
               return {
+                id: inputId,
                 ...textFieldProps,
                 ...(error && { error: true, helperText: error.message }),
                 onBlur: (event) => {

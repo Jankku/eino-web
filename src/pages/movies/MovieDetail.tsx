@@ -1,3 +1,5 @@
+import Head from '../../components/common/Head';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { Box, Button, capitalize, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { DateTime, Duration } from 'luxon';
@@ -18,6 +20,7 @@ import ScoreChip from '../../components/common/ScoreChip';
 import StatusChip from '../../components/common/StatusChip';
 
 export default function MovieDetail() {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const movieId = useParams().movieId!;
@@ -103,78 +106,86 @@ export default function MovieDetail() {
   };
 
   return (
-    <BaseDetailLayout
-      imageUrl={data.image_url}
-      copyText="Copy title and director"
-      onCopy={copyToClipboard}
-      details={
-        <>
-          <Stack direction="row" sx={{ mb: 0.5 }}>
-            <ScoreChip score={data.score} />
-            <StatusChip
-              status={data.status}
-              chipText={statusText}
-              tooltipText={statusTooltipText}
-            />
-          </Stack>
-          <Stack sx={{ mb: 2 }}>
-            <Box component="span" sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
-              {data.title}
+    <>
+      <Head pageTitle={`${data.title.trim() || 'Untitled movie'} | Movies`} />
+      <BaseDetailLayout
+        imageUrl={data.image_url}
+        copyText="Copy title and director"
+        onCopy={copyToClipboard}
+        details={
+          <>
+            <Stack direction="row" sx={{ mb: 0.5 }}>
+              <ScoreChip score={data.score} />
+              <StatusChip
+                status={data.status}
+                chipText={statusText}
+                tooltipText={statusTooltipText}
+              />
+            </Stack>
+            <Stack sx={{ mb: 2 }}>
+              <Box
+                component={isMobile ? 'h1' : 'h2'}
+                data-detail-heading
+                tabIndex={-1}
+                sx={{ m: 0, fontWeight: 600, fontSize: '1.25rem' }}
+              >
+                {data.title.trim() || 'Untitled movie'}
+              </Box>
+              <Box component="span">{[data.director, data.year].filter(Boolean).join(', ')}</Box>
+            </Stack>
+            <Box component="dl">
+              {data.writer ? <DetailItem title="Writer" value={data.writer} /> : undefined}
+              {data.studio ? <DetailItem title="Studio" value={data.studio} /> : undefined}
+              {data.duration ? <DetailItem title="Duration" value={duration} /> : undefined}
+              {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
             </Box>
-            <Box component="span">{[data.director, data.year].filter(Boolean).join(', ')}</Box>
-          </Stack>
-          <Box component="dl">
-            {data.writer ? <DetailItem title="Writer" value={data.writer} /> : undefined}
-            {data.studio ? <DetailItem title="Studio" value={data.studio} /> : undefined}
-            {data.duration ? <DetailItem title="Duration" value={duration} /> : undefined}
-            {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
-          </Box>
-        </>
-      }
-      actions={
-        <>
-          {!isCompleted ? (
+          </>
+        }
+        actions={
+          <>
+            {!isCompleted ? (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={toggleCompleteDialog as () => void}
+                startIcon={<DoneIcon />}
+              >
+                Complete
+              </Button>
+            ) : undefined}
             <Button
               variant="contained"
-              color="success"
-              onClick={toggleCompleteDialog as () => void}
-              startIcon={<DoneIcon />}
+              color="primary"
+              onClick={toggleEditDialog as () => void}
+              startIcon={<CreateIcon />}
             >
-              Complete
+              Edit
             </Button>
-          ) : undefined}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={toggleEditDialog as () => void}
-            startIcon={<CreateIcon />}
-          >
-            Edit
-          </Button>
-          <DeleteButton
-            loading={deleteMovie.isPending}
-            variant="outlined"
-            color="secondary"
-            onClick={onDelete}
+            <DeleteButton
+              loading={deleteMovie.isPending}
+              variant="outlined"
+              color="secondary"
+              onClick={onDelete}
+            />
+          </>
+        }
+      >
+        {editDialogOpen ? (
+          <EditMovieDialog
+            visible={editDialogOpen}
+            closeDialog={toggleEditDialog}
+            movieId={movieId}
           />
-        </>
-      }
-    >
-      {editDialogOpen ? (
-        <EditMovieDialog
-          visible={editDialogOpen}
-          closeDialog={toggleEditDialog}
-          movieId={movieId}
-        />
-      ) : undefined}
+        ) : undefined}
 
-      {completeDialogOpen ? (
-        <CompleteDialog
-          visible={completeDialogOpen}
-          closeDialog={toggleCompleteDialog}
-          onComplete={onComplete}
-        />
-      ) : undefined}
-    </BaseDetailLayout>
+        {completeDialogOpen ? (
+          <CompleteDialog
+            visible={completeDialogOpen}
+            closeDialog={toggleCompleteDialog}
+            onComplete={onComplete}
+          />
+        ) : undefined}
+      </BaseDetailLayout>
+    </>
   );
 }

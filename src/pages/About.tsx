@@ -114,7 +114,11 @@ export default function About() {
           component="section"
           slotProps={{ heading: { component: 'h2' }, transition: { unmountOnExit: true } }}
         >
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <AccordionSummary
+            id="privacy-trigger"
+            aria-controls="privacy-panel"
+            expandIcon={<ArrowDropDownIcon />}
+          >
             <Typography sx={{ fontWeight: '600' }}>Privacy policy</Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -184,7 +188,11 @@ export default function About() {
           component="section"
           slotProps={{ heading: { component: 'h2' }, transition: { unmountOnExit: true } }}
         >
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <AccordionSummary
+            id="licenses-trigger"
+            aria-controls="licenses-panel"
+            expandIcon={<ArrowDropDownIcon />}
+          >
             <Typography sx={{ fontWeight: '600' }}>Licenses</Typography>
           </AccordionSummary>
           <AccordionDetails>

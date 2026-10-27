@@ -23,7 +23,7 @@ export default function MovieList({ itemType, movies }: MovieListProps) {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const newSearchParams = filterSearchParams(searchParams, 'page');
-  const { saveFocusedItem } = useRestoreItemFocus('movieFocusedItemId');
+  const { getItemLinkState } = useRestoreItemFocus();
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
@@ -71,7 +71,7 @@ export default function MovieList({ itemType, movies }: MovieListProps) {
             score={movie.score}
             itemId={movie.movie_id}
             imageUrl={movie.image_url}
-            onNavigate={() => saveFocusedItem(movie.movie_id)}
+            navigationState={getItemLinkState(movie.movie_id)}
           />
         ))}
       </ImageList>

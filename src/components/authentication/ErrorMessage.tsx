@@ -1,14 +1,21 @@
+import { useId } from 'react';
 import { Typography } from '@mui/material';
 
-export default function ErrorMessage({ message }: { message: string }) {
+type ErrorMessageProps = {
+  message: string;
+  id?: string;
+};
+
+export default function ErrorMessage({ message, id }: ErrorMessageProps) {
+  const generatedId = useId();
+
   return (
     <Typography
       component="p"
-      id="errorText"
-      sx={{
-        fontWeight: 700,
-        color: 'red',
-      }}
+      id={id ?? generatedId}
+      role="alert"
+      aria-atomic="true"
+      sx={{ fontWeight: 700, color: 'error.main', pb: 2 }}
     >
       {message}
     </Typography>

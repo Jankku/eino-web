@@ -52,18 +52,17 @@ export default function BaseDetailLayout({
         }}
       >
         <CardContent sx={{ pb: 0, position: 'relative' }}>
-          {isMobile ? (
-            <IconButton
-              component={Link}
-              to={backUrl}
-              aria-label="Back"
-              sx={{ position: 'absolute', left: 16 }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          ) : null}
+          <IconButton
+            component={Link}
+            to={backUrl}
+            aria-label="Back"
+            sx={{ position: 'absolute', left: 16 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
 
           <Tooltip
+            describeChild
             arrow
             title={<Typography variant="body2">{copyText}</Typography>}
             sx={{ position: 'absolute', right: 16 }}

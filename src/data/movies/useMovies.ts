@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getMoviesQuery } from './useMoviesSuspense';
 
-type Props = {
+type UseMoviesProps = {
   status: string;
   enabled: boolean;
   filter?: string | null;
 };
 
-export const useMovies = ({ enabled, status, filter }: Props) => {
+export const useMovies = ({ enabled, status, filter }: UseMoviesProps) => {
   return useQuery({
     enabled,
     queryKey: ['movies', status, filter],

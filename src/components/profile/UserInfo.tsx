@@ -74,13 +74,21 @@ export function UserInfo({
               }}
             >
               <Tooltip
+                describeChild
                 arrow
                 title={<Typography variant="body2">Click to edit your profile picture</Typography>}
                 enterTouchDelay={500}
               >
                 <ButtonBase
                   aria-label="Edit profile picture"
-                  sx={{ width: 'fit-content' }}
+                  sx={{
+                    width: 'fit-content',
+                    borderRadius: '50%',
+                    '&&:focus-visible': {
+                      outline: '3px solid currentColor',
+                      outlineOffset: '4px',
+                    },
+                  }}
                   onClick={toggleEditProfilePictureDialog as () => void}
                 >
                   <Avatar

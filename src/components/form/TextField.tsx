@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField as MUITextField, TextFieldProps as MUITextFieldProps } from '@mui/material';
 
@@ -16,15 +17,18 @@ export default function TextField({
   ...rest
 }: TextFieldProps) {
   const { control } = useFormContext();
+  const generatedId = useId();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { invalid, error } }) => (
+      render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => (
         <MUITextField
           {...field}
+          inputRef={ref}
           {...rest}
+          id={rest.id ?? generatedId}
           fullWidth
           autoFocus={autoFocus}
           autoComplete={autoComplete}

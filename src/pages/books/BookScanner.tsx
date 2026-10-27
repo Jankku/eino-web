@@ -1,3 +1,5 @@
+import Head from '../../components/common/Head';
+import { useId } from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Quagga from '@ericblade/quagga2';
 import { BarcodeScanner } from '../../components/common/BarcodeScanner';
@@ -24,6 +26,7 @@ type TorchMediaTrackConstraintSet = MediaTrackConstraintSet & {
 };
 
 export default function BookScanner() {
+  const cameraSelectId = useId();
   const navigate = useNavigate();
   const { showErrorSnackbar } = useCustomSnackbar();
   const isbnSearchMutation = useBookIsbnSearch();
@@ -147,6 +150,7 @@ export default function BookScanner() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: 'relative' }}>
+      <Head pageTitle="Scan books" />
       <style>
         {`#scanner-container video {
             position: absolute;
@@ -173,11 +177,11 @@ export default function BookScanner() {
       </Box>
       <Box sx={{ position: 'fixed', bottom: 16, left: 16, zIndex: 2 }}>
         <FormControl fullWidth>
-          <InputLabel id="camera-label">Camera</InputLabel>
+          <InputLabel htmlFor={cameraSelectId}>Camera</InputLabel>
           <Select
             native
             label="Camera"
-            labelId="camera-label"
+            inputProps={{ id: cameraSelectId }}
             value={cameraId}
             onChange={(event) => setCameraId(event.target.value)}
           >

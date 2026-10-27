@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Button, Container, FormControl, InputLabel, Select, Stack } from '@mui/material';
 import Head from '../components/common/Head';
 import SettingsCard from '../components/settings/SettingsCard';
@@ -9,6 +10,8 @@ import { Movie } from '../models/movie';
 import { useLocalStorage } from '@uidotdev/usehooks';
 
 export default function Settings() {
+  const bookStatusId = useId();
+  const movieStatusId = useId();
   const { showSuccessSnackbar } = useCustomSnackbar();
   const [newBookStatus, setNewBookStatus] = useLocalStorage<Book['status']>(
     'newBookStatus',
@@ -46,11 +49,11 @@ export default function Settings() {
           actions={
             <>
               <FormControl fullWidth>
-                <InputLabel id="book-status-label">Book status</InputLabel>
+                <InputLabel htmlFor={bookStatusId}>Book status</InputLabel>
                 <Select
                   native
                   label="Book status"
-                  labelId="book-status-label"
+                  inputProps={{ id: bookStatusId }}
                   defaultValue={newBookStatus}
                   onChange={(e) => {
                     console.log(String(e.target.value));
@@ -65,11 +68,11 @@ export default function Settings() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id="movie-status-label">Movie status</InputLabel>
+                <InputLabel htmlFor={movieStatusId}>Movie status</InputLabel>
                 <Select
                   native
                   label="Movie status"
-                  labelId="movie-status-label"
+                  inputProps={{ id: movieStatusId }}
                   defaultValue={newMovieStatus}
                   onChange={(e) => setNewMovieStatus(e.target.value as Movie['status'])}
                 >

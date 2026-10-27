@@ -6,11 +6,14 @@ import { parseError } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useEffect, useRef, useState } from 'react';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { FileValidationError, imageValidator } from '../../utils/importUtil';
+import { byteFormatter, FileValidationError, imageValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
 import { useUploadProfilePicture } from '../../data/profile/useUploadProfilePicture';
+import { useDeleteProfilePicture } from '../../data/profile/useDeleteProfilePicture';
 import Dropzone from './Dropzone';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import Cropper from '../common/Cropper';
 import { CropperCanvas } from 'cropperjs';
 
@@ -34,10 +37,11 @@ export default function ProfilePictureDialog({
   const {
     handleSubmit,
     setError,
-    formState: { errors },
+    clearErrors,
+    formState: { errors, isSubmitting },
   } = formMethods;
   const uploadProfilePicture = useUploadProfilePicture();
-  const deleteProfilePicture = useUploadProfilePicture();
+  const deleteProfilePicture = useDeleteProfilePicture();
   const { showSuccessSnackbar } = useCustomSnackbar();
 
   const thumbnails = files.map((file) => (
@@ -53,7 +57,12 @@ export default function ProfilePictureDialog({
   ));
 
   const onDrop = async (acceptedFiles: File[]) => {
-    const errors = await imageValidator(acceptedFiles[0]);
+    const file = acceptedFiles[0];
+    if (!file) {
+      setFileErrors([{ code: 'invalid_selection', message: 'Please select one image file.' }]);
+      return;
+    }
+    const errors = await imageValidator(file);
     setFileErrors(errors);
     if (errors.length === 0) {
       setFiles(
@@ -66,37 +75,59 @@ export default function ProfilePictureDialog({
     }
   };
 
-  const getCanvasBlob = async () => {
+  const getCanvasBlob = async (): Promise<Blob> => {
+    const file = files[0];
     const canvas = await cropperRef.current?.$toCanvas();
-    return new Promise<Blob | null>((resolve) =>
-      canvas?.toBlob(resolve, files[0].type, 0.9),
-    ) as Promise<Blob>;
-  };
-
-  const onSubmit = async () => {
-    if (files.length === 0) return;
-
-    const blob = await getCanvasBlob();
-
-    uploadProfilePicture.mutate(blob, {
-      onSuccess: (result) => {
-        showSuccessSnackbar(result.message);
-        resetState();
-      },
-      onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
-        setError('root.serverError', {
-          message: errors[0].message,
-        });
-      },
+    if (!file || !canvas) {
+      throw new Error('The picture preview is not ready. Please select the picture again.');
+    }
+    return new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob || blob.size === 0) {
+            reject(new Error('Could not encode the picture. Please select the picture again.'));
+            return;
+          }
+          resolve(blob);
+        },
+        file.type,
+        0.95,
+      );
     });
   };
 
+  const showPictureError = async (error: unknown) => {
+    let message = 'Could not update the profile picture. Please try again.';
+    if (error instanceof HTTPError) {
+      const errors = await parseError(error).catch(() => []);
+      message = errors[0]?.message || message;
+    } else if (error instanceof Error) {
+      message = error.message || message;
+    }
+    setError('root.serverError', { message });
+  };
+
+  const onSubmit = async () => {
+    if (files.length === 0 || fileErrors.length > 0) return;
+    clearErrors('root.serverError');
+
+    try {
+      const blob = await getCanvasBlob();
+      const result = await uploadProfilePicture.mutateAsync(blob);
+      showSuccessSnackbar(result.message);
+      resetState();
+    } catch (error) {
+      await showPictureError(error);
+    }
+  };
+
   const deleteCurrentProfilePicture = () => {
+    clearErrors('root.serverError');
     deleteProfilePicture.mutate(undefined, {
       onSuccess: (result) => {
         showSuccessSnackbar(result.message);
       },
+      onError: showPictureError,
     });
   };
 
@@ -111,7 +142,12 @@ export default function ProfilePictureDialog({
     // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
   }, []);
 
-  const saveButtonDisabled = uploadProfilePicture.isPending || files.length === 0;
+  const saveButtonDisabled =
+    isSubmitting ||
+    uploadProfilePicture.isPending ||
+    deleteProfilePicture.isPending ||
+    files.length === 0 ||
+    fileErrors.length > 0;
 
   return (
     <BaseDialog
@@ -162,15 +198,8 @@ export default function ProfilePictureDialog({
               ) : undefined}
               {thumbnails}
             </Box>
-            <Typography
-              component="p"
-              sx={{
-                mb: 2,
-              }}
-            >
-              Only image files are allowed and the file size must be less than 10MB.
-            </Typography>
             <Dropzone
+              label={files.length > 0 ? 'Change profile picture' : 'Choose profile picture'}
               options={{
                 maxFiles: 1,
                 multiple: false,
@@ -178,19 +207,54 @@ export default function ProfilePictureDialog({
                   'image/*': [],
                 },
                 onDrop,
+                disabled:
+                  isSubmitting || uploadProfilePicture.isPending || deleteProfilePicture.isPending,
               }}
+              compact={files.length > 0}
             >
-              <Typography>Drag and drop or click to select a new picture</Typography>
+              {files.length > 0 ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <ImageOutlinedIcon color="primary" sx={{ fontSize: 28, flexShrink: 0 }} />
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
+                      {files[0].name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {byteFormatter.format(files[0].size)}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    color="primary"
+                    sx={{ flexShrink: 0, fontWeight: 500 }}
+                  >
+                    Change picture
+                  </Typography>
+                </Box>
+              ) : (
+                <>
+                  <AddPhotoAlternateOutlinedIcon color="primary" sx={{ fontSize: 32, mb: 1 }} />
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    Choose a picture
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mt: 0.5 }}
+                  >
+                    or drag and drop it here · Images only · Max 10 MB
+                  </Typography>
+                </>
+              )}
             </Dropzone>
             <Box
               sx={{
                 pt: 1,
               }}
             >
-              {fileErrors.map((e, index) => (
-                // eslint-disable-next-line @eslint-react/no-array-index-key
-                <ErrorMessage key={index} message={e.message} />
-              ))}
+              {fileErrors.length > 0 ? (
+                <ErrorMessage message={fileErrors.map((error) => error.message).join(' ')} />
+              ) : null}
             </Box>
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />
@@ -206,7 +270,7 @@ export default function ProfilePictureDialog({
               Cancel
             </Button>
             <DialogPrimaryButton
-              loading={uploadProfilePicture.isPending}
+              loading={isSubmitting || uploadProfilePicture.isPending}
               disabled={saveButtonDisabled}
               type="submit"
             >

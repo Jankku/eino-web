@@ -1,3 +1,4 @@
+import Head from './Head';
 import { Button, Stack, Typography } from '@mui/material';
 import Refresh from '@mui/icons-material/Refresh';
 
@@ -14,7 +15,8 @@ export default function PageFallback({ resetErrorBoundary }: PageFallbackProps) 
         gap: 2,
       }}
     >
-      <Typography variant="h5" component="p">
+      <Head pageTitle="Unable to load page" />
+      <Typography variant="h5" component="h1" data-route-heading>
         Failed to load page. 😭
       </Typography>
       <Button startIcon={<Refresh />} variant="contained" onClick={() => resetErrorBoundary()}>

@@ -1,3 +1,4 @@
+import ErrorMessage from '../authentication/ErrorMessage';
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
 import { Button, DialogContent } from '@mui/material';
@@ -16,7 +17,7 @@ type AddMovieDialogProps = {
 };
 
 export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogProps) {
-  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const [showPosters, setShowPosters] = useState(false);
   const formMethods = useForm({
     defaultValues: getMovieDefaults(),
@@ -32,14 +33,10 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   const addMovie = useAddMovie();
 
   const onSubmit = (formData: Movie) => {
+    addMovie.reset();
     addMovie.mutate(getNewMovieValues(formData, dirtyFields), {
       onSuccess: () => {
         showSuccessSnackbar('Movie created');
-        closeDialog();
-        resetForm();
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to create movie');
         closeDialog();
         resetForm();
       },
@@ -47,6 +44,7 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
   };
 
   const onCancel = () => {
+    addMovie.reset();
     closeDialog();
     resetForm();
     setShowPosters(false);
@@ -62,6 +60,9 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
+            {addMovie.isError ? (
+              <ErrorMessage message="Failed to create movie. Check your connection and try submitting again." />
+            ) : null}
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             <PosterDialog

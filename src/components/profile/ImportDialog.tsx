@@ -119,32 +119,14 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
             </Typography>
             <section>
               <Dropzone
+                label={selection ? 'Change JSON import file' : 'Choose JSON import file'}
                 options={{
                   maxFiles: 1,
                   multiple: false,
                   onDrop,
                   disabled: importData.isPending,
                 }}
-                sx={{
-                  p: selection ? 2 : 3,
-                  border: '1px dashed',
-                  borderColor: selection ? 'divider' : 'primary.main',
-                  borderRadius: 2,
-                  backgroundColor: 'action.hover',
-                  boxShadow: 'none',
-                  textAlign: selection ? 'left' : 'center',
-                  transition: 'border-color 150ms, background-color 150ms',
-                  '&:hover, &:focus-visible': {
-                    borderColor: 'primary.main',
-                    backgroundColor: 'action.selected',
-                  },
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: 'primary.main',
-                    outlineOffset: 3,
-                  },
-                  '&[aria-disabled="true"]': { opacity: 0.6, cursor: 'default' },
-                }}
+                compact={!!selection}
               >
                 {isReading ? (
                   <Box
@@ -284,10 +266,9 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                   pt: 1,
                 }}
               >
-                {fileErrors.map((e, index) => (
-                  // eslint-disable-next-line @eslint-react/no-array-index-key
-                  <ErrorMessage key={index} message={e.message} />
-                ))}
+                {fileErrors.length > 0 ? (
+                  <ErrorMessage message={fileErrors.map((error) => error.message).join(' ')} />
+                ) : null}
               </Box>
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />

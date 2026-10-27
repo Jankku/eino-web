@@ -1,5 +1,6 @@
 import { Button, Container, Typography, Box } from '@mui/material';
 import { Link } from 'react-router';
+import Head from '../common/Head';
 
 export default function Error401() {
   const redirectToQueryParam = window.location.pathname
@@ -7,6 +8,7 @@ export default function Error401() {
     : '';
   return (
     <>
+      <Head pageTitle="Unauthorized" />
       <Container maxWidth="md" sx={{ textAlign: 'center' }}>
         <Box
           sx={{
