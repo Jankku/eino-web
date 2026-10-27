@@ -3,14 +3,14 @@ import { api } from '../api';
 import { BookWithId } from '../../models/book';
 import { ApiResponse } from '../types';
 
-type Props = {
+type UseBooksProps = {
   status: string;
   sort?: string | null;
   order?: string | null;
   filter?: string | null;
 };
 
-export const getBooksQuery = async ({ status, sort, order, filter }: Props) => {
+export const getBooksQuery = async ({ status, sort, order, filter }: UseBooksProps) => {
   const res = await api
     .get(`api/v1/list/books/${status}`, {
       searchParams: {
@@ -23,7 +23,7 @@ export const getBooksQuery = async ({ status, sort, order, filter }: Props) => {
   return res.results;
 };
 
-export const useBooksSuspense = ({ status, sort, order, filter }: Props) => {
+export const useBooksSuspense = ({ status, sort, order, filter }: UseBooksProps) => {
   const queryClient = useQueryClient();
   return useSuspenseQuery({
     queryKey: ['books', status, sort, order, filter],
