@@ -57,7 +57,7 @@ export default function ProfileVerifyEmail() {
     verifyEmail.mutate(otp, {
       onSuccess: () => {
         navigate('/profile', { replace: true });
-        showSuccessSnackbar('Email verified successfully');
+        showSuccessSnackbar('Email verified');
       },
       onError: async (error) => {
         const errors = await parseError(error as HTTPError);

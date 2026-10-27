@@ -1,11 +1,5 @@
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  GridLegacy,
-  Typography,
-} from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { getShareUrl } from '../../utils/shareUtil';
 import BaseDialog from '../common/BaseDialog';
@@ -64,14 +58,9 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
     <BaseDialog title="Share profile" open={visible} maxWidth={'md'} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
         {isLoading ? (
-          <GridLegacy
-            container
-            sx={{
-              justifyContent: 'center',
-            }}
-          >
+          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
             <CircularProgress />
-          </GridLegacy>
+          </Stack>
         ) : null}
         {shareId ? (
           <img
@@ -84,17 +73,17 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
         ) : null}
         {isError ? <Typography component="p">Failed to load image</Typography> : null}
       </DialogContent>
-      <DialogActions>
-        <Button color="secondary" onClick={onClose}>
+      <DialogFooter>
+        <Button color="inherit" onClick={onClose}>
           Cancel
         </Button>
-        <Button color="primary" disabled={isActionDisabled} onClick={onCopyUrl}>
+        <Button color="inherit" disabled={isActionDisabled} onClick={onCopyUrl}>
           Copy link
         </Button>
-        <Button color="primary" disabled={isActionDisabled} onClick={onShare}>
+        <DialogPrimaryButton disabled={isActionDisabled} onClick={onShare}>
           Share
-        </Button>
-      </DialogActions>
+        </DialogPrimaryButton>
+      </DialogFooter>
     </BaseDialog>
   );
 }

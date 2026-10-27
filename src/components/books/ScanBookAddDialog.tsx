@@ -1,5 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useEffect, useRef, useState } from 'react';
-import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
+import { Button, DialogContent, Typography } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -129,7 +130,7 @@ export default function ScanBookAddDialog({
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
             {prefillLoading ? (
-              <Typography variant="body2" sx={{ mb: 2 }} color="text.secondary">
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                 Fetching book details from ISBN...
               </Typography>
             ) : null}
@@ -142,18 +143,17 @@ export default function ScanBookAddDialog({
               onSelect={onSelectCover}
             />
           </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button
+            <DialogPrimaryButton
               type="submit"
-              color="primary"
               disabled={addBookMutation.isPending || prefillLoading}
             >
               Create
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

@@ -1,4 +1,5 @@
-import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -61,14 +62,14 @@ export default function DeleteBulletinDialog({
             <ErrorMessage message={errors.root.serverError.message} />
           ) : null}
         </DialogContent>
-        <DialogActions>
-          <Button color="primary" onClick={onClose}>
+        <DialogFooter>
+          <Button color="inherit" onClick={onClose}>
             Close
           </Button>
-          <Button loading={deleteBulletin.isPending} color="secondary" type="submit">
+          <DialogPrimaryButton color="error" loading={deleteBulletin.isPending} type="submit">
             Delete
-          </Button>
-        </DialogActions>
+          </DialogPrimaryButton>
+        </DialogFooter>
       </form>
     </BaseDialog>
   );

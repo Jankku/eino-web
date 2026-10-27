@@ -254,7 +254,7 @@ export default function Bulletins() {
     <>
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Bulletins" />
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <h1>Bulletins</h1>
           <Button
             variant="contained"
@@ -264,7 +264,7 @@ export default function Bulletins() {
             Create
           </Button>
         </Stack>
-        <Box height={500}>
+        <Box sx={{ height: 500 }}>
           <DataGrid
             disableRowSelectionOnClick
             showToolbar

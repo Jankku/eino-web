@@ -1,11 +1,12 @@
 import {
   AppBar,
-  GridLegacy,
   IconButton,
   Toolbar,
   Tooltip,
   Typography,
   useColorScheme,
+  Stack,
+  Box,
 } from '@mui/material';
 import { Link, useLocation } from 'react-router';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -56,9 +57,11 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
         >
           <MenuIcon />
         </IconButton>
-        <GridLegacy
-          container
+        <Stack
+          direction="row"
           sx={{
+            flexWrap: 'wrap',
+            width: '100%',
             alignItems: 'center',
             gap: { sm: 2 },
             justifyContent: { sm: 'space-between' },
@@ -81,20 +84,22 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               eino
             </Typography>
           </Link>
-          <GridLegacy item sx={{ flexGrow: 2 }}>
-            <GridLegacy
-              container
+          <Box sx={{ minWidth: 0, flexGrow: 2 }}>
+            <Stack
+              direction="row"
               sx={{
+                flexWrap: 'wrap',
+                width: '100%',
                 alignItems: 'center',
                 justifyContent: { sm: 'flex-end' },
                 gap: 2,
               }}
             >
-              <GridLegacy item sx={{ flexGrow: 1, maxWidth: '25em' }}>
+              <Box sx={{ minWidth: 0, flexGrow: 1, maxWidth: '25em' }}>
                 {isBookPath ? <BookSearch /> : null}
                 {isMoviePath ? <MovieSearch /> : null}
-              </GridLegacy>
-              <GridLegacy item>
+              </Box>
+              <Box>
                 <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
                   <IconButton onClick={toggleTheme} size="large">
                     {isDark ? (
@@ -106,10 +111,10 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
                     )}
                   </IconButton>
                 </Tooltip>
-              </GridLegacy>
-            </GridLegacy>
-          </GridLegacy>
-        </GridLegacy>
+              </Box>
+            </Stack>
+          </Box>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

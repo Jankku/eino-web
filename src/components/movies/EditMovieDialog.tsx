@@ -1,12 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  GridLegacy,
-  Typography,
-} from '@mui/material';
+import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -69,14 +63,12 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             {loadMovie.isLoading ? (
-              <GridLegacy
-                container
-                sx={{
-                  justifyContent: 'center',
-                }}
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}
               >
                 <CircularProgress />
-              </GridLegacy>
+              </Stack>
             ) : null}
 
             {loadMovie.isLoadingError ? (
@@ -91,19 +83,18 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             />
           </DialogContent>
 
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button
+            <DialogPrimaryButton
               loading={updateMovie.isPending}
               type="submit"
               disabled={loadMovie.isLoading || loadMovie.isLoadingError || updateMovie.isPending}
-              color="primary"
             >
               Submit changes
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

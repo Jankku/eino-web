@@ -5,7 +5,6 @@ import {
   ButtonBase,
   Card,
   CardContent,
-  GridLegacy,
   Stack,
   Tooltip,
   Typography,
@@ -63,13 +62,16 @@ export function UserInfo({
     <>
       <Card component="section" variant="outlined">
         <CardContent sx={{ overflowWrap: 'anywhere' }}>
-          <Stack gap={{ xs: 4, sm: 3 }}>
-            <GridLegacy
-              container
+          <Stack sx={{ gap: { xs: 4, sm: 3 } }}>
+            <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              rowGap={1}
-              justifyContent="space-between"
-              alignItems={{ xs: 'center', sm: 'flex-start' }}
+              sx={{
+                flexWrap: 'wrap',
+                width: '100%',
+                rowGap: 1,
+                justifyContent: 'space-between',
+                alignItems: { xs: 'center', sm: 'flex-start' },
+              }}
             >
               <Tooltip
                 arrow
@@ -105,7 +107,7 @@ export function UserInfo({
               >
                 Share profile
               </Button>
-            </GridLegacy>
+            </Stack>
             <ProfileDetailItem
               title={'Username'}
               text={
@@ -162,7 +164,7 @@ export function UserInfo({
               }
               actions={
                 email ? (
-                  <Stack direction="row" gap={1} alignItems="center">
+                  <Stack direction="row" sx={{ gap: 1, alignItems: 'center' }}>
                     {!emailVerifiedOn ? (
                       <Button
                         component={Link}
@@ -236,7 +238,7 @@ export function UserInfo({
               title={'Manage account data'}
               text={'Export or import your data'}
               actions={
-                <GridLegacy container gap={1}>
+                <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', gap: 1 }}>
                   <Button
                     startIcon={<DownloadIcon />}
                     variant="contained"
@@ -253,7 +255,7 @@ export function UserInfo({
                   >
                     Import
                   </Button>
-                </GridLegacy>
+                </Stack>
               }
             />
           </Stack>

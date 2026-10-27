@@ -1,11 +1,4 @@
-import {
-  CircularProgress,
-  GridLegacy,
-  ImageList,
-  ImageListItem,
-  Link,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, ImageList, ImageListItem, Link, Typography, Stack } from '@mui/material';
 import { useBookCovers } from '../../data/books/useBookCovers';
 import ImageDialog from '../common/ImageDialog';
 
@@ -37,9 +30,9 @@ export default function CoverDialog({ visible, query, closeDialog, onSelect }: C
       closeDialog={closeDialog}
     >
       {bookCovers.isLoading ? (
-        <GridLegacy container sx={{ justifyContent: 'center' }}>
+        <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
           <CircularProgress />
-        </GridLegacy>
+        </Stack>
       ) : null}
       {bookCovers.isLoadingError ? (
         <Typography sx={{ pt: 2 }}>Failed to load covers.</Typography>

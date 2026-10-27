@@ -4,10 +4,10 @@ import {
   CardActions,
   CardContent,
   Container,
-  GridLegacy,
   IconButton,
   Tooltip,
   Typography,
+  Stack,
 } from '@mui/material';
 import { Link, useLocation } from 'react-router';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -72,12 +72,13 @@ export default function BaseDetailLayout({
               <ContentCopyIcon />
             </IconButton>
           </Tooltip>
-          <GridLegacy container sx={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <GridLegacy
-              container
-              item
-              zeroMinWidth
+          <Stack direction="row" sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Box
               sx={(theme) => ({
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '100%',
+                minWidth: 0,
                 maxWidth: isMobile ? '50%' : '40%',
                 aspectRatio: 0.7,
                 borderRadius: 1,
@@ -115,23 +116,27 @@ export default function BaseDetailLayout({
                   }}
                 ></Box>
               )}
-            </GridLegacy>
+            </Box>
 
-            <GridLegacy
-              container
-              item
-              zeroMinWidth
-              columns={1}
-              sx={{ alignSelf: 'start', pl: 2, pt: imageUrl ? 1 : isMobile ? 6 : 1 }}
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '100%',
+                minWidth: 0,
+                alignSelf: 'start',
+                pl: 2,
+                pt: imageUrl ? 1 : isMobile ? 6 : 1,
+              }}
             >
               <Box sx={{ width: '100%', m: 0 }}>{details}</Box>
-            </GridLegacy>
-          </GridLegacy>
+            </Box>
+          </Stack>
         </CardContent>
         <CardActions sx={{ m: 0, pt: 1, pb: 3, pl: 3 }}>
-          <GridLegacy container>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', rowGap: 2, columnGap: 1 }}>{actions}</Box>
-          </GridLegacy>
+          </Box>
         </CardActions>
       </Card>
       {children}

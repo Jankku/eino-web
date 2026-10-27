@@ -3,13 +3,12 @@ import {
   Box,
   Divider,
   Drawer as MuiDrawer,
-  GridLegacy,
   IconButton,
-  MenuItem,
   MenuList,
   Tooltip,
   Typography,
   Link,
+  Stack,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -72,12 +71,15 @@ export default function Drawer({
 
   const isAdmin = role === 'admin';
   const isNavLinkSmall = isMobile ? false : !drawerExpanded;
+  const closeMobileDrawer = () => {
+    if (isMobile && drawerOpen) toggleDrawer();
+  };
 
   const drawerItems = (
     <>
       <MenuList disablePadding sx={{ px: 1 }}>
         <CustomNavLink
-          toggleDrawer={toggleDrawer}
+          toggleDrawer={closeMobileDrawer}
           isSmall={isNavLinkSmall}
           item={{ name: 'Home', path: '/home', icon: <Home />, activePaths: ['/'] }}
         />
@@ -87,7 +89,7 @@ export default function Drawer({
               <Divider key={99} />,
               adminRouteArray.map((item) => (
                 <CustomNavLink
-                  toggleDrawer={toggleDrawer}
+                  toggleDrawer={closeMobileDrawer}
                   isSmall={isNavLinkSmall}
                   item={item}
                   key={item.name}
@@ -100,7 +102,7 @@ export default function Drawer({
         {isLoggedIn
           ? routeArray.map((item) => (
               <CustomNavLink
-                toggleDrawer={toggleDrawer}
+                toggleDrawer={closeMobileDrawer}
                 isSmall={isNavLinkSmall}
                 item={item}
                 key={item.name}
@@ -114,7 +116,7 @@ export default function Drawer({
           <>
             {authRouteArray.map((item) => (
               <CustomNavLink
-                toggleDrawer={toggleDrawer}
+                toggleDrawer={closeMobileDrawer}
                 isSmall={isNavLinkSmall}
                 item={item}
                 key={item.name}
@@ -122,35 +124,37 @@ export default function Drawer({
             ))}
           </>
         ) : null}
-
-        {isLoggedIn && !isNavLinkSmall ? (
-          <GridLegacy sx={{ justifyContent: 'space-between' }}>
-            <GridLegacy item>
-              <MenuItem sx={{ mt: 0.5, paddingY: 1.2, paddingX: 2 }}>
-                <Typography noWrap sx={{ fontWeight: 500 }}>
-                  {username}
-                </Typography>
-              </MenuItem>
-            </GridLegacy>
-
-            <GridLegacy item>
-              <Button
-                fullWidth
-                size="medium"
-                variant="outlined"
-                color="secondary"
-                startIcon={<LogoutIcon />}
-                onClick={() => navigate('/logout')}
-              >
-                Log out
-              </Button>
-            </GridLegacy>
-          </GridLegacy>
-        ) : undefined}
       </MenuList>
+      {isLoggedIn && !isNavLinkSmall ? (
+        <Stack direction="column" sx={{ justifyContent: 'space-between', px: 1 }}>
+          <Box>
+            <Box sx={{ mt: 0.5, mb: 1, paddingY: 1.2, paddingX: 2 }}>
+              <Typography noWrap sx={{ fontWeight: 500 }}>
+                {username}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box>
+            <Button
+              fullWidth
+              size="medium"
+              variant="outlined"
+              color="secondary"
+              startIcon={<LogoutIcon />}
+              onClick={() => navigate('/logout')}
+            >
+              Log out
+            </Button>
+          </Box>
+        </Stack>
+      ) : undefined}
       {!isNavLinkSmall ? (
-        <GridLegacy container sx={{ flexGrow: 1, justifyContent: 'center' }}>
-          <GridLegacy item sx={{ alignSelf: 'flex-end' }}>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: 'wrap', width: '100%', flexGrow: 1, justifyContent: 'center' }}
+        >
+          <Box sx={{ alignSelf: 'flex-end' }}>
             <Typography
               component="p"
               variant="subtitle2"
@@ -166,8 +170,8 @@ export default function Drawer({
               </Link>{' '}
               ✨
             </Typography>
-          </GridLegacy>
-        </GridLegacy>
+          </Box>
+        </Stack>
       ) : undefined}
     </>
   );
@@ -179,7 +183,7 @@ export default function Drawer({
         display: { xs: 'block', md: 'none' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
       }}
-      open={drawerOpen}
+      open={isMobile && drawerOpen}
       onClose={toggleDrawer}
     >
       {drawerItems}
@@ -213,7 +217,11 @@ export default function Drawer({
           </Button>
         ) : (
           <Tooltip arrow title={<Typography variant="body2">Expand</Typography>} placement="right">
-            <IconButton onClick={onDrawerExpand} sx={{ justifyContent: 'center' }}>
+            <IconButton
+              aria-label="Expand drawer"
+              onClick={onDrawerExpand}
+              sx={{ justifyContent: 'center' }}
+            >
               {drawerExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </Tooltip>

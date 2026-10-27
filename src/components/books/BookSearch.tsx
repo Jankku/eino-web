@@ -36,11 +36,15 @@ function BookSearch() {
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       options={searchResults}
-      isOptionEqualToValue={(option, value) => option.book_id === value.book_id}
-      value={selectedItem as unknown as BookWithId}
-      onChange={(_event, newValue) => setSelectedItem(newValue as BookWithId)}
+      isOptionEqualToValue={(option, value) =>
+        typeof value !== 'string' && option.book_id === value.book_id
+      }
+      value={selectedItem ?? ''}
+      onChange={(_event, newValue) => {
+        if (typeof newValue !== 'string') setSelectedItem(newValue);
+      }}
       filterOptions={filterOptions}
-      getOptionLabel={(option) => (option as BookWithId).title}
+      getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
       inputValue={String(searchTerm)}
       onInputChange={(_e, value, reason) => {
         if (reason === 'input') setSearchTerm(value ?? '');

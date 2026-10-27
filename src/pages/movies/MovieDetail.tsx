@@ -109,7 +109,7 @@ export default function MovieDetail() {
       onCopy={copyToClipboard}
       details={
         <>
-          <Stack direction="row" mb={0.5}>
+          <Stack direction="row" sx={{ mb: 0.5 }}>
             <ScoreChip score={data.score} />
             <StatusChip
               status={data.status}
@@ -117,7 +117,7 @@ export default function MovieDetail() {
               tooltipText={statusTooltipText}
             />
           </Stack>
-          <Stack mb={2}>
+          <Stack sx={{ mb: 2 }}>
             <Box component="span" sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
               {data.title}
             </Box>

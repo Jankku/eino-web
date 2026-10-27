@@ -1,10 +1,11 @@
-import { Button, DialogActions, DialogContent, Link, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Link, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { createJsonBlob, generateExportFileName } from '../../utils/exportUtil';
 import PasswordField from '../form/PasswordField';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
@@ -40,6 +41,7 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
     reset: resetForm,
     formState: { errors },
   } = formMethods;
+  const password = useWatch({ control: formMethods.control, name: 'password' });
   const exportData = useExportData();
 
   const generateExportUrl = () => {
@@ -119,19 +121,19 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button loading={exportData.isPending} color="primary" type="submit">
+            <DialogPrimaryButton loading={exportData.isPending} disabled={!password} type="submit">
               Export
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

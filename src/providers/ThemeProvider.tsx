@@ -17,7 +17,7 @@ declare module '@mui/material/styles' {
 }
 
 const theme = createTheme({
-  cssVariables: { colorSchemeSelector: 'class' },
+  cssVariables: { colorSchemeSelector: 'class', nativeColor: true },
   colorSchemes: {
     light: {
       palette: {
@@ -66,6 +66,16 @@ const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: 'fonts.css',
+    },
+    MuiButton: {
+      styleOverrides: {
+        contained: ({ theme }) =>
+          theme.applyStyles('dark', {
+            '&:not(.Mui-disabled)': {
+              color: theme.vars.palette.common.black,
+            },
+          }),
+      },
     },
     MuiFab: {
       styleOverrides: {

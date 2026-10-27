@@ -1,4 +1,4 @@
-import { GridLegacy, IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Stack, Box } from '@mui/material';
 import { score } from '../../models/score';
 import { movieStatus } from '../../models/movieStatus';
 import { AddCircle } from '@mui/icons-material';
@@ -13,7 +13,7 @@ type MovieFormProps = {
 export default function MovieForm({ onShowPosters }: MovieFormProps) {
   return (
     <>
-      <GridLegacy container>
+      <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%' }}>
         <TextField margin="dense" name="title" label="Title" />
         <TextField margin="dense" name="studio" label="Studio" />
         <TextField margin="dense" name="director" label="Director" />
@@ -23,60 +23,51 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
           name="image_url"
           label="Poster URL"
           placeholder='Click the "+" button to search for posters'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="Search cover" onClick={onShowPosters}>
-                  <AddCircle />
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="Search cover" onClick={onShowPosters}>
+                    <AddCircle />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
         <TextField multiline minRows={2} maxRows={5} margin="dense" name="note" label="Note" />
-        <GridLegacy
-          container
-          sx={{
-            gap: 1,
-            justifyContent: 'space-between',
-          }}
+        <Stack
+          direction="row"
+          sx={{ flexWrap: 'wrap', width: '100%', gap: 1, justifyContent: 'space-between' }}
         >
-          <GridLegacy
-            item
+          <Box
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="duration" label="Duration in minutes" />
-          </GridLegacy>
-          <GridLegacy
-            item
+          </Box>
+          <Box
             sx={{
               flexGrow: 2,
             }}
           >
             <TextField type="number" margin="dense" name="year" label="Released" />
-          </GridLegacy>
-        </GridLegacy>
-        <GridLegacy
-          container
-          sx={{
-            gap: 1,
-            justifyContent: 'space-between',
-          }}
+          </Box>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{ flexWrap: 'wrap', width: '100%', gap: 1, justifyContent: 'space-between' }}
         >
           <DatePicker name="start_date" label="Started" sx={{ marginTop: 1, flexGrow: 1 }} />
           <DatePicker name="end_date" label="Finished" sx={{ marginTop: 1, flexGrow: 1 }} />
-        </GridLegacy>
-      </GridLegacy>
-      <GridLegacy
-        container
-        sx={{
-          justifyContent: 'space-between',
-          mt: 2,
-        }}
+        </Stack>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'space-between', mt: 2 }}
       >
-        <GridLegacy item>
+        <Box>
           <Select name="score" label="Score">
             {score.map((item) => (
               <option key={item.value} value={item.value}>
@@ -84,8 +75,8 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
               </option>
             ))}
           </Select>
-        </GridLegacy>
-        <GridLegacy item>
+        </Box>
+        <Box>
           <Select name="status" label="Status">
             {movieStatus.map((item) => {
               return (
@@ -95,8 +86,8 @@ export default function MovieForm({ onShowPosters }: MovieFormProps) {
               );
             })}
           </Select>
-        </GridLegacy>
-      </GridLegacy>
+        </Box>
+      </Stack>
     </>
   );
 }

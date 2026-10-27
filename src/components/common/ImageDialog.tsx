@@ -1,4 +1,5 @@
-import { Button, DialogActions, DialogContent, DialogContentText } from '@mui/material';
+import DialogFooter from './DialogFooter';
+import { Button, DialogContent, DialogContentText } from '@mui/material';
 import BaseDialog from './BaseDialog';
 import React from 'react';
 
@@ -23,16 +24,16 @@ export default function ImageDialog({
         <DialogContentText>Sources: {sources}</DialogContentText>
         {children}
       </DialogContent>
-      <DialogActions>
+      <DialogFooter>
         <Button
-          color="secondary"
+          color="inherit"
           onClick={() => {
             closeDialog();
           }}
         >
-          Cancel
+          Close
         </Button>
-      </DialogActions>
+      </DialogFooter>
     </BaseDialog>
   );
 }

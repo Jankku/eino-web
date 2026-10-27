@@ -280,7 +280,7 @@ export default function Users() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Users" />
         <h1>Users</h1>
-        <Box height={500}>
+        <Box sx={{ height: 500 }}>
           <DataGrid
             disableRowSelectionOnClick
             showToolbar

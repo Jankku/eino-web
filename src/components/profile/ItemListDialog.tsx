@@ -1,4 +1,5 @@
-import { Button, DialogActions, DialogContent } from '@mui/material';
+import DialogFooter from '../common/DialogFooter';
+import { Button, DialogContent } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 
 type ItemListDialog = {
@@ -16,11 +17,11 @@ export default function ItemListDialog({ title, visible, closeDialog, children }
   return (
     <BaseDialog title={title} open={visible} onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>{children}</DialogContent>
-      <DialogActions>
-        <Button color="secondary" onClick={onClose}>
+      <DialogFooter>
+        <Button color="inherit" onClick={onClose}>
           Close
         </Button>
-      </DialogActions>
+      </DialogFooter>
     </BaseDialog>
   );
 }

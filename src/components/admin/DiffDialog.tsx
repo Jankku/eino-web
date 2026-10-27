@@ -1,4 +1,5 @@
-import { Box, Button, DialogActions, DialogContent, Typography } from '@mui/material';
+import DialogFooter from '../common/DialogFooter';
+import { Box, Button, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { Change, diffJson } from 'diff';
 import CodeBlock from '../common/CodeBlock';
@@ -63,11 +64,11 @@ export default function DeleteUserDialog({
           <Typography>No changes to show.</Typography>
         )}
       </DialogContent>
-      <DialogActions>
-        <Button color="primary" onClick={onClose}>
+      <DialogFooter>
+        <Button color="inherit" onClick={onClose}>
           Close
         </Button>
-      </DialogActions>
+      </DialogFooter>
     </BaseDialog>
   );
 }

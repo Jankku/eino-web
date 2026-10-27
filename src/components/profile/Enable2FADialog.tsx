@@ -1,16 +1,8 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  GridLegacy,
-  Stack,
-  Typography,
-} from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Box, Button, CircularProgress, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -43,6 +35,7 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
     formState: { errors },
   } = formMethods;
   const { data, isLoading, isError } = useGenerate2FAUrl(visible);
+  const twoFactorCode = useWatch({ control: formMethods.control, name: 'twoFactorCode' });
   const enable2FA = useEnable2FA();
 
   const resetState = () => {
@@ -54,7 +47,7 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
   const onSubmit = ({ twoFactorCode }: { twoFactorCode: string }) => {
     enable2FA.mutate(twoFactorCode, {
       onSuccess: () => {
-        showSuccessSnackbar('2FA enabled successfully');
+        showSuccessSnackbar('2FA enabled');
         closeDialog();
       },
       onError: async (error) => {
@@ -76,14 +69,12 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
             {isLoading ? (
-              <GridLegacy
-                container
-                sx={{
-                  justifyContent: 'center',
-                }}
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}
               >
                 <CircularProgress />
-              </GridLegacy>
+              </Stack>
             ) : null}
             {isError ? <Typography component="p">Failed to load QR code</Typography> : undefined}
             {data?.totpUrl ? (
@@ -114,19 +105,23 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
               </Stack>
             ) : undefined}
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button loading={enable2FA.isPending} color="primary" type="submit">
+            <DialogPrimaryButton
+              loading={enable2FA.isPending}
+              disabled={!twoFactorCode.trim() || isLoading || isError || !data?.totpUrl}
+              type="submit"
+            >
               Enable 2FA
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

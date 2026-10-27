@@ -1,4 +1,4 @@
-import { GridLegacy, Typography } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
 
 type DetailItemProps = {
@@ -9,7 +9,7 @@ type DetailItemProps = {
 
 export default function DetailItem({ title, value, multiline }: DetailItemProps) {
   return (
-    <GridLegacy container sx={{ flexWrap: 'nowrap' }}>
+    <Stack direction="row" sx={{ width: '100%', flexWrap: 'nowrap' }}>
       <Typography component="dt" variant="body1" sx={{ fontWeight: 500, minWidth: '6rem' }}>
         {stringOrPlaceholder(title)}
       </Typography>
@@ -24,6 +24,6 @@ export default function DetailItem({ title, value, multiline }: DetailItemProps)
       >
         {stringOrPlaceholder(value)}
       </Typography>
-    </GridLegacy>
+    </Stack>
   );
 }

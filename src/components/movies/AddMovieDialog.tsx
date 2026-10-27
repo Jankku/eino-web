@@ -1,5 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
-import { Button, DialogActions, DialogContent } from '@mui/material';
+import { Button, DialogContent } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -70,14 +71,14 @@ export default function AddMovieDialog({ visible, closeDialog }: AddMovieDialogP
               onSelect={onSelectPoster}
             />
           </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="submit" color="primary" disabled={addMovie.isPending}>
+            <DialogPrimaryButton type="submit" disabled={addMovie.isPending}>
               Create
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

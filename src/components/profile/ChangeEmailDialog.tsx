@@ -1,7 +1,8 @@
-import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -45,6 +46,12 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
     reset: resetForm,
     formState: { errors },
   } = formMethods;
+  const [newEmail, twoFactorCode] = useWatch({
+    control: formMethods.control,
+    name: ['email', 'twoFactorCode'],
+  });
+  const updateButtonDisabled =
+    (!email && !newEmail?.trim()) || (is2FAEnabled && !twoFactorCode?.trim());
   const updateEmail = useUpdateEmail();
 
   const resetState = () => {
@@ -56,7 +63,7 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
   const onSubmit = (body: UpdateEmailBody) => {
     updateEmail.mutate(body, {
       onSuccess: () => {
-        showSuccessSnackbar('Email updated successfully');
+        showSuccessSnackbar('Email updated');
         closeDialog();
       },
       onError: async (error) => {
@@ -104,19 +111,23 @@ export default function ChangeEmailDialog({ email, visible, closeDialog }: Updat
               ) : null}
             </Stack>
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button loading={updateEmail.isPending} color="primary" type="submit">
+            <DialogPrimaryButton
+              loading={updateEmail.isPending}
+              disabled={updateButtonDisabled}
+              type="submit"
+            >
               Update email
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

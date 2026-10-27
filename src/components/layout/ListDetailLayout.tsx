@@ -1,4 +1,4 @@
-import { GridLegacy } from '@mui/material';
+import { Box } from '@mui/material';
 import { useIsMobile } from '../../hooks/useIsMobile.ts';
 import PanelContainer from '../common/PanelContainer.tsx';
 
@@ -15,22 +15,22 @@ export default function ListDetailLayout({ list, detail, id }: ListDetailLayoutP
     return id ? detail : list;
   } else {
     return (
-      <GridLegacy
-        container
+      <Box
         sx={{
+          display: 'flex',
           flexDirection: 'row',
           flexWrap: 'nowrap',
           width: '100%',
           overflow: 'hidden',
         }}
       >
-        <GridLegacy item sx={{ minWidth: { xs: '55%', lg: '65%' } }}>
+        <Box sx={{ minWidth: { xs: '55%', lg: '65%' } }}>
           <PanelContainer list>{list}</PanelContainer>
-        </GridLegacy>
-        <GridLegacy item sx={{ minWidth: 'max(35%, 400px)' }}>
+        </Box>
+        <Box sx={{ minWidth: 'max(35%, 400px)' }}>
           <PanelContainer>{detail}</PanelContainer>
-        </GridLegacy>
-      </GridLegacy>
+        </Box>
+      </Box>
     );
   }
 }

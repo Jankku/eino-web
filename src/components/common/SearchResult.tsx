@@ -1,4 +1,4 @@
-import { GridLegacy, ListItem, Typography } from '@mui/material';
+import { ListItem, Typography, Box } from '@mui/material';
 
 type SearchResultProps = {
   title: string;
@@ -10,10 +10,11 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }: Sea
   return (
     <ListItem {...rest}>
       {imageUrl ? (
-        <GridLegacy
-          container
+        <Box
           sx={[
             {
+              display: 'flex',
+              flexWrap: 'wrap',
               width: '50px',
               height: '100%',
             },
@@ -36,9 +37,9 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }: Sea
             height="100%"
             style={{ objectFit: 'cover', aspectRatio: 0.7, borderRadius: 2 }}
           />
-        </GridLegacy>
+        </Box>
       ) : null}
-      <GridLegacy item zeroMinWidth>
+      <Box sx={{ minWidth: 0 }}>
         <Typography noWrap variant="body1" sx={{ minWidth: '5em' }}>
           {title}
         </Typography>
@@ -53,7 +54,7 @@ export default function SearchResult({ title, subtitle, imageUrl, ...rest }: Sea
             {subtitle}
           </Typography>
         ) : null}
-      </GridLegacy>
+      </Box>
     </ListItem>
   );
 }

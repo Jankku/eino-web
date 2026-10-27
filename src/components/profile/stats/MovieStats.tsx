@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  GridLegacy,
-  ImageList,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, CircularProgress, ImageList, Typography, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { StatsStatusTable } from './StatsStatusTable';
 import { BarChart } from './BarChart';
@@ -62,47 +55,30 @@ export function MovieStats({ stats }: MovieStatsProps) {
             }}
           >
             <h2>Movie stats</h2>
-            <GridLegacy
-              container
-              columns={1}
-              sx={{
-                rowGap: 2,
-              }}
-            >
-              <GridLegacy
-                container
-                sx={{
-                  rowGap: 1,
-                }}
-              >
-                <GridLegacy
+            <Stack direction="column" sx={{ flexWrap: 'wrap', width: '100%', rowGap: 2 }}>
+              <Stack direction="column" sx={{ flexWrap: 'wrap', width: '100%', rowGap: 1 }}>
+                <Stack
                   component="dl"
-                  container
-                  sx={{
-                    justifyContent: 'space-between',
-                    m: 0,
-                  }}
+                  direction="row"
+                  sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'space-between', m: 0 }}
                 >
                   <StatsItem title={'Watch time:'} text={formatWatchTime(stats.watch_time)} />
                   <StatsItem title={'Average score:'} text={stats.score_average} />
-                </GridLegacy>
-                <GridLegacy
-                  container
-                  item
-                  sx={{
-                    rowGap: 1,
-                    width: '100%',
-                  }}
-                >
+                </Stack>
+                <Stack direction="column" sx={{ flexWrap: 'wrap', rowGap: 1, width: '100%' }}>
                   <StatusProgressBar data={progressValues} total={stats.count.all} />
                   <StatsStatusTable stats={stats} statuses={statuses} />
-                </GridLegacy>
-              </GridLegacy>
+                </Stack>
+              </Stack>
               <BarChart labels={labels} data={scoreCounts} onClick={onBarClick} />
-              <Typography variant="body2" color="textSecondary" width="100%" textAlign="center">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ width: '100%', textAlign: 'center' }}
+              >
                 Click on a bar to view movies with that score
               </Typography>
-            </GridLegacy>
+            </Stack>
           </Box>
         </CardContent>
       </Card>
@@ -112,14 +88,9 @@ export function MovieStats({ stats }: MovieStatsProps) {
         closeDialog={toggleListDialog}
       >
         {isLoading ? (
-          <GridLegacy
-            container
-            sx={{
-              justifyContent: 'center',
-            }}
-          >
+          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
             <CircularProgress />
-          </GridLegacy>
+          </Stack>
         ) : null}
         {!isLoading && data?.length ? (
           <ImageList cols={1} gap={12}>

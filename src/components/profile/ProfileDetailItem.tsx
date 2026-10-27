@@ -1,4 +1,4 @@
-import { GridLegacy, Typography } from '@mui/material';
+import { Typography, Stack, Box } from '@mui/material';
 import React from 'react';
 
 type ProfileDetailItemProps = {
@@ -9,22 +9,25 @@ type ProfileDetailItemProps = {
 
 export function ProfileDetailItem({ title, text, actions }: ProfileDetailItemProps) {
   return (
-    <GridLegacy
-      container
+    <Stack
       direction={{ xs: 'column', sm: 'row' }}
-      rowGap={1}
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-start', sm: 'center' }}
+      sx={{
+        flexWrap: 'wrap',
+        width: '100%',
+        rowGap: 1,
+        justifyContent: 'space-between',
+        alignItems: { xs: 'flex-start', sm: 'center' },
+      }}
     >
-      <GridLegacy item flexGrow={2}>
+      <Box sx={{ flexGrow: 2 }}>
         <Typography component="dt" variant="body1" sx={{ fontWeight: 700 }}>
           {title}
         </Typography>
         <Typography component="dd" variant="body1" sx={{ display: 'flex' }}>
           {text}
         </Typography>
-      </GridLegacy>
-      {actions ? <GridLegacy item>{actions}</GridLegacy> : undefined}
-    </GridLegacy>
+      </Box>
+      {actions ? <Box>{actions}</Box> : undefined}
+    </Stack>
   );
 }

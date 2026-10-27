@@ -1,12 +1,5 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  Stack,
-  Typography,
-} from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Avatar, Box, Button, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { FormProvider, useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
@@ -203,24 +196,23 @@ export default function ProfilePictureDialog({
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button
+            <DialogPrimaryButton
               loading={uploadProfilePicture.isPending}
               disabled={saveButtonDisabled}
-              color="primary"
               type="submit"
             >
               Save
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

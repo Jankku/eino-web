@@ -1,4 +1,5 @@
-import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteUser } from '../../data/admin/useDeleteUser';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -61,14 +62,14 @@ export default function DeleteUserDialog({
             <ErrorMessage message={errors.root.serverError.message} />
           ) : null}
         </DialogContent>
-        <DialogActions>
-          <Button color="primary" onClick={onClose}>
+        <DialogFooter>
+          <Button color="inherit" onClick={onClose}>
             Close
           </Button>
-          <Button loading={deleteUser.isPending} color="secondary" type="submit">
+          <DialogPrimaryButton color="error" loading={deleteUser.isPending} type="submit">
             Delete user
-          </Button>
-        </DialogActions>
+          </DialogPrimaryButton>
+        </DialogFooter>
       </form>
     </BaseDialog>
   );

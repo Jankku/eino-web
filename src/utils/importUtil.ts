@@ -18,7 +18,7 @@ const stringToJSONSchema = z.string().transform((str, ctx) => {
 
 const importFileSchema = z.object({
   version: z.number(),
-  profile: z.object({}),
+  profile: z.object({ username: z.string() }),
   books: z.array(z.object({})),
   movies: z.array(z.object({})),
   shares: z.array(z.object({})),
@@ -53,36 +53,67 @@ export const imageValidator = async (file: File): Promise<FileValidationError[]>
   return [];
 };
 
-export const einoJsonValidator = async (file: File): Promise<FileValidationError[]> => {
+export type ImportPreview = {
+  bookCount: number;
+  movieCount: number;
+  version: number;
+  username: string;
+};
+
+type ImportFileResult = {
+  preview: ImportPreview | null;
+  errors: FileValidationError[];
+};
+
+export const readEinoImportFile = async (file: File): Promise<ImportFileResult> => {
   if (file.size > TEN_MB) {
-    return [
-      {
-        code: 'file_too_large',
-        message: `File size must be less than ${byteFormatter.format(TEN_MB)}`,
-      },
-    ];
+    return {
+      preview: null,
+      errors: [
+        {
+          code: 'file_too_large',
+          message: `File size must be less than ${byteFormatter.format(TEN_MB)}`,
+        },
+      ],
+    };
   }
 
-  const fileText = await file.text();
+  let fileText: string;
+  try {
+    fileText = await file.text();
+  } catch {
+    return {
+      preview: null,
+      errors: [
+        { code: 'file_read_error', message: 'Could not read file. Please select it again.' },
+      ],
+    };
+  }
+
   const textJson = stringToJSONSchema.safeParse(fileText);
   if (file.type !== 'application/json' || !textJson.success) {
-    return [
-      {
-        code: 'invalid_file_type',
-        message: 'File must be a JSON file',
-      },
-    ];
+    return {
+      preview: null,
+      errors: [{ code: 'invalid_file_type', message: 'File must be a JSON file' }],
+    };
   }
 
-  const { success } = importFileSchema.safeParse(textJson.data);
-  if (!success) {
-    return [
-      {
-        code: 'invalid_file_format',
-        message: 'File does not match the expected format',
-      },
-    ];
+  const result = importFileSchema.safeParse(textJson.data);
+  if (!result.success) {
+    return {
+      preview: null,
+      errors: [{ code: 'invalid_file_format', message: 'File does not match the expected format' }],
+    };
   }
 
-  return [];
+  const { books, movies, version, profile } = result.data;
+  return {
+    preview: {
+      version,
+      bookCount: books.length,
+      movieCount: movies.length,
+      username: profile.username,
+    },
+    errors: [],
+  };
 };
