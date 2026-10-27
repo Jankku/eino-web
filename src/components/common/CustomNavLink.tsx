@@ -38,7 +38,7 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
           (theme) =>
             isActive
               ? {
-                  bgcolor: `${theme.vars.palette.primary.light} !important`,
+                  bgcolor: `${theme.vars.palette.primary.main} !important`,
                   color: `${theme.vars.palette.primary.contrastText} !important`,
                 }
               : { color: `${theme.vars.palette.text.primary}` },

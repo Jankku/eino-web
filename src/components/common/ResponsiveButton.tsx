@@ -5,7 +5,7 @@ type ResponsiveButtonProps = {
   icon: React.ReactNode;
   disabled?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-  children: React.ReactNode;
+  children: string;
 };
 
 export default function ResponsiveButton({
@@ -21,7 +21,13 @@ export default function ResponsiveButton({
       {isMobile ? (
         <Tooltip arrow title={children} enterTouchDelay={500}>
           <span>
-            <IconButton color="primary" size="large" onClick={onClick} disabled={disabled}>
+            <IconButton
+              aria-label={children}
+              color="primary"
+              size="large"
+              onClick={onClick}
+              disabled={disabled}
+            >
               {icon}
             </IconButton>
           </span>

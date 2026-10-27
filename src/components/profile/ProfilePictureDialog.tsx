@@ -68,9 +68,9 @@ export default function ProfilePictureDialog({
 
   const getCanvasBlob = async () => {
     const canvas = await cropperRef.current?.$toCanvas();
-    return new Promise<Blob | null>((resolve) =>
-      canvas?.toBlob(resolve, files[0].type, 0.9),
-    ) as Promise<Blob>;
+    const { promise, resolve } = Promise.withResolvers<Blob | null>();
+    canvas?.toBlob(resolve, files[0].type, 0.95);
+    return promise;
   };
 
   const onSubmit = async () => {
@@ -187,10 +187,9 @@ export default function ProfilePictureDialog({
                 pt: 1,
               }}
             >
-              {fileErrors.map((e, index) => (
-                // eslint-disable-next-line @eslint-react/no-array-index-key
-                <ErrorMessage key={index} message={e.message} />
-              ))}
+              {fileErrors.length > 0 ? (
+                <ErrorMessage message={fileErrors.map((error) => error.message).join(' ')} />
+              ) : null}
             </Box>
             {errors.root?.serverError?.message ? (
               <ErrorMessage message={errors.root.serverError.message} />

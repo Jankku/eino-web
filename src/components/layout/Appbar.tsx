@@ -67,7 +67,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
             justifyContent: { sm: 'space-between' },
           }}
         >
-          <Link to="/home">
+          <Link to="/home" aria-label="Eino home">
             <Typography
               sx={{
                 display: { xs: 'none', sm: 'block' },
@@ -77,7 +77,7 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
                 color: '#FFFFFF',
                 textDecoration: 'none',
                 '&:hover': {
-                  color: '#DDDDDD',
+                  textDecoration: 'underline',
                 },
               }}
             >
@@ -101,7 +101,11 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
               </Box>
               <Box>
                 <Tooltip arrow title={`${isDark ? 'Light' : 'Dark'} theme`} enterTouchDelay={500}>
-                  <IconButton onClick={toggleTheme} size="large">
+                  <IconButton
+                    aria-label={`${isDark ? 'Light' : 'Dark'} theme`}
+                    onClick={toggleTheme}
+                    size="large"
+                  >
                     {isDark ? (
                       <WbSunnyRounded />
                     ) : (

@@ -1,3 +1,4 @@
+import ErrorMessage from '../authentication/ErrorMessage';
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
 import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
@@ -18,7 +19,7 @@ type EditBookDialogProps = {
 };
 
 export default function EditBookDialog({ visible, closeDialog, bookId }: EditBookDialogProps) {
-  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
   const loadBook = useUpdateBookFormData(visible, bookId);
   const formMethods = useForm({
@@ -31,13 +32,10 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
   const updateBook = useUpdateBook(bookId);
 
   const onSubmit = (formData: Book) => {
+    updateBook.reset();
     updateBook.mutate(formData, {
       onSuccess: () => {
         showSuccessSnackbar('Book updated');
-        closeDialog();
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to save book');
         closeDialog();
       },
     });
@@ -49,6 +47,7 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
   };
 
   const onCancel = () => {
+    updateBook.reset();
     closeDialog();
     resetForm();
     setShowCovers(false);
@@ -59,6 +58,9 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
+            {updateBook.isError ? (
+              <ErrorMessage message="Failed to save book. Check your connection and try submitting again." />
+            ) : null}
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             {loadBook.isLoading ? (

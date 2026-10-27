@@ -1,3 +1,4 @@
+import ErrorMessage from '../authentication/ErrorMessage';
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
 import { Button, DialogContent } from '@mui/material';
@@ -17,7 +18,7 @@ type AddBookDialogProps = {
 };
 
 export default function AddBookDialog({ visible, closeDialog }: AddBookDialogProps) {
-  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
   const formMethods = useForm({
     defaultValues: getBookDefaults(),
@@ -33,14 +34,10 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   const addBookMutation = useAddBook();
 
   const onSubmit = (formData: Book) => {
+    addBookMutation.reset();
     addBookMutation.mutate(getNewBookValues(formData, dirtyFields), {
       onSuccess: () => {
         showSuccessSnackbar('Book created');
-        closeDialog();
-        resetForm();
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to create book');
         closeDialog();
         resetForm();
       },
@@ -48,6 +45,7 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
   };
 
   const onCancel = () => {
+    addBookMutation.reset();
     closeDialog();
     resetForm();
     setShowCovers(false);
@@ -63,6 +61,9 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
+            {addBookMutation.isError ? (
+              <ErrorMessage message="Failed to create book. Check your connection and try submitting again." />
+            ) : null}
             <BookForm onShowCovers={() => setShowCovers(true)} />
 
             <CoverDialog

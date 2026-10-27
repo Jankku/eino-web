@@ -1,7 +1,7 @@
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 type PasswordFieldProps = {
@@ -21,14 +21,17 @@ export default function PasswordField({
 }: PasswordFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
   const { control } = useFormContext();
+  const generatedId = useId();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { invalid, error } }) => (
+      render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => (
         <TextField
           {...field}
+          inputRef={ref}
+          id={generatedId}
           fullWidth
           autoFocus={autoFocus}
           variant="outlined"
@@ -44,7 +47,8 @@ export default function PasswordField({
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-pressed={showPassword}
                     onClick={() => setShowPassword((prev) => !prev)}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}

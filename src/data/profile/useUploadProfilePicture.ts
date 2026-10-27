@@ -8,7 +8,7 @@ const getFormData = (data: Blob) => {
   return formData;
 };
 
-const uploadProfilePictureQuery = async (data: Blob | undefined) => {
+const uploadProfilePictureQuery = async (data: Blob | null | undefined) => {
   const res = await api
     .post('api/v2/profile/profilepicture', {
       body: data ? getFormData(data) : undefined,

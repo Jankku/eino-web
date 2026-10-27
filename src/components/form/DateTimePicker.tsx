@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   DateTimePicker as MUIDateTimepicker,
@@ -22,6 +23,7 @@ export default function DateTimePicker({
   ...rest
 }: DateTimePickerProps) {
   const { control } = useFormContext();
+  const inputId = useId();
 
   return (
     <Controller
@@ -46,6 +48,7 @@ export default function DateTimePicker({
 
               return {
                 fullWidth,
+                id: inputId,
                 ...textFieldProps,
                 ...(error && { error: true, helperText: error.message }),
                 onBlur: (event) => {

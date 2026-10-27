@@ -1,3 +1,4 @@
+import ErrorMessage from '../authentication/ErrorMessage';
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
 import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
@@ -17,7 +18,7 @@ type EditMovieDialogProps = {
 };
 
 export default function EditMovieDialog({ visible, closeDialog, movieId }: EditMovieDialogProps) {
-  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const [showPosters, setShowPosters] = useState(false);
   const loadMovie = useUpdateMovieFormData(visible, movieId);
   const formMethods = useForm({
@@ -30,14 +31,10 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
   const updateMovie = useUpdateMovie(movieId);
 
   const onSubmit = (formData: Movie) => {
+    updateMovie.reset();
     updateMovie.mutate(formData, {
       onSuccess: () => {
         showSuccessSnackbar('Movie updated');
-        closeDialog();
-        resetForm();
-      },
-      onError: () => {
-        showErrorSnackbar('Failed to save movie');
         closeDialog();
         resetForm();
       },
@@ -50,6 +47,7 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
   };
 
   const onCancel = () => {
+    updateMovie.reset();
     closeDialog();
     resetForm();
     setShowPosters(false);
@@ -60,6 +58,9 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
+            {updateMovie.isError ? (
+              <ErrorMessage message="Failed to save movie. Check your connection and try submitting again." />
+            ) : null}
             <MovieForm onShowPosters={() => setShowPosters(true)} />
 
             {loadMovie.isLoading ? (

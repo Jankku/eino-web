@@ -284,10 +284,9 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                   pt: 1,
                 }}
               >
-                {fileErrors.map((e, index) => (
-                  // eslint-disable-next-line @eslint-react/no-array-index-key
-                  <ErrorMessage key={index} message={e.message} />
-                ))}
+                {fileErrors.length > 0 ? (
+                  <ErrorMessage message={fileErrors.map((error) => error.message).join(' ')} />
+                ) : null}
               </Box>
               {errors.root?.serverError?.message ? (
                 <ErrorMessage message={errors.root.serverError.message} />

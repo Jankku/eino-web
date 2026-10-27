@@ -1,3 +1,4 @@
+import ErrorMessage from '../authentication/ErrorMessage';
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useEffect, useRef, useState } from 'react';
 import { Button, DialogContent, Typography } from '@mui/material';
@@ -52,7 +53,7 @@ export default function ScanBookAddDialog({
   onSuccess,
   prefillLoading = false,
 }: ScanBookAddDialogProps) {
-  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const { showSuccessSnackbar } = useCustomSnackbar();
   const [showCovers, setShowCovers] = useState(false);
   const previousInitialValuesRef = useRef<string | undefined>(undefined);
   const formMethods = useForm<BookFormInput, unknown, Book>({
@@ -99,6 +100,7 @@ export default function ScanBookAddDialog({
   }, [dirtyFields, getValues, initialValues, resetForm, visible]);
 
   const onSubmit = (formData: Book) => {
+    addBookMutation.reset();
     addBookMutation.mutate(getNewBookValues(formData, dirtyFields), {
       onSuccess: () => {
         showSuccessSnackbar('Book created');
@@ -107,13 +109,11 @@ export default function ScanBookAddDialog({
         resetForm(getBookDefaults());
         setShowCovers(false);
       },
-      onError: () => {
-        showErrorSnackbar('Failed to create book');
-      },
     });
   };
 
   const onCancel = () => {
+    addBookMutation.reset();
     closeDialog();
     resetForm(getBookDefaults());
     setShowCovers(false);
@@ -129,6 +129,9 @@ export default function ScanBookAddDialog({
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ paddingTop: 0 }}>
+            {addBookMutation.isError ? (
+              <ErrorMessage message="Failed to create book. Check your connection and try submitting again." />
+            ) : null}
             {prefillLoading ? (
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                 Fetching book details from ISBN...

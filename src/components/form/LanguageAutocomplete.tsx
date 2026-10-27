@@ -2,7 +2,6 @@ import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Language, languages } from '../../utils/languages';
-import HiddenInput from './HiddenInput';
 
 const filterOptions = createFilterOptions<Language>({
   ignoreCase: true,
@@ -29,11 +28,10 @@ export default function LanguageAutocomplete({ name, label, ...rest }: AutoCompl
 
   return (
     <>
-      <HiddenInput name="language_code" />
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
+        render={({ field: { ref, onBlur }, fieldState: { invalid, error } }) => (
           <Autocomplete
             {...rest}
             open={isOpen}
@@ -59,7 +57,17 @@ export default function LanguageAutocomplete({ name, label, ...rest }: AutoCompl
               if (['input', 'selectOption'].includes(reason)) setSearchTerm(value ?? '');
               if (['clear', 'reset'].includes(reason)) setSearchTerm('');
             }}
-            renderInput={(params) => <TextField {...params} {...field} name="" label={label} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name={name}
+                inputRef={ref}
+                onBlur={onBlur}
+                label={label}
+                error={invalid}
+                helperText={error?.message}
+              />
+            )}
           />
         )}
       />
