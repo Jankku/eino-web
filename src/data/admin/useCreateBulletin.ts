@@ -3,7 +3,9 @@ import { api } from '../api';
 import { ApiResponse, Result } from '../types';
 import { Bulletin } from '../../models/bulletin';
 
-const createBulletinQuery = async (body: Bulletin) => {
+type CreateBulletin = Bulletin & { visibleToUserIds?: string[] };
+
+const createBulletinQuery = async (body: CreateBulletin) => {
   const res = await api
     .post('api/v2/admin/bulletins', { json: body })
     .json<ApiResponse<Result[]>>();

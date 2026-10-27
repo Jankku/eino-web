@@ -66,23 +66,31 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
   const showConditionSelect = visibility === 'condition';
 
   const onSubmit = (body: Bulletin) => {
-    createBulletin.mutate(body, {
-      onSuccess: (message) => {
-        showSuccessSnackbar(message);
-        handleClose();
+    createBulletin.mutate(
+      body.visibility === 'user'
+        ? { ...body, visibleToUserIds: selectedItem.map((user) => user.user_id) }
+        : body,
+      {
+        onSuccess: (message) => {
+          showSuccessSnackbar(message);
+          handleClose();
+        },
+        onError: async (error) => {
+          const errors = await parseError(error as HTTPError);
+          setError('root.serverError', {
+            message: errors[0].message,
+          });
+        },
       },
-      onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
-        setError('root.serverError', {
-          message: errors[0].message,
-        });
-      },
-    });
+    );
   };
 
   const handleClose = () => {
     onClose();
     reset(bulletinDefaults);
+    setSelectedItem([]);
+    setSearchTerm('');
+    setIsOpen(false);
   };
 
   return (
