@@ -9,6 +9,7 @@ import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { byteFormatter, FileValidationError, imageValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
 import { useUploadProfilePicture } from '../../data/profile/useUploadProfilePicture';
+import { useDeleteProfilePicture } from '../../data/profile/useDeleteProfilePicture';
 import Dropzone from './Dropzone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
@@ -40,7 +41,7 @@ export default function ProfilePictureDialog({
     formState: { errors, isSubmitting },
   } = formMethods;
   const uploadProfilePicture = useUploadProfilePicture();
-  const deleteProfilePicture = useUploadProfilePicture();
+  const deleteProfilePicture = useDeleteProfilePicture();
   const { showSuccessSnackbar } = useCustomSnackbar();
 
   const thumbnails = files.map((file) => (

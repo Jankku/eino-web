@@ -8,10 +8,14 @@ const getFormData = (data: Blob) => {
   return formData;
 };
 
-const uploadProfilePictureQuery = async (data: Blob | null | undefined) => {
+const uploadProfilePictureQuery = async (data: Blob) => {
+  if (!(data instanceof Blob) || data.size === 0) {
+    throw new Error('A non-empty picture is required for upload.');
+  }
+
   const res = await api
     .post('api/v2/profile/profilepicture', {
-      body: data ? getFormData(data) : undefined,
+      body: getFormData(data),
       timeout: 5000,
     })
     .json<ApiResponse<Result[]>>();
