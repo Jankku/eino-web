@@ -113,7 +113,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
           }}
         >
           <DialogContent sx={{ pt: 0 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
+            <Typography color="text.secondary" sx={{ mb: 2.5 }}>
               Choose an Eino JSON export to import into your account. Your existing data will be
               kept.
             </Typography>
