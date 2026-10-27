@@ -98,7 +98,7 @@ export function BookStats({ stats }: BookStatsProps) {
             {data?.map((book) => (
               <ListItem
                 lighten
-                disableClick
+                to={`/books/${book.book_id}`}
                 key={book.book_id}
                 title={book.title}
                 detailText={book.author}

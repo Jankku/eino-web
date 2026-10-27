@@ -22,7 +22,7 @@ type ListItemProps = {
   score: number;
   itemId: string;
   imageUrl: string | null;
-  disableClick?: boolean;
+  to?: string;
   lighten?: boolean;
   onNavigate?: React.MouseEventHandler<HTMLAnchorElement>;
 };
@@ -34,7 +34,7 @@ export default function ListItem({
   score,
   itemId,
   imageUrl,
-  disableClick,
+  to,
   lighten,
   onNavigate,
 }: ListItemProps) {
@@ -53,7 +53,7 @@ export default function ListItem({
         outlineOffset: '-2px',
       })}
     >
-      <CardActionArea disabled={disableClick} component="div" tabIndex={-1} role={undefined}>
+      <CardActionArea component="div" tabIndex={-1} role={undefined}>
         <CardContent sx={{ pr: 1, py: 0, pl: 0 }}>
           <Stack direction="row" sx={{ width: '100%', minWidth: 0, flexWrap: 'nowrap' }}>
             <Box
@@ -125,7 +125,7 @@ export default function ListItem({
           component={Link}
           draggable={false}
           id={itemId}
-          to={`./${itemId}${location.search}`}
+          to={to ?? `./${itemId}${location.search}`}
           onClick={onNavigate}
           sx={(theme) => ({
             position: 'absolute',

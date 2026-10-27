@@ -97,7 +97,7 @@ export function MovieStats({ stats }: MovieStatsProps) {
             {data?.map((movie) => (
               <ListItem
                 lighten
-                disableClick
+                to={`/movies/${movie.movie_id}`}
                 key={movie.movie_id}
                 title={movie.title}
                 detailText={movie.director}
