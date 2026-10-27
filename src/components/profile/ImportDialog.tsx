@@ -125,26 +125,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                   onDrop,
                   disabled: importData.isPending,
                 }}
-                sx={{
-                  p: selection ? 2 : 3,
-                  border: '1px dashed',
-                  borderColor: selection ? 'divider' : 'primary.main',
-                  borderRadius: 2,
-                  backgroundColor: 'action.hover',
-                  boxShadow: 'none',
-                  textAlign: selection ? 'left' : 'center',
-                  transition: 'border-color 150ms, background-color 150ms',
-                  '&:hover, &:focus-visible': {
-                    borderColor: 'primary.main',
-                    backgroundColor: 'action.selected',
-                  },
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: 'primary.main',
-                    outlineOffset: 3,
-                  },
-                  '&[aria-disabled="true"]': { opacity: 0.6, cursor: 'default' },
-                }}
+                compact={!!selection}
               >
                 {isReading ? (
                   <Box

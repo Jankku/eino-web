@@ -4,26 +4,37 @@ import { DropzoneOptions, useDropzone } from 'react-dropzone';
 type DropzoneProps = {
   options: DropzoneOptions;
   children: React.ReactNode;
+  compact?: boolean;
   sx?: SxProps<Theme>;
 };
 
-export default function Dropzone({ options, children, sx = [] }: DropzoneProps) {
+export default function Dropzone({ options, children, compact = false, sx = [] }: DropzoneProps) {
   const { getRootProps, getInputProps } = useDropzone(options);
   return (
     <Paper
-      {...getRootProps()}
-      elevation={2}
+      {...getRootProps({ role: 'button', 'aria-disabled': options.disabled })}
+      elevation={0}
       sx={[
-        (theme) => ({
-          backgroundColor: 'grey.200',
-          px: 1,
-          py: 4,
-          textAlign: 'center',
+        {
+          p: compact ? 2 : 3,
+          border: '1px dashed',
+          borderColor: compact ? 'divider' : 'primary.main',
+          borderRadius: 2,
+          backgroundColor: 'action.hover',
+          textAlign: compact ? 'left' : 'center',
           cursor: 'pointer',
-          ...theme.applyStyles('dark', {
-            backgroundColor: '#25272c',
-          }),
-        }),
+          transition: 'border-color 150ms, background-color 150ms',
+          '&:hover, &:focus-visible': {
+            borderColor: 'primary.main',
+            backgroundColor: 'action.selected',
+          },
+          '&:focus-visible': {
+            outline: '2px solid',
+            outlineColor: 'primary.main',
+            outlineOffset: 3,
+          },
+          '&[aria-disabled="true"]': { opacity: 0.6, cursor: 'default' },
+        },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >

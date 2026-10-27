@@ -6,11 +6,13 @@ import { parseError } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useEffect, useRef, useState } from 'react';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { FileValidationError, imageValidator } from '../../utils/importUtil';
+import { byteFormatter, FileValidationError, imageValidator } from '../../utils/importUtil';
 import { HTTPError } from 'ky';
 import { useUploadProfilePicture } from '../../data/profile/useUploadProfilePicture';
 import Dropzone from './Dropzone';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import Cropper from '../common/Cropper';
 import { CropperCanvas } from 'cropperjs';
 
@@ -53,7 +55,12 @@ export default function ProfilePictureDialog({
   ));
 
   const onDrop = async (acceptedFiles: File[]) => {
-    const errors = await imageValidator(acceptedFiles[0]);
+    const file = acceptedFiles[0];
+    if (!file) {
+      setFileErrors([{ code: 'invalid_selection', message: 'Please select one image file.' }]);
+      return;
+    }
+    const errors = await imageValidator(file);
     setFileErrors(errors);
     if (errors.length === 0) {
       setFiles(
@@ -74,7 +81,7 @@ export default function ProfilePictureDialog({
   };
 
   const onSubmit = async () => {
-    if (files.length === 0) return;
+    if (files.length === 0 || fileErrors.length > 0) return;
 
     const blob = await getCanvasBlob();
 
@@ -111,7 +118,8 @@ export default function ProfilePictureDialog({
     // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
   }, []);
 
-  const saveButtonDisabled = uploadProfilePicture.isPending || files.length === 0;
+  const saveButtonDisabled =
+    uploadProfilePicture.isPending || files.length === 0 || fileErrors.length > 0;
 
   return (
     <BaseDialog
@@ -162,14 +170,6 @@ export default function ProfilePictureDialog({
               ) : undefined}
               {thumbnails}
             </Box>
-            <Typography
-              component="p"
-              sx={{
-                mb: 2,
-              }}
-            >
-              Only image files are allowed and the file size must be less than 10MB.
-            </Typography>
             <Dropzone
               options={{
                 maxFiles: 1,
@@ -178,9 +178,44 @@ export default function ProfilePictureDialog({
                   'image/*': [],
                 },
                 onDrop,
+                disabled: uploadProfilePicture.isPending || deleteProfilePicture.isPending,
               }}
+              compact={files.length > 0}
             >
-              <Typography>Drag and drop or click to select a new picture</Typography>
+              {files.length > 0 ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <ImageOutlinedIcon color="primary" sx={{ fontSize: 28, flexShrink: 0 }} />
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
+                      {files[0].name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {byteFormatter.format(files[0].size)}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    color="primary"
+                    sx={{ flexShrink: 0, fontWeight: 500 }}
+                  >
+                    Change picture
+                  </Typography>
+                </Box>
+              ) : (
+                <>
+                  <AddPhotoAlternateOutlinedIcon color="primary" sx={{ fontSize: 32, mb: 1 }} />
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    Choose a picture
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mt: 0.5 }}
+                  >
+                    or drag and drop it here · Images only · Max 10 MB
+                  </Typography>
+                </>
+              )}
             </Dropzone>
             <Box
               sx={{
