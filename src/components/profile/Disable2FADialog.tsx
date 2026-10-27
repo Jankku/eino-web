@@ -1,7 +1,8 @@
-import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Stack, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -31,6 +32,7 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
     reset: resetForm,
     formState: { errors },
   } = formMethods;
+  const twoFactorCode = useWatch({ control: formMethods.control, name: 'twoFactorCode' });
   const disable2FA = useDisable2FA();
 
   const resetState = () => {
@@ -82,19 +84,24 @@ export default function Disable2FADialog({ visible, closeDialog }: Disable2FADia
               </Stack>
             </Stack>
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button loading={disable2FA.isPending} color="primary" type="submit">
+            <DialogPrimaryButton
+              color="error"
+              loading={disable2FA.isPending}
+              disabled={!twoFactorCode.trim()}
+              type="submit"
+            >
               Disable 2FA
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

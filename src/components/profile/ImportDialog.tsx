@@ -1,11 +1,5 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Box, Button, CircularProgress, DialogContent, Typography } from '@mui/material';
 import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
@@ -300,7 +294,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
               ) : null}
             </section>
           </DialogContent>
-          <DialogActions sx={{ px: 3, py: 2, gap: 1, borderTop: 1, borderColor: 'divider' }}>
+          <DialogFooter>
             <Button
               color="inherit"
               onClick={() => {
@@ -309,18 +303,14 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
             >
               Cancel
             </Button>
-            <Button
-              disableElevation
+            <DialogPrimaryButton
               loading={importData.isPending}
               disabled={importButtonDisabled}
-              color="primary"
-              variant="contained"
-              sx={{ px: 3 }}
               type="submit"
             >
               Import
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

@@ -1,13 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from './DialogFooter';
 import { useState } from 'react';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  FormControl,
-  InputLabel,
-  Select,
-  Typography,
-} from '@mui/material';
+import { Button, DialogContent, FormControl, InputLabel, Select, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { score as scoreOptions } from '../../models/score';
 
@@ -56,14 +49,12 @@ export default function CompleteDialog({ visible, closeDialog, onComplete }: Com
           </Select>
         </FormControl>
       </DialogContent>
-      <DialogActions>
-        <Button color="secondary" onClick={onCancel}>
+      <DialogFooter>
+        <Button color="inherit" onClick={onCancel}>
           Cancel
         </Button>
-        <Button color="primary" onClick={onConfirm}>
-          Complete
-        </Button>
-      </DialogActions>
+        <DialogPrimaryButton onClick={onConfirm}>Complete</DialogPrimaryButton>
+      </DialogFooter>
     </BaseDialog>
   );
 }

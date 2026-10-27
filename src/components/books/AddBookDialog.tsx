@@ -1,5 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
-import { Button, DialogActions, DialogContent } from '@mui/material';
+import { Button, DialogContent } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -71,14 +72,14 @@ export default function AddBookDialog({ visible, closeDialog }: AddBookDialogPro
               onSelect={onSelectCover}
             />
           </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="submit" color="primary" disabled={addBookMutation.isPending}>
+            <DialogPrimaryButton type="submit" disabled={addBookMutation.isPending}>
               Create
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

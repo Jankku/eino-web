@@ -1,12 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  Typography,
-  Stack,
-} from '@mui/material';
+import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
 import BookForm from './BookForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -88,19 +82,18 @@ export default function EditBookDialog({ visible, closeDialog, bookId }: EditBoo
             />
           </DialogContent>
 
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button
+            <DialogPrimaryButton
               loading={updateBook.isPending}
               type="submit"
               disabled={loadBook.isLoading || loadBook.isLoadingError || updateBook.isPending}
-              color="primary"
             >
               Submit changes
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

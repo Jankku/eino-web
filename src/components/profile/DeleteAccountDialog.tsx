@@ -1,10 +1,11 @@
-import { Button, DialogActions, DialogContent, Stack, Typography } from '@mui/material';
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
+import { Button, DialogContent, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 import BaseDialog from '../common/BaseDialog';
 import { DeleteAccountBody, useDeleteAccount } from '../../data/profile/useDeleteAccount';
 import PasswordField from '../form/PasswordField';
 import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -40,6 +41,11 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
     reset: resetForm,
     formState: { errors },
   } = formMethods;
+  const [password, twoFactorCode] = useWatch({
+    control: formMethods.control,
+    name: ['password', 'twoFactorCode'],
+  });
+  const deleteButtonDisabled = !password || (is2FAEnabled && !twoFactorCode?.trim());
   const deleteAccount = useDeleteAccount();
 
   const resetState = () => {
@@ -104,19 +110,24 @@ function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps)
               ) : null}
             </Stack>
           </DialogContent>
-          <DialogActions>
+          <DialogFooter>
             <Button
-              color="secondary"
+              color="inherit"
               onClick={() => {
                 resetState();
               }}
             >
               Cancel
             </Button>
-            <Button loading={deleteAccount.isPending} color="primary" type="submit">
+            <DialogPrimaryButton
+              color="error"
+              loading={deleteAccount.isPending}
+              disabled={deleteButtonDisabled}
+              type="submit"
+            >
               Delete account
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

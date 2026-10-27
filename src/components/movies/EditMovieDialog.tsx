@@ -1,12 +1,6 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import { useState } from 'react';
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  Typography,
-  Stack,
-} from '@mui/material';
+import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
 import MovieForm from './MovieForm';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -89,19 +83,18 @@ export default function EditMovieDialog({ visible, closeDialog, movieId }: EditM
             />
           </DialogContent>
 
-          <DialogActions>
-            <Button color="secondary" onClick={onCancel}>
+          <DialogFooter>
+            <Button color="inherit" onClick={onCancel}>
               Cancel
             </Button>
-            <Button
+            <DialogPrimaryButton
               loading={updateMovie.isPending}
               type="submit"
               disabled={loadMovie.isLoading || loadMovie.isLoadingError || updateMovie.isPending}
-              color="primary"
             >
               Submit changes
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>

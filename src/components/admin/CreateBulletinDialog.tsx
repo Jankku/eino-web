@@ -1,9 +1,9 @@
+import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
 import {
   Autocomplete,
   Button,
   capitalize,
   createFilterOptions,
-  DialogActions,
   DialogContent,
   Stack,
 } from '@mui/material';
@@ -61,7 +61,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState<User[]>([]);
   const { users } = useFindUser(searchTerm);
-  const visibility = useWatch({ control, name: 'visibility' });
+  const [visibility, title] = useWatch({ control, name: ['visibility', 'title'] });
   const showUserAutocomplete = visibility === 'user';
   const showConditionSelect = visibility === 'condition';
 
@@ -165,14 +165,18 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
               <ErrorMessage message={errors.root.serverError.message} />
             ) : null}
           </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={handleClose}>
+          <DialogFooter>
+            <Button color="inherit" onClick={handleClose}>
               Close
             </Button>
-            <Button loading={createBulletin.isPending} color="primary" type="submit">
+            <DialogPrimaryButton
+              loading={createBulletin.isPending}
+              disabled={!title.trim()}
+              type="submit"
+            >
               Create
-            </Button>
-          </DialogActions>
+            </DialogPrimaryButton>
+          </DialogFooter>
         </form>
       </FormProvider>
     </BaseDialog>
