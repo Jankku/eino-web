@@ -5,6 +5,8 @@ import { MemoryRouter, useNavigate } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { requestNavigationFocus, useNavigationFocus } from '../useNavigationFocus';
 import { readItemFocus } from '../useRestoreItemFocus';
+import Error401 from '../../components/errors/Error401';
+import Error403 from '../../components/errors/Error403';
 
 function Router({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +19,11 @@ function Router({ children }: { children: React.ReactNode }) {
 function useTestNavigation() {
   useNavigationFocus();
   return useNavigate();
+}
+
+function NavigationCoordinator() {
+  useNavigationFocus();
+  return null;
 }
 
 function Content({ path, item, modal = false }: { path?: string; item?: string; modal?: boolean }) {
@@ -171,6 +178,25 @@ describe('navigation focus', () => {
     requestNavigationFocus('/books/one');
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Item detail' })).toHaveFocus());
   });
+
+  it.each([Error401, Error403])(
+    'focuses an authorization screen on a direct detail visit',
+    async (ErrorScreen) => {
+      render(
+        <StrictMode>
+          <MemoryRouter initialEntries={['/books/one']}>
+            <NavigationCoordinator />
+            <main id="main-content">
+              <ErrorScreen />
+            </main>
+          </MemoryRouter>
+        </StrictMode>,
+      );
+      await waitFor(() =>
+        expect(screen.getByRole('heading', { name: 'Unauthorized' })).toHaveFocus(),
+      );
+    },
+  );
 
   it('focuses a direct detail visit under StrictMode', async () => {
     render(<Content path="/books/one" />);
