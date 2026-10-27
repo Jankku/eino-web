@@ -1,45 +1,50 @@
-import { IconButton, Popover } from '@mui/material';
-import React, { useState } from 'react';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import { useId, useState } from 'react';
 import MoreVert from '@mui/icons-material/MoreVert';
 
 type MoreButtonProps = {
-  children: React.ReactNode;
+  actions: { label: string; onClick: () => void; disabled?: boolean }[];
 };
 
-export default function MoreButton({ children }: MoreButtonProps) {
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+export default function MoreButton({ actions }: MoreButtonProps) {
+  const id = useId();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
 
   return (
     <>
-      <IconButton aria-label="More actions" onClick={handleClick}>
+      <IconButton
+        id={`${id}-trigger`}
+        aria-label="More actions"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? `${id}-menu` : undefined}
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+      >
         <MoreVert />
       </IconButton>
-      <Popover
-        open={!!anchorEl}
+      <Menu
+        open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+        onClose={() => setAnchorEl(null)}
+        variant="menu"
+        slotProps={{
+          list: () => ({ component: 'ul', id: `${id}-menu`, 'aria-labelledby': `${id}-trigger` }),
         }}
       >
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClose();
-          }}
-        >
-          {children}
-        </div>
-      </Popover>
+        {actions.map((action) => (
+          <MenuItem
+            key={action.label}
+            disabled={action.disabled}
+            onClick={() => {
+              setAnchorEl(null);
+              action.onClick();
+            }}
+          >
+            {action.label}
+          </MenuItem>
+        ))}
+      </Menu>
     </>
   );
 }

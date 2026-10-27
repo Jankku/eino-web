@@ -1,3 +1,4 @@
+import Head from '../../components/common/Head';
 import { useId } from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Quagga from '@ericblade/quagga2';
@@ -149,6 +150,7 @@ export default function BookScanner() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: 'relative' }}>
+      <Head pageTitle="Scan books" />
       <style>
         {`#scanner-container video {
             position: absolute;

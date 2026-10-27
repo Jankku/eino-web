@@ -4,6 +4,7 @@ import { StyledEngineProvider } from '@mui/system';
 import { blue, red } from '@mui/material/colors';
 import '../css/fonts.css';
 import type {} from '@mui/material/themeCssVarsAugmentation';
+import type {} from '@mui/x-data-grid/themeAugmentation';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -22,6 +23,9 @@ const theme = createTheme({
     light: {
       palette: {
         mode: 'light',
+        TableCell: {
+          border: 'rgba(0, 0, 0, 0.2)',
+        },
         background: {
           default: '#edf8ff',
           paper: '#FFF',
@@ -37,6 +41,9 @@ const theme = createTheme({
     dark: {
       palette: {
         mode: 'dark',
+        TableCell: {
+          border: 'rgba(255, 255, 255, 0.2)',
+        },
         background: {
           default: '#191b21',
           paper: '#25272c',
@@ -64,6 +71,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        columnSeparator: ({ theme }) => ({
+          color: theme.vars.palette.text.secondary,
+        }),
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: 'fonts.css',
     },

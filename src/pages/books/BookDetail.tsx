@@ -1,3 +1,5 @@
+import Head from '../../components/common/Head';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { Box, Button, capitalize, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import BookIcon from '@mui/icons-material/Book';
@@ -22,6 +24,7 @@ import StatusChip from '../../components/common/StatusChip';
 const numberFormatter = new Intl.NumberFormat();
 
 export default function BookDetail() {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const bookId = useParams().bookId!;
@@ -117,89 +120,97 @@ export default function BookDetail() {
   };
 
   return (
-    <BaseDetailLayout
-      imageUrl={data.image_url}
-      copyText="Copy title and author"
-      onCopy={copyToClipboard}
-      details={
-        <>
-          <Stack direction="row" sx={{ mb: 0.5 }}>
-            <ScoreChip score={data.score} />
-            <StatusChip
-              status={data.status}
-              chipText={statusChipText}
-              tooltipText={`Reading time: ${readingTimeRelative} (${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()})`}
-            />
-          </Stack>
-          <Stack sx={{ mb: 2 }}>
-            <Box component="span" sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
-              {data.title}
+    <>
+      <Head pageTitle={`${data.title.trim() || 'Untitled book'} | Books`} />
+      <BaseDetailLayout
+        imageUrl={data.image_url}
+        copyText="Copy title and author"
+        onCopy={copyToClipboard}
+        details={
+          <>
+            <Stack direction="row" sx={{ mb: 0.5 }}>
+              <ScoreChip score={data.score} />
+              <StatusChip
+                status={data.status}
+                chipText={statusChipText}
+                tooltipText={`Reading time: ${readingTimeRelative} (${DateTime.fromISO(data.start_date).toLocaleString()}–${DateTime.fromISO(data.end_date).toLocaleString()})`}
+              />
+            </Stack>
+            <Stack sx={{ mb: 2 }}>
+              <Box
+                component={isMobile ? 'h1' : 'h2'}
+                data-detail-heading
+                tabIndex={-1}
+                sx={{ m: 0, fontWeight: 600, fontSize: '1.25rem' }}
+              >
+                {data.title.trim() || 'Untitled book'}
+              </Box>
+              <Box component="span">{[data.author, data.year].filter(Boolean).join(', ')}</Box>
+            </Stack>
+            <Box component="dl">
+              {data.publisher ? <DetailItem title="Publisher" value={data.publisher} /> : undefined}
+              {data.pages ? (
+                <DetailItem title="Pages" value={numberFormatter.format(data.pages)} />
+              ) : undefined}
+              {data.language_code ? (
+                <DetailItem title="Language" value={languageCodeToName(data.language_code)} />
+              ) : undefined}
+              {data.isbn ? <DetailItem title="ISBN" value={data.isbn} /> : undefined}
+              {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
             </Box>
-            <Box component="span">{[data.author, data.year].filter(Boolean).join(', ')}</Box>
-          </Stack>
-          <Box component="dl">
-            {data.publisher ? <DetailItem title="Publisher" value={data.publisher} /> : undefined}
-            {data.pages ? (
-              <DetailItem title="Pages" value={numberFormatter.format(data.pages)} />
+          </>
+        }
+        actions={
+          <>
+            {isReading ? (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={toggleCompleteDialog as () => void}
+                startIcon={<DoneIcon />}
+              >
+                Complete
+              </Button>
             ) : undefined}
-            {data.language_code ? (
-              <DetailItem title="Language" value={languageCodeToName(data.language_code)} />
+            {isPlanned ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={onReading}
+                startIcon={<BookIcon />}
+              >
+                Start
+              </Button>
             ) : undefined}
-            {data.isbn ? <DetailItem title="ISBN" value={data.isbn} /> : undefined}
-            {data.note ? <DetailItem multiline title="Note" value={data.note} /> : undefined}
-          </Box>
-        </>
-      }
-      actions={
-        <>
-          {isReading ? (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={toggleCompleteDialog as () => void}
-              startIcon={<DoneIcon />}
-            >
-              Complete
-            </Button>
-          ) : undefined}
-          {isPlanned ? (
             <Button
               variant="contained"
               color="primary"
-              onClick={onReading}
-              startIcon={<BookIcon />}
+              onClick={toggleEditDialog as () => void}
+              startIcon={<CreateIcon />}
             >
-              Start
+              Edit
             </Button>
-          ) : undefined}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={toggleEditDialog as () => void}
-            startIcon={<CreateIcon />}
-          >
-            Edit
-          </Button>
-          <DeleteButton
-            loading={deleteBook.isPending}
-            variant="outlined"
-            color="secondary"
-            onClick={onDelete}
-          />
-        </>
-      }
-    >
-      {editDialogOpen ? (
-        <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
-      ) : undefined}
+            <DeleteButton
+              loading={deleteBook.isPending}
+              variant="outlined"
+              color="secondary"
+              onClick={onDelete}
+            />
+          </>
+        }
+      >
+        {editDialogOpen ? (
+          <EditBookDialog visible={editDialogOpen} closeDialog={toggleEditDialog} bookId={bookId} />
+        ) : undefined}
 
-      {completeDialogOpen ? (
-        <CompleteDialog
-          visible={completeDialogOpen}
-          closeDialog={toggleCompleteDialog}
-          onComplete={onComplete}
-        />
-      ) : undefined}
-    </BaseDetailLayout>
+        {completeDialogOpen ? (
+          <CompleteDialog
+            visible={completeDialogOpen}
+            closeDialog={toggleCompleteDialog}
+            onComplete={onComplete}
+          />
+        ) : undefined}
+      </BaseDetailLayout>
+    </>
   );
 }

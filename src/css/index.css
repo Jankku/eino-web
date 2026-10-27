@@ -1,10 +1,64 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 a:link {
   text-decoration: none;
+}
+
+/* Keep focused controls and route destinations clear of the sticky app bar. */
+a,
+button,
+input,
+select,
+textarea,
+[tabindex] {
+  scroll-margin-top: 80px;
+  scroll-margin-bottom: 8px;
+}
+
+.MuiButtonBase-root:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: -3px;
+}
+
+a:focus-visible,
+[data-detail-heading]:focus-visible,
+[data-navigation-focus]:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: -3px;
+}
+
+/* Keep button focus separate from the button's fill and text color. */
+.MuiButton-root:focus-visible {
+  outline: 2px solid var(--mui-palette-text-primary);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1600;
+  padding: 12px 16px;
+  color: var(--mui-palette-text-primary);
+  background: var(--mui-palette-background-paper);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (forced-colors: active) {
+  .MuiButtonBase-root:focus-visible,
+  a:focus-visible,
+  [data-detail-heading]:focus-visible,
+  [data-navigation-focus]:focus-visible {
+    outline: 3px solid Highlight !important;
+  }
 }

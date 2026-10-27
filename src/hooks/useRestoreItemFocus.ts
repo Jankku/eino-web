@@ -1,19 +1,33 @@
-import { useEffect } from 'react';
-import { useIsMobile } from './useIsMobile';
+import { useLocation } from 'react-router';
 
-export function useRestoreItemFocus(key: string) {
-  const isMobile = useIsMobile();
+export type SavedItemFocus = { id: string; pathname: string };
+export type ItemNavigationState = { libraryItemFocus: SavedItemFocus };
 
-  const saveFocusedItem = (id: string) => {
-    sessionStorage.setItem(key, id);
-  };
+// A history entry owns its origin: choosing another item must not overwrite the
+// origin of an earlier entry, and profile/search links have no list origin.
+export function readItemFocus(
+  previousPath: string,
+  pathname: string,
+  origin: unknown,
+): SavedItemFocus | null {
+  if (pathname !== '/books' && pathname !== '/movies') return null;
+  if (!origin || typeof origin !== 'object' || !('id' in origin) || !('pathname' in origin))
+    return null;
+  return typeof origin.id === 'string' &&
+    origin.id.length > 0 &&
+    origin.pathname === pathname &&
+    previousPath === `${pathname}/${origin.id}`
+    ? { id: origin.id, pathname }
+    : null;
+}
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const focusedElement = document.getElementById(sessionStorage.getItem(key)!);
-    focusedElement?.focus();
-    sessionStorage.removeItem(key);
-  }, [key, isMobile]);
+export function useRestoreItemFocus() {
+  const { pathname } = useLocation();
+  const getItemLinkState = (id: string): ItemNavigationState => ({
+    libraryItemFocus: { id, pathname: '/' + pathname.split('/')[1] },
+  });
 
-  return { saveFocusedItem };
+  // The shared route-focus hook restores this origin after async list content
+  // commits, on both layouts. Router history state also survives a reload.
+  return { getItemLinkState };
 }

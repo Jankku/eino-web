@@ -17,10 +17,11 @@ import MovieSearch from '../movies/MovieSearch';
 
 type AppbarProps = {
   drawerWidth: number;
+  drawerOpen: boolean;
   toggleDrawer: () => void;
 };
 
-export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
+export default function Appbar({ drawerWidth, drawerOpen, toggleDrawer }: AppbarProps) {
   const location = useLocation();
   const { mode, setMode } = useColorScheme();
   const isBookPath = location.pathname.includes('/books');
@@ -50,7 +51,10 @@ export default function Appbar({ drawerWidth, toggleDrawer }: AppbarProps) {
           name="drawer"
           color="inherit"
           edge="start"
-          aria-label="Open drawer"
+          aria-label={drawerOpen ? 'Close drawer' : 'Open drawer'}
+          aria-expanded={drawerOpen}
+          aria-controls={drawerOpen ? 'mobile-navigation-drawer' : undefined}
+          aria-haspopup="dialog"
           sx={{ mr: 2, display: { md: 'none' } }}
           onClick={toggleDrawer}
           size="large"

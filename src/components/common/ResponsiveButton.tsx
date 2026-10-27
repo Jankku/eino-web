@@ -1,7 +1,10 @@
-import { Button, IconButton, Tooltip } from '@mui/material';
+import { Button, ButtonProps, IconButton, Tooltip } from '@mui/material';
 import { useIsMobile } from '../../hooks/useIsMobile';
 
-type ResponsiveButtonProps = {
+type ResponsiveButtonProps = Pick<
+  ButtonProps,
+  'id' | 'aria-controls' | 'aria-expanded' | 'aria-haspopup'
+> & {
   icon: React.ReactNode;
   disabled?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -13,6 +16,7 @@ export default function ResponsiveButton({
   disabled,
   onClick,
   children,
+  ...ariaProps
 }: ResponsiveButtonProps) {
   const isMobile = useIsMobile();
 
@@ -22,6 +26,7 @@ export default function ResponsiveButton({
         <Tooltip arrow title={children} enterTouchDelay={500}>
           <span>
             <IconButton
+              {...ariaProps}
               aria-label={children}
               color="primary"
               size="large"
@@ -33,7 +38,13 @@ export default function ResponsiveButton({
           </span>
         </Tooltip>
       ) : (
-        <Button variant="outlined" startIcon={icon} disabled={disabled} onClick={onClick}>
+        <Button
+          {...ariaProps}
+          variant="outlined"
+          startIcon={icon}
+          disabled={disabled}
+          onClick={onClick}
+        >
           {children}
         </Button>
       )}

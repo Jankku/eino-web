@@ -1,7 +1,7 @@
 import { Popover, Stack } from '@mui/material';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import SmallSelect from './SmallSelect';
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import ResponsiveButton from './ResponsiveButton';
 
@@ -11,6 +11,7 @@ type SortButtonProps = {
 };
 
 export default function SortButton({ fieldOptions, onChange }: SortButtonProps) {
+  const id = useId();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [searchParams] = useSearchParams();
 
@@ -28,13 +29,32 @@ export default function SortButton({ fieldOptions, onChange }: SortButtonProps) 
 
   return (
     <>
-      <ResponsiveButton icon={<SwapVertIcon />} onClick={(e) => handleClick(e)}>
+      <ResponsiveButton
+        id={`${id}-trigger`}
+        aria-haspopup="dialog"
+        aria-expanded={Boolean(anchorEl)}
+        aria-controls={anchorEl ? `${id}-dialog` : undefined}
+        icon={<SwapVertIcon />}
+        onClick={(e) => handleClick(e)}
+      >
         Sort
       </ResponsiveButton>
       <Popover
         open={!!anchorEl}
         anchorEl={anchorEl}
         onClose={handleClose}
+        slotProps={{
+          transition: {
+            onEntering: (paper) => paper.querySelector<HTMLSelectElement>('select')?.focus(),
+          },
+          paper: () => ({
+            component: 'div',
+            id: `${id}-dialog`,
+            role: 'dialog',
+            'aria-modal': true,
+            'aria-labelledby': `${id}-trigger`,
+          }),
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',

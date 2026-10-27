@@ -23,7 +23,7 @@ export default function BookList({ books, itemType }: BookListProps) {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
   const newSearchParams = filterSearchParams(searchParams, 'page');
-  const { saveFocusedItem } = useRestoreItemFocus('bookFocusedItemId');
+  const { getItemLinkState } = useRestoreItemFocus();
 
   const ListItemComponent = itemType === listItemTypes.CARD ? ListItem : ListItemImage;
 
@@ -71,7 +71,7 @@ export default function BookList({ books, itemType }: BookListProps) {
             score={book.score}
             itemId={book.book_id}
             imageUrl={book.image_url}
-            onNavigate={() => saveFocusedItem(book.book_id)}
+            navigationState={getItemLinkState(book.book_id)}
           />
         ))}
       </ImageList>

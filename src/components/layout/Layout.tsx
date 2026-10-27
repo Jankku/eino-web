@@ -1,3 +1,4 @@
+import { focusNavigationTarget, useNavigationFocus } from '../../hooks/useNavigationFocus';
 import { useCallback, useMemo } from 'react';
 import { Outlet } from 'react-router';
 import Drawer from './Drawer';
@@ -6,9 +7,10 @@ import OfflineAlert from '../common/OfflineAlert';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import Bulletins from '../common/Bulletins';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 export default function Layout() {
+  useNavigationFocus();
   const isMobile = useIsMobile();
   const { breakpoints } = useTheme();
   const matchesXxl = useMediaQuery(breakpoints.only('xxl'));
@@ -23,9 +25,21 @@ export default function Layout() {
 
   return (
     <>
+      <Box
+        component="a"
+        href="#main-content"
+        className="skip-link"
+        onClick={(event) => {
+          event.preventDefault();
+          const main = document.getElementById('main-content');
+          if (main) focusNavigationTarget(main);
+        }}
+      >
+        Skip to main content
+      </Box>
       <Bulletins drawerWidth={drawerWidth} />
       <OfflineAlert drawerWidth={drawerWidth} />
-      <Appbar drawerWidth={drawerWidth} toggleDrawer={toggleDrawer} />
+      <Appbar drawerOpen={drawerOpen} drawerWidth={drawerWidth} toggleDrawer={toggleDrawer} />
       <Drawer
         drawerWidth={drawerWidth}
         drawerOpen={drawerOpen}

@@ -1,13 +1,5 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  SelectChangeEvent,
-  Stack,
-} from '@mui/material';
+import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
@@ -86,7 +78,7 @@ export default function Movies() {
 
   return (
     <>
-      <Head pageTitle="Movies" />
+      {!movieId ? <Head pageTitle="Movies" /> : null}
       <ListDetailLayout
         id={movieId}
         list={
@@ -166,22 +158,15 @@ export default function Movies() {
                       display: 'inline-flex',
                     }}
                   >
-                    <MoreButton>
-                      <List disablePadding>
-                        <ListItem disablePadding>
-                          <ListItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard}>
-                            <ListItemText primary="Copy" />
-                          </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                          <ListItemButton onClick={toggleItemType}>
-                            <ListItemText
-                              primary={itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                            />
-                          </ListItemButton>
-                        </ListItem>
-                      </List>
-                    </MoreButton>
+                    <MoreButton
+                      actions={[
+                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
+                        {
+                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
+                          onClick: toggleItemType,
+                        },
+                      ]}
+                    />
                   </Box>
                 </Stack>
               </Box>

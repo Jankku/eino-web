@@ -3,8 +3,7 @@ import {
   Box,
   Divider,
   Drawer as MuiDrawer,
-  IconButton,
-  MenuList,
+  List,
   Tooltip,
   Typography,
   Link,
@@ -77,54 +76,56 @@ export default function Drawer({
 
   const drawerItems = (
     <>
-      <MenuList disablePadding sx={{ px: 1 }}>
-        <CustomNavLink
-          toggleDrawer={closeMobileDrawer}
-          isSmall={isNavLinkSmall}
-          item={{ name: 'Home', path: '/home', icon: <Home />, activePaths: ['/'] }}
-        />
+      <Box component="nav" aria-label="Main navigation">
+        <List disablePadding sx={{ px: 1 }}>
+          <CustomNavLink
+            toggleDrawer={closeMobileDrawer}
+            isSmall={isNavLinkSmall}
+            item={{ name: 'Home', path: '/home', icon: <Home />, activePaths: ['/'] }}
+          />
 
-        {isLoggedIn && isAdmin
-          ? [
-              <Divider key={99} />,
-              adminRouteArray.map((item) => (
+          {isLoggedIn && isAdmin
+            ? [
+                <Divider component="li" key={99} />,
+                adminRouteArray.map((item) => (
+                  <CustomNavLink
+                    toggleDrawer={closeMobileDrawer}
+                    isSmall={isNavLinkSmall}
+                    item={item}
+                    key={item.name}
+                  />
+                )),
+                <Divider component="li" key={999} />,
+              ]
+            : null}
+
+          {isLoggedIn
+            ? routeArray.map((item) => (
                 <CustomNavLink
                   toggleDrawer={closeMobileDrawer}
                   isSmall={isNavLinkSmall}
                   item={item}
                   key={item.name}
                 />
-              )),
-              <Divider key={999} />,
-            ]
-          : null}
+              ))
+            : null}
 
-        {isLoggedIn
-          ? routeArray.map((item) => (
-              <CustomNavLink
-                toggleDrawer={closeMobileDrawer}
-                isSmall={isNavLinkSmall}
-                item={item}
-                key={item.name}
-              />
-            ))
-          : null}
+          {!isNavLinkSmall ? <Divider component="li" /> : undefined}
 
-        {!isNavLinkSmall ? <Divider /> : undefined}
-
-        {!isLoggedIn ? (
-          <>
-            {authRouteArray.map((item) => (
-              <CustomNavLink
-                toggleDrawer={closeMobileDrawer}
-                isSmall={isNavLinkSmall}
-                item={item}
-                key={item.name}
-              />
-            ))}
-          </>
-        ) : null}
-      </MenuList>
+          {!isLoggedIn ? (
+            <>
+              {authRouteArray.map((item) => (
+                <CustomNavLink
+                  toggleDrawer={closeMobileDrawer}
+                  isSmall={isNavLinkSmall}
+                  item={item}
+                  key={item.name}
+                />
+              ))}
+            </>
+          ) : null}
+        </List>
+      </Box>
       {isLoggedIn && !isNavLinkSmall ? (
         <Stack direction="column" sx={{ justifyContent: 'space-between', px: 1 }}>
           <Box>
@@ -176,9 +177,20 @@ export default function Drawer({
     </>
   );
 
+  // Preserve MUI's return focus on Escape/backdrop dismissal. On navigation the
+  // route coordinator waits for this modal to unmount before placing page focus.
   const mobileDrawer = (
     <MuiDrawer
       elevation={0}
+      slotProps={{
+        paper: () => ({
+          component: 'div',
+          id: 'mobile-navigation-drawer',
+          role: 'dialog',
+          'aria-modal': true,
+          'aria-label': 'Navigation',
+        }),
+      }}
       sx={{
         display: { xs: 'block', md: 'none' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
@@ -193,6 +205,7 @@ export default function Drawer({
   const permanentDrawer = (
     <MuiDrawer
       variant="permanent"
+      slotProps={{ paper: () => ({ component: 'div', id: 'desktop-navigation-drawer' }) }}
       anchor="left"
       sx={(theme) => ({
         display: { xs: 'none', md: 'block' },
@@ -206,26 +219,27 @@ export default function Drawer({
       })}
     >
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', pt: 2, pb: 1 }}>
-        {drawerExpanded ? (
+        <Tooltip
+          describeChild
+          arrow
+          title={drawerExpanded ? '' : <Typography variant="body2">Expand</Typography>}
+          placement="right"
+          disableHoverListener={drawerExpanded}
+          disableFocusListener={drawerExpanded}
+        >
           <Button
             variant="text"
             color="inherit"
-            startIcon={drawerExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            startIcon={drawerExpanded ? <ChevronLeftIcon /> : undefined}
+            aria-expanded={drawerExpanded}
+            aria-controls="desktop-navigation-drawer"
+            aria-label={drawerExpanded ? 'Collapse drawer' : 'Expand drawer'}
             onClick={onDrawerExpand}
+            sx={{ minWidth: 40, height: 40, borderRadius: drawerExpanded ? undefined : '50%' }}
           >
-            Collapse
+            {drawerExpanded ? 'Collapse' : <ChevronRightIcon />}
           </Button>
-        ) : (
-          <Tooltip arrow title={<Typography variant="body2">Expand</Typography>} placement="right">
-            <IconButton
-              aria-label="Expand drawer"
-              onClick={onDrawerExpand}
-              sx={{ justifyContent: 'center' }}
-            >
-              {drawerExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </Tooltip>
-        )}
+        </Tooltip>
       </Box>
       {drawerItems}
     </MuiDrawer>
@@ -235,7 +249,7 @@ export default function Drawer({
     <>
       <Box sx={{ display: 'flex' }}>
         <Box
-          component="nav"
+          component="div"
           sx={{
             width: { md: drawerWidth },
             flexShrink: { lg: 0 },
@@ -247,6 +261,8 @@ export default function Drawer({
         </Box>
         <Box
           component="main"
+          id="main-content"
+          tabIndex={-1}
           sx={{
             flexGrow: 1,
             minHeight: '100%',

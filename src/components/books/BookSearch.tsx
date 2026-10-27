@@ -1,6 +1,7 @@
+import { requestNavigationFocus } from '../../hooks/useNavigationFocus';
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import SearchTextField from '../common/SearchTextField';
 import { useBookSearch } from '../../data/books/useBookSearch';
 import SearchResult from '../common/SearchResult';
@@ -9,12 +10,15 @@ import { BookWithId } from '../../models/book';
 
 function BookSearch() {
   const [searchParams] = useSearchParams();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { isPending, mutate } = useBookSearch();
 
   const onSelect = (item: BookWithId) => {
-    navigate({ pathname: `./books/${item.book_id}`, search: searchParams.toString() });
+    const itemPath = `/books/${item.book_id}`;
+    navigate({ pathname: itemPath, search: searchParams.toString() });
+    if (pathname === itemPath) requestNavigationFocus(itemPath);
   };
 
   const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelectedItem } =

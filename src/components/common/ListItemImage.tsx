@@ -1,3 +1,4 @@
+import type { ItemNavigationState } from '../../hooks/useRestoreItemFocus';
 import { Box, capitalize, Card, CardActionArea, Chip, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Link, useLocation } from 'react-router';
@@ -12,7 +13,7 @@ type ListItemImageProps = {
   score: number;
   itemId: string;
   imageUrl: string | null;
-  onNavigate?: React.MouseEventHandler<HTMLAnchorElement>;
+  navigationState?: ItemNavigationState;
 };
 
 export default function ListItemImage({
@@ -22,7 +23,7 @@ export default function ListItemImage({
   score,
   itemId,
   imageUrl,
-  onNavigate,
+  navigationState,
 }: ListItemImageProps) {
   const location = useLocation();
   const isActive = location.pathname.includes(itemId);
@@ -119,7 +120,7 @@ export default function ListItemImage({
           draggable={false}
           id={itemId}
           to={`./${itemId}${location.search}`}
-          onClick={onNavigate}
+          state={navigationState}
           sx={(theme) => ({
             position: 'absolute',
             inset: 0,

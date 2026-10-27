@@ -1,13 +1,5 @@
 import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  SelectChangeEvent,
-  Stack,
-} from '@mui/material';
+import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
@@ -88,7 +80,7 @@ export default function Books() {
 
   return (
     <>
-      <Head pageTitle="Books" />
+      {!bookId ? <Head pageTitle="Books" /> : null}
       <ListDetailLayout
         id={bookId}
         list={
@@ -148,22 +140,15 @@ export default function Books() {
                     </SmallSelect>
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <MoreButton>
-                      <List disablePadding>
-                        <ListItem disablePadding>
-                          <ListItemButton disabled={isEmptyList} onClick={copyTitlesToClipboard}>
-                            <ListItemText primary="Copy" />
-                          </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                          <ListItemButton onClick={toggleItemType}>
-                            <ListItemText
-                              primary={itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                            />
-                          </ListItemButton>
-                        </ListItem>
-                      </List>
-                    </MoreButton>
+                    <MoreButton
+                      actions={[
+                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
+                        {
+                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
+                          onClick: toggleItemType,
+                        },
+                      ]}
+                    />
                   </Box>
                 </Stack>
               </Box>
