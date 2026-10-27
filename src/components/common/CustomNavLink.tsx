@@ -23,6 +23,7 @@ export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNav
         placement="right"
       >
         <ListItemButton
+          disableRipple
           component={Link}
           draggable={false}
           to={item.path}
