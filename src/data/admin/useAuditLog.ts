@@ -5,6 +5,7 @@ import { api } from '../api';
 export type Audit = {
   id: number;
   username: string;
+  actor_user_id: string | null;
   action: string;
   table_name?: string;
   record_id?: string;

@@ -33,6 +33,7 @@ const columns: GridColDef[] = [
       />
     ),
   },
+  { field: 'actor_user_id', headerName: 'User ID', width: 150 },
   { field: 'username', headerName: 'Username', width: 150 },
   { field: 'table_name', headerName: 'Table', width: 80 },
   { field: 'record_id', headerName: 'Record ID', width: 100, sortable: false },
