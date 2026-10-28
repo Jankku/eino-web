@@ -18,7 +18,6 @@ import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
 import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
-import { useMovieCount } from '../../data/movies/useMovieCount';
 
 export default function Movies() {
   const isMobile = useIsMobile();
@@ -29,12 +28,11 @@ export default function Movies() {
   const { itemType, toggleItemType } = useListItemType('movieItemType');
   const [searchparams, setSearchParams] = useSearchParams();
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data } = useMoviesSuspense({
+  const { data, countByStatus } = useMoviesSuspense({
     status: deferredStatus,
     sort: searchparams.get('sort'),
     order: searchparams.get('order'),
   });
-  const countByStatus = useMovieCount();
   const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {

@@ -19,7 +19,6 @@ import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
 import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
-import { useBookCount } from '../../data/books/useBookCount';
 
 export default function Books() {
   const isMobile = useIsMobile();
@@ -31,12 +30,11 @@ export default function Books() {
   const deferredStatus = useDeferredValue(status);
   const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data } = useBooksSuspense({
+  const { data, countByStatus } = useBooksSuspense({
     status: deferredStatus,
     sort: searchparams.get('sort'),
     order: searchparams.get('order'),
   });
-  const countByStatus = useBookCount();
   const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {

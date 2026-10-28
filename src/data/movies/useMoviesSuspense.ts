@@ -1,4 +1,4 @@
-import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQueries, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api';
 import { MovieWithId } from '../../models/movie';
 import { ApiResponse } from '../types';
@@ -9,6 +9,17 @@ type UseMoviesProps = {
   order?: string | null;
   filter?: string | null;
 };
+
+type MovieCountResponse = {
+  all: number;
+  watching: number;
+  completed: number;
+  'on-hold': number;
+  dropped: number;
+  planned: number;
+};
+
+const movieCountQuery = () => api.get('api/v1/list/movies/count').json<MovieCountResponse>();
 
 export const getMoviesQuery = async ({ status, sort, order, filter }: UseMoviesProps) => {
   const res = await api
@@ -25,12 +36,22 @@ export const getMoviesQuery = async ({ status, sort, order, filter }: UseMoviesP
 
 export const useMoviesSuspense = ({ status, sort, order, filter }: UseMoviesProps) => {
   const queryClient = useQueryClient();
-  return useSuspenseQuery({
-    queryKey: ['movies', status, sort, order, filter],
-    queryFn: () => getMoviesQuery({ status, sort, order, filter }),
-    initialData: () =>
-      queryClient
-        .getQueryData<MovieWithId[]>(['movies', 'all'])
-        ?.filter((movie) => movie.status === status),
+  const [movies, counts] = useSuspenseQueries({
+    queries: [
+      {
+        queryKey: ['movies', status, sort || 'title', order || 'ascending', filter || ''],
+        queryFn: () => getMoviesQuery({ status, sort, order, filter }),
+        initialData: () =>
+          queryClient
+            .getQueryData<MovieWithId[]>(['movies', 'all'])
+            ?.filter((movie) => movie.status === status),
+      },
+      {
+        queryKey: ['movies', 'count'],
+        queryFn: movieCountQuery,
+      },
+    ],
   });
+
+  return { data: movies.data, countByStatus: counts.data };
 };
