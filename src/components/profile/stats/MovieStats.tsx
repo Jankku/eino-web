@@ -76,7 +76,7 @@ export function MovieStats({ stats }: MovieStatsProps) {
                 color="textSecondary"
                 sx={{ width: '100%', textAlign: 'center' }}
               >
-                Click on a bar to view movies with that score
+                Select a bar to view movies with that score
               </Typography>
             </Stack>
           </Box>

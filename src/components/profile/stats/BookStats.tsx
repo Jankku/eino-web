@@ -77,7 +77,7 @@ export function BookStats({ stats }: BookStatsProps) {
                 color="textSecondary"
                 sx={{ width: '100%', textAlign: 'center' }}
               >
-                Click on a bar to view books with that score
+                Select a bar to view books with that score
               </Typography>
             </Stack>
           </Box>
