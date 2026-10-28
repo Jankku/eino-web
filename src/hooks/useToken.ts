@@ -1,5 +1,4 @@
 import { jwtDecode } from 'jwt-decode';
-import { DateTime } from 'luxon';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 type DecodedToken = {
@@ -28,7 +27,7 @@ const isAccessTokenValid = (token: string) => {
 const isRefreshTokenValid = (token: string) => {
   try {
     const decoded = jwtDecode(token);
-    if (decoded.exp) return DateTime.fromSeconds(decoded.exp) > DateTime.now();
+    if (decoded.exp) return decoded.exp * 1000 > Date.now();
     return false;
   } catch {
     return false;
