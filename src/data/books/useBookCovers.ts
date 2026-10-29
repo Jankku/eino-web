@@ -4,7 +4,7 @@ import { ApiResponse } from '../types';
 
 export const getBookCoversQuery = async (query: string) => {
   const res = await api
-    .get('api/v1/list/books/images', { searchParams: { query } })
+    .get('api/v2/list/books/images', { searchParams: { query } })
     .json<ApiResponse<string[]>>();
   return res.results;
 };

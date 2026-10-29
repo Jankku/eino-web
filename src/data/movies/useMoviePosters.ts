@@ -4,7 +4,7 @@ import { ApiResponse } from '../types';
 
 export const getMoviePostersQuery = async (query: string) => {
   const res = await api
-    .get('api/v1/list/movies/images', { searchParams: { query } })
+    .get('api/v2/list/movies/images', { searchParams: { query } })
     .json<ApiResponse<string[]>>();
   return res.results;
 };

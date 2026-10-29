@@ -10,7 +10,7 @@ const exportDataQuery = async ({
   includeAuditLog: boolean;
 }) => {
   return await api
-    .post('api/v1/profile/export', { json: { password, includeAuditLog } })
+    .post('api/v2/profile/export', { json: { password, includeAuditLog } })
     .json<ProfileExport>();
 };
 

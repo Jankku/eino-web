@@ -23,10 +23,16 @@ export const bookSchema = z.object({
 
 export const bookWithIdSchema = bookSchema.extend({
   book_id: z.uuid(),
+  created_on: z.string(),
 });
 
 export type Book = z.infer<typeof bookSchema>;
-export type BookFormSchema = Omit<Book, 'status' | 'score' | 'start_date' | 'end_date'>;
+export type BookLookup = Pick<
+  Book,
+  'isbn' | 'title' | 'author' | 'publisher' | 'pages' | 'year' | 'language_code'
+> & {
+  image_url?: Book['image_url'];
+};
 export type BookWithId = z.infer<typeof bookWithIdSchema>;
 
 export const getNewBookValues = (

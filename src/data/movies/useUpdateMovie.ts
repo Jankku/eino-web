@@ -6,7 +6,7 @@ import { ApiResponse } from '../types';
 
 const updateMovieQuery = async (movieId: string, movie: Movie) => {
   const res = await api
-    .put(`api/v1/list/movies/update/${movieId}`, { json: movie })
+    .put(`api/v2/list/movies/update/${movieId}`, { json: movie })
     .json<ApiResponse<MovieWithId[]>>();
   return res.results[0];
 };

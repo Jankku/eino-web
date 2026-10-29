@@ -3,7 +3,7 @@ import { api } from '../api';
 import { ApiResponse, Result } from '../types';
 
 const deleteMovieQuery = async (movieId: string) => {
-  return await api.delete(`api/v1/list/movies/delete/${movieId}`).json<ApiResponse<Result>>();
+  return await api.delete(`api/v2/list/movies/delete/${movieId}`).json<ApiResponse<Result[]>>();
 };
 
 export const useDeleteMovie = () => {

@@ -5,7 +5,7 @@ import { ApiResponse } from '../types';
 
 export const getMovieDetailQuery = async (movieId: string) => {
   const res = await api
-    .get(`api/v1/list/movies/movie/${movieId}`)
+    .get(`api/v2/list/movies/movie/${movieId}`)
     .json<ApiResponse<MovieWithId[]>>();
   return res.results[0];
 };

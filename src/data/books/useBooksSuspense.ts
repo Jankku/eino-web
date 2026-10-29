@@ -19,11 +19,11 @@ type BookCountResponse = {
   planned: number;
 };
 
-const bookCountQuery = () => api.get('api/v1/list/books/count').json<BookCountResponse>();
+const bookCountQuery = () => api.get('api/v2/list/books/count').json<BookCountResponse>();
 
 export const getBooksQuery = async ({ status, sort, order, filter }: UseBooksProps) => {
   const res = await api
-    .get(`api/v1/list/books/${status}`, {
+    .get(`api/v2/list/books/${status}`, {
       searchParams: {
         sort: sort || 'title',
         order: order || 'ascending',

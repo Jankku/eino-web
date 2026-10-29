@@ -3,34 +3,16 @@ import { Link, useNavigate } from 'react-router';
 import { useRegisterUser } from '../../data/auth/useRegisterUser';
 import ErrorMessage from '../../components/authentication/ErrorMessage.tsx';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField.tsx';
 import PasswordField from '../../components/form/PasswordField.tsx';
-import { parseError, zodFields } from '../../utils/zodUtil';
+import { parseError } from '../../utils/zodUtil';
 import PasswordStrengthMeter from '../../components/authentication/PasswordStrengthMeter';
 import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
 import { useDebounce } from '@uidotdev/usehooks';
-import { Credentials } from '../../data/auth/auth.schema';
+import { RegisterRequest, registerSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import Head from '../../components/common/Head.tsx';
-
-const registerSchema = z
-  .object({
-    username: zodFields.username,
-    email: zodFields.optionalEmail,
-    password: zodFields.password,
-    password2: zodFields.password,
-  })
-  .superRefine(({ password, password2 }, ctx) => {
-    if (password !== password2) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'The passwords do not match',
-        path: ['password2'],
-      });
-    }
-  });
 
 export default function Register() {
   const navigate = useNavigate();
@@ -56,7 +38,7 @@ export default function Register() {
   const passwordScore = watchPassword.length ? (passwordStrength?.score ?? 0) : 0;
   const passwordMessage = passwordStrength?.message || 'Input a password to see the guide';
 
-  const onSubmit = (credentials: Credentials) => {
+  const onSubmit = (credentials: RegisterRequest) => {
     registerUser.mutate(credentials, {
       onSuccess: () => navigate('/login'),
       onError: async (error) => {

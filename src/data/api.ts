@@ -49,7 +49,7 @@ async function fetchNewToken(originalResponse: Response) {
     if (!refreshToken || isExpired(refreshToken)) {
       return Promise.reject(originalResponse);
     }
-    const response = await api.post('api/v1/auth/refreshtoken', { json: { refreshToken } }).json();
+    const response = await api.post('api/v2/auth/refreshtoken', { json: { refreshToken } }).json();
     const validated = refreshTokenResponseSchema.parse(response);
     return validated.accessToken;
   } catch (error) {

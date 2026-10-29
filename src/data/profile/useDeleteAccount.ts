@@ -9,7 +9,7 @@ export type DeleteAccountBody = {
 
 const deleteAccountQuery = async (body: DeleteAccountBody) => {
   const res = await api
-    .post('api/v1/profile/deleteaccount', { json: body })
+    .post('api/v2/profile/deleteaccount', { json: body })
     .json<ApiResponse<Result[]>>();
   return res.results[0].message;
 };

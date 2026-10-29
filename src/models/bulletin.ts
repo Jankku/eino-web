@@ -6,9 +6,9 @@ export type DbBulletin = {
   title: string;
   message: string | null;
   name: string | null;
-  type: 'success' | 'info' | 'warning' | 'error';
-  visiblity: 'public' | 'user' | 'condition';
-  condition: string | null;
+  type: BulletinType;
+  visibility: BulletinVisibility;
+  condition: BulletinCondition | null;
   start_date: string;
   end_date: string;
   created_on: string;

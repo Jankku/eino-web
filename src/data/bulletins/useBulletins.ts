@@ -3,10 +3,9 @@ import { api } from '../api';
 import { ApiResponse } from '../types';
 import { DbBulletin } from '../../models/bulletin';
 
-export type ShownBulletin = Pick<
-  DbBulletin,
-  'id' | 'title' | 'message' | 'name' | 'condition' | 'type'
->;
+export type ShownBulletin = Pick<DbBulletin, 'id' | 'title' | 'message' | 'name' | 'type'> & {
+  condition?: DbBulletin['condition'];
+};
 
 const publicBulletinQuery = async () => {
   const res = await api.get('api/v2/bulletins/public').json<ApiResponse<ShownBulletin[]>>();

@@ -21,6 +21,7 @@ export const movieSchema = z.object({
 
 export const movieWithIdSchema = movieSchema.extend({
   movie_id: z.uuid(),
+  created_on: z.string(),
 });
 
 export type Movie = z.infer<typeof movieSchema>;

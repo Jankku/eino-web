@@ -6,7 +6,7 @@ import { ApiResponse } from '../types';
 
 const updateBookQuery = async (bookId: string, book: Book) => {
   const res = await api
-    .put(`api/v1/list/books/update/${bookId}`, { json: book })
+    .put(`api/v2/list/books/update/${bookId}`, { json: book })
     .json<ApiResponse<BookWithId[]>>();
   return res.results[0];
 };

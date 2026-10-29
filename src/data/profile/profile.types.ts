@@ -1,5 +1,6 @@
 import { BookWithId } from '../../models/book';
 import { MovieWithId } from '../../models/movie';
+import type { Audit } from '../admin/useAuditLog';
 
 type ItemScoreRow = {
   score: number;
@@ -8,7 +9,6 @@ type ItemScoreRow = {
 
 type ProfileShare = {
   share_id: string;
-  username: string;
   created_on: string;
 };
 
@@ -19,6 +19,7 @@ export type Profile = {
   username: string;
   registration_date: string;
   totp_enabled_on: string | null;
+  last_login_on: string | null;
   profile_picture_path: string | null;
   stats: {
     book: {
@@ -42,4 +43,5 @@ export type ProfileExport = {
   books: BookWithId[];
   movies: MovieWithId[];
   shares: ProfileShare[];
+  audits: Audit[];
 };

@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api';
 import { Book } from '../../models/book';
+import { ApiResponse, Result } from '../types';
 
 const addBookQuery = async (book: Book) => {
-  return await api.post('api/v1/list/books/add', { json: book }).json();
+  return await api.post('api/v2/list/books/add', { json: book }).json<ApiResponse<Result[]>>();
 };
 
 export const useAddBook = () => {

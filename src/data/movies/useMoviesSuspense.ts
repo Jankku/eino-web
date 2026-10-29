@@ -19,11 +19,11 @@ type MovieCountResponse = {
   planned: number;
 };
 
-const movieCountQuery = () => api.get('api/v1/list/movies/count').json<MovieCountResponse>();
+const movieCountQuery = () => api.get('api/v2/list/movies/count').json<MovieCountResponse>();
 
 export const getMoviesQuery = async ({ status, sort, order, filter }: UseMoviesProps) => {
   const res = await api
-    .get(`api/v1/list/movies/${status}`, {
+    .get(`api/v2/list/movies/${status}`, {
       searchParams: {
         sort: sort || 'title',
         order: order || 'ascending',

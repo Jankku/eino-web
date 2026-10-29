@@ -5,7 +5,7 @@ import { BookWithId } from '../../models/book';
 
 const searchBooksQuery = async (query: string) => {
   const res = await api
-    .get(`api/v1/list/books/search`, { searchParams: { query } })
+    .get(`api/v2/list/books/search`, { searchParams: { query } })
     .json<ApiResponse<BookWithId[]>>();
   return res.results;
 };

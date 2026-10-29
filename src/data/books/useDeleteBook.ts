@@ -3,7 +3,7 @@ import { api } from '../api';
 import { ApiResponse, Result } from '../types';
 
 const deleteBookQuery = async (bookId: string) => {
-  return await api.delete(`api/v1/list/books/delete/${bookId}`).json<ApiResponse<Result>>();
+  return await api.delete(`api/v2/list/books/delete/${bookId}`).json<ApiResponse<Result[]>>();
 };
 
 export const useDeleteBook = () => {

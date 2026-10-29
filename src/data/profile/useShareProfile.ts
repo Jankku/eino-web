@@ -3,7 +3,7 @@ import { api } from '../api';
 import { ApiResponse } from '../types';
 
 const shareProfileQuery = async () => {
-  const res = await api.get('api/v1/profile/share').json<ApiResponse<{ share_id: string }[]>>();
+  const res = await api.get('api/v2/profile/share').json<ApiResponse<{ share_id: string }[]>>();
   return res.results[0].share_id;
 };
 

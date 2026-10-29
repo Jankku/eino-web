@@ -4,13 +4,13 @@ import { api } from '../api';
 
 export type Audit = {
   id: number;
-  username: string;
+  username: string | null;
   actor_user_id: string | null;
   action: string;
-  table_name?: string;
-  record_id?: string;
-  old_data?: Record<string, unknown>;
-  new_data?: Record<string, unknown>;
+  table_name: string | null;
+  record_id: string | null;
+  old_data: Record<string, unknown> | null;
+  new_data: Record<string, unknown> | null;
   created_on: string;
 };
 

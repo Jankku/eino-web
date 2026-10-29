@@ -5,7 +5,7 @@ import { ApiResponse } from '../types';
 
 const searchMoviesQuery = async (query: string) => {
   const res = await api
-    .get(`api/v1/list/movies/search`, { searchParams: { query } })
+    .get(`api/v2/list/movies/search`, { searchParams: { query } })
     .json<ApiResponse<MovieWithId[]>>();
   return res.results;
 };

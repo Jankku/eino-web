@@ -4,7 +4,7 @@ import { Movie } from '../../models/movie';
 import { ApiResponse, Result } from '../types';
 
 const addMovieQuery = async (movie: Movie) => {
-  return await api.post('api/v1/list/movies/add', { json: movie }).json<ApiResponse<Result>>();
+  return await api.post('api/v2/list/movies/add', { json: movie }).json<ApiResponse<Result[]>>();
 };
 
 export const useAddMovie = () => {

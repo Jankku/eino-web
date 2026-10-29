@@ -7,10 +7,12 @@ export type User = {
   username: string;
   role_id: number;
   role: string;
+  profile_picture_path: string | null;
   email: string | null;
-  email_verified_on: string;
-  totp_enabled_on: string;
-  last_login_on: string;
+  email_verified_on: string | null;
+  disabled_on: string | null;
+  totp_enabled_on: string | null;
+  last_login_on: string | null;
   created_on: string;
 };
 
