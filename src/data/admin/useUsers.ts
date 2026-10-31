@@ -12,6 +12,7 @@ export type User = {
   email_verified_on: string | null;
   disabled_on: string | null;
   totp_enabled_on: string | null;
+  argon2id_migrated: boolean;
   last_login_on: string | null;
   created_on: string;
 };

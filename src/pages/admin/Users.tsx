@@ -181,6 +181,16 @@ export default function Users() {
         hideSortIcons: true,
       },
       {
+        field: 'argon2id_migrated',
+        headerName: 'Argon2id',
+        description: 'Checked means bcrypt to Argon2id migration completed',
+        type: 'boolean',
+        width: 110,
+        editable: false,
+        hideSortIcons: true,
+        valueFormatter: booleanFormatter,
+      },
+      {
         field: 'last_login_on',
         headerName: 'Last login',
         width: 150,
@@ -197,6 +207,7 @@ export default function Users() {
       {
         field: 'disabled_on',
         headerName: 'Disabled',
+        description: 'Is the user account disabled',
         type: 'boolean',
         minWidth: 80,
         hideSortIcons: true,
@@ -229,7 +240,6 @@ export default function Users() {
               ...rowModesModel,
               [id]: { mode: GridRowModes.View, ignoreModifications: true },
             });
-
           };
 
           if (isInEditMode) {
