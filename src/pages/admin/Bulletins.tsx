@@ -23,7 +23,7 @@ import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
 import { useCallback, useMemo, useState } from 'react';
 import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
-import { DbBulletin } from '../../models/bulletin';
+import { bulletinVisibilities, DbBulletin } from '../../models/bulletin';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { updateBulletinSchema, useUpdateBulletin } from '../../data/admin/useUpdateBulletin';
 import { parseError } from '../../utils/zodUtil';
@@ -64,7 +64,10 @@ export default function Bulletins() {
 
   const processRowUpdate = useCallback(
     (newRow: DbBulletin, oldRow: DbBulletin) => {
-      const parsedBulletin = updateBulletinSchema.parse(newRow);
+      const parsedBulletin = updateBulletinSchema.parse({
+        ...newRow,
+        condition: newRow.visibility === 'condition' ? newRow.condition : null,
+      });
       updateBulletin.mutate(parsedBulletin, {
         onSuccess: (message) => {
           showSuccessSnackbar(message);
@@ -119,15 +122,14 @@ export default function Bulletins() {
       {
         field: 'visibility',
         headerName: 'Visibility',
-        minWidth: 90,
-        editable: false,
+        minWidth: 150,
+        editable: true,
         hideSortIcons: true,
         type: 'singleSelect',
-        valueOptions: [
-          { value: 'public', label: 'Public' },
-          { value: 'user', label: 'User' },
-          { value: 'condition', label: 'Condition' },
-        ],
+        valueOptions: bulletinVisibilities.map((visibility) => ({
+          value: visibility,
+          label: capitalize(visibility),
+        })),
         renderCell: ({ row }) => (
           <Chip
             color="primary"

@@ -66,10 +66,14 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
   const showConditionSelect = visibility === 'condition';
 
   const onSubmit = (body: Bulletin) => {
+    const bulletin = {
+      ...body,
+      condition: body.visibility === 'condition' ? body.condition : null,
+    };
     createBulletin.mutate(
       body.visibility === 'user'
-        ? { ...body, visibleToUserIds: selectedItem.map((user) => user.user_id) }
-        : body,
+        ? { ...bulletin, visibleToUserIds: selectedItem.map((user) => user.user_id) }
+        : bulletin,
       {
         onSuccess: (message) => {
           showSuccessSnackbar(message);
@@ -117,7 +121,12 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
                   </option>
                 ))}
               </Select>
-              <Select name="visibility" label="Visibility" sx={{ mb: 1 }}>
+              <Select
+                name="visibility"
+                label="Visibility"
+                helperText={visibility === 'authenticated' ? 'Visible to all signed-in users' : undefined}
+                sx={{ mb: 1 }}
+              >
                 {bulletinVisibilities.map((visibility) => (
                   <option key={visibility} value={visibility}>
                     {capitalize(visibility)}

@@ -18,7 +18,7 @@ export type DbBulletin = {
 export const bulletinTypes = ['success', 'info', 'warning', 'error'] as const;
 export type BulletinType = (typeof bulletinTypes)[number];
 
-export const bulletinVisibilities = ['public', 'user', 'condition'] as const;
+export const bulletinVisibilities = ['public', 'authenticated', 'user', 'condition'] as const;
 export type BulletinVisibility = (typeof bulletinVisibilities)[number];
 
 export const bulletinConditions = [
