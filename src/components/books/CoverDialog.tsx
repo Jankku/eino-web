@@ -38,15 +38,14 @@ export default function CoverDialog({ visible, query, closeDialog, onSelect }: C
         <Typography sx={{ pt: 2 }}>Failed to load covers.</Typography>
       ) : null}
       {bookCovers.isSuccess && bookCovers.data?.length > 0 ? (
-        <ImageList cols={3}>
+        <ImageList cols={3} rowHeight={250}>
           {bookCovers.data?.map((coverUrl) => (
             <ImageListItem
               key={coverUrl}
               sx={{
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                minWidth: 120,
+                minWidth: 0,
                 width: '100%',
-                height: 250,
               }}
             >
               <img
@@ -56,7 +55,7 @@ export default function CoverDialog({ visible, query, closeDialog, onSelect }: C
                 alt="Book cover"
                 referrerPolicy="no-referrer"
                 src={coverUrl}
-                style={{ objectFit: 'contain', aspectRatio: 0.7 }}
+                style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
                 onClick={() => onSelect(coverUrl)}
                 onKeyUp={(event) => {
                   if (event.key === 'Enter') onSelect(coverUrl);

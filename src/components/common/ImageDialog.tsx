@@ -19,8 +19,15 @@ export default function ImageDialog({
   children,
 }: ImageDialogProps) {
   return (
-    <BaseDialog title={title} open={visible} onClose={closeDialog} hideBackdrop>
-      <DialogContent sx={{ paddingTop: 0 }}>
+    <BaseDialog
+      title={title}
+      open={visible}
+      onClose={closeDialog}
+      hideBackdrop
+      fullWidth
+      slotProps={{ paper: { sx: { height: { md: 'min(700px, calc(100% - 64px))' } } } }}
+    >
+      <DialogContent sx={{ paddingTop: 0, scrollbarGutter: 'stable' }}>
         <DialogContentText>Sources: {sources}</DialogContentText>
         {children}
       </DialogContent>

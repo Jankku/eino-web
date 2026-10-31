@@ -1,5 +1,5 @@
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
-import { Button, CircularProgress, DialogContent, Typography, Stack } from '@mui/material';
+import { Box, Button, CircularProgress, DialogContent, Typography } from '@mui/material';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { getShareUrl } from '../../utils/shareUtil';
 import BaseDialog from '../common/BaseDialog';
@@ -55,23 +55,28 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   };
 
   return (
-    <BaseDialog title="Share profile" open={visible} maxWidth={'md'} onClose={onClose}>
+    <BaseDialog title="Share profile" open={visible} maxWidth="md" fullWidth onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
-        {isLoading ? (
-          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Stack>
-        ) : null}
-        {shareId ? (
-          <img
-            draggable="false"
-            alt="Profile share"
-            crossOrigin="anonymous"
-            src={shareUrl}
-            style={{ width: '100%' }}
-          />
-        ) : null}
-        {isError ? <Typography component="p">Failed to load image</Typography> : null}
+        <Box
+          sx={{
+            height: 'min(60dvh, 600px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {isLoading ? <CircularProgress /> : null}
+          {shareId ? (
+            <img
+              draggable="false"
+              alt="Profile share"
+              crossOrigin="anonymous"
+              src={shareUrl}
+              style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
+            />
+          ) : null}
+          {isError ? <Typography component="p">Failed to load image</Typography> : null}
+        </Box>
       </DialogContent>
       <DialogFooter>
         <Button color="inherit" onClick={onClose}>

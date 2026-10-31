@@ -59,6 +59,7 @@ export default function ListItem({
           <Stack direction="row" sx={{ width: '100%', minWidth: 0, flexWrap: 'nowrap' }}>
             <Box
               sx={(theme) => ({
+                position: 'relative',
                 display: 'flex',
                 flexWrap: 'wrap',
                 width: '10em',
@@ -78,7 +79,7 @@ export default function ListItem({
                   src={imageUrl}
                   width="100%"
                   height="100%"
-                  style={{ objectFit: 'cover' }}
+                  style={{ position: 'absolute', inset: 0, objectFit: 'cover' }}
                 />
               ) : null}
             </Box>

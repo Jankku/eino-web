@@ -15,8 +15,14 @@ export default function ItemListDialog({ title, visible, closeDialog, children }
   };
 
   return (
-    <BaseDialog title={title} open={visible} onClose={onClose}>
-      <DialogContent sx={{ pt: 0 }}>{children}</DialogContent>
+    <BaseDialog
+      title={title}
+      open={visible}
+      onClose={onClose}
+      fullWidth
+      slotProps={{ paper: { sx: { height: { md: 'min(700px, calc(100% - 64px))' } } } }}
+    >
+      <DialogContent sx={{ pt: 0, scrollbarGutter: 'stable' }}>{children}</DialogContent>
       <DialogFooter>
         <Button color="inherit" onClick={onClose}>
           Close

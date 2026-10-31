@@ -38,15 +38,14 @@ export default function PosterDialog({ visible, query, closeDialog, onSelect }: 
         <Typography sx={{ pt: 2 }}>Failed to load posters.</Typography>
       ) : null}
       {moviePosters.isSuccess && moviePosters.data?.length > 0 ? (
-        <ImageList cols={3}>
+        <ImageList cols={3} rowHeight={250}>
           {moviePosters.data?.map((posterUrl) => (
             <ImageListItem
               key={posterUrl}
               sx={{
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                minWidth: 120,
+                minWidth: 0,
                 width: '100%',
-                height: 250,
               }}
             >
               <img
@@ -56,7 +55,7 @@ export default function PosterDialog({ visible, query, closeDialog, onSelect }: 
                 alt="Movie poster"
                 referrerPolicy="no-referrer"
                 src={posterUrl}
-                style={{ objectFit: 'contain', aspectRatio: 0.7 }}
+                style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
                 onClick={() => onSelect(posterUrl)}
                 onKeyUp={(event) => {
                   if (event.key === 'Enter') onSelect(posterUrl);

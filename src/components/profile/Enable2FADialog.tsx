@@ -64,46 +64,63 @@ export default function Enable2FADialog({ visible, closeDialog }: Enable2FADialo
       title="Enable Two-Factor Authentication (2FA)"
       open={visible}
       onClose={() => resetState()}
+      fullWidth
     >
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}
+        >
           <DialogContent sx={{ pt: 0 }}>
-            {isLoading ? (
-              <Stack
-                direction="row"
-                sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}
+            <Stack spacing={2}>
+              <Typography component="p">
+                Scan the QR code or use the URL below to set up your authenticator app. After that
+                enter the 6 digit one-time code from the app to the text field below.
+              </Typography>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: 224,
+                  aspectRatio: '1',
+                  alignSelf: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                <CircularProgress />
-              </Stack>
-            ) : null}
-            {isError ? <Typography component="p">Failed to load QR code</Typography> : undefined}
-            {data?.totpUrl ? (
-              <Stack spacing={2}>
-                <Typography component="p">
-                  Scan the QR code or use the URL below to set up your authenticator app. After that
-                  enter the 6 digit one-time code from the app to the text field below.
-                </Typography>
-                <Box sx={{ width: { sx: '100%', sm: '50%' }, alignSelf: 'center' }}>
+                {isLoading ? <CircularProgress /> : null}
+                {isError ? <Typography component="p">Failed to load QR code</Typography> : null}
+                {data?.totpUrl ? (
                   <img
                     draggable="false"
                     src={data.qrCodeUrl}
                     alt="QR code"
-                    style={{ width: '100%' }}
+                    width={224}
+                    height={224}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
                   />
-                </Box>
-                <CodeBlock>{data.totpUrl}</CodeBlock>
-                <Stack spacing={1}>
-                  <TextField
-                    name="twoFactorCode"
-                    label="Enter your two-factor code"
-                    autoComplete="one-time-code"
-                  />
-                  {errors.root?.serverError?.message ? (
-                    <ErrorMessage message={errors.root.serverError.message} />
-                  ) : null}
-                </Stack>
+                ) : null}
+              </Box>
+              <Box sx={{ height: 112, overflowY: 'auto' }}>
+                <CodeBlock>{data?.totpUrl ?? '\u00a0'}</CodeBlock>
+              </Box>
+              <Stack spacing={1}>
+                <TextField
+                  name="twoFactorCode"
+                  label="Enter your two-factor code"
+                  autoComplete="one-time-code"
+                  disabled={!data?.totpUrl}
+                />
+                {errors.root?.serverError?.message ? (
+                  <ErrorMessage message={errors.root.serverError.message} />
+                ) : null}
               </Stack>
-            ) : undefined}
+            </Stack>
           </DialogContent>
           <DialogFooter>
             <Button
