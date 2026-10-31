@@ -35,9 +35,10 @@ interface ScannerProps {
   scannerRef: React.RefObject<HTMLDivElement | null>;
   cameraId: string | null | undefined;
   onDetected: (code: string) => void;
+  onError: () => void;
 }
 
-export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProps) {
+export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: ScannerProps) {
   const detectionHistoryRef = useRef<string[]>([]);
 
   const errorCheck = useCallback(
@@ -99,15 +100,20 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
           locate: true,
           locator,
         },
-        async (err) => {
-          if (err) {
-            return console.error('Error starting Quagga:', err);
-          }
+        (err) => {
           if (ignoreStart) {
-            await stopQuaggaCamera();
+            void stopQuaggaCamera();
             return;
           }
-          Quagga.start();
+          if (err) {
+            onError();
+            return;
+          }
+          try {
+            Quagga.start();
+          } catch {
+            onError();
+          }
         },
       );
       if (ignoreStart) {
@@ -117,7 +123,11 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
       Quagga.onDetected(errorCheck);
     };
 
-    init();
+    init().catch(() => {
+      if (!ignoreStart) {
+        onError();
+      }
+    });
 
     return () => {
       ignoreStart = true;
@@ -125,7 +135,7 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected }: ScannerProp
       Quagga.offDetected(errorCheck);
       stopQuaggaCamera();
     };
-  }, [cameraId, onDetected, scannerRef, errorCheck]);
+  }, [cameraId, onDetected, onError, scannerRef, errorCheck]);
 
   return null;
 }

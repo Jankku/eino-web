@@ -3,7 +3,16 @@ import { useId } from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Quagga from '@ericblade/quagga2';
 import { BarcodeScanner } from '../../components/common/BarcodeScanner';
-import { Box, Container, Fab, FormControl, InputLabel, Select } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Container,
+  Fab,
+  FormControl,
+  InputLabel,
+  Select,
+} from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import { useBookIsbnSearch } from '../../data/books/useBookIsbnSearch';
 import { Book } from '../../models/book';
@@ -36,7 +45,7 @@ export default function BookScanner() {
   const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
   const [cameraId, setCameraId] = useState<string>();
   const [cameraReady, setCameraReady] = useState(false);
-  const [cameraError, setCameraError] = useState<Error>();
+  const [cameraError, setCameraError] = useState<string>();
   const [initialValues, setInitialValues] = useState<Partial<Book>>();
   const torchOnRef = useRef(false);
   const [scannerKey, setScannerKey] = useState(0);
@@ -61,14 +70,23 @@ export default function BookScanner() {
           return;
         }
 
-        if (cameras.length > 0) {
-          setCameras(cameras);
-          setCameraId(findBackCamera(cameras)?.deviceId);
+        if (cameras.length === 0) {
+          setCameraError(
+            'No cameras found. Connect a camera and allow camera access in your browser.',
+          );
+          return;
         }
-      } catch (error) {
-        setCameraError(error as Error);
+
+        setCameras(cameras);
+        setCameraId(findBackCamera(cameras)?.deviceId);
+      } catch {
+        if (!cancelled) {
+          setCameraError('Unable to load camera devices. Check your browser camera permissions.');
+        }
       } finally {
-        setCameraReady(true);
+        if (!cancelled) {
+          setCameraReady(true);
+        }
       }
     };
 
@@ -79,6 +97,12 @@ export default function BookScanner() {
       cancelled = true;
       stopQuaggaCamera();
     };
+  }, []);
+
+  const onCameraError = useCallback(() => {
+    setCameraError(
+      'Unable to start the camera. Allow camera access in your browser and make sure the camera is not in use by another app.',
+    );
   }, []);
 
   const restartScanner = useCallback(() => {
@@ -148,6 +172,18 @@ export default function BookScanner() {
     restartScanner();
   };
 
+  if (cameraError) {
+    return (
+      <Container sx={{ py: 2 }}>
+        <Head pageTitle="Scan books" />
+        <Alert severity="error">
+          <AlertTitle>Camera unavailable</AlertTitle>
+          {cameraError} Reload this page to try again.
+        </Alert>
+      </Container>
+    );
+  }
+
   return (
     <Container disableGutters maxWidth={false} sx={{ position: 'relative' }}>
       <Head pageTitle="Scan books" />
@@ -160,7 +196,6 @@ export default function BookScanner() {
             object-fit: cover;
           }`}
       </style>
-      {cameraError ? <p>Error while initializing camera</p> : null}
       <Box
         id="scanner-container"
         ref={scannerRef}
@@ -172,6 +207,7 @@ export default function BookScanner() {
             scannerRef={scannerRef}
             cameraId={cameraId}
             onDetected={onDetected}
+            onError={onCameraError}
           />
         ) : null}
       </Box>
