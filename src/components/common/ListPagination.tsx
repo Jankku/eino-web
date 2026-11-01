@@ -26,7 +26,7 @@ export default function ListPagination({
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
   const { page, pageSize, total, totalPages } = pagination;
-  const pageSizes = [...new Set([21, 25, 50, 100, pageSize])].sort(
+  const pageSizes = [...new Set([25, 50, 100, pageSize])].sort(
     (first, second) => first - second,
   );
   const firstItem = total === 0 || page > totalPages ? 0 : (page - 1) * pageSize + 1;

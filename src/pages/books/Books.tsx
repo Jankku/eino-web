@@ -32,7 +32,7 @@ export default function Books() {
   const sort = searchparams.get('sort') || 'title';
   const order = searchparams.get('order') || 'ascending';
   const filter = searchparams.get('filter') || '';
-  const pageParams = useServerPagination(21, JSON.stringify([status, sort, order, filter]));
+  const pageParams = useServerPagination(25, JSON.stringify([status, sort, order, filter]));
   const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   const { data, countByStatus, pagination, isFetching } = useBooksSuspense({

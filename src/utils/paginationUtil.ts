@@ -6,7 +6,8 @@ export function getPageParams(searchParams: URLSearchParams, defaultPageSize: nu
     const number = Number(value);
     return Number.isSafeInteger(number) && number <= maximum ? number : fallback;
   };
-  const pageSize = readInteger(searchParams.get('pageSize'), defaultPageSize, 100);
+  const requestedPageSize = readInteger(searchParams.get('pageSize'), defaultPageSize, 100);
+  const pageSize = requestedPageSize === 21 ? defaultPageSize : requestedPageSize;
   const page = readInteger(
     searchParams.get('page'),
     1,

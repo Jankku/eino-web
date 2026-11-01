@@ -3,10 +3,17 @@ import { getPageParams, getPaginationUrl } from '../paginationUtil';
 
 describe('getPageParams', () => {
   it('uses the view defaults and accepts API-compatible positive integers', () => {
-    expect(getPageParams(new URLSearchParams(), 21)).toEqual({ page: 1, pageSize: 21 });
+    expect(getPageParams(new URLSearchParams(), 25)).toEqual({ page: 1, pageSize: 25 });
     expect(getPageParams(new URLSearchParams('page=3&pageSize=100'), 25)).toEqual({
       page: 3,
       pageSize: 100,
+    });
+  });
+
+  it('replaces the retired page size from existing URLs with the view default', () => {
+    expect(getPageParams(new URLSearchParams('page=2&pageSize=21'), 25)).toEqual({
+      page: 2,
+      pageSize: 25,
     });
   });
 

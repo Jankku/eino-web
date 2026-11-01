@@ -17,7 +17,7 @@ describe('useServerPagination', () => {
     const requestedPages = vi.fn();
     const { result, rerender } = renderHook(
       ({ scope }) => {
-        const params = useServerPagination(21, scope);
+        const params = useServerPagination(25, scope);
         requestedPages(scope, params.page);
         const navigate = useNavigate();
         const [searchParams] = useSearchParams();
