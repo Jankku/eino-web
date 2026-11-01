@@ -1,13 +1,13 @@
 import { PageParams } from '../data/types';
 
+const readInteger = (value: string | null, fallback: number, maximum: number) => {
+  if (!value || !/^[1-9]\d*$/.test(value)) return fallback;
+  const number = Number(value);
+  return Number.isSafeInteger(number) && number <= maximum ? number : fallback;
+};
+
 export function getPageParams(searchParams: URLSearchParams, defaultPageSize: number): PageParams {
-  const readInteger = (value: string | null, fallback: number, maximum: number) => {
-    if (!value || !/^[1-9]\d*$/.test(value)) return fallback;
-    const number = Number(value);
-    return Number.isSafeInteger(number) && number <= maximum ? number : fallback;
-  };
-  const requestedPageSize = readInteger(searchParams.get('pageSize'), defaultPageSize, 100);
-  const pageSize = requestedPageSize === 21 ? defaultPageSize : requestedPageSize;
+  const pageSize = readInteger(searchParams.get('pageSize'), defaultPageSize, 100);
   const page = readInteger(
     searchParams.get('page'),
     1,
