@@ -1,6 +1,6 @@
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
-import { Button, capitalize, Chip, Container, Stack, Typography } from '@mui/material';
+import { Button, capitalize, Chip, Container, Stack } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -272,10 +272,6 @@ export default function Bulletins() {
             Create
           </Button>
         </Stack>
-        <Typography variant="body2">
-          Order: Created ascending, then ID ascending. Sorting and filtering are unavailable for
-          paginated admin tables.
-        </Typography>
         <ListPagination pagination={pagination} loading={isFetching} label="Bulletins" />
         <Box sx={{ height: 500 }}>
           <DataGrid

@@ -1,6 +1,6 @@
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
-import { Avatar, capitalize, Chip, Container, Typography } from '@mui/material';
+import { Avatar, capitalize, Chip, Container } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -297,10 +297,6 @@ export default function Users() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Users" />
         <h1>Users</h1>
-        <Typography variant="body2">
-          Order: Username ascending. Sorting and filtering are unavailable for paginated admin
-          tables.
-        </Typography>
         <ListPagination pagination={pagination} loading={isFetching} label="Users" />
         <Box sx={{ height: 500 }}>
           <DataGrid

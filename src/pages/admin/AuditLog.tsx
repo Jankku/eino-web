@@ -1,6 +1,6 @@
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
-import { capitalize, Chip, Container, Typography } from '@mui/material';
+import { capitalize, Chip, Container } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId, GridInitialState } from '@mui/x-data-grid';
 import { useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
@@ -77,10 +77,6 @@ export default function AuditLog() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Audit log" />
         <h1>Audit log</h1>
-        <Typography variant="body2">
-          Order: Created ascending, then ID ascending. Sorting and filtering are unavailable for
-          paginated admin tables.
-        </Typography>
         <ListPagination pagination={pagination} loading={isFetching} label="Audit log" />
         <Box sx={{ height: 500 }}>
           <DataGrid
