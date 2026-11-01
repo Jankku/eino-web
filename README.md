@@ -61,7 +61,7 @@ $ npm run test
 
 ## v2 pagination rollout
 
-Book/movie lists and admin users, audits and bulletins now opt into server pagination. Deploy the compatible backend and its ICU collation migration **before** deploying this frontend. See [pagination behavior, rollout prerequisites and local verification](docs/pagination.md).
+Book/movie lists and admin users, audits and bulletins now opt into server pagination. Deploy the compatible backend and its ICU collation migration **before** deploying this frontend.
 
 ## License
 Licensed under the [MIT License](https://github.com/Jankku/eino-web/blob/master/LICENSE.md).
