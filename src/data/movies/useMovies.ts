@@ -10,7 +10,7 @@ type UseMoviesProps = {
 export const useMovies = ({ enabled, status, filter }: UseMoviesProps) => {
   return useQuery({
     enabled,
-    queryKey: ['movies', status, filter],
+    queryKey: ['movies', 'full', status, 'title', 'ascending', filter || ''],
     queryFn: () => getMoviesQuery({ status, filter }),
   });
 };

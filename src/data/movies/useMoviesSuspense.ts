@@ -1,7 +1,8 @@
-import { useSuspenseQueries, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { api } from '../api';
 import { MovieWithId } from '../../models/movie';
-import { ApiResponse } from '../types';
+import { ApiResponse, PageParams } from '../types';
+import { getPage } from '../pagination';
 
 type UseMoviesProps = {
   status: string;
@@ -34,17 +35,32 @@ export const getMoviesQuery = async ({ status, sort, order, filter }: UseMoviesP
   return res.results;
 };
 
-export const useMoviesSuspense = ({ status, sort, order, filter }: UseMoviesProps) => {
-  const queryClient = useQueryClient();
+export const useMoviesSuspense = ({
+  status,
+  sort,
+  order,
+  filter,
+  page,
+  pageSize,
+}: UseMoviesProps & PageParams) => {
+  const options = {
+    status,
+    sort: sort || 'title',
+    order: order || 'ascending',
+    filter: filter || '',
+    page,
+    pageSize,
+  };
   const [movies, counts] = useSuspenseQueries({
     queries: [
       {
-        queryKey: ['movies', status, sort || 'title', order || 'ascending', filter || ''],
-        queryFn: () => getMoviesQuery({ status, sort, order, filter }),
-        initialData: () =>
-          queryClient
-            .getQueryData<MovieWithId[]>(['movies', 'all'])
-            ?.filter((movie) => movie.status === status),
+        queryKey: ['movies', 'page', options],
+        queryFn: () =>
+          getPage<MovieWithId>(
+            `api/v2/list/movies/${options.status}`,
+            { page: options.page, pageSize: options.pageSize },
+            { sort: options.sort, order: options.order, filter: options.filter },
+          ),
       },
       {
         queryKey: ['movies', 'count'],
@@ -53,5 +69,10 @@ export const useMoviesSuspense = ({ status, sort, order, filter }: UseMoviesProp
     ],
   });
 
-  return { data: movies.data, countByStatus: counts.data };
+  return {
+    data: movies.data.results,
+    pagination: movies.data.pagination,
+    isFetching: movies.isFetching,
+    countByStatus: counts.data,
+  };
 };

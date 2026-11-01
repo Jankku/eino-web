@@ -10,7 +10,7 @@ type UseBooksProps = {
 export const useBooks = ({ enabled, status, filter }: UseBooksProps) => {
   return useQuery({
     enabled,
-    queryKey: ['books', status, filter],
+    queryKey: ['books', 'full', status, 'title', 'ascending', filter || ''],
     queryFn: () => getBooksQuery({ status, filter }),
   });
 };

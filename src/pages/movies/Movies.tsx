@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
+import { startTransition, useLayoutEffect } from 'react';
 import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
@@ -8,7 +8,10 @@ import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { Outlet, useParams, useSearchParams } from 'react-router';
-import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
+import { getMoviesQuery, useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
+import { useQueryClient } from '@tanstack/react-query';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
+import ListPagination from '../../components/common/ListPagination';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
@@ -24,20 +27,31 @@ export default function Movies() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
-  const deferredStatus = useDeferredValue(status);
+  const queryClient = useQueryClient();
   const { itemType, toggleItemType } = useListItemType('movieItemType');
   const [searchparams, setSearchParams] = useSearchParams();
+  const sort = searchparams.get('sort') || 'title';
+  const order = searchparams.get('order') || 'ascending';
+  const filter = searchparams.get('filter') || '';
+  const pageParams = useServerPagination(21, JSON.stringify([status, sort, order, filter]));
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data, countByStatus } = useMoviesSuspense({
-    status: deferredStatus,
-    sort: searchparams.get('sort'),
-    order: searchparams.get('order'),
+  const { data, countByStatus, pagination, isFetching } = useMoviesSuspense({
+    status,
+    sort,
+    order,
+    filter,
+    ...pageParams,
   });
+  useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {
     try {
-      const items = data
+      const allMovies = await queryClient.fetchQuery({
+        queryKey: ['movies', 'full', status, sort, order, filter],
+        queryFn: () => getMoviesQuery({ status, sort, order, filter }),
+      });
+      const items = allMovies
         .filter((i) => i.title !== '')
         .map((i) => {
           if (i.director) return `${i.director} - ${i.title}`;
@@ -55,22 +69,33 @@ export default function Movies() {
     startTransition(() => {
       setSearchParams((prevParams) => {
         prevParams.set(key, value);
+        prevParams.delete('page');
         return prevParams;
       });
     });
   };
 
   const onStatusChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value);
-    setSearchParams((prevParams) => {
-      prevParams.delete('page');
-      return prevParams;
+    startTransition(() => {
+      setStatus(e.target.value);
+      setSearchParams((prevParams) => {
+        prevParams.delete('page');
+        return prevParams;
+      });
     });
   };
 
   useLayoutEffect(() => {
     if (!searchparams.get('sort') || !searchparams.get('order')) {
-      setSearchParams({ sort: 'title', order: 'ascending' });
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          if (!next.get('sort')) next.set('sort', 'title');
+          if (!next.get('order')) next.set('order', 'ascending');
+          return next;
+        },
+        { replace: true },
+      );
     }
   }, [searchparams, setSearchParams]);
 
@@ -170,7 +195,15 @@ export default function Movies() {
               </Box>
             </Stack>
 
-            {isEmptyList ? <ListEmpty /> : <MovieList movies={data} itemType={itemType} />}
+            {isEmptyList ? (
+              <ListEmpty />
+            ) : (
+              <>
+                <ListPagination pagination={pagination} loading={isFetching} label="Movies" />
+                <MovieList movies={data} itemType={itemType} />
+                {data.length > 0 ? <ListPagination pagination={pagination} label="Movies" /> : null}
+              </>
+            )}
 
             {addDialogOpen ? (
               <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />

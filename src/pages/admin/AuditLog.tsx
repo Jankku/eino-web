@@ -1,4 +1,6 @@
-import { capitalize, Chip, Container } from '@mui/material';
+import ListPagination from '../../components/common/ListPagination';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
+import { capitalize, Chip, Container, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId, GridInitialState } from '@mui/x-data-grid';
 import { useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
@@ -8,14 +10,16 @@ import DiffDialog from '../../components/admin/DiffDialog';
 import { useState } from 'react';
 import { underscoreToSpace } from '../../utils/stringUtil';
 
-const slotProps = { toolbar: { showQuickFilter: true } };
+const slotProps = {
+  toolbar: {
+    showQuickFilter: false,
+    csvOptions: { disableToolbarButton: true },
+    printOptions: { disableToolbarButton: true },
+  },
+};
 
 const initialState: GridInitialState = {
   density: 'compact',
-  sorting: { sortModel: [{ field: 'created_on', sort: 'desc' }] },
-  pagination: {
-    paginationModel: { pageSize: 25, page: 0 },
-  },
 };
 
 const columns: GridColDef[] = [
@@ -62,7 +66,10 @@ const columns: GridColDef[] = [
 ];
 
 export default function AuditLog() {
-  const { data } = useAuditLog();
+  const pageParams = useServerPagination(25);
+  const { data: response, isFetching } = useAuditLog(pageParams);
+  const { results: data, pagination } = response;
+  useRecoverPage(pagination);
   const [rowId, setRowId] = useState<GridRowId>();
 
   return (
@@ -70,8 +77,24 @@ export default function AuditLog() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Audit log" />
         <h1>Audit log</h1>
+        <Typography variant="body2">
+          Order: Created ascending, then ID ascending. Sorting and filtering are unavailable for
+          paginated admin tables.
+        </Typography>
+        <ListPagination pagination={pagination} loading={isFetching} label="Audit log" />
         <Box sx={{ height: 500 }}>
           <DataGrid
+            paginationMode="server"
+            sortingMode="server"
+            filterMode="server"
+            disableColumnSorting
+            disableColumnFilter
+            disableColumnMenu
+            hideFooterPagination
+            rowCount={pagination.total}
+            paginationModel={{ page: pageParams.page - 1, pageSize: pageParams.pageSize }}
+            pageSizeOptions={[pageParams.pageSize]}
+            loading={isFetching}
             disableRowSelectionOnClick
             showToolbar
             rows={data}

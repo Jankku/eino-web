@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
+import { startTransition, useLayoutEffect } from 'react';
 import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
@@ -9,7 +9,10 @@ import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { Outlet, useParams, useSearchParams } from 'react-router';
-import { useBooksSuspense } from '../../data/books/useBooksSuspense';
+import { getBooksQuery, useBooksSuspense } from '../../data/books/useBooksSuspense';
+import { useQueryClient } from '@tanstack/react-query';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
+import ListPagination from '../../components/common/ListPagination';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import BookActionsFab from '../../components/books/BookActionsFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
@@ -25,19 +28,30 @@ export default function Books() {
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
-  const deferredStatus = useDeferredValue(status);
+  const queryClient = useQueryClient();
+  const sort = searchparams.get('sort') || 'title';
+  const order = searchparams.get('order') || 'ascending';
+  const filter = searchparams.get('filter') || '';
+  const pageParams = useServerPagination(21, JSON.stringify([status, sort, order, filter]));
   const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data, countByStatus } = useBooksSuspense({
-    status: deferredStatus,
-    sort: searchparams.get('sort'),
-    order: searchparams.get('order'),
+  const { data, countByStatus, pagination, isFetching } = useBooksSuspense({
+    status,
+    sort,
+    order,
+    filter,
+    ...pageParams,
   });
+  useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
 
   const copyTitlesToClipboard = async () => {
     try {
-      const items = data
+      const allBooks = await queryClient.fetchQuery({
+        queryKey: ['books', 'full', status, sort, order, filter],
+        queryFn: () => getBooksQuery({ status, sort, order, filter }),
+      });
+      const items = allBooks
         .filter((i) => i.title !== '')
         .map((i) => {
           if (i.author) return `${i.author} - ${i.title}`;
@@ -55,22 +69,33 @@ export default function Books() {
     startTransition(() => {
       setSearchParams((prevParams) => {
         prevParams.set(key, value);
+        prevParams.delete('page');
         return prevParams;
       });
     });
   };
 
   const onStatusChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value);
-    setSearchParams((prevParams) => {
-      prevParams.delete('page');
-      return prevParams;
+    startTransition(() => {
+      setStatus(e.target.value);
+      setSearchParams((prevParams) => {
+        prevParams.delete('page');
+        return prevParams;
+      });
     });
   };
 
   useLayoutEffect(() => {
     if (!searchparams.get('sort') || !searchparams.get('order')) {
-      setSearchParams({ sort: 'title', order: 'ascending' });
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          if (!next.get('sort')) next.set('sort', 'title');
+          if (!next.get('order')) next.set('order', 'ascending');
+          return next;
+        },
+        { replace: true },
+      );
     }
   }, [searchparams, setSearchParams]);
 
@@ -140,7 +165,15 @@ export default function Books() {
               </Box>
             </Stack>
 
-            {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
+            {isEmptyList ? (
+              <ListEmpty />
+            ) : (
+              <>
+                <ListPagination pagination={pagination} loading={isFetching} label="Books" />
+                <BookList books={data} itemType={itemType} />
+                {data.length > 0 ? <ListPagination pagination={pagination} label="Books" /> : null}
+              </>
+            )}
 
             {addDialogOpen ? (
               <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
