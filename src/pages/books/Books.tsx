@@ -3,14 +3,14 @@ import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
-import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
+import ImageIcon from '@mui/icons-material/Image';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { Outlet, useParams, useSearchParams } from 'react-router';
-import { getBooksQuery, useBooksSuspense } from '../../data/books/useBooksSuspense';
-import { useQueryClient } from '@tanstack/react-query';
+import { useBooksSuspense } from '../../data/books/useBooksSuspense';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import ListPagination from '../../components/common/ListPagination';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -19,16 +19,13 @@ import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
-import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
 
 export default function Books() {
   const isMobile = useIsMobile();
   const { bookId } = useParams();
-  const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
-  const queryClient = useQueryClient();
   const sort = searchparams.get('sort') || 'title';
   const order = searchparams.get('order') || 'ascending';
   const filter = searchparams.get('filter') || '';
@@ -44,26 +41,6 @@ export default function Books() {
   });
   useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
-
-  const copyTitlesToClipboard = async () => {
-    try {
-      const allBooks = await queryClient.fetchQuery({
-        queryKey: ['books', 'full', status, sort, order, filter],
-        queryFn: () => getBooksQuery({ status, sort, order, filter }),
-      });
-      const items = allBooks
-        .filter((i) => i.title !== '')
-        .map((i) => {
-          if (i.author) return `${i.author} - ${i.title}`;
-          return i.title;
-        })
-        .join('\n');
-      await navigator.clipboard.writeText(items);
-      showSuccessSnackbar('Items copied to clipboard');
-    } catch {
-      showErrorSnackbar('Failed to copy');
-    }
-  };
 
   const onSort = ({ key, value }: { key: string; value: string }) => {
     startTransition(() => {
@@ -151,15 +128,12 @@ export default function Books() {
                     </SmallSelect>
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <MoreButton
-                      actions={[
-                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
-                        {
-                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
-                          onClick: toggleItemType,
-                        },
-                      ]}
-                    />
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
                   </Box>
                 </Stack>
               </Box>

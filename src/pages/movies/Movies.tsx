@@ -3,13 +3,13 @@ import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
-import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
+import ImageIcon from '@mui/icons-material/Image';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Outlet, useParams, useSearchParams } from 'react-router';
-import { getMoviesQuery, useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import ListPagination from '../../components/common/ListPagination';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
@@ -19,15 +19,12 @@ import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
-import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
 
 export default function Movies() {
   const isMobile = useIsMobile();
-  const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
-  const queryClient = useQueryClient();
   const { itemType, toggleItemType } = useListItemType('movieItemType');
   const [searchparams, setSearchParams] = useSearchParams();
   const sort = searchparams.get('sort') || 'title';
@@ -44,26 +41,6 @@ export default function Movies() {
   });
   useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
-
-  const copyTitlesToClipboard = async () => {
-    try {
-      const allMovies = await queryClient.fetchQuery({
-        queryKey: ['movies', 'full', status, sort, order, filter],
-        queryFn: () => getMoviesQuery({ status, sort, order, filter }),
-      });
-      const items = allMovies
-        .filter((i) => i.title !== '')
-        .map((i) => {
-          if (i.director) return `${i.director} - ${i.title}`;
-          return i.title;
-        })
-        .join('\n');
-      await navigator.clipboard.writeText(items);
-      showSuccessSnackbar('Items copied to clipboard');
-    } catch {
-      showErrorSnackbar('Failed to copy');
-    }
-  };
 
   const onSort = ({ key, value }: { key: string; value: string }) => {
     startTransition(() => {
@@ -181,15 +158,12 @@ export default function Movies() {
                       display: 'inline-flex',
                     }}
                   >
-                    <MoreButton
-                      actions={[
-                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
-                        {
-                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
-                          onClick: toggleItemType,
-                        },
-                      ]}
-                    />
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
                   </Box>
                 </Stack>
               </Box>
