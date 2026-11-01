@@ -42,13 +42,14 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
 
 const slotProps = {
   toolbar: {
-    showQuickFilter: false,
+    showQuickFilter: true,
     csvOptions: { disableToolbarButton: true },
     printOptions: { disableToolbarButton: true },
   },
 };
 
 const initialState: GridInitialState = {
+  sorting: { sortModel: [{ field: 'username', sort: 'asc' }] },
   columns: {
     columnVisibilityModel: {
       email_verified_on: false,
@@ -301,11 +302,8 @@ export default function Users() {
         <Box sx={{ height: 500 }}>
           <DataGrid
             paginationMode="server"
-            sortingMode="server"
-            filterMode="server"
-            disableColumnSorting
-            disableColumnFilter
-            disableColumnMenu
+            sortingMode="client"
+            filterMode="client"
             hideFooterPagination
             rowCount={pagination.total}
             paginationModel={{ page: pageParams.page - 1, pageSize: pageParams.pageSize }}

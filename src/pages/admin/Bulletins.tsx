@@ -39,7 +39,7 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
 
 const slotProps = {
   toolbar: {
-    showQuickFilter: false,
+    showQuickFilter: true,
     csvOptions: { disableToolbarButton: true },
     printOptions: { disableToolbarButton: true },
   },
@@ -47,6 +47,7 @@ const slotProps = {
 
 const initialState: GridInitialState = {
   density: 'compact',
+  sorting: { sortModel: [{ field: 'created_on', sort: 'desc' }] },
   columns: {
     columnVisibilityModel: {
       name: false,
@@ -276,11 +277,8 @@ export default function Bulletins() {
         <Box sx={{ height: 500 }}>
           <DataGrid
             paginationMode="server"
-            sortingMode="server"
-            filterMode="server"
-            disableColumnSorting
-            disableColumnFilter
-            disableColumnMenu
+            sortingMode="client"
+            filterMode="client"
             hideFooterPagination
             rowCount={pagination.total}
             paginationModel={{ page: pageParams.page - 1, pageSize: pageParams.pageSize }}
