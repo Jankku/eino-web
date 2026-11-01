@@ -118,31 +118,24 @@ export default function Movies() {
                   sx={{ flexWrap: 'wrap', width: '100%', gap: 1, m: 0, p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
-                    <Box
-                      component="li"
-                      sx={{
-                        display: 'inline-flex',
-                      }}
-                    >
+                    <Box component="li" sx={{ display: 'inline-flex' }}>
                       <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
                         Create
                       </ResponsiveButton>
                     </Box>
                   ) : null}
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SortButton fieldOptions={movieSortFields} onChange={onSort} />
                   </Box>
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
+                  </Box>
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {movieSortStatuses.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -151,19 +144,6 @@ export default function Movies() {
                         </option>
                       ))}
                     </SmallSelect>
-                  </Box>
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
-                    <ResponsiveButton
-                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
-                      onClick={toggleItemType}
-                    >
-                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                    </ResponsiveButton>
                   </Box>
                 </Stack>
               </Box>

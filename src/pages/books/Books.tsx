@@ -118,6 +118,14 @@ export default function Books() {
                     <SortButton fieldOptions={bookSortFields} onChange={onSort} />
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
+                  </Box>
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {bookSortStatuses.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -126,14 +134,6 @@ export default function Books() {
                         </option>
                       ))}
                     </SmallSelect>
-                  </Box>
-                  <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <ResponsiveButton
-                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
-                      onClick={toggleItemType}
-                    >
-                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                    </ResponsiveButton>
                   </Box>
                 </Stack>
               </Box>
