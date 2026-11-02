@@ -26,11 +26,14 @@ textarea,
   outline-offset: -3px;
 }
 
-a:focus-visible,
-[data-detail-heading]:focus-visible,
-[data-navigation-focus]:focus-visible {
+a:focus-visible {
   outline: 3px solid currentColor;
   outline-offset: -3px;
+}
+
+/* Route focus announces content without drawing a ring around static headings. */
+[data-navigation-focus]:is(h1, h2, h3, h4, h5, h6, main):focus {
+  outline: none;
 }
 
 /* Keep button focus separate from the button's fill and text color. */
@@ -56,9 +59,7 @@ a:focus-visible,
 
 @media (forced-colors: active) {
   .MuiButtonBase-root:focus-visible,
-  a:focus-visible,
-  [data-detail-heading]:focus-visible,
-  [data-navigation-focus]:focus-visible {
+  a:focus-visible {
     outline: 3px solid Highlight !important;
   }
 }
