@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   LinearProgress,
   Pagination as PaginationControl,
@@ -17,6 +18,17 @@ type ListPaginationProps = {
   label?: string;
 };
 
+function PaginationProgress({ label }: { label: string }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setVisible(true), 300);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return visible ? <LinearProgress aria-label={`Loading ${label.toLowerCase()}`} /> : null;
+}
+
 export default function ListPagination({
   pagination,
   loading = false,
@@ -26,15 +38,13 @@ export default function ListPagination({
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
   const { page, pageSize, total, totalPages } = pagination;
-  const pageSizes = [...new Set([25, 50, 100, pageSize])].sort(
-    (first, second) => first - second,
-  );
+  const pageSizes = [...new Set([25, 50, 100, pageSize])].sort((first, second) => first - second);
   const firstItem = total === 0 || page > totalPages ? 0 : (page - 1) * pageSize + 1;
   const lastItem = firstItem === 0 ? 0 : Math.min(page * pageSize, total);
 
   return (
     <Stack component="section" aria-label={`${label} pagination`} spacing={1} sx={{ my: 1 }}>
-      {loading ? <LinearProgress aria-label={`Loading ${label.toLowerCase()}`} /> : null}
+      {loading ? <PaginationProgress label={label} /> : null}
       <Stack
         direction="row"
         sx={{ flexWrap: 'wrap', alignItems: 'center', gap: 1, justifyContent: 'space-between' }}
