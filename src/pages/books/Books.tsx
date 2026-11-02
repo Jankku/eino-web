@@ -1,4 +1,4 @@
-import { startTransition, useLayoutEffect } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
 import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
@@ -29,16 +29,18 @@ export default function Books() {
   const sort = searchparams.get('sort') || 'title';
   const order = searchparams.get('order') || 'ascending';
   const filter = searchparams.get('filter') || '';
-  const pageParams = useServerPagination(25, JSON.stringify([status, sort, order, filter]));
+  const { page, pageSize } = useServerPagination(25, JSON.stringify([status, sort, order, filter]));
   const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data, countByStatus, pagination, isFetching } = useBooksSuspense({
-    status,
-    sort,
-    order,
-    filter,
-    ...pageParams,
-  });
+  // Local-storage updates are synchronous, so defer the complete query selection
+  // to keep the current list and detail mounted while the next results load.
+  const listParams = useMemo(
+    () => ({ status, sort, order, filter, page, pageSize }),
+    [status, sort, order, filter, page, pageSize],
+  );
+  const deferredListParams = useDeferredValue(listParams);
+  const { data, countByStatus, pagination, isFetching } = useBooksSuspense(deferredListParams);
+  const isLoading = isFetching || listParams !== deferredListParams;
   useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
 
@@ -143,7 +145,7 @@ export default function Books() {
               <ListEmpty />
             ) : (
               <>
-                <ListPagination pagination={pagination} loading={isFetching} label="Books" />
+                <ListPagination pagination={pagination} loading={isLoading} label="Books" />
                 <BookList books={data} itemType={itemType} />
                 {data.length > 0 ? <ListPagination pagination={pagination} label="Books" /> : null}
               </>
