@@ -7,6 +7,9 @@ import { AuthenticationProvider } from './providers/AuthenticationProvider.tsx';
 import { SnackbarProvider } from 'notistack';
 import Fade from '@mui/material/Fade';
 import App from './App.tsx';
+import { handlePreloadError } from './utils/preloadErrorUtil';
+
+window.addEventListener('vite:preloadError', handlePreloadError);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
