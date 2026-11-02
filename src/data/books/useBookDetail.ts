@@ -1,4 +1,4 @@
-import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { api } from '../api';
 import { BookWithId } from '../../models/book';
 import { ApiResponse } from '../types';
@@ -9,11 +9,8 @@ export const getBookDetailQuery = async (bookId: string) => {
 };
 
 export const useBookDetail = (bookId: string) => {
-  const queryClient = useQueryClient();
   return useSuspenseQuery({
     queryKey: ['book', bookId],
     queryFn: () => getBookDetailQuery(bookId),
-    initialData: () =>
-      queryClient.getQueryData<BookWithId[]>(['books', 'all'])?.find((b) => b.book_id === bookId),
   });
 };

@@ -1,3 +1,5 @@
+import ListPagination from '../../components/common/ListPagination';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import { Button, capitalize, Chip, Container, Stack } from '@mui/material';
 import {
   DataGrid,
@@ -35,7 +37,13 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   }
 };
 
-const slotProps = { toolbar: { showQuickFilter: true } };
+const slotProps = {
+  toolbar: {
+    showQuickFilter: true,
+    csvOptions: { disableToolbarButton: true },
+    printOptions: { disableToolbarButton: true },
+  },
+};
 
 const initialState: GridInitialState = {
   density: 'compact',
@@ -47,16 +55,16 @@ const initialState: GridInitialState = {
       updated_on: false,
     },
   },
-  pagination: {
-    paginationModel: { pageSize: 25, page: 0 },
-  },
 };
 
 const getRowId = (row: DbBulletin) => row.id;
 
 export default function Bulletins() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const { data } = useAllBulletins();
+  const pageParams = useServerPagination(25);
+  const { data: response, isFetching } = useAllBulletins(pageParams);
+  const { results: data, pagination } = response;
+  useRecoverPage(pagination);
   const updateBulletin = useUpdateBulletin();
   const [createBulletinDialogVisible, toggleCreateBulletinDialog] = useToggle(false);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -206,7 +214,6 @@ export default function Bulletins() {
               ...rowModesModel,
               [id]: { mode: GridRowModes.View, ignoreModifications: true },
             });
-
           };
 
           if (isInEditMode) {
@@ -266,8 +273,17 @@ export default function Bulletins() {
             Create
           </Button>
         </Stack>
+        <ListPagination pagination={pagination} loading={isFetching} label="Bulletins" />
         <Box sx={{ height: 500 }}>
           <DataGrid
+            paginationMode="server"
+            sortingMode="client"
+            filterMode="client"
+            hideFooterPagination
+            rowCount={pagination.total}
+            paginationModel={{ page: pageParams.page - 1, pageSize: pageParams.pageSize }}
+            pageSizeOptions={[pageParams.pageSize]}
+            loading={isFetching}
             disableRowSelectionOnClick
             showToolbar
             rows={data}

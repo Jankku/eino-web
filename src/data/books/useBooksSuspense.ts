@@ -1,7 +1,8 @@
-import { useSuspenseQueries, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { api } from '../api';
 import { BookWithId } from '../../models/book';
-import { ApiResponse } from '../types';
+import { ApiResponse, PageParams } from '../types';
+import { getPage } from '../pagination';
 
 type UseBooksProps = {
   status: string;
@@ -34,17 +35,32 @@ export const getBooksQuery = async ({ status, sort, order, filter }: UseBooksPro
   return res.results;
 };
 
-export const useBooksSuspense = ({ status, sort, order, filter }: UseBooksProps) => {
-  const queryClient = useQueryClient();
+export const useBooksSuspense = ({
+  status,
+  sort,
+  order,
+  filter,
+  page,
+  pageSize,
+}: UseBooksProps & PageParams) => {
+  const options = {
+    status,
+    sort: sort || 'title',
+    order: order || 'ascending',
+    filter: filter || '',
+    page,
+    pageSize,
+  };
   const [books, counts] = useSuspenseQueries({
     queries: [
       {
-        queryKey: ['books', status, sort || 'title', order || 'ascending', filter || ''],
-        queryFn: () => getBooksQuery({ status, sort, order, filter }),
-        initialData: () =>
-          queryClient
-            .getQueryData<BookWithId[]>(['books', 'all'])
-            ?.filter((book) => book.status === status),
+        queryKey: ['books', 'page', options],
+        queryFn: () =>
+          getPage<BookWithId>(
+            `api/v2/list/books/${options.status}`,
+            { page: options.page, pageSize: options.pageSize },
+            { sort: options.sort, order: options.order, filter: options.filter },
+          ),
       },
       {
         queryKey: ['books', 'count'],
@@ -53,5 +69,10 @@ export const useBooksSuspense = ({ status, sort, order, filter }: UseBooksProps)
     ],
   });
 
-  return { data: books.data, countByStatus: counts.data };
+  return {
+    data: books.data.results,
+    pagination: books.data.pagination,
+    isFetching: books.isFetching,
+    countByStatus: counts.data,
+  };
 };

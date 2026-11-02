@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { ApiResponse } from '../types';
-import { api } from '../api';
+import { PageParams } from '../types';
+import { getPage } from '../pagination';
 
 export type Audit = {
   id: number;
@@ -14,14 +14,9 @@ export type Audit = {
   created_on: string;
 };
 
-const auditLogQuery = async () => {
-  const res = await api.get('api/v2/admin/audits').json<ApiResponse<Audit[]>>();
-  return res.results;
-};
-
-export const useAuditLog = () => {
+export const useAuditLog = (params: PageParams) => {
   return useSuspenseQuery({
-    queryKey: ['audits'],
-    queryFn: auditLogQuery,
+    queryKey: ['audits', 'page', params],
+    queryFn: () => getPage<Audit>('api/v2/admin/audits', params),
   });
 };

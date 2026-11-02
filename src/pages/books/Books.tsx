@@ -1,76 +1,80 @@
-import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
 import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
 import { bookSortStatuses, bookSortFields } from '../../models/bookSortOptions';
-import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
+import ImageIcon from '@mui/icons-material/Image';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useBooksSuspense } from '../../data/books/useBooksSuspense';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
+import ListPagination from '../../components/common/ListPagination';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import BookActionsFab from '../../components/books/BookActionsFab';
 import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
-import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
 
 export default function Books() {
   const isMobile = useIsMobile();
   const { bookId } = useParams();
-  const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const [searchparams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useLocalStorage('bookSort', 'all');
-  const deferredStatus = useDeferredValue(status);
+  const sort = searchparams.get('sort') || 'title';
+  const order = searchparams.get('order') || 'ascending';
+  const filter = searchparams.get('filter') || '';
+  const { page, pageSize } = useServerPagination(25, JSON.stringify([status, sort, order, filter]));
   const { itemType, toggleItemType } = useListItemType('bookItemType');
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data, countByStatus } = useBooksSuspense({
-    status: deferredStatus,
-    sort: searchparams.get('sort'),
-    order: searchparams.get('order'),
-  });
+  // Local-storage updates are synchronous, so defer the complete query selection
+  // to keep the current list and detail mounted while the next results load.
+  const listParams = useMemo(
+    () => ({ status, sort, order, filter, page, pageSize }),
+    [status, sort, order, filter, page, pageSize],
+  );
+  const deferredListParams = useDeferredValue(listParams);
+  const { data, countByStatus, pagination, isFetching } = useBooksSuspense(deferredListParams);
+  const isLoading = isFetching || listParams !== deferredListParams;
+  useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
-
-  const copyTitlesToClipboard = async () => {
-    try {
-      const items = data
-        .filter((i) => i.title !== '')
-        .map((i) => {
-          if (i.author) return `${i.author} - ${i.title}`;
-          return i.title;
-        })
-        .join('\n');
-      await navigator.clipboard.writeText(items);
-      showSuccessSnackbar('Items copied to clipboard');
-    } catch {
-      showErrorSnackbar('Failed to copy');
-    }
-  };
 
   const onSort = ({ key, value }: { key: string; value: string }) => {
     startTransition(() => {
       setSearchParams((prevParams) => {
         prevParams.set(key, value);
+        prevParams.delete('page');
         return prevParams;
       });
     });
   };
 
   const onStatusChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value);
-    setSearchParams((prevParams) => {
-      prevParams.delete('page');
-      return prevParams;
+    startTransition(() => {
+      setStatus(e.target.value);
+      setSearchParams((prevParams) => {
+        prevParams.delete('page');
+        return prevParams;
+      });
     });
   };
 
   useLayoutEffect(() => {
     if (!searchparams.get('sort') || !searchparams.get('order')) {
-      setSearchParams({ sort: 'title', order: 'ascending' });
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          if (!next.get('sort')) next.set('sort', 'title');
+          if (!next.get('order')) next.set('order', 'ascending');
+          return next;
+        },
+        { replace: true },
+      );
     }
   }, [searchparams, setSearchParams]);
 
@@ -116,6 +120,14 @@ export default function Books() {
                     <SortButton fieldOptions={bookSortFields} onChange={onSort} />
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
+                  </Box>
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {bookSortStatuses.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -125,22 +137,19 @@ export default function Books() {
                       ))}
                     </SmallSelect>
                   </Box>
-                  <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <MoreButton
-                      actions={[
-                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
-                        {
-                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
-                          onClick: toggleItemType,
-                        },
-                      ]}
-                    />
-                  </Box>
                 </Stack>
               </Box>
             </Stack>
 
-            {isEmptyList ? <ListEmpty /> : <BookList books={data} itemType={itemType} />}
+            {isEmptyList ? (
+              <ListEmpty />
+            ) : (
+              <>
+                <ListPagination pagination={pagination} loading={isLoading} label="Books" />
+                <BookList books={data} itemType={itemType} />
+                {data.length > 0 ? <ListPagination pagination={pagination} label="Books" /> : null}
+              </>
+            )}
 
             {addDialogOpen ? (
               <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />

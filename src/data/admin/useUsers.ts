@@ -1,6 +1,7 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { ApiResponse } from '../types';
+import { ApiResponse, PageParams } from '../types';
 import { api } from '../api';
+import { getPage } from '../pagination';
 
 export type User = {
   user_id: string;
@@ -22,17 +23,17 @@ const usersQuery = async () => {
   return res.results;
 };
 
-export const useUsers = () => {
+export const useUsers = (params: PageParams) => {
   return useSuspenseQuery({
-    queryKey: ['users'],
-    queryFn: usersQuery,
+    queryKey: ['users', 'page', params],
+    queryFn: () => getPage<User>('api/v2/admin/users', params),
   });
 };
 
 export const useFindUser = (query: string) => {
   const { data } = useQuery({
     enabled: query.length > 0,
-    queryKey: ['users'],
+    queryKey: ['users', 'full'],
     queryFn: usersQuery,
     staleTime: Infinity,
   });

@@ -1,14 +1,17 @@
-import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
 import { Box, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
-import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
+import ImageIcon from '@mui/icons-material/Image';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
+import ListPagination from '../../components/common/ListPagination';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
@@ -16,61 +19,62 @@ import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
 import ListEmpty from '../../components/common/ListEmpty';
 import SortButton from '../../components/common/SortButton';
 import ResponsiveButton from '../../components/common/ResponsiveButton';
-import MoreButton from '../../components/common/MoreButton';
 import Head from '../../components/common/Head';
 
 export default function Movies() {
   const isMobile = useIsMobile();
-  const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
   const { movieId } = useParams();
   const [status, setStatus] = useLocalStorage('movieSort', 'all');
-  const deferredStatus = useDeferredValue(status);
   const { itemType, toggleItemType } = useListItemType('movieItemType');
   const [searchparams, setSearchParams] = useSearchParams();
+  const sort = searchparams.get('sort') || 'title';
+  const order = searchparams.get('order') || 'ascending';
+  const filter = searchparams.get('filter') || '';
+  const { page, pageSize } = useServerPagination(25, JSON.stringify([status, sort, order, filter]));
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
-  const { data, countByStatus } = useMoviesSuspense({
-    status: deferredStatus,
-    sort: searchparams.get('sort'),
-    order: searchparams.get('order'),
-  });
+  // Local-storage updates are synchronous, so defer the complete query selection
+  // to keep the current list and detail mounted while the next results load.
+  const listParams = useMemo(
+    () => ({ status, sort, order, filter, page, pageSize }),
+    [status, sort, order, filter, page, pageSize],
+  );
+  const deferredListParams = useDeferredValue(listParams);
+  const { data, countByStatus, pagination, isFetching } = useMoviesSuspense(deferredListParams);
+  const isLoading = isFetching || listParams !== deferredListParams;
+  useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
-
-  const copyTitlesToClipboard = async () => {
-    try {
-      const items = data
-        .filter((i) => i.title !== '')
-        .map((i) => {
-          if (i.director) return `${i.director} - ${i.title}`;
-          return i.title;
-        })
-        .join('\n');
-      await navigator.clipboard.writeText(items);
-      showSuccessSnackbar('Items copied to clipboard');
-    } catch {
-      showErrorSnackbar('Failed to copy');
-    }
-  };
 
   const onSort = ({ key, value }: { key: string; value: string }) => {
     startTransition(() => {
       setSearchParams((prevParams) => {
         prevParams.set(key, value);
+        prevParams.delete('page');
         return prevParams;
       });
     });
   };
 
   const onStatusChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value);
-    setSearchParams((prevParams) => {
-      prevParams.delete('page');
-      return prevParams;
+    startTransition(() => {
+      setStatus(e.target.value);
+      setSearchParams((prevParams) => {
+        prevParams.delete('page');
+        return prevParams;
+      });
     });
   };
 
   useLayoutEffect(() => {
     if (!searchparams.get('sort') || !searchparams.get('order')) {
-      setSearchParams({ sort: 'title', order: 'ascending' });
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          if (!next.get('sort')) next.set('sort', 'title');
+          if (!next.get('order')) next.set('order', 'ascending');
+          return next;
+        },
+        { replace: true },
+      );
     }
   }, [searchparams, setSearchParams]);
 
@@ -116,31 +120,24 @@ export default function Movies() {
                   sx={{ flexWrap: 'wrap', width: '100%', gap: 1, m: 0, p: 0, listStyle: 'none' }}
                 >
                   {!isMobile ? (
-                    <Box
-                      component="li"
-                      sx={{
-                        display: 'inline-flex',
-                      }}
-                    >
+                    <Box component="li" sx={{ display: 'inline-flex' }}>
                       <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
                         Create
                       </ResponsiveButton>
                     </Box>
                   ) : null}
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SortButton fieldOptions={movieSortFields} onChange={onSort} />
                   </Box>
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
+                    <ResponsiveButton
+                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
+                      onClick={toggleItemType}
+                    >
+                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
+                    </ResponsiveButton>
+                  </Box>
+                  <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
                       {movieSortStatuses.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -150,27 +147,19 @@ export default function Movies() {
                       ))}
                     </SmallSelect>
                   </Box>
-                  <Box
-                    component="li"
-                    sx={{
-                      display: 'inline-flex',
-                    }}
-                  >
-                    <MoreButton
-                      actions={[
-                        { label: 'Copy', disabled: isEmptyList, onClick: copyTitlesToClipboard },
-                        {
-                          label: itemType === listItemTypes.CARD ? 'Image view' : 'Card view',
-                          onClick: toggleItemType,
-                        },
-                      ]}
-                    />
-                  </Box>
                 </Stack>
               </Box>
             </Stack>
 
-            {isEmptyList ? <ListEmpty /> : <MovieList movies={data} itemType={itemType} />}
+            {isEmptyList ? (
+              <ListEmpty />
+            ) : (
+              <>
+                <ListPagination pagination={pagination} loading={isLoading} label="Movies" />
+                <MovieList movies={data} itemType={itemType} />
+                {data.length > 0 ? <ListPagination pagination={pagination} label="Movies" /> : null}
+              </>
+            )}
 
             {addDialogOpen ? (
               <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />

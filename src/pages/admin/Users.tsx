@@ -1,3 +1,5 @@
+import ListPagination from '../../components/common/ListPagination';
+import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import { Avatar, capitalize, Chip, Container } from '@mui/material';
 import {
   DataGrid,
@@ -38,18 +40,21 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   }
 };
 
-const slotProps = { toolbar: { showQuickFilter: true } };
+const slotProps = {
+  toolbar: {
+    showQuickFilter: true,
+    csvOptions: { disableToolbarButton: true },
+    printOptions: { disableToolbarButton: true },
+  },
+};
 
 const initialState: GridInitialState = {
+  sorting: { sortModel: [{ field: 'username', sort: 'asc' }] },
   columns: {
     columnVisibilityModel: {
       email_verified_on: false,
       created_on: false,
     },
-  },
-  sorting: { sortModel: [{ field: 'username', sort: 'asc' }] },
-  pagination: {
-    paginationModel: { pageSize: 25, page: 0 },
   },
 };
 
@@ -57,7 +62,10 @@ const getRowId = (row: User) => row.user_id;
 
 export default function Users() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
-  const { data } = useUsers();
+  const pageParams = useServerPagination(25);
+  const { data: response, isFetching } = useUsers(pageParams);
+  const { results: data, pagination } = response;
+  useRecoverPage(pagination);
   const updateUser = useUpdateUser();
   const toggleUserState = useChangeUserState();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -290,8 +298,17 @@ export default function Users() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Users" />
         <h1>Users</h1>
+        <ListPagination pagination={pagination} loading={isFetching} label="Users" />
         <Box sx={{ height: 500 }}>
           <DataGrid
+            paginationMode="server"
+            sortingMode="client"
+            filterMode="client"
+            hideFooterPagination
+            rowCount={pagination.total}
+            paginationModel={{ page: pageParams.page - 1, pageSize: pageParams.pageSize }}
+            pageSizeOptions={[pageParams.pageSize]}
+            loading={isFetching}
             disableRowSelectionOnClick
             showToolbar
             rows={data}
