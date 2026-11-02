@@ -45,14 +45,14 @@ describe('getPage', () => {
   it('omits an empty filter, which is invalid for the paginated API', async () => {
     const response = {
       results: [],
-      pagination: { page: 1, pageSize: 21, total: 0, totalPages: 0 },
+      pagination: { page: 1, pageSize: 25, total: 0, totalPages: 0 },
     };
     vi.mocked(api.get).mockReturnValue({ json: () => Promise.resolve(response) } as ReturnType<
       typeof api.get
     >);
-    await getPage('api/v2/list/movies/all', { page: 1, pageSize: 21 }, { filter: '' });
+    await getPage('api/v2/list/movies/all', { page: 1, pageSize: 25 }, { filter: '' });
     expect(api.get).toHaveBeenCalledWith('api/v2/list/movies/all', {
-      searchParams: { page: 1, pageSize: 21 },
+      searchParams: { page: 1, pageSize: 25 },
     });
   });
 

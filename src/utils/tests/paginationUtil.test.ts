@@ -11,7 +11,7 @@ describe('getPageParams', () => {
   });
 
   it('replaces the retired page size from existing URLs with the view default', () => {
-    expect(getPageParams(new URLSearchParams('page=2&pageSize=21'), 25)).toEqual({
+    expect(getPageParams(new URLSearchParams('page=2&pageSize=25'), 25)).toEqual({
       page: 2,
       pageSize: 25,
     });

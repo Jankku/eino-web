@@ -21,7 +21,7 @@ describe.each([
     queryClient.setQueryData(fullKey, completeList);
     const pageResponse = {
       results: [{ title: 'Page two item' }],
-      pagination: { page: 2, pageSize: 21, total: 22, totalPages: 2 },
+      pagination: { page: 2, pageSize: 25, total: 22, totalPages: 2 },
     };
     vi.mocked(api.get).mockImplementation(
       (path, options) =>
@@ -50,7 +50,7 @@ describe.each([
         useList({
           status: 'all',
           page: 2,
-          pageSize: 21,
+          pageSize: 25,
           sort: 'score',
           order: 'descending',
           filter: 'score:>:5',
@@ -65,7 +65,7 @@ describe.each([
     expect(api.get).toHaveBeenCalledWith(`api/v2/list/${kind}/all`, {
       searchParams: {
         page: 2,
-        pageSize: 21,
+        pageSize: 25,
         sort: 'score',
         order: 'descending',
         filter: 'score:>:5',
