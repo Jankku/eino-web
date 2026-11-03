@@ -13,7 +13,7 @@ import {
   GridCellParams,
   GridInitialState,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/system';
+import AdminTableFrame from '../../components/admin/AdminTableFrame';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -298,8 +298,10 @@ export default function Users() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Users" />
         <h1>Users</h1>
-        <ListPagination pagination={pagination} loading={isFetching} label="Users" />
-        <Box sx={{ height: 500 }}>
+        <AdminTableFrame
+          label="Users"
+          pagination={<ListPagination pagination={pagination} loading={isFetching} label="Users" />}
+        >
           <DataGrid
             paginationMode="server"
             sortingMode="client"
@@ -324,7 +326,7 @@ export default function Users() {
             slotProps={slotProps}
             initialState={initialState}
           />
-        </Box>
+        </AdminTableFrame>
       </Container>
       <DeleteUserDialog
         visible={!!rowIdToDelete}

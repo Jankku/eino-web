@@ -12,7 +12,7 @@ import {
   GridRowEditStopReasons,
   GridInitialState,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/system';
+import AdminTableFrame from '../../components/admin/AdminTableFrame';
 import { dateToISOStringParser, dateValueFormatter } from '../../utils/tableUtils';
 import Head from '../../components/common/Head';
 import { useAllBulletins } from '../../data/admin/useAllBulletins';
@@ -273,8 +273,12 @@ export default function Bulletins() {
             Create
           </Button>
         </Stack>
-        <ListPagination pagination={pagination} loading={isFetching} label="Bulletins" />
-        <Box sx={{ height: 500 }}>
+        <AdminTableFrame
+          label="Bulletins"
+          pagination={
+            <ListPagination pagination={pagination} loading={isFetching} label="Bulletins" />
+          }
+        >
           <DataGrid
             paginationMode="server"
             sortingMode="client"
@@ -298,7 +302,7 @@ export default function Bulletins() {
             slotProps={slotProps}
             initialState={initialState}
           />
-        </Box>
+        </AdminTableFrame>
       </Container>
       <CreateBulletinDialog
         visible={createBulletinDialogVisible}

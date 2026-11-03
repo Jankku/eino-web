@@ -3,7 +3,7 @@ import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagina
 import { capitalize, Chip, Container, FormControlLabel, Switch } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId, GridInitialState } from '@mui/x-data-grid';
 import { securityEventsFilter, useAuditLog } from '../../data/admin/useAuditLog';
-import { Box } from '@mui/system';
+import AdminTableFrame from '../../components/admin/AdminTableFrame';
 import { dateValueFormatter, jsonValueFormatter } from '../../utils/tableUtils';
 import Head from '../../components/common/Head';
 import DiffDialog from '../../components/admin/DiffDialog';
@@ -99,8 +99,12 @@ export default function AuditLog() {
             />
           }
         />
-        <ListPagination pagination={pagination} loading={isFetching} label="Audit log" />
-        <Box sx={{ height: 500 }}>
+        <AdminTableFrame
+          label="Audit log"
+          pagination={
+            <ListPagination pagination={pagination} loading={isFetching} label="Audit log" />
+          }
+        >
           <DataGrid
             paginationMode="server"
             sortingMode="client"
@@ -122,7 +126,7 @@ export default function AuditLog() {
               }
             }}
           />
-        </Box>
+        </AdminTableFrame>
       </Container>
       <DiffDialog
         visible={!!rowId}
