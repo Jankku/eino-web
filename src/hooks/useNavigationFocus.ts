@@ -59,6 +59,17 @@ export function requestNavigationFocus(pathname: string, previousPath = '', orig
       (node) => node.dataset.routeReady === pathname && !node.closest('[style*="display: none"]'),
     );
     if (!main || !ready || document.querySelector('[aria-modal="true"]')) return;
+    const activeElement = document.activeElement;
+    // Preserve form autofocus that ran when the destination content mounted.
+    if (
+      activeElement instanceof HTMLElement &&
+      main.contains(activeElement) &&
+      activeElement.matches('input, select, textarea, [contenteditable="true"]') &&
+      !activeElement.closest('[style*="display: none"]')
+    ) {
+      stop();
+      return;
+    }
     const heading =
       main.querySelector<HTMLElement>('[data-route-heading], [data-detail-heading]') ??
       main.querySelector<HTMLElement>('h1');

@@ -89,6 +89,25 @@ describe('navigation focus', () => {
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Books' })).toHaveFocus());
   });
 
+  it('preserves input autofocus after async login verification content mounts', async () => {
+    const view = render(<Content path="/login" />);
+    const { result } = renderHook(useTestNavigation, { wrapper: Router });
+    act(() => {
+      void result.current('/login/2fa');
+    });
+    view.rerender(
+      <main id="main-content">
+        <span hidden data-route-ready="/login/2fa" />
+        <h1>Verify Your Identity</h1>
+        <input autoFocus aria-label="Enter your 2FA code" />
+      </main>,
+    );
+    await act(async () => {
+      await new Promise(requestAnimationFrame);
+    });
+    expect(screen.getByRole('textbox', { name: 'Enter your 2FA code' })).toHaveFocus();
+  });
+
   it('focuses each different detail, even while the desktop list stays mounted', async () => {
     const view = render(<Content path="/books/one" item="one" />);
     const { result } = renderHook(useTestNavigation, { wrapper: Router });
