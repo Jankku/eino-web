@@ -1,13 +1,11 @@
 import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
-import { Box, SelectChangeEvent, Stack } from '@mui/material';
+import { Box, Button, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
 import { movieSortStatuses, movieSortFields } from '../../models/movieSortOptions';
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import SmallSelect from '../../components/common/SmallSelect';
 import AddIcon from '@mui/icons-material/Add';
-import ImageIcon from '@mui/icons-material/Image';
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Outlet, useParams, useSearchParams } from 'react-router';
 import { useMoviesSuspense } from '../../data/movies/useMoviesSuspense';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
@@ -15,10 +13,10 @@ import ListPagination from '../../components/common/ListPagination';
 import ListDetailLayout from '../../components/layout/ListDetailLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import CreateFab from '../../components/common/CreateFab';
-import { useListItemType, listItemTypes } from '../../hooks/useListItemType';
+import { useListItemType } from '../../hooks/useListItemType';
 import ListEmpty from '../../components/common/ListEmpty';
-import SortButton from '../../components/common/SortButton';
-import ResponsiveButton from '../../components/common/ResponsiveButton';
+import SortSelect from '../../components/common/SortSelect';
+import ListViewToggle from '../../components/common/ListViewToggle';
 import Head from '../../components/common/Head';
 
 export default function Movies() {
@@ -44,10 +42,11 @@ export default function Movies() {
   useRecoverPage(pagination);
   const isEmptyList = countByStatus.all === 0;
 
-  const onSort = ({ key, value }: { key: string; value: string }) => {
+  const onSort = ({ sort, order }: { sort: string; order: string }) => {
     startTransition(() => {
       setSearchParams((prevParams) => {
-        prevParams.set(key, value);
+        prevParams.set('sort', sort);
+        prevParams.set('order', order);
         prevParams.delete('page');
         return prevParams;
       });
@@ -117,25 +116,29 @@ export default function Movies() {
                   component="ul"
                   aria-label="Actions"
                   direction="row"
-                  sx={{ flexWrap: 'wrap', width: '100%', gap: 1, m: 0, p: 0, listStyle: 'none' }}
+                  sx={{
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    width: '100%',
+                    gap: 1,
+                    m: 0,
+                    p: 0,
+                    listStyle: 'none',
+                  }}
                 >
                   {!isMobile ? (
                     <Box component="li" sx={{ display: 'inline-flex' }}>
-                      <ResponsiveButton icon={<AddIcon />} onClick={toggleAddDialog as () => void}>
+                      <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={toggleAddDialog as () => void}
+                      >
                         Create
-                      </ResponsiveButton>
+                      </Button>
                     </Box>
                   ) : null}
                   <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <SortButton fieldOptions={movieSortFields} onChange={onSort} />
-                  </Box>
-                  <Box component="li" sx={{ display: 'inline-flex' }}>
-                    <ResponsiveButton
-                      icon={itemType === listItemTypes.CARD ? <ImageIcon /> : <ViewAgendaIcon />}
-                      onClick={toggleItemType}
-                    >
-                      {itemType === listItemTypes.CARD ? 'Image view' : 'Card view'}
-                    </ResponsiveButton>
+                    <ListViewToggle itemType={itemType} onToggle={toggleItemType} />
                   </Box>
                   <Box component="li" sx={{ display: 'inline-flex' }}>
                     <SmallSelect label="Status" value={status} onChange={onStatusChange}>
@@ -155,7 +158,12 @@ export default function Movies() {
               <ListEmpty />
             ) : (
               <>
-                <ListPagination pagination={pagination} loading={isLoading} label="Movies" />
+                <ListPagination
+                  pagination={pagination}
+                  loading={isLoading}
+                  label="Movies"
+                  actions={<SortSelect fieldOptions={movieSortFields} onChange={onSort} />}
+                />
                 <MovieList movies={data} itemType={itemType} />
                 {data.length > 0 ? <ListPagination pagination={pagination} label="Movies" /> : null}
               </>
