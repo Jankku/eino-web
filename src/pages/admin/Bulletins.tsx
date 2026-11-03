@@ -119,11 +119,11 @@ export default function Bulletins() {
         ],
         renderCell: ({ row }) => (
           <Chip
-            color={row.type}
+            color="default"
             variant="filled"
             size="small"
             label={capitalize(row.type)}
-            sx={{ fontWeight: 500 }}
+            sx={{ height: 23 }}
           />
         ),
       },
@@ -140,11 +140,11 @@ export default function Bulletins() {
         })),
         renderCell: ({ row }) => (
           <Chip
-            color="primary"
+            color="default"
             variant="filled"
             size="small"
             label={capitalize(row.visibility)}
-            sx={{ fontWeight: 500 }}
+            sx={{ height: 23 }}
           />
         ),
       },

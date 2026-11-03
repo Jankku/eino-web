@@ -10,7 +10,7 @@ import { credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useToken } from '../../hooks/useToken';
-import { useRedirect } from '../../hooks/useRedirect';
+import { getLoginRedirect } from '../../hooks/useRedirect';
 import Head from '../../components/common/Head';
 
 const locationStateSchema = z.object({
@@ -22,8 +22,7 @@ const otpFormSchema = z.object({
 });
 
 export default function LoginVerify2FA() {
-  const { state } = useLocation();
-  const redirectTo = useRedirect();
+  const { state, search } = useLocation();
   const navigate = useNavigate();
   const { setToken, setRefreshToken } = useToken();
   const formMethods = useForm({
@@ -53,7 +52,7 @@ export default function LoginVerify2FA() {
         onSuccess: (data) => {
           setToken(data.accessToken);
           setRefreshToken(data.refreshToken);
-          navigate(redirectTo, { replace: true });
+          navigate(getLoginRedirect(data.accessToken, search), { replace: true });
         },
         onError: async (error) => {
           const errors = await parseError(error as HTTPError);

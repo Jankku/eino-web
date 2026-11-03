@@ -26,6 +26,7 @@ const ProfileVerifyEmail = lazy(() => import('./pages/profile/ProfileVerifyEmail
 const Settings = lazy(() => import('./pages/Settings'));
 const About = lazy(() => import('./pages/About'));
 
+const Overview = lazy(() => import('./pages/admin/Overview'));
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const Bulletins = lazy(() => import('./pages/admin/Bulletins'));
@@ -235,7 +236,20 @@ function WrappedApp() {
           </Route>
 
           <Route
-            path="users"
+            path="admin"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <Overview />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="admin/users"
             element={
               <RequireAuth>
                 <RequireAdmin>
@@ -248,7 +262,7 @@ function WrappedApp() {
           />
 
           <Route
-            path="audits"
+            path="admin/audits"
             element={
               <RequireAuth>
                 <RequireAdmin>
@@ -261,7 +275,7 @@ function WrappedApp() {
           />
 
           <Route
-            path="bulletins"
+            path="admin/bulletins"
             element={
               <RequireAuth>
                 <RequireAdmin>

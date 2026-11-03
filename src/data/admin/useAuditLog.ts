@@ -14,9 +14,17 @@ export type Audit = {
   created_on: string;
 };
 
-export const useAuditLog = (params: PageParams) => {
+export const securityEventsFilter = 'security_events';
+export const securityEventsAuditUrl = `/admin/audits?${securityEventsFilter}=true`;
+
+export const useAuditLog = (params: PageParams, securityEventsOnly: boolean) => {
   return useSuspenseQuery({
-    queryKey: ['audits', 'page', params],
-    queryFn: () => getPage<Audit>('api/v2/admin/audits', params),
+    queryKey: ['audits', 'page', params, securityEventsOnly],
+    queryFn: () =>
+      getPage<Audit>(
+        'api/v2/admin/audits',
+        params,
+        securityEventsOnly ? { [securityEventsFilter]: 'true' } : undefined,
+      ),
   });
 };

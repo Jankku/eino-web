@@ -16,6 +16,10 @@ export const useCreateBulletin = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createBulletinQuery,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all_bulletins'] }),
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['all_bulletins'] }),
+        queryClient.invalidateQueries({ queryKey: ['admin_overview'] }),
+      ]),
   });
 };

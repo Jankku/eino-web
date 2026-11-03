@@ -2,7 +2,13 @@ import { ListItem, ListItemButton, ListItemText, Tooltip, Typography } from '@mu
 import { Link, useLocation, useMatch } from 'react-router';
 
 type CustomNavLinkProps = {
-  item: { name: string; path: string; icon: React.ReactNode; activePaths?: string[] };
+  item: {
+    name: string;
+    path: string;
+    icon: React.ReactNode;
+    activePaths?: string[];
+    end?: boolean;
+  };
   isSmall: boolean;
   toggleDrawer: () => void;
 };
@@ -10,7 +16,7 @@ type CustomNavLinkProps = {
 export default function CustomNavLink({ item, isSmall, toggleDrawer }: CustomNavLinkProps) {
   const { pathname } = useLocation();
   const isAliasActive = item.activePaths?.includes(pathname) ?? false;
-  const routeMatch = useMatch({ path: item.path, end: item.path === '/' });
+  const routeMatch = useMatch({ path: item.path, end: item.end ?? item.path === '/' });
   const isActive = Boolean(routeMatch) || isAliasActive;
   return (
     <ListItem disablePadding>

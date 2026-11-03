@@ -1,13 +1,14 @@
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
-import { capitalize, Chip, Container } from '@mui/material';
+import { capitalize, Chip, Container, FormControlLabel, Switch } from '@mui/material';
 import { DataGrid, GridColDef, GridRowId, GridInitialState } from '@mui/x-data-grid';
-import { useAuditLog } from '../../data/admin/useAuditLog';
+import { securityEventsFilter, useAuditLog } from '../../data/admin/useAuditLog';
 import { Box } from '@mui/system';
 import { dateValueFormatter, jsonValueFormatter } from '../../utils/tableUtils';
 import Head from '../../components/common/Head';
 import DiffDialog from '../../components/admin/DiffDialog';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { underscoreToSpace } from '../../utils/stringUtil';
 
 const slotProps = {
@@ -25,16 +26,22 @@ const initialState: GridInitialState = {
 
 const columns: GridColDef[] = [
   {
+    field: 'created_on',
+    headerName: 'Time',
+    width: 140,
+    valueFormatter: dateValueFormatter,
+  },
+  {
     field: 'action',
     headerName: 'Action',
     width: 180,
     renderCell: ({ row }) => (
       <Chip
-        color="primary"
+        color="default"
         variant="filled"
         size="small"
         label={capitalize(underscoreToSpace(row.action))}
-        sx={{ fontWeight: 500 }}
+        sx={{ height: 23 }}
       />
     ),
   },
@@ -58,17 +65,13 @@ const columns: GridColDef[] = [
     sortable: false,
     valueFormatter: jsonValueFormatter,
   },
-  {
-    field: 'created_on',
-    headerName: 'Time',
-    width: 160,
-    valueFormatter: dateValueFormatter,
-  },
 ];
 
 export default function AuditLog() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const securityEventsOnly = searchParams.get(securityEventsFilter) === 'true';
   const pageParams = useServerPagination(25);
-  const { data: response, isFetching } = useAuditLog(pageParams);
+  const { data: response, isFetching } = useAuditLog(pageParams, securityEventsOnly);
   const { results: data, pagination } = response;
   useRecoverPage(pagination);
   const [rowId, setRowId] = useState<GridRowId>();
@@ -78,6 +81,24 @@ export default function AuditLog() {
       <Container maxWidth="xl" sx={{ paddingBottom: 4 }}>
         <Head pageTitle="Audit log" />
         <h1>Audit log</h1>
+        <FormControlLabel
+          label="Security events only · Last 24 hours"
+          control={
+            <Switch
+              checked={securityEventsOnly}
+              onChange={(_, checked) => {
+                setRowId(undefined);
+                setSearchParams((previous) => {
+                  const next = new URLSearchParams(previous);
+                  if (checked) next.set(securityEventsFilter, 'true');
+                  else next.delete(securityEventsFilter);
+                  next.delete('page');
+                  return next;
+                });
+              }}
+            />
+          }
+        />
         <ListPagination pagination={pagination} loading={isFetching} label="Audit log" />
         <Box sx={{ height: 500 }}>
           <DataGrid

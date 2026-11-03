@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import Home from '@mui/icons-material/Home';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import MenuBook from '@mui/icons-material/MenuBook';
 import LocalMovies from '@mui/icons-material/LocalMovies';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -42,9 +43,10 @@ const routeArray = [
 ];
 
 const adminRouteArray = [
-  { name: 'Users', path: '/users', icon: <PersonIcon /> },
-  { name: 'Audit log', path: '/audits', icon: <TerminalIcon /> },
-  { name: 'Bulletins', path: '/bulletins', icon: <NotificationsIcon /> },
+  { name: 'Overview', path: '/admin', icon: <DashboardOutlinedIcon />, end: true },
+  { name: 'Users', path: '/admin/users', icon: <PersonIcon /> },
+  { name: 'Audit log', path: '/admin/audits', icon: <TerminalIcon /> },
+  { name: 'Bulletins', path: '/admin/bulletins', icon: <NotificationsIcon /> },
 ];
 
 type DrawerProps = {

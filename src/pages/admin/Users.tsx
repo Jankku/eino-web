@@ -144,11 +144,11 @@ export default function Users() {
         hideSortIcons: true,
         renderCell: ({ row }) => (
           <Chip
-            color="primary"
+            color={row.role === 'admin' ? 'primary' : 'default'}
             variant="filled"
             size="small"
             label={capitalize(row.role)}
-            sx={{ fontWeight: 500 }}
+            sx={{ height: 23 }}
           />
         ),
       },

@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useToken } from '../../hooks/useToken';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
 import { useLoginUser } from '../../data/auth/useLoginUser';
@@ -11,12 +11,12 @@ import { parseError } from '../../utils/zodUtil';
 import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
 import { HTTPError } from 'ky';
 import { useLoginConfig } from '../../data/auth/useLoginConfig';
-import { useRedirect } from '../../hooks/useRedirect';
+import { getLoginRedirect } from '../../hooks/useRedirect';
 import Head from '../../components/common/Head';
 
 export default function Login() {
   const navigate = useNavigate();
-  const redirectTo = useRedirect();
+  const { search } = useLocation();
   const { setToken, setRefreshToken } = useToken();
   const formMethods = useForm({
     defaultValues: {
@@ -37,13 +37,13 @@ export default function Login() {
     loginConfig.mutate(credentials, {
       onSuccess: (data) => {
         if (data.is2FAEnabled) {
-          navigate(`/login/2fa?redirectTo=${redirectTo}`, { state: { credentials } });
+          navigate(`/login/2fa${search}`, { state: { credentials } });
         } else {
           loginUser.mutate(credentials, {
             onSuccess: (data) => {
               setToken(data.accessToken);
               setRefreshToken(data.refreshToken);
-              navigate(redirectTo);
+              navigate(getLoginRedirect(data.accessToken, search));
             },
             onError: async (error) => {
               const errors = await parseError(error as HTTPError);
