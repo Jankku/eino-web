@@ -3,8 +3,6 @@ import { createTheme, CssBaseline, ThemeProvider as MuiThemeProvider } from '@mu
 import { StyledEngineProvider } from '@mui/system';
 import { blue, red } from '@mui/material/colors';
 import '../css/fonts.css';
-import type {} from '@mui/material/themeCssVarsAugmentation';
-import type {} from '@mui/x-data-grid/themeAugmentation';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {

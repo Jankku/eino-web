@@ -1,13 +1,11 @@
+import { getRowActions } from '../../components/admin/getRowActions';
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import { Button, capitalize, Chip, Container, Stack } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
-  GridRowId,
-  GridActionsCellItem,
   GridRowModesModel,
-  GridRowModes,
   GridEventListener,
   GridRowEditStopReasons,
   GridInitialState,
@@ -17,10 +15,6 @@ import { dateToISOStringParser, dateValueFormatter } from '../../utils/tableUtil
 import Head from '../../components/common/Head';
 import { useAllBulletins } from '../../data/admin/useAllBulletins';
 import AddIcon from '@mui/icons-material/Add';
-import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
-import CancelIcon from '@mui/icons-material/Cancel';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
 import { useCallback, useMemo, useState } from 'react';
@@ -194,66 +188,10 @@ export default function Bulletins() {
         width: 120,
         hideSortIcons: true,
         cellClassName: 'actions',
-        getActions: ({ id }) => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-          const handleEditClick = (id: GridRowId) => () => {
-            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-          };
-
-          const handleSaveClick = (id: GridRowId) => () => {
-            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-          };
-
-          const handleDeleteClick = (id: GridRowId) => () => {
-            setRowIdToDelete(id as string);
-          };
-
-          const handleCancelClick = (id: GridRowId) => () => {
-            setRowModesModel({
-              ...rowModesModel,
-              [id]: { mode: GridRowModes.View, ignoreModifications: true },
-            });
-          };
-
-          if (isInEditMode) {
-            return [
-              <GridActionsCellItem
-                key={0}
-                icon={<SaveIcon />}
-                label="Save"
-                color="primary"
-                onClick={handleSaveClick(id)}
-              />,
-              <GridActionsCellItem
-                key={2}
-                icon={<CancelIcon />}
-                label="Cancel"
-                className="textPrimary"
-                onClick={handleCancelClick(id)}
-                color="inherit"
-              />,
-            ];
-          }
-
-          return [
-            <GridActionsCellItem
-              key={0}
-              icon={<EditIcon />}
-              label="Edit"
-              className="textPrimary"
-              color="inherit"
-              onClick={handleEditClick(id)}
-            />,
-            <GridActionsCellItem
-              key={1}
-              icon={<DeleteIcon />}
-              label="Delete"
-              color="inherit"
-              onClick={handleDeleteClick(id)}
-            />,
-          ];
-        },
+        getActions: ({ id }) =>
+          getRowActions(id, rowModesModel, setRowModesModel, (id) =>
+            setRowIdToDelete(id as string),
+          ),
       },
     ],
     [rowModesModel],

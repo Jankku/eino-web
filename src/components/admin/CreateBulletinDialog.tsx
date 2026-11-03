@@ -124,7 +124,9 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
               <Select
                 name="visibility"
                 label="Visibility"
-                helperText={visibility === 'authenticated' ? 'Visible to all signed-in users' : undefined}
+                helperText={
+                  visibility === 'authenticated' ? 'Visible to all signed-in users' : undefined
+                }
                 sx={{ mb: 1 }}
               >
                 {bulletinVisibilities.map((visibility) => (

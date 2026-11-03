@@ -62,14 +62,14 @@ export type ImportPreview = {
 
 type ImportFileResult = {
   preview: ImportPreview | null;
-  errors: FileValidationError[];
+  fileErrors: FileValidationError[];
 };
 
 export const readEinoImportFile = async (file: File): Promise<ImportFileResult> => {
   if (file.size > TEN_MB) {
     return {
       preview: null,
-      errors: [
+      fileErrors: [
         {
           code: 'file_too_large',
           message: `File size must be less than ${byteFormatter.format(TEN_MB)}`,
@@ -84,7 +84,7 @@ export const readEinoImportFile = async (file: File): Promise<ImportFileResult> 
   } catch {
     return {
       preview: null,
-      errors: [
+      fileErrors: [
         { code: 'file_read_error', message: 'Could not read file. Please select it again.' },
       ],
     };
@@ -94,7 +94,7 @@ export const readEinoImportFile = async (file: File): Promise<ImportFileResult> 
   if (file.type !== 'application/json' || !textJson.success) {
     return {
       preview: null,
-      errors: [{ code: 'invalid_file_type', message: 'File must be a JSON file' }],
+      fileErrors: [{ code: 'invalid_file_type', message: 'File must be a JSON file' }],
     };
   }
 
@@ -102,7 +102,9 @@ export const readEinoImportFile = async (file: File): Promise<ImportFileResult> 
   if (!result.success) {
     return {
       preview: null,
-      errors: [{ code: 'invalid_file_format', message: 'File does not match the expected format' }],
+      fileErrors: [
+        { code: 'invalid_file_format', message: 'File does not match the expected format' },
+      ],
     };
   }
 
@@ -114,6 +116,6 @@ export const readEinoImportFile = async (file: File): Promise<ImportFileResult> 
       movieCount: movies.length,
       username: profile.username,
     },
-    errors: [],
+    fileErrors: [],
   };
 };

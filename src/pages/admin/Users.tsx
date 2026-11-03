@@ -1,11 +1,10 @@
+import { getRowActions } from '../../components/admin/getRowActions';
 import ListPagination from '../../components/common/ListPagination';
 import { useServerPagination, useRecoverPage } from '../../hooks/useServerPagination';
 import { Avatar, capitalize, Chip, Container } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
-  GridActionsCellItem,
-  GridRowModes,
   GridEventListener,
   GridRowEditStopReasons,
   GridRowId,
@@ -14,10 +13,6 @@ import {
   GridInitialState,
 } from '@mui/x-data-grid';
 import AdminTableFrame from '../../components/admin/AdminTableFrame';
-import SaveIcon from '@mui/icons-material/Save';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { User, useUsers } from '../../data/admin/useUsers';
 import { useCallback, useMemo, useState } from 'react';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
@@ -228,66 +223,8 @@ export default function Users() {
         width: 120,
         hideSortIcons: true,
         cellClassName: 'actions',
-        getActions: ({ id }) => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-          const handleEditClick = (id: GridRowId) => () => {
-            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-          };
-
-          const handleSaveClick = (id: GridRowId) => () => {
-            setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-          };
-
-          const handleDeleteClick = (id: GridRowId) => () => {
-            setRowIdToDelete(id);
-          };
-
-          const handleCancelClick = (id: GridRowId) => () => {
-            setRowModesModel({
-              ...rowModesModel,
-              [id]: { mode: GridRowModes.View, ignoreModifications: true },
-            });
-          };
-
-          if (isInEditMode) {
-            return [
-              <GridActionsCellItem
-                key={0}
-                icon={<SaveIcon />}
-                label="Save"
-                color="primary"
-                onClick={handleSaveClick(id)}
-              />,
-              <GridActionsCellItem
-                key={2}
-                icon={<CancelIcon />}
-                label="Cancel"
-                className="textPrimary"
-                onClick={handleCancelClick(id)}
-                color="inherit"
-              />,
-            ];
-          }
-
-          return [
-            <GridActionsCellItem
-              key={0}
-              icon={<EditIcon />}
-              label="Edit"
-              className="textPrimary"
-              color="inherit"
-              onClick={handleEditClick(id)}
-            />,
-            <GridActionsCellItem
-              key={1}
-              icon={<DeleteIcon />}
-              label="Delete"
-              color="inherit"
-              onClick={handleDeleteClick(id)}
-            />,
-          ];
-        },
+        getActions: ({ id }) =>
+          getRowActions(id, rowModesModel, setRowModesModel, setRowIdToDelete),
       },
     ],
     [rowModesModel],

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* oxlint-disable @typescript-eslint/no-namespace */
 import 'cropperjs';
 import { type CropperCanvas, type CropperImage } from 'cropperjs';
 import { useRef } from 'react';
@@ -84,10 +84,7 @@ export default function Cropper({ src, alt, onLoad, ref }: CropperProps) {
         onkeydown={onKeyDown}
         onload={onLoad}
       ></cropper-image>
-      <cropper-shade
-        theme-color="rgba(0, 0, 0, 0.4)"
-        border-radius="50%"
-      ></cropper-shade>
+      <cropper-shade theme-color="rgba(0, 0, 0, 0.4)" border-radius="50%"></cropper-shade>
       <cropper-selection
         outlined
         border-radius="50%"

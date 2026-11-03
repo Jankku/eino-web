@@ -30,7 +30,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
   const [selection, setSelection] = useState<{ file: File; preview: ImportPreview } | null>(null);
   const [isReading, setIsReading] = useState(false);
   const readRequestRef = useRef(0);
-  const [fileErrors, setFileErrors] = useState<FileValidationError[]>([]);
+  const [fileValidationErrors, setFileValidationErrors] = useState<FileValidationError[]>([]);
   const formMethods = useForm();
   const {
     handleSubmit,
@@ -46,22 +46,24 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
   const onDrop = async (acceptedFiles: File[]) => {
     const request = ++readRequestRef.current;
     setSelection(null);
-    setFileErrors([]);
+    setFileValidationErrors([]);
     clearErrors();
 
     const file = acceptedFiles[0];
     if (!file) {
       setIsReading(false);
-      setFileErrors([{ code: 'invalid_selection', message: 'Please select one Eino JSON file.' }]);
+      setFileValidationErrors([
+        { code: 'invalid_selection', message: 'Please select one Eino JSON file.' },
+      ]);
       return;
     }
 
     setIsReading(true);
-    const { preview, errors } = await readEinoImportFile(file);
+    const { preview, fileErrors } = await readEinoImportFile(file);
     if (request !== readRequestRef.current) return;
 
     setIsReading(false);
-    setFileErrors(errors);
+    setFileValidationErrors(fileErrors);
     if (preview) setSelection({ file, preview });
   };
 
@@ -78,9 +80,9 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
         resetState();
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const parseErrors = await parseError(error as HTTPError);
         setError('root.serverError', {
-          message: errors[0].message,
+          message: parseErrors[0].message,
         });
       },
     });
@@ -90,7 +92,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
     readRequestRef.current += 1;
     setSelection(null);
     setIsReading(false);
-    setFileErrors([]);
+    setFileValidationErrors([]);
     resetForm();
     closeDialog();
   };
@@ -266,8 +268,10 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
                   pt: 1,
                 }}
               >
-                {fileErrors.length > 0 ? (
-                  <ErrorMessage message={fileErrors.map((error) => error.message).join(' ')} />
+                {fileValidationErrors.length > 0 ? (
+                  <ErrorMessage
+                    message={fileValidationErrors.map((error) => error.message).join(' ')}
+                  />
                 ) : null}
               </Box>
               {errors.root?.serverError?.message ? (

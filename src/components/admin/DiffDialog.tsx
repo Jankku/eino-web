@@ -26,7 +26,7 @@ export default function DeleteUserDialog({
     () =>
       diff.map((part, index) => (
         <Box
-          // eslint-disable-next-line @eslint-react/no-array-index-key
+          // oxlint-disable-next-line @eslint-react/no-array-index-key
           key={index}
           component="span"
           sx={(theme) =>

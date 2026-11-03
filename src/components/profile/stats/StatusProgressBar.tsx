@@ -17,7 +17,7 @@ export function StatusProgressBar({ data, total }: StatusProgressBarProps) {
       {total ? (
         data.map((item, index) => (
           <Box
-            // eslint-disable-next-line @eslint-react/no-array-index-key
+            // oxlint-disable-next-line @eslint-react/no-array-index-key
             key={index}
             aria-label={`${item.title}, ${item.value} of ${total}`}
             sx={{

@@ -95,8 +95,8 @@ export default function About() {
               </Typography>
               <Typography component="p">
                 Commit{' '}
-                <Link href={`https://github.com/Jankku/eino-web/commit/${__COMMIT_HASH__}`}>
-                  {__COMMIT_HASH__}
+                <Link href={`https://github.com/Jankku/eino-web/commit/${COMMIT_HASH}`}>
+                  {COMMIT_HASH}
                 </Link>
               </Typography>
               <Typography component="p">

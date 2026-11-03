@@ -139,7 +139,7 @@ export default function ProfilePictureDialog({
 
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
   }, []);
 
   const saveButtonDisabled =

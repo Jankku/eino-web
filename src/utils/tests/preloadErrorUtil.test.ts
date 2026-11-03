@@ -1,17 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { handlePreloadError } from '../preloadErrorUtil';
 
+function failPreload() {
+  const event = new Event('vite:preloadError', { cancelable: true });
+  handlePreloadError(event);
+  return event;
+}
+
 describe('handlePreloadError', () => {
   const reload = vi.fn();
   const storage = new Map<string, string>();
   const getItem = vi.fn((key: string) => storage.get(key) ?? null);
   const setItem = vi.fn((key: string, value: string) => storage.set(key, value));
-
-  function failPreload() {
-    const event = new Event('vite:preloadError', { cancelable: true });
-    handlePreloadError(event);
-    return event;
-  }
 
   beforeEach(() => {
     vi.useFakeTimers();

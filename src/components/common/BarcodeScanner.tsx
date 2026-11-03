@@ -78,7 +78,7 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: Sc
   useEffect(() => {
     let ignoreStart = false;
     const init = async () => {
-      // eslint-disable-next-line @eslint-react/web-api-no-leaked-timeout
+      // oxlint-disable-next-line @eslint-react/web-api-no-leaked-timeout
       await new Promise((resolve) => setTimeout(resolve, 1));
       if (ignoreStart) {
         return;
@@ -135,7 +135,7 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: Sc
       Quagga.offDetected(errorCheck);
       stopQuaggaCamera();
     };
-  }, [cameraId, onDetected, onError, scannerRef, errorCheck]);
+  }, [cameraId, onError, scannerRef, errorCheck]);
 
   return null;
 }

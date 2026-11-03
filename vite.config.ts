@@ -9,7 +9,7 @@ const commitHash = child.execSync('git rev-parse --short HEAD').toString();
 
 export default defineConfig(() => ({
   define: {
-    __COMMIT_HASH__: JSON.stringify(commitHash),
+    COMMIT_HASH: JSON.stringify(commitHash),
   },
   plugins: [
     react(),

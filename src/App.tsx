@@ -59,11 +59,11 @@ export default function App() {
 
   useEffect(() => {
     const channel = new BroadcastChannel(clearQueryClientChannel.name);
-    channel.onmessage = (event) => {
+    channel.addEventListener('message', (event) => {
       if (event.data === clearQueryClientChannel.message) {
         queryClient.clear();
       }
-    };
+    });
 
     return () => {
       channel.close();

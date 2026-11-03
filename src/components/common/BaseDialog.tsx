@@ -23,7 +23,7 @@ function BaseDialog({ title, children, ...props }: BaseDialogProps) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [open, props]);
+  }, [open]);
 
   return (
     <Dialog {...props} fullScreen={fullscreenBelowMd}>

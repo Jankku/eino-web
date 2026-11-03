@@ -4,9 +4,9 @@ import { useState } from 'react';
 export function useDoubleCheck() {
   const [doubleCheck, setDoubleCheck] = useState(false);
 
-  function getButtonProps(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-    const onBlur: React.FocusEventHandler<HTMLButtonElement> = () => setDoubleCheck(false);
+  const onBlur = () => setDoubleCheck(false);
 
+  function getButtonProps(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     const onClick = doubleCheck
       ? undefined
       : (e: React.MouseEvent<HTMLButtonElement, Element>) => {
@@ -16,12 +16,11 @@ export function useDoubleCheck() {
 
     return {
       ...props,
-      onBlur: callAll(onBlur, props?.onBlur),
+      onBlur: callAll<[React.FocusEvent<HTMLButtonElement>]>(onBlur, props?.onBlur),
       onClick: doubleCheck
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (e: any) => {
+        ? (e: React.MouseEvent<HTMLButtonElement>) => {
             props?.onClick?.(e);
-            onBlur(e);
+            onBlur();
           }
         : onClick,
     };
