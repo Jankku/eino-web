@@ -1,11 +1,21 @@
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
-import { Box, Button, CircularProgress, DialogContent, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  DialogContent,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { getShareUrl } from '../../utils/shareUtil';
 import BaseDialog from '../common/BaseDialog';
-import { useShareprofile } from '../../data/profile/useShareProfile';
+import { ShareTheme, useShareprofile } from '../../data/profile/useShareProfile';
 import ky from 'ky';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import SmallSelect from '../common/SmallSelect';
 
 type ShareDialogProps = {
   visible: boolean;
@@ -15,13 +25,16 @@ type ShareDialogProps = {
 export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) {
   const queryClient = useQueryClient();
   const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
-  const shareProfileQuery = useShareprofile(visible);
+  const { palette } = useTheme();
+  const [themeOverride, setThemeOverride] = useState<'app' | ShareTheme>('app');
+  const shareTheme = themeOverride === 'app' ? palette.mode : themeOverride;
+  const shareProfileQuery = useShareprofile(visible, shareTheme);
   const shareId = shareProfileQuery?.data;
   const shareUrl = getShareUrl(shareId);
 
   const isError = shareProfileQuery.isError;
-  const isLoading = shareProfileQuery.isLoading;
-  const isActionDisabled = isError || isLoading;
+  const isLoading = shareProfileQuery.isPending || shareProfileQuery.isFetching;
+  const isActionDisabled = isError || isLoading || !shareId;
 
   const onCopyUrl = async () => {
     try {
@@ -57,6 +70,26 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   return (
     <BaseDialog title="Share profile" open={visible} maxWidth="md" fullWidth onClose={onClose}>
       <DialogContent sx={{ pt: 0 }}>
+        <Stack direction="row" sx={{ alignItems: 'center', gap: 1, mb: 2 }}>
+          <Typography variant="body2" color="text.secondary" aria-hidden="true">
+            Image theme
+          </Typography>
+          <SmallSelect
+            compact
+            label="Image theme"
+            value={themeOverride}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value === 'app' || value === 'light' || value === 'dark') {
+                setThemeOverride(value);
+              }
+            }}
+          >
+            <option value="app">App theme ({palette.mode === 'light' ? 'Light' : 'Dark'})</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </SmallSelect>
+        </Stack>
         <Box
           sx={{
             height: 'min(60dvh, 600px)',
@@ -66,7 +99,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
           }}
         >
           {isLoading ? <CircularProgress /> : null}
-          {shareId ? (
+          {shareId && !isLoading && !isError ? (
             <img
               draggable="false"
               alt="Profile share"
