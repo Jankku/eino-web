@@ -1,26 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AuthPage from './pages/AuthPage';
-import ProfilePage from './pages/ProfilePage';
 import { generatePassword, generateUsername } from './util';
-
-test.describe('Profile', () => {
-  test('Should generate profile image and copy link', async ({ page }) => {
-    await page.goto('/profile');
-    const profilePage = new ProfilePage(page);
-
-    await profilePage.createRandomBook();
-    await profilePage.createRandomMovie();
-
-    await page.getByRole('button', { name: 'Share' }).click();
-    const shareDialog = page.getByRole('dialog');
-    await expect(shareDialog).toBeVisible();
-    const copyButton = page.getByRole('button', { name: 'Copy link', disabled: false });
-    await expect(copyButton).toBeVisible({ timeout: 10_000 });
-    await copyButton.click();
-    const shareUrl = await page.evaluate(() => navigator.clipboard.readText());
-    expect(shareUrl).toMatch(/\/share\/[a-z0-9-]+/);
-  });
-});
 
 test.describe('Profile - Delete account', () => {
   test.use({ storageState: { cookies: [], origins: [] } });

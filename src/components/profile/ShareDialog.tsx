@@ -24,7 +24,7 @@ type ShareDialogProps = {
 
 export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) {
   const queryClient = useQueryClient();
-  const { showErrorSnackbar, showSuccessSnackbar } = useCustomSnackbar();
+  const { showErrorSnackbar } = useCustomSnackbar();
   const { palette } = useTheme();
   const [themeOverride, setThemeOverride] = useState<'app' | ShareTheme>('app');
   const shareTheme = themeOverride === 'app' ? palette.mode : themeOverride;
@@ -35,15 +35,6 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   const isError = shareProfileQuery.isError;
   const isLoading = shareProfileQuery.isPending || shareProfileQuery.isFetching;
   const isActionDisabled = isError || isLoading || !shareId;
-
-  const onCopyUrl = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      showSuccessSnackbar('Link copied');
-    } catch {
-      showErrorSnackbar('Failed to copy link');
-    }
-  };
 
   const onShare = async () => {
     try {
@@ -114,9 +105,6 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
       <DialogFooter>
         <Button color="inherit" onClick={onClose}>
           Cancel
-        </Button>
-        <Button color="inherit" disabled={isActionDisabled} onClick={onCopyUrl}>
-          Copy link
         </Button>
         <DialogPrimaryButton disabled={isActionDisabled} onClick={onShare}>
           Share
