@@ -39,7 +39,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   const onShare = async () => {
     try {
       const blob = await ky.get(shareUrl).blob();
-      const imageFile = new File([blob], `${shareId}.png`, { type: 'image/png' });
+      const imageFile = new File([blob], `${shareId}.avif`, { type: 'image/avif' });
       const shareData = { files: [imageFile] };
 
       if ('canShare' in navigator) {
