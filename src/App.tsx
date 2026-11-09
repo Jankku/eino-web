@@ -30,6 +30,7 @@ const Overview = lazy(() => import('./pages/admin/Overview'));
 const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const Bulletins = lazy(() => import('./pages/admin/Bulletins'));
+const DiscordAudit = lazy(() => import('./pages/admin/DiscordAudit'));
 
 export const clearQueryClientChannel = {
   name: 'queryClientChannel',
@@ -281,6 +282,19 @@ function WrappedApp() {
                 <RequireAdmin>
                   <PageBoundary>
                     <Bulletins />
+                  </PageBoundary>
+                </RequireAdmin>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="admin/integrations/discord"
+            element={
+              <RequireAuth>
+                <RequireAdmin>
+                  <PageBoundary>
+                    <DiscordAudit />
                   </PageBoundary>
                 </RequireAdmin>
               </RequireAuth>
