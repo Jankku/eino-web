@@ -19,6 +19,7 @@ export const useCreateBulletin = () => {
     onSuccess: () =>
       Promise.all([
         queryClient.invalidateQueries({ queryKey: ['all_bulletins'] }),
+        queryClient.invalidateQueries({ queryKey: ['bulletins'] }),
         queryClient.invalidateQueries({ queryKey: ['admin_overview'] }),
       ]),
   });

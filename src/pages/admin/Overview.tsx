@@ -549,9 +549,6 @@ function OverviewSkeleton() {
 
   return (
     <Box role="status" aria-label="Loading admin overview">
-      <Typography color="text.secondary" sx={{ mb: 1 }}>
-        Loading overview…
-      </Typography>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
         {Array.from({ length: 6 }, (_, index) => (
           <Skeleton key={index} variant="rounded" height={index < 2 ? 150 : 270} />

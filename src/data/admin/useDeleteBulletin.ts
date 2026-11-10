@@ -12,6 +12,10 @@ export const useDeleteBulletin = () => {
   return useMutation({
     throwOnError: false,
     mutationFn: deleteBulletinQuery,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['all_bulletins'] }),
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['all_bulletins'] }),
+        queryClient.invalidateQueries({ queryKey: ['bulletins'] }),
+      ]),
   });
 };
