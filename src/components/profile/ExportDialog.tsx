@@ -1,5 +1,5 @@
 import DialogFooter, { DialogPrimaryButton } from '../common/DialogFooter';
-import { Button, DialogContent, Link, Typography } from '@mui/material';
+import { Button, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useExportData } from '../../data/profile/useExportData';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -44,10 +44,6 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
   const password = useWatch({ control: formMethods.control, name: 'password' });
   const exportData = useExportData();
 
-  const generateExportUrl = () => {
-    return URL.createObjectURL(createJsonBlob(exportData.data));
-  };
-
   const downloadJsonExport = (data: ProfileExport) => {
     try {
       const blob = createJsonBlob(data);
@@ -56,7 +52,8 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
       a.href = url;
       a.download = generateExportFileName();
       a.click();
-      URL.revokeObjectURL(url);
+      // Revoking synchronously can cancel the download in some browsers
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
       resetState();
     } catch (error) {
       console.error(error);
@@ -103,18 +100,6 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
             <Typography component="p" sx={{ mb: 2 }}>
               Please confirm your password to export your data.
             </Typography>
-            {exportData.isSuccess ? (
-              <Typography component="p" sx={{ mb: 1 }}>
-                Download didn&apos;t work?{' '}
-                <Link
-                  download={generateExportFileName()}
-                  href={generateExportUrl()}
-                  onClick={() => resetState()}
-                >
-                  Click here to download
-                </Link>
-              </Typography>
-            ) : null}
             <PasswordField autoFocus name="password" label="Confirm password" />
             <Checkbox name="includeAuditLog" label="Include audit logs" />
             {errors.root?.serverError?.message ? (
