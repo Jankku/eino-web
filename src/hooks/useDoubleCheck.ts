@@ -6,10 +6,12 @@ export function useDoubleCheck() {
 
   const onBlur = () => setDoubleCheck(false);
 
-  function getButtonProps(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  function getButtonProps(
+    props: Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'onBlur'>,
+  ) {
     const onClick = doubleCheck
       ? undefined
-      : (e: React.MouseEvent<HTMLButtonElement, Element>) => {
+      : (e: React.MouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
           setDoubleCheck(true);
         };

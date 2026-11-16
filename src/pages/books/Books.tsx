@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import { Box, Button, SelectChangeEvent, Stack } from '@mui/material';
 import AddBookDialog from '../../components/books/AddBookDialog';
 import BookList from '../../components/books/BookList';
@@ -32,10 +32,7 @@ export default function Books() {
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   // Local-storage updates are synchronous, so defer the complete query selection
   // to keep the current list and detail mounted while the next results load.
-  const listParams = useMemo(
-    () => ({ status, sort, order, filter, page, pageSize }),
-    [status, sort, order, filter, page, pageSize],
-  );
+  const listParams = { status, sort, order, filter, page, pageSize };
   const deferredListParams = useDeferredValue(listParams);
   const { data, countByStatus, pagination, isFetching } = useBooksSuspense(deferredListParams);
   const isLoading = isFetching || listParams !== deferredListParams;
@@ -121,7 +118,7 @@ export default function Books() {
                       <Button
                         variant="contained"
                         startIcon={<AddIcon />}
-                        onClick={toggleAddDialog as () => void}
+                        onClick={() => toggleAddDialog()}
                       >
                         Create
                       </Button>
@@ -163,7 +160,7 @@ export default function Books() {
               <AddBookDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
             ) : undefined}
 
-            {isMobile ? <BookActionsFab onCreate={toggleAddDialog as () => void} /> : null}
+            {isMobile ? <BookActionsFab onCreate={() => toggleAddDialog()} /> : null}
           </Box>
         }
         detail={<Outlet />}

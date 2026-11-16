@@ -86,224 +86,72 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <WrappedApp />
+      <AppRoutes />
     </QueryClientProvider>
   );
 }
 
-function WrappedApp() {
+function AppRoutes() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={
-              <RedirectAuthenticated>
-                <Home />
-              </RedirectAuthenticated>
-            }
-          />
-          <Route path="/home" element={<Home />} />
-          <Route
-            path="/register"
-            element={
-              <RedirectAuthenticated>
-                <PageBoundary>
-                  <Register />
-                </PageBoundary>
-              </RedirectAuthenticated>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <RedirectAuthenticated>
-                <PageBoundary>
-                  <Login />
-                </PageBoundary>
-              </RedirectAuthenticated>
-            }
-          />
-          <Route
-            path="/login/2fa"
-            element={
-              <RedirectAuthenticated>
-                <PageBoundary>
-                  <LoginVerify2FA />
-                </PageBoundary>
-              </RedirectAuthenticated>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <RedirectAuthenticated>
-                <PageBoundary>
-                  <ForgotPassword />
-                </PageBoundary>
-              </RedirectAuthenticated>
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={
-              <RedirectAuthenticated>
-                <PageBoundary>
-                  <ResetPassword />
-                </PageBoundary>
-              </RedirectAuthenticated>
-            }
-          />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/about" element={<About />} />
-          <Route
-            path="/scan"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <BookScanner />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <Settings />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <Profile />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile/verify-email"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <ProfileVerifyEmail />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="books"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <Books />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          >
-            <Route
-              path=":bookId"
-              element={
-                <PageBoundary>
-                  <BookDetail />
-                </PageBoundary>
-              }
-            />
-          </Route>
-          <Route
-            path="movies"
-            element={
-              <RequireAuth>
-                <PageBoundary>
-                  <Movies />
-                </PageBoundary>
-              </RequireAuth>
-            }
-          >
-            <Route
-              path=":movieId"
-              element={
-                <PageBoundary>
-                  <MovieDetail />
-                </PageBoundary>
-              }
-            />
-          </Route>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="home" element={<Home />} />
+        <Route path="logout" element={<Logout />} />
 
-          <Route
-            path="admin"
-            element={
-              <RequireAuth>
-                <RequireAdmin>
-                  <PageBoundary>
-                    <Overview />
-                  </PageBoundary>
-                </RequireAdmin>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="admin/users"
-            element={
-              <RequireAuth>
-                <RequireAdmin>
-                  <PageBoundary>
-                    <Users />
-                  </PageBoundary>
-                </RequireAdmin>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="admin/audits"
-            element={
-              <RequireAuth>
-                <RequireAdmin>
-                  <PageBoundary>
-                    <AuditLog />
-                  </PageBoundary>
-                </RequireAdmin>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="admin/bulletins"
-            element={
-              <RequireAuth>
-                <RequireAdmin>
-                  <PageBoundary>
-                    <Bulletins />
-                  </PageBoundary>
-                </RequireAdmin>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="admin/integrations/discord"
-            element={
-              <RequireAuth>
-                <RequireAdmin>
-                  <PageBoundary>
-                    <DiscordAudit />
-                  </PageBoundary>
-                </RequireAdmin>
-              </RequireAuth>
-            }
-          />
-
-          <Route path="/*" element={<Error404 />} />
+        <Route element={<PageBoundary />}>
+          <Route path="about" element={<About />} />
         </Route>
-      </Routes>
-    </div>
+
+        <Route element={<RedirectAuthenticated />}>
+          <Route index element={<Home />} />
+          <Route element={<PageBoundary />}>
+            <Route path="register" element={<Register />} />
+            <Route path="login" element={<Login />} />
+            <Route path="login/2fa" element={<LoginVerify2FA />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+          </Route>
+        </Route>
+
+        <Route element={<RequireAuth />}>
+          <Route element={<PageBoundary />}>
+            <Route path="scan" element={<BookScanner />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="profile/verify-email" element={<ProfileVerifyEmail />} />
+            <Route path="books" element={<Books />}>
+              <Route
+                path=":bookId"
+                element={
+                  <PageBoundary>
+                    <BookDetail />
+                  </PageBoundary>
+                }
+              />
+            </Route>
+            <Route path="movies" element={<Movies />}>
+              <Route
+                path=":movieId"
+                element={
+                  <PageBoundary>
+                    <MovieDetail />
+                  </PageBoundary>
+                }
+              />
+            </Route>
+
+            <Route path="admin" element={<RequireAdmin />}>
+              <Route index element={<Overview />} />
+              <Route path="users" element={<Users />} />
+              <Route path="audits" element={<AuditLog />} />
+              <Route path="bulletins" element={<Bulletins />} />
+              <Route path="integrations/discord" element={<DiscordAudit />} />
+            </Route>
+          </Route>
+        </Route>
+
+        <Route path="*" element={<Error404 />} />
+      </Route>
+    </Routes>
   );
 }

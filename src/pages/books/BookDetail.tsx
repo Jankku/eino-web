@@ -64,8 +64,8 @@ export default function BookDetail() {
           : formattedStatus;
 
   const copyToClipboard = async () => {
+    const contents = data.author ? `${data.author} - ${data.title}` : data.title;
     try {
-      const contents = data.author ? `${data.author} - ${data.title}` : data.title;
       await navigator.clipboard.writeText(contents);
       showSuccessSnackbar('Title and author copied to clipboard');
     } catch {
@@ -166,7 +166,7 @@ export default function BookDetail() {
               <Button
                 variant="contained"
                 color="success"
-                onClick={toggleCompleteDialog as () => void}
+                onClick={() => toggleCompleteDialog()}
                 startIcon={<DoneIcon />}
               >
                 Complete
@@ -185,7 +185,7 @@ export default function BookDetail() {
             <Button
               variant="contained"
               color="primary"
-              onClick={toggleEditDialog as () => void}
+              onClick={() => toggleEditDialog()}
               startIcon={<CreateIcon />}
             >
               Edit

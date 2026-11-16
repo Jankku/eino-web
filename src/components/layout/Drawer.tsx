@@ -26,7 +26,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InfoIcon from '@mui/icons-material/Info';
 import CustomNavLink from '../common/CustomNavLink.tsx';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { useToken } from '../../hooks/useToken';
 import { useIsMobile } from '../../hooks/useIsMobile.ts';
 
 const authRouteArray = [
@@ -78,7 +78,7 @@ export default function Drawer({
 }: DrawerProps) {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { username, role, isLoggedIn } = useAuthContext();
+  const { username, role, isLoggedIn } = useToken();
 
   const isAdmin = role === 'admin';
   const isNavLinkSmall = isMobile ? false : !drawerExpanded;

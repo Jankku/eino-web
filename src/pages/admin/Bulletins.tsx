@@ -17,7 +17,7 @@ import { useAllBulletins } from '../../data/admin/useAllBulletins';
 import AddIcon from '@mui/icons-material/Add';
 import CreateBulletinDialog from '../../components/admin/CreateBulletinDialog';
 import { useToggle } from '@uidotdev/usehooks';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import DeleteBulletinDialog from '../../components/admin/DeleteBulletinDialog';
 import { bulletinVisibilities, DbBulletin } from '../../models/bulletin';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -64,138 +64,127 @@ export default function Bulletins() {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<string>();
 
-  const processRowUpdate = useCallback(
-    (newRow: DbBulletin, oldRow: DbBulletin) => {
-      const parsedBulletin = updateBulletinSchema.parse({
-        ...newRow,
-        condition: newRow.visibility === 'condition' ? newRow.condition : null,
-      });
-      updateBulletin.mutate(parsedBulletin, {
-        onSuccess: (message) => {
-          showSuccessSnackbar(message);
-        },
-        onError: async (error) => {
-          const errors = await parseError(error as HTTPError);
-          showErrorSnackbar(errors[0].message);
-        },
-      });
-      return oldRow;
-    },
-    [showErrorSnackbar, showSuccessSnackbar, updateBulletin],
-  );
+  const processRowUpdate = (newRow: DbBulletin, oldRow: DbBulletin) => {
+    const parsedBulletin = updateBulletinSchema.parse({
+      ...newRow,
+      condition: newRow.visibility === 'condition' ? newRow.condition : null,
+    });
+    updateBulletin.mutate(parsedBulletin, {
+      onSuccess: (message) => {
+        showSuccessSnackbar(message);
+      },
+      onError: async (error) => {
+        const errors = await parseError(error as HTTPError);
+        showErrorSnackbar(errors[0].message);
+      },
+    });
+    return oldRow;
+  };
 
-  const processRowUpdateError = useCallback(
-    (error: Error) => showErrorSnackbar(error.message),
-    [showErrorSnackbar],
-  );
+  const processRowUpdateError = (error: Error) => showErrorSnackbar(error.message);
 
-  const handleRowModesModelChange = useCallback((newRowModesModel: GridRowModesModel) => {
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
-  }, []);
+  };
 
-  const columns: GridColDef[] = useMemo(
-    () => [
-      { field: 'title', headerName: 'Title', width: 150, editable: true, hideSortIcons: true },
-      { field: 'message', headerName: 'Message', width: 250, editable: true, hideSortIcons: true },
-      { field: 'name', headerName: 'Name', width: 80, editable: true, hideSortIcons: true },
-      {
-        field: 'type',
-        headerName: 'Type',
-        width: 90,
-        editable: true,
-        hideSortIcons: true,
-        type: 'singleSelect',
-        valueOptions: [
-          { value: 'success', label: 'Success' },
-          { value: 'info', label: 'Info' },
-          { value: 'warning', label: 'Warning' },
-          { value: 'error', label: 'Error' },
-        ],
-        renderCell: ({ row }) => (
-          <Chip
-            color="default"
-            variant="filled"
-            size="small"
-            label={capitalize(row.type)}
-            sx={{ height: 23 }}
-          />
-        ),
-      },
-      {
-        field: 'visibility',
-        headerName: 'Visibility',
-        minWidth: 150,
-        editable: true,
-        hideSortIcons: true,
-        type: 'singleSelect',
-        valueOptions: bulletinVisibilities.map((visibility) => ({
-          value: visibility,
-          label: capitalize(visibility),
-        })),
-        renderCell: ({ row }) => (
-          <Chip
-            color="default"
-            variant="filled"
-            size="small"
-            label={capitalize(row.visibility)}
-            sx={{ height: 23 }}
-          />
-        ),
-      },
-      {
-        field: 'condition',
-        editable: true,
-        hideSortIcons: true,
-        headerName: 'Condition',
-        minWidth: 100,
-      },
-      {
-        field: 'start_date',
-        headerName: 'Start date',
-        editable: true,
-        hideSortIcons: true,
-        width: 160,
-        type: 'dateTime',
-        valueFormatter: dateValueFormatter,
-        valueParser: dateToISOStringParser,
-      },
-      {
-        field: 'end_date',
-        headerName: 'End date',
-        editable: true,
-        hideSortIcons: true,
-        width: 160,
-        type: 'dateTime',
-        valueFormatter: dateValueFormatter,
-        valueParser: dateToISOStringParser,
-      },
-      {
-        field: 'created_on',
-        headerName: 'Created',
-        width: 160,
-        valueFormatter: dateValueFormatter,
-      },
-      {
-        field: 'updated_on',
-        headerName: 'Updated',
-        width: 160,
-        valueFormatter: dateValueFormatter,
-      },
-      {
-        field: 'actions',
-        type: 'actions',
-        headerName: 'Actions',
-        width: 120,
-        hideSortIcons: true,
-        cellClassName: 'actions',
-        getActions: ({ id }) =>
-          getRowActions(id, rowModesModel, setRowModesModel, (id) =>
-            setRowIdToDelete(id as string),
-          ),
-      },
-    ],
-    [rowModesModel],
-  );
+  const columns: GridColDef[] = [
+    { field: 'title', headerName: 'Title', width: 150, editable: true, hideSortIcons: true },
+    { field: 'message', headerName: 'Message', width: 250, editable: true, hideSortIcons: true },
+    { field: 'name', headerName: 'Name', width: 80, editable: true, hideSortIcons: true },
+    {
+      field: 'type',
+      headerName: 'Type',
+      width: 90,
+      editable: true,
+      hideSortIcons: true,
+      type: 'singleSelect',
+      valueOptions: [
+        { value: 'success', label: 'Success' },
+        { value: 'info', label: 'Info' },
+        { value: 'warning', label: 'Warning' },
+        { value: 'error', label: 'Error' },
+      ],
+      renderCell: ({ row }) => (
+        <Chip
+          color="default"
+          variant="filled"
+          size="small"
+          label={capitalize(row.type)}
+          sx={{ height: 23 }}
+        />
+      ),
+    },
+    {
+      field: 'visibility',
+      headerName: 'Visibility',
+      minWidth: 150,
+      editable: true,
+      hideSortIcons: true,
+      type: 'singleSelect',
+      valueOptions: bulletinVisibilities.map((visibility) => ({
+        value: visibility,
+        label: capitalize(visibility),
+      })),
+      renderCell: ({ row }) => (
+        <Chip
+          color="default"
+          variant="filled"
+          size="small"
+          label={capitalize(row.visibility)}
+          sx={{ height: 23 }}
+        />
+      ),
+    },
+    {
+      field: 'condition',
+      editable: true,
+      hideSortIcons: true,
+      headerName: 'Condition',
+      minWidth: 100,
+    },
+    {
+      field: 'start_date',
+      headerName: 'Start date',
+      editable: true,
+      hideSortIcons: true,
+      width: 160,
+      type: 'dateTime',
+      valueFormatter: dateValueFormatter,
+      valueParser: dateToISOStringParser,
+    },
+    {
+      field: 'end_date',
+      headerName: 'End date',
+      editable: true,
+      hideSortIcons: true,
+      width: 160,
+      type: 'dateTime',
+      valueFormatter: dateValueFormatter,
+      valueParser: dateToISOStringParser,
+    },
+    {
+      field: 'created_on',
+      headerName: 'Created',
+      width: 160,
+      valueFormatter: dateValueFormatter,
+    },
+    {
+      field: 'updated_on',
+      headerName: 'Updated',
+      width: 160,
+      valueFormatter: dateValueFormatter,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 120,
+      hideSortIcons: true,
+      cellClassName: 'actions',
+      getActions: ({ id }) =>
+        getRowActions(id, rowModesModel, setRowModesModel, (id) => setRowIdToDelete(id as string)),
+    },
+  ];
 
   return (
     <>
@@ -206,7 +195,7 @@ export default function Bulletins() {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={toggleCreateBulletinDialog as () => void}
+            onClick={() => toggleCreateBulletinDialog()}
           >
             Create
           </Button>

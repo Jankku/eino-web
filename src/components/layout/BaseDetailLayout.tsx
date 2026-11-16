@@ -13,7 +13,6 @@ import { Link, useLocation } from 'react-router';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { useMemo } from 'react';
 
 type BaseDetailLayoutProps = {
   imageUrl: string | null;
@@ -35,10 +34,7 @@ export default function BaseDetailLayout({
   const isMobile = useIsMobile();
   const location = useLocation();
 
-  const backUrl = useMemo(
-    () => location.pathname.split('/').slice(0, -1).join('/') + location.search,
-    [location],
-  );
+  const backUrl = location.pathname.split('/').slice(0, -1).join('/') + location.search;
 
   return (
     <Container fixed disableGutters={!isMobile} maxWidth="sm">

@@ -21,7 +21,7 @@ export default function DateTimePicker({
   name,
   label,
   slotProps,
-  fullWidth = true,
+  fullWidth,
   ...rest
 }: DateTimePickerProps) {
   const { control } = useFormContext();
@@ -38,7 +38,7 @@ export default function DateTimePicker({
             {...rest}
             name={name}
             value={typeof value === 'string' && value ? DateTime.fromISO(value) : null}
-            onChange={(date) => onChange(DateTime.fromISO(date as unknown as string).toISO())}
+            onChange={(date) => onChange(date?.toISO() ?? null)}
             label={label}
             inputRef={ref}
             slotProps={{
@@ -50,7 +50,7 @@ export default function DateTimePicker({
                     : slotProps?.textField;
 
                 return {
-                  fullWidth,
+                  fullWidth: fullWidth ?? true,
                   id: inputId,
                   ...textFieldProps,
                   ...(error && { error: true, helperText: error.message }),

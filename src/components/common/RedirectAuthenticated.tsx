@@ -1,13 +1,9 @@
-import { Navigate } from 'react-router';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { Navigate, Outlet } from 'react-router';
+import { useToken } from '../../hooks/useToken';
 import { useRedirect } from '../../hooks/useRedirect';
 
-type RedirectAuthenticatedProps = {
-  children: React.ReactNode;
-};
-
-export default function RedirectAuthenticated({ children }: RedirectAuthenticatedProps) {
-  const { isLoggedIn } = useAuthContext();
+export default function RedirectAuthenticated() {
+  const { isLoggedIn } = useToken();
   const redirectTo = useRedirect();
-  return isLoggedIn ? <Navigate replace to={redirectTo} /> : children;
+  return isLoggedIn ? <Navigate replace to={redirectTo} /> : <Outlet />;
 }

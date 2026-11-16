@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from 'react';
 import {
   clearTokens,
   getAccessToken,
@@ -54,39 +54,32 @@ const subscribe = (callback: () => void): (() => void) => {
   };
 };
 
+const setToken = (accessToken: string) => {
+  try {
+    setAccessToken(accessToken);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const setRefreshToken = (refreshToken: string) => {
+  try {
+    storeRefreshToken(refreshToken);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export function useToken() {
   const token = useSyncExternalStore(subscribe, getAccessTokenFromLocalStorage);
   const refreshToken = useSyncExternalStore(subscribe, getRefreshTokenFromLocalStorage);
 
-  const decodedToken = useMemo(() => decodeAccessToken(token), [token]);
+  const decodedToken = decodeAccessToken(token);
 
   const username = decodedToken?.username || '';
   const role = decodedToken?.role;
   const is2FAEnabled = decodedToken?.is2FAEnabled || false;
-  const isLoggedIn = useMemo(
-    () => isAccessTokenValid(token) && isRefreshTokenValid(refreshToken),
-    [token, refreshToken],
-  );
-
-  const setToken = useCallback((accessToken: string) => {
-    try {
-      setAccessToken(accessToken);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  const setRefreshToken = useCallback((refreshToken: string) => {
-    try {
-      storeRefreshToken(refreshToken);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  const removeTokens = useCallback(() => {
-    clearTokens();
-  }, []);
+  const isLoggedIn = isAccessTokenValid(token) && isRefreshTokenValid(refreshToken);
 
   return {
     token,
@@ -97,6 +90,6 @@ export function useToken() {
     is2FAEnabled,
     setToken,
     setRefreshToken,
-    removeTokens,
+    removeTokens: clearTokens,
   };
 }

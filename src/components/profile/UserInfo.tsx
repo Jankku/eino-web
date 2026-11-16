@@ -89,7 +89,7 @@ export function UserInfo({
                       outlineOffset: '4px',
                     },
                   }}
-                  onClick={toggleEditProfilePictureDialog as () => void}
+                  onClick={() => toggleEditProfilePictureDialog()}
                 >
                   <Avatar
                     src={getProfilePictureUrl(profilePicturePath)}
@@ -111,7 +111,7 @@ export function UserInfo({
                 startIcon={<ShareRoundedIcon />}
                 variant="text"
                 color="primary"
-                onClick={toggleShareDialog as () => void}
+                onClick={() => toggleShareDialog()}
               >
                 Share profile
               </Button>
@@ -151,7 +151,7 @@ export function UserInfo({
                   startIcon={<PersonRemoveIcon />}
                   variant="contained"
                   color="secondary"
-                  onClick={toggleDeleteAccountDialog as () => void}
+                  onClick={() => toggleDeleteAccountDialog()}
                 >
                   Delete account
                 </Button>
@@ -189,7 +189,7 @@ export function UserInfo({
                       startIcon={<AlternateEmailIcon />}
                       variant="contained"
                       color="primary"
-                      onClick={toggleChangeEmailDialog as () => void}
+                      onClick={() => toggleChangeEmailDialog()}
                     >
                       Update email
                     </Button>
@@ -199,7 +199,7 @@ export function UserInfo({
                     startIcon={<AlternateEmailIcon />}
                     variant="contained"
                     color="primary"
-                    onClick={toggleChangeEmailDialog as () => void}
+                    onClick={() => toggleChangeEmailDialog()}
                   >
                     Add email
                   </Button>
@@ -226,7 +226,7 @@ export function UserInfo({
                     startIcon={<RemoveModeratorIcon />}
                     variant="contained"
                     color="secondary"
-                    onClick={toggleDisable2FADialog as () => void}
+                    onClick={() => toggleDisable2FADialog()}
                   >
                     Disable 2FA
                   </Button>
@@ -235,7 +235,7 @@ export function UserInfo({
                     startIcon={<ShieldOutlinedIcon />}
                     variant="contained"
                     color="primary"
-                    onClick={toggleEnable2FADialog as () => void}
+                    onClick={() => toggleEnable2FADialog()}
                   >
                     Enable 2FA
                   </Button>
@@ -251,7 +251,7 @@ export function UserInfo({
                     startIcon={<DownloadIcon />}
                     variant="contained"
                     color="primary"
-                    onClick={toggleExportDialog as () => void}
+                    onClick={() => toggleExportDialog()}
                   >
                     Export
                   </Button>
@@ -259,7 +259,7 @@ export function UserInfo({
                     startIcon={<UploadIcon />}
                     variant="contained"
                     color="primary"
-                    onClick={toggleImportDialog as () => void}
+                    onClick={() => toggleImportDialog()}
                   >
                     Import
                   </Button>

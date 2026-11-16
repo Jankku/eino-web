@@ -56,7 +56,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto',
+    fontFamily: '"Roboto", "Helvetica Neue", Arial, sans-serif',
   },
   breakpoints: {
     values: {

@@ -14,7 +14,7 @@ import {
 } from '@mui/x-data-grid';
 import AdminTableFrame from '../../components/admin/AdminTableFrame';
 import { User, useUsers } from '../../data/admin/useUsers';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
@@ -66,169 +66,156 @@ export default function Users() {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
 
-  const processRowUpdate = useCallback(
-    (newRow: User, oldRow: User) => {
-      const parsedUser = updateUserSchema.parse(newRow);
-      updateUser.mutate(parsedUser, {
-        onSuccess: (message) => {
-          showSuccessSnackbar(message);
-        },
-        onError: async (error) => {
-          const errors = await parseError(error as HTTPError);
-          showErrorSnackbar(errors[0].message);
-        },
-      });
-      return oldRow;
-    },
-    [showErrorSnackbar, showSuccessSnackbar, updateUser],
-  );
+  const processRowUpdate = (newRow: User, oldRow: User) => {
+    const parsedUser = updateUserSchema.parse(newRow);
+    updateUser.mutate(parsedUser, {
+      onSuccess: (message) => {
+        showSuccessSnackbar(message);
+      },
+      onError: async (error) => {
+        const errors = await parseError(error as HTTPError);
+        showErrorSnackbar(errors[0].message);
+      },
+    });
+    return oldRow;
+  };
 
-  const processRowUpdateError = useCallback(
-    (error: Error) => showErrorSnackbar(error.message),
-    [showErrorSnackbar],
-  );
+  const processRowUpdateError = (error: Error) => showErrorSnackbar(error.message);
 
-  const handleRowModesModelChange = useCallback((newRowModesModel: GridRowModesModel) => {
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
-  }, []);
+  };
 
-  const onCellDoubleClick = useCallback(
-    (params: GridCellParams) => {
-      if (params.field === 'disabled_on') {
-        toggleUserState.mutate(
-          { id: params.id as string, disabled: !!params.value },
-          {
-            onSuccess: (message) => {
-              showSuccessSnackbar(message);
-            },
-            onError: async (error) => {
-              const errors = await parseError(error as HTTPError);
-              showErrorSnackbar(errors[0].message);
-            },
+  const onCellDoubleClick = (params: GridCellParams) => {
+    if (params.field === 'disabled_on') {
+      toggleUserState.mutate(
+        { id: params.id as string, disabled: !!params.value },
+        {
+          onSuccess: (message) => {
+            showSuccessSnackbar(message);
           },
-        );
-      }
-    },
-    [showErrorSnackbar, showSuccessSnackbar, toggleUserState],
-  );
+          onError: async (error) => {
+            const errors = await parseError(error as HTTPError);
+            showErrorSnackbar(errors[0].message);
+          },
+        },
+      );
+    }
+  };
 
-  const columns: GridColDef[] = useMemo(
-    () => [
-      {
-        field: 'profile_picture_path',
-        headerName: 'Profile picture',
-        width: 60,
-        type: 'string',
-        editable: true,
-        hideSortIcons: true,
-        renderCell: ({ value }) => (
-          <Avatar src={getProfilePictureUrl(value)} sx={{ mt: 1, width: 40, height: 40 }} />
-        ),
-      },
-      {
-        field: 'role_id',
-        headerName: 'Role',
-        width: 80,
-        type: 'singleSelect',
-        valueOptions: [
-          { value: 1, label: 'Admin' },
-          { value: 2, label: 'Basic' },
-          { value: 3, label: 'Demo' },
-        ],
-        editable: true,
-        hideSortIcons: true,
-        renderCell: ({ row }) => (
-          <Chip
-            color={row.role === 'admin' ? 'primary' : 'default'}
-            variant="filled"
-            size="small"
-            label={capitalize(row.role)}
-            sx={{ height: 23 }}
-          />
-        ),
-      },
-      {
-        field: 'username',
-        headerName: 'Username',
-        maxWidth: 300,
-        flex: 2,
-        type: 'string',
-        editable: true,
-        hideSortIcons: true,
-      },
-      {
-        field: 'email',
-        headerName: 'Email',
-        width: 200,
-        type: 'string',
-        editable: true,
-        hideSortIcons: true,
-      },
-      {
-        field: 'email_verified_on',
-        headerName: 'Email verified',
-        width: 150,
-        valueParser: dateToISOStringParser,
-        valueFormatter: dateValueFormatter,
-        type: 'dateTime',
-        editable: true,
-        hideSortIcons: true,
-      },
-      {
-        field: 'totp_enabled_on',
-        headerName: '2FA enabled',
-        width: 150,
-        valueFormatter: dateValueFormatter,
-        type: 'dateTime',
-        editable: true,
-        hideSortIcons: true,
-      },
-      {
-        field: 'argon2id_migrated',
-        headerName: 'Argon2id',
-        description: 'Checked means bcrypt to Argon2id migration completed',
-        type: 'boolean',
-        width: 110,
-        editable: false,
-        hideSortIcons: true,
-        valueFormatter: booleanFormatter,
-      },
-      {
-        field: 'last_login_on',
-        headerName: 'Last login',
-        width: 150,
-        hideSortIcons: true,
-        valueFormatter: dateValueFormatter,
-      },
-      {
-        field: 'created_on',
-        headerName: 'Registered',
-        width: 150,
-        hideSortIcons: true,
-        valueFormatter: dateValueFormatter,
-      },
-      {
-        field: 'disabled_on',
-        headerName: 'Disabled',
-        description: 'Is the user account disabled',
-        type: 'boolean',
-        minWidth: 80,
-        hideSortIcons: true,
-        valueFormatter: booleanFormatter,
-      },
-      {
-        field: 'actions',
-        type: 'actions',
-        headerName: 'Actions',
-        width: 120,
-        hideSortIcons: true,
-        cellClassName: 'actions',
-        getActions: ({ id }) =>
-          getRowActions(id, rowModesModel, setRowModesModel, setRowIdToDelete),
-      },
-    ],
-    [rowModesModel],
-  );
+  const columns: GridColDef[] = [
+    {
+      field: 'profile_picture_path',
+      headerName: 'Profile picture',
+      width: 60,
+      type: 'string',
+      editable: true,
+      hideSortIcons: true,
+      renderCell: ({ value }) => (
+        <Avatar src={getProfilePictureUrl(value)} sx={{ mt: 1, width: 40, height: 40 }} />
+      ),
+    },
+    {
+      field: 'role_id',
+      headerName: 'Role',
+      width: 80,
+      type: 'singleSelect',
+      valueOptions: [
+        { value: 1, label: 'Admin' },
+        { value: 2, label: 'Basic' },
+        { value: 3, label: 'Demo' },
+      ],
+      editable: true,
+      hideSortIcons: true,
+      renderCell: ({ row }) => (
+        <Chip
+          color={row.role === 'admin' ? 'primary' : 'default'}
+          variant="filled"
+          size="small"
+          label={capitalize(row.role)}
+          sx={{ height: 23 }}
+        />
+      ),
+    },
+    {
+      field: 'username',
+      headerName: 'Username',
+      maxWidth: 300,
+      flex: 2,
+      type: 'string',
+      editable: true,
+      hideSortIcons: true,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+      type: 'string',
+      editable: true,
+      hideSortIcons: true,
+    },
+    {
+      field: 'email_verified_on',
+      headerName: 'Email verified',
+      width: 150,
+      valueParser: dateToISOStringParser,
+      valueFormatter: dateValueFormatter,
+      type: 'dateTime',
+      editable: true,
+      hideSortIcons: true,
+    },
+    {
+      field: 'totp_enabled_on',
+      headerName: '2FA enabled',
+      width: 150,
+      valueFormatter: dateValueFormatter,
+      type: 'dateTime',
+      editable: true,
+      hideSortIcons: true,
+    },
+    {
+      field: 'argon2id_migrated',
+      headerName: 'Argon2id',
+      description: 'Checked means bcrypt to Argon2id migration completed',
+      type: 'boolean',
+      width: 110,
+      editable: false,
+      hideSortIcons: true,
+      valueFormatter: booleanFormatter,
+    },
+    {
+      field: 'last_login_on',
+      headerName: 'Last login',
+      width: 150,
+      hideSortIcons: true,
+      valueFormatter: dateValueFormatter,
+    },
+    {
+      field: 'created_on',
+      headerName: 'Registered',
+      width: 150,
+      hideSortIcons: true,
+      valueFormatter: dateValueFormatter,
+    },
+    {
+      field: 'disabled_on',
+      headerName: 'Disabled',
+      description: 'Is the user account disabled',
+      type: 'boolean',
+      minWidth: 80,
+      hideSortIcons: true,
+      valueFormatter: booleanFormatter,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 120,
+      hideSortIcons: true,
+      cellClassName: 'actions',
+      getActions: ({ id }) => getRowActions(id, rowModesModel, setRowModesModel, setRowIdToDelete),
+    },
+  ];
 
   return (
     <>

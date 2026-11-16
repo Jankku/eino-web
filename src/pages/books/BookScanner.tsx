@@ -1,6 +1,5 @@
 import Head from '../../components/common/Head';
-import { useId } from 'react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import Quagga from '@ericblade/quagga2';
 import { BarcodeScanner } from '../../components/common/BarcodeScanner';
 import {
@@ -60,34 +59,22 @@ export default function BookScanner() {
     };
 
     const initCamera = async () => {
-      try {
-        if (cancelled) {
-          return;
-        }
+      const cameras = await enumerateCameras().catch(() => null);
+      if (cancelled) {
+        return;
+      }
 
-        const cameras = await enumerateCameras();
-        if (cancelled) {
-          return;
-        }
-
-        if (cameras.length === 0) {
-          setCameraError(
-            'No cameras found. Connect a camera and allow camera access in your browser.',
-          );
-          return;
-        }
-
+      if (!cameras) {
+        setCameraError('Unable to load camera devices. Check your browser camera permissions.');
+      } else if (cameras.length === 0) {
+        setCameraError(
+          'No cameras found. Connect a camera and allow camera access in your browser.',
+        );
+      } else {
         setCameras(cameras);
         setCameraId(findBackCamera(cameras)?.deviceId);
-      } catch {
-        if (!cancelled) {
-          setCameraError('Unable to load camera devices. Check your browser camera permissions.');
-        }
-      } finally {
-        if (!cancelled) {
-          setCameraReady(true);
-        }
       }
+      setCameraReady(true);
     };
 
     initCamera();
@@ -98,22 +85,22 @@ export default function BookScanner() {
     };
   }, []);
 
-  const onCameraError = useCallback(() => {
+  const onCameraError = () => {
     setCameraError(
       'Unable to start the camera. Allow camera access in your browser and make sure the camera is not in use by another app.',
     );
-  }, []);
+  };
 
-  const restartScanner = useCallback(() => {
+  const restartScanner = () => {
     stopQuaggaCamera();
     setInitialValues(undefined);
     setCreateDialogOpen(false);
     isbnSearchMutation.reset();
     isScanLockedRef.current = false;
     setScannerKey((prev) => prev + 1);
-  }, [isbnSearchMutation]);
+  };
 
-  const onTorchClick = useCallback(async () => {
+  const onTorchClick = async () => {
     const newTorch = !torchOnRef.current;
 
     const track = Quagga.CameraAccess.getActiveTrack();
@@ -124,37 +111,34 @@ export default function BookScanner() {
       await track.applyConstraints({ advanced: [torchConstraint] });
       torchOnRef.current = newTorch;
     }
-  }, []);
+  };
 
-  const onDetected = useCallback(
-    (isbn: string) => {
-      if (isScanLockedRef.current) {
-        return;
-      }
+  const onDetected = (isbn: string) => {
+    if (isScanLockedRef.current) {
+      return;
+    }
 
-      isScanLockedRef.current = true;
-      setInitialValues({ isbn });
-      setCreateDialogOpen(true);
-      stopQuaggaCamera();
+    isScanLockedRef.current = true;
+    setInitialValues({ isbn });
+    setCreateDialogOpen(true);
+    stopQuaggaCamera();
 
-      isbnSearchMutation.mutate(isbn, {
-        onSuccess: (book) => {
-          if (!book) {
-            return;
-          }
-          setInitialValues((prev) => ({
-            ...prev,
-            ...book,
-            isbn: prev?.isbn ?? book.isbn,
-          }));
-        },
-        onError: () => {
-          showErrorSnackbar('Failed to fetch book details for scanned ISBN');
-        },
-      });
-    },
-    [isbnSearchMutation, showErrorSnackbar],
-  );
+    isbnSearchMutation.mutate(isbn, {
+      onSuccess: (book) => {
+        if (!book) {
+          return;
+        }
+        setInitialValues((prev) => ({
+          ...prev,
+          ...book,
+          isbn: prev?.isbn ?? book.isbn,
+        }));
+      },
+      onError: () => {
+        showErrorSnackbar('Failed to fetch book details for scanned ISBN');
+      },
+    });
+  };
 
   const onCreateSuccess = () => {
     isRedirectingRef.current = true;

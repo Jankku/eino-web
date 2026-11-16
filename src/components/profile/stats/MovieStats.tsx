@@ -5,7 +5,7 @@ import { BarChart } from './BarChart';
 import { StatsItem } from './StatsItem';
 import { StatusProgressBar } from './StatusProgressBar';
 import { Profile } from '../../../data/profile/profile.types';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import ItemListDialog from '../ItemListDialog';
 import { getProgressValues } from '../../../utils/chartUtils';
 import { useMovies } from '../../../data/movies/useMovies';
@@ -30,15 +30,9 @@ export function MovieStats({ stats }: MovieStatsProps) {
     filter: `score:=:${selectedScore}`,
   });
 
-  const labels = useMemo(
-    () => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (isMobile ? score : `⭐${score}`)),
-    [isMobile],
-  );
-  const scoreCounts = useMemo(
-    () => stats.score_distribution.map((item) => item.count),
-    [stats.score_distribution],
-  );
-  const progressValues = useMemo(() => getProgressValues(stats.count), [stats.count]);
+  const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (isMobile ? score : `⭐${score}`));
+  const scoreCounts = stats.score_distribution.map((item) => item.count);
+  const progressValues = getProgressValues(stats.count);
 
   const onBarClick = (index: number) => {
     setSelectedScore(index + 1);

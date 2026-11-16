@@ -30,7 +30,7 @@ export default function DatePicker({ name, label, slotProps, ...rest }: DatePick
             {...rest}
             name={name}
             value={value ? DateTime.fromISO(value) : null}
-            onChange={(date) => onChange(DateTime.fromISO(date as unknown as string).toISO())}
+            onChange={(date) => onChange(date?.toISO() ?? null)}
             label={label}
             inputRef={ref}
             slotProps={{

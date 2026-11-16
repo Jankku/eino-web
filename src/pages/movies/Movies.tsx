@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useLayoutEffect, useMemo } from 'react';
+import { startTransition, useDeferredValue, useLayoutEffect } from 'react';
 import { Box, Button, SelectChangeEvent, Stack } from '@mui/material';
 import AddMovieDialog from '../../components/movies/AddMovieDialog';
 import MovieList from '../../components/movies/MovieList';
@@ -32,10 +32,7 @@ export default function Movies() {
   const [addDialogOpen, toggleAddDialog] = useToggle(false);
   // Local-storage updates are synchronous, so defer the complete query selection
   // to keep the current list and detail mounted while the next results load.
-  const listParams = useMemo(
-    () => ({ status, sort, order, filter, page, pageSize }),
-    [status, sort, order, filter, page, pageSize],
-  );
+  const listParams = { status, sort, order, filter, page, pageSize };
   const deferredListParams = useDeferredValue(listParams);
   const { data, countByStatus, pagination, isFetching } = useMoviesSuspense(deferredListParams);
   const isLoading = isFetching || listParams !== deferredListParams;
@@ -131,7 +128,7 @@ export default function Movies() {
                       <Button
                         variant="contained"
                         startIcon={<AddIcon />}
-                        onClick={toggleAddDialog as () => void}
+                        onClick={() => toggleAddDialog()}
                       >
                         Create
                       </Button>
@@ -173,7 +170,7 @@ export default function Movies() {
               <AddMovieDialog visible={addDialogOpen} closeDialog={toggleAddDialog} />
             ) : undefined}
 
-            {isMobile ? <CreateFab onClick={toggleAddDialog as () => void} /> : null}
+            {isMobile ? <CreateFab onClick={() => toggleAddDialog()} /> : null}
           </Box>
         }
         detail={<Outlet />}

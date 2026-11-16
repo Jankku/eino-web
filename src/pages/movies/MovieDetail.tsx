@@ -63,8 +63,8 @@ export default function MovieDetail() {
   );
 
   const copyToClipboard = async () => {
+    const contents = data.director ? `${data.director} - ${data.title}` : data.title;
     try {
-      const contents = data.director ? `${data.director} - ${data.title}` : data.title;
       await navigator.clipboard.writeText(contents);
       showSuccessSnackbar('Title and director copied to clipboard');
     } catch {
@@ -147,7 +147,7 @@ export default function MovieDetail() {
               <Button
                 variant="contained"
                 color="success"
-                onClick={toggleCompleteDialog as () => void}
+                onClick={() => toggleCompleteDialog()}
                 startIcon={<DoneIcon />}
               >
                 Complete
@@ -156,7 +156,7 @@ export default function MovieDetail() {
             <Button
               variant="contained"
               color="primary"
-              onClick={toggleEditDialog as () => void}
+              onClick={() => toggleEditDialog()}
               startIcon={<CreateIcon />}
             >
               Edit

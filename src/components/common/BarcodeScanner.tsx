@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Quagga, {
   type QuaggaJSCodeReader,
   type QuaggaJSResultObject,
@@ -41,8 +41,8 @@ interface ScannerProps {
 export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: ScannerProps) {
   const detectionHistoryRef = useRef<string[]>([]);
 
-  const errorCheck = useCallback(
-    (result: QuaggaJSResultObject) => {
+  useEffect(() => {
+    const errorCheck = (result: QuaggaJSResultObject) => {
       const { code } = result.codeResult;
       if (!code) {
         return;
@@ -71,11 +71,8 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: Sc
         detectionHistoryRef.current = [];
         onDetected?.(isbn);
       }
-    },
-    [onDetected],
-  );
+    };
 
-  useEffect(() => {
     let ignoreStart = false;
     const init = async () => {
       // oxlint-disable-next-line @eslint-react/web-api-no-leaked-timeout
@@ -135,7 +132,7 @@ export function BarcodeScanner({ scannerRef, cameraId, onDetected, onError }: Sc
       Quagga.offDetected(errorCheck);
       stopQuaggaCamera();
     };
-  }, [cameraId, onError, scannerRef, errorCheck]);
+  }, [cameraId, onDetected, onError, scannerRef]);
 
   return null;
 }

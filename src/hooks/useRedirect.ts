@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
-import { useAuthContext } from '../providers/AuthenticationProvider';
+import { useToken } from './useToken';
 
 const ALLOWED_REDIRECTS = ['/books', '/movies', '/profile'];
 
@@ -23,7 +22,7 @@ export function getLoginRedirect(accessToken: string, search: string) {
 
 export function useRedirect() {
   const location = useLocation();
-  const { role } = useAuthContext();
+  const { role } = useToken();
   const redirectTo = new URLSearchParams(location.search).get('redirectTo');
-  return useMemo(() => getRedirect(redirectTo, role), [redirectTo, role]);
+  return getRedirect(redirectTo, role);
 }

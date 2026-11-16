@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Box, Button, Collapse, useMediaQuery, useTheme } from '@mui/material';
 import { useBulletins } from '../../data/bulletins/useBulletins';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
+import { useToken } from '../../hooks/useToken';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useNavigate } from 'react-router';
 import { BulletinCondition } from '../../models/bulletin';
@@ -13,7 +13,7 @@ type BulletinsProps = {
 
 export default function Bulletins({ drawerWidth }: BulletinsProps) {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn } = useToken();
   const theme = useTheme();
   const isSmOrLarger = useMediaQuery(theme.breakpoints.up('sm'));
   const isLgOrSmaller = useMediaQuery(theme.breakpoints.down('xl'));

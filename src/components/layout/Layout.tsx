@@ -1,5 +1,4 @@
 import { focusNavigationTarget, useNavigationFocus } from '../../hooks/useNavigationFocus';
-import { useCallback, useMemo } from 'react';
 import { Outlet } from 'react-router';
 import Drawer from './Drawer';
 import Appbar from './Appbar';
@@ -16,12 +15,9 @@ export default function Layout() {
   const matchesXxl = useMediaQuery(breakpoints.only('xxl'));
   const [drawerOpen, setDrawerOpen] = useToggle(false);
   const [drawerExpanded, setDrawerExpanded] = useLocalStorage('drawerExpanded', false);
-  const toggleDrawer = useCallback(() => setDrawerOpen(), [setDrawerOpen]);
+  const toggleDrawer = () => setDrawerOpen();
 
-  const drawerWidth = useMemo(
-    () => (isMobile ? 240 : !drawerExpanded ? 64 : matchesXxl ? 240 : 210),
-    [isMobile, drawerExpanded, matchesXxl],
-  );
+  const drawerWidth = isMobile ? 240 : !drawerExpanded ? 64 : matchesXxl ? 240 : 210;
 
   return (
     <>

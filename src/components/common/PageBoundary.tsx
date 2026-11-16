@@ -1,6 +1,7 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense, useState, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import PageFallback from './PageFallback';
 
@@ -21,14 +22,21 @@ function Wait({ children }: { children: React.ReactNode }) {
 }
 
 type PageBoundaryProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
+/**
+ * Error and suspense boundary for a page. Without children it renders the
+ * matched child route, so it can be used as a layout route element.
+ */
 function PageBoundary({ children }: PageBoundaryProps) {
+  // A layout boundary is shared by sibling routes, so clear errors on navigation.
+  const { pathname } = useLocation();
+
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
-        <ErrorBoundary onReset={reset} FallbackComponent={PageFallback}>
+        <ErrorBoundary onReset={reset} resetKeys={[pathname]} FallbackComponent={PageFallback}>
           <Suspense
             fallback={
               <Wait>
@@ -44,7 +52,7 @@ function PageBoundary({ children }: PageBoundaryProps) {
               </Wait>
             }
           >
-            {children}
+            {children ?? <Outlet />}
           </Suspense>
         </ErrorBoundary>
       )}

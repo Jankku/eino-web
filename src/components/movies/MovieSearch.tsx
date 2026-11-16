@@ -1,11 +1,11 @@
 import { requestNavigationFocus } from '../../hooks/useNavigationFocus';
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import { useState } from 'react';
+import { useDebounce } from '@uidotdev/usehooks';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import SearchTextField from '../common/SearchTextField';
 import { useMovieSearch } from '../../data/movies/useMovieSearch';
 import SearchResult from '../common/SearchResult';
-import { useSearch } from '../../hooks/useSearch';
 import { MovieWithId } from '../../models/movie';
 
 function MovieSearch() {
@@ -13,16 +13,15 @@ function MovieSearch() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { isPending, mutate } = useMovieSearch();
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm.trim(), 200);
+  const { data: searchResults, isFetching } = useMovieSearch(debouncedSearchTerm);
 
   const onSelect = (item: MovieWithId) => {
     const itemPath = `/movies/${item.movie_id}`;
     navigate({ pathname: itemPath, search: searchParams.toString() });
     if (pathname === itemPath) requestNavigationFocus(itemPath);
   };
-
-  const { searchTerm, setSearchTerm, searchResults, selectedItem, setSelectedItem } =
-    useSearch<MovieWithId>(mutate, onSelect);
 
   return (
     <Autocomplete
@@ -36,20 +35,20 @@ function MovieSearch() {
       size="small"
       sx={{ width: '100%' }}
       open={isOpen}
-      loading={isPending}
+      loading={isFetching}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
-      options={searchResults}
+      options={searchResults ?? []}
       isOptionEqualToValue={(option, value) =>
         typeof value !== 'string' && option.movie_id === value.movie_id
       }
-      value={selectedItem ?? ''}
+      value=""
       onChange={(_event, newValue) => {
-        if (typeof newValue !== 'string') setSelectedItem(newValue);
+        if (newValue && typeof newValue !== 'string') onSelect(newValue);
       }}
       filterOptions={filterOptions}
       getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
-      inputValue={String(searchTerm)}
+      inputValue={searchTerm}
       onInputChange={(_e, value, reason) => {
         if (reason === 'input') setSearchTerm(value ?? '');
         if (['clear', 'reset'].includes(reason)) setSearchTerm('');
