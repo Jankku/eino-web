@@ -65,6 +65,11 @@ type ImportFileResult = {
   fileErrors: FileValidationError[];
 };
 
+// Some file pickers (e.g. Windows, Android) report an empty or generic MIME type for JSON files,
+// so fall back to the file extension. The content is still parsed and validated below.
+const isJsonFile = (file: File) =>
+  file.type === 'application/json' || file.type === '' || file.name.toLowerCase().endsWith('.json');
+
 export const readEinoImportFile = async (file: File): Promise<ImportFileResult> => {
   if (file.size > TEN_MB) {
     return {
@@ -91,7 +96,7 @@ export const readEinoImportFile = async (file: File): Promise<ImportFileResult> 
   }
 
   const textJson = stringToJSONSchema.safeParse(fileText);
-  if (file.type !== 'application/json' || !textJson.success) {
+  if (!isJsonFile(file) || !textJson.success) {
     return {
       preview: null,
       fileErrors: [{ code: 'invalid_file_type', message: 'File must be a JSON file' }],
