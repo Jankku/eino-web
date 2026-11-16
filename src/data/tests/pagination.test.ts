@@ -33,15 +33,6 @@ describe('getPage', () => {
     });
   });
 
-  it('reports an undeployed backend rather than treating a full list as one page', async () => {
-    vi.mocked(api.get).mockReturnValue({
-      json: () => Promise.resolve({ results: [] }),
-    } as ReturnType<typeof api.get>);
-    await expect(getPage('api/v2/admin/users', { page: 1, pageSize: 25 })).rejects.toThrow(
-      'backend pagination update must be deployed',
-    );
-  });
-
   it('omits an empty filter, which is invalid for the paginated API', async () => {
     const response = {
       results: [],

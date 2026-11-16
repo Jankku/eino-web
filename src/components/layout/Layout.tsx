@@ -15,7 +15,7 @@ export default function Layout() {
   const { breakpoints } = useTheme();
   const matchesXxl = useMediaQuery(breakpoints.only('xxl'));
   const [drawerOpen, setDrawerOpen] = useToggle(false);
-  const [drawerExpanded, setDrawerExpansed] = useLocalStorage('drawerExpanded', false);
+  const [drawerExpanded, setDrawerExpanded] = useLocalStorage('drawerExpanded', false);
   const toggleDrawer = useCallback(() => setDrawerOpen(), [setDrawerOpen]);
 
   const drawerWidth = useMemo(
@@ -44,7 +44,7 @@ export default function Layout() {
         drawerWidth={drawerWidth}
         drawerOpen={drawerOpen}
         drawerExpanded={drawerExpanded}
-        onDrawerExpand={() => setDrawerExpansed((oldValue) => !oldValue)}
+        onDrawerExpand={() => setDrawerExpanded((oldValue) => !oldValue)}
         toggleDrawer={toggleDrawer}
       >
         <Outlet />

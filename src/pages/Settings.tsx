@@ -56,7 +56,6 @@ export default function Settings() {
                   inputProps={{ id: bookStatusId }}
                   defaultValue={newBookStatus}
                   onChange={(e) => {
-                    console.log(String(e.target.value));
                     setNewBookStatus(e.target.value as Book['status']);
                   }}
                 >

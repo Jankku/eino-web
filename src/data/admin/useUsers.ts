@@ -37,5 +37,5 @@ export const useFindUser = (query: string) => {
     queryFn: usersQuery,
     staleTime: Infinity,
   });
-  return { users: data || [], user: data?.find(({ username }) => username.includes(query)) };
+  return { users: data || [] };
 };

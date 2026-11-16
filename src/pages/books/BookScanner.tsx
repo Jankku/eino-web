@@ -93,7 +93,6 @@ export default function BookScanner() {
     initCamera();
 
     return () => {
-      console.log('stopping cameras');
       cancelled = true;
       stopQuaggaCamera();
     };
@@ -168,7 +167,6 @@ export default function BookScanner() {
       setCreateDialogOpen(false);
       return;
     }
-    console.log('restarting scanner');
     restartScanner();
   };
 

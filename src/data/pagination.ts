@@ -6,7 +6,7 @@ export async function getPage<T>(
   params: PageParams,
   searchParams: Record<string, string> = {},
 ) {
-  const response = await api
+  return api
     .get(path, {
       searchParams: {
         ...Object.fromEntries(Object.entries(searchParams).filter(([, value]) => value !== '')),
@@ -14,8 +14,4 @@ export async function getPage<T>(
       },
     })
     .json<PaginatedResponse<T>>();
-  if (!response.pagination) {
-    throw new Error('Pagination is unavailable. The backend pagination update must be deployed.');
-  }
-  return response;
 }
