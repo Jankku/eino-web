@@ -1,5 +1,12 @@
 import { jwtDecode } from 'jwt-decode';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import {
+  clearTokens,
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken as storeRefreshToken,
+} from '../utils/tokenStorage';
 
 type DecodedToken = {
   userId: string;
@@ -8,12 +15,9 @@ type DecodedToken = {
   is2FAEnabled: boolean;
 };
 
-const ACCESS_TOKEN_KEY = 'accessToken';
-const REFRESH_TOKEN_KEY = 'refreshToken';
+const getAccessTokenFromLocalStorage = () => getAccessToken() as string;
 
-const getAccessTokenFromLocalStorage = () => localStorage.getItem(ACCESS_TOKEN_KEY) as string;
-
-const getRefreshTokenFromLocalStorage = () => localStorage.getItem(REFRESH_TOKEN_KEY) as string;
+const getRefreshTokenFromLocalStorage = () => getRefreshToken() as string;
 
 const decodeAccessToken = (token: string | null): DecodedToken | null => {
   if (!token) return null;
@@ -66,8 +70,7 @@ export function useToken() {
 
   const setToken = useCallback((accessToken: string) => {
     try {
-      localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-      window.dispatchEvent(new Event('storage'));
+      setAccessToken(accessToken);
     } catch (error) {
       console.error(error);
     }
@@ -75,17 +78,14 @@ export function useToken() {
 
   const setRefreshToken = useCallback((refreshToken: string) => {
     try {
-      localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-      window.dispatchEvent(new Event('storage'));
+      storeRefreshToken(refreshToken);
     } catch (error) {
       console.error(error);
     }
   }, []);
 
   const removeTokens = useCallback(() => {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    window.dispatchEvent(new Event('storage'));
+    clearTokens();
   }, []);
 
   return {

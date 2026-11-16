@@ -37,7 +37,11 @@ export const useUpdateDiscordAudit = () => {
     mutationFn: async (settings: Partial<DiscordAuditSettings>) => {
       // An older status request must not overwrite the confirmed PATCH response.
       await queryClient.cancelQueries({ queryKey });
-      const response = await api.patch(endpoint, { json: settings, retry: 0 }).json();
+      const response = await api.patch(endpoint, {
+        json: settings,
+        // No automatic retries (PATCH isn't retried by method), but leave room for the token refresh retry.
+        retry: { limit: 1, methods: [] },
+      }).json();
       return responseSchema.parse(response).results[0];
     },
     onSuccess: (status) => queryClient.setQueryData(queryKey, status),

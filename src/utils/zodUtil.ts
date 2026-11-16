@@ -1,4 +1,4 @@
-import { HTTPError } from 'ky';
+import { isHTTPError } from 'ky';
 import { z } from 'zod';
 
 export const zodFields = {
@@ -50,7 +50,19 @@ export const errorSchema = z.object({
   ),
 });
 
-export async function parseError(error: HTTPError) {
-  const parsedErrors = errorSchema.parse(error.data);
-  return parsedErrors.errors;
+export type ApiError = z.infer<typeof errorSchema>['errors'][number];
+
+const fallbackError = (message: string): ApiError[] => [{ name: 'unknown_error', message }];
+
+/**
+ * Extracts API errors from a request error. Always returns at least one error,
+ * falling back to a generic message for network errors, timeouts and unexpected responses.
+ */
+export async function parseError(error: unknown): Promise<ApiError[]> {
+  if (!isHTTPError(error)) {
+    return fallbackError('Could not reach the server. Please check your connection and try again.');
+  }
+  const parsed = errorSchema.safeParse(error.data);
+  if (parsed.success && parsed.data.errors.length > 0) return parsed.data.errors;
+  return fallbackError('Something went wrong. Please try again.');
 }
