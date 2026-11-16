@@ -11,7 +11,6 @@ import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { HTTPError } from 'ky';
 import TextField from '../form/TextField';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 
 const passwordFormSchema = z.object({
@@ -20,13 +19,13 @@ const passwordFormSchema = z.object({
 });
 
 type DeleteAccountDialogProps = {
+  is2FAEnabled: boolean;
   visible: boolean;
   closeDialog: () => void;
 };
 
-function DeleteAccountDialog({ visible, closeDialog }: DeleteAccountDialogProps) {
+function DeleteAccountDialog({ is2FAEnabled, visible, closeDialog }: DeleteAccountDialogProps) {
   const navigate = useNavigate();
-  const { is2FAEnabled } = useAuthContext();
   const { showSuccessSnackbar } = useCustomSnackbar();
   const formMethods = useForm({
     defaultValues: {

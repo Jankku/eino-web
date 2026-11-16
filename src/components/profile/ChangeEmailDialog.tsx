@@ -11,17 +11,21 @@ import { UpdateEmailBody, useUpdateEmail } from '../../data/profile/useUpdateEma
 import TextField from '../form/TextField';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useState } from 'react';
-import { useAuthContext } from '../../providers/AuthenticationProvider';
 
 type UpdateEmailDialogProps = {
   email: string | null;
+  is2FAEnabled: boolean;
   visible: boolean;
   closeDialog: () => void;
 };
 
-export default function ChangeEmailDialog({ email, visible, closeDialog }: UpdateEmailDialogProps) {
+export default function ChangeEmailDialog({
+  email,
+  is2FAEnabled,
+  visible,
+  closeDialog,
+}: UpdateEmailDialogProps) {
   const { showSuccessSnackbar } = useCustomSnackbar();
-  const { is2FAEnabled } = useAuthContext();
   const [emailFormSchema] = useState(() =>
     z
       .object({

@@ -281,6 +281,7 @@ export function UserInfo({
       {changeEmailDialogOpen ? (
         <ChangeEmailDialog
           email={email}
+          is2FAEnabled={!!totpEnabledOn}
           visible={changeEmailDialogOpen}
           closeDialog={toggleChangeEmailDialog}
         />
@@ -308,6 +309,7 @@ export function UserInfo({
 
       {deleteAccountDialogOpen ? (
         <DeleteAccountDialog
+          is2FAEnabled={!!totpEnabledOn}
           visible={deleteAccountDialogOpen}
           closeDialog={toggleDeleteAccountDialog}
         />
