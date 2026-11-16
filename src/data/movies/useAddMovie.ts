@@ -13,6 +13,7 @@ export const useAddMovie = () => {
     mutationFn: (movie: Movie) => addMovieQuery(movie),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 };

@@ -17,6 +17,7 @@ export const useUpdateMovie = (movieId: string) => {
     mutationFn: (editedMovie: Movie) => updateMovieQuery(movieId, editedMovie),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       queryClient.invalidateQueries({ queryKey: ['movie', movieId] });
     },
   });

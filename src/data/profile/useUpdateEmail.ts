@@ -15,6 +15,7 @@ export const useUpdateEmail = () => {
     mutationFn: updateEmailQuery,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['bulletins'] });
     },
   });
 };

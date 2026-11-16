@@ -10,7 +10,6 @@ import { parseError } from '../../utils/zodUtil';
 import { useImportData } from '../../data/profile/useImportData';
 import ErrorMessage from '../authentication/ErrorMessage';
 import { useRef, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import {
   byteFormatter,
@@ -39,7 +38,6 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
     reset: resetForm,
     formState: { errors },
   } = formMethods;
-  const queryClient = useQueryClient();
   const importData = useImportData();
   const { showSuccessSnackbar } = useCustomSnackbar();
 
@@ -76,7 +74,6 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
     importData.mutate(fileBlob, {
       onSuccess: (result) => {
         showSuccessSnackbar(result.message);
-        queryClient.refetchQueries();
         resetState();
       },
       onError: async (error) => {

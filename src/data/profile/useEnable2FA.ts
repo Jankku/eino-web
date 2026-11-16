@@ -16,6 +16,7 @@ export const useEnable2FA = () => {
     mutationFn: (twoFactorCode: string) => enable2FAQuery(twoFactorCode),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['bulletins'] });
     },
   });
 };

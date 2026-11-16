@@ -13,6 +13,7 @@ export const useAddBook = () => {
     mutationFn: (newBook: Book) => addBookQuery(newBook),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 };

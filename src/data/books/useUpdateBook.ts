@@ -17,6 +17,7 @@ export const useUpdateBook = (bookId: string) => {
     mutationFn: (editedBook: Book) => updateBookQuery(bookId, editedBook),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       queryClient.invalidateQueries({ queryKey: ['book', bookId] });
     },
   });

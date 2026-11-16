@@ -13,6 +13,7 @@ export const useVerifyEmail = () => {
     mutationFn: verifyEmailQuery,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['bulletins'] });
     },
   });
 };
