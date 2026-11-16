@@ -15,6 +15,15 @@ const getAccessTokenFromLocalStorage = () => localStorage.getItem(ACCESS_TOKEN_K
 
 const getRefreshTokenFromLocalStorage = () => localStorage.getItem(REFRESH_TOKEN_KEY) as string;
 
+const decodeAccessToken = (token: string | null): DecodedToken | null => {
+  if (!token) return null;
+  try {
+    return jwtDecode<DecodedToken>(token);
+  } catch {
+    return null;
+  }
+};
+
 const isAccessTokenValid = (token: string) => {
   try {
     jwtDecode(token, { header: true });
@@ -45,7 +54,7 @@ export function useToken() {
   const token = useSyncExternalStore(subscribe, getAccessTokenFromLocalStorage);
   const refreshToken = useSyncExternalStore(subscribe, getRefreshTokenFromLocalStorage);
 
-  const decodedToken = useMemo(() => (token ? (jwtDecode(token) as DecodedToken) : null), [token]);
+  const decodedToken = useMemo(() => decodeAccessToken(token), [token]);
 
   const username = decodedToken?.username || '';
   const role = decodedToken?.role;
