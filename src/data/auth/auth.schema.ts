@@ -6,9 +6,7 @@ export const credentialsSchema = z.object({
   password: zodFields.password,
 });
 
-export type LoginConfigRequest = z.infer<typeof credentialsSchema>;
-
-export type Credentials = LoginConfigRequest & {
+export type Credentials = z.infer<typeof credentialsSchema> & {
   twoFactorCode?: string;
 };
 

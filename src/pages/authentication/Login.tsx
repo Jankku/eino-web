@@ -9,7 +9,6 @@ import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
 import { parseError } from '../../utils/zodUtil';
 import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
-import { useLoginConfig } from '../../data/auth/useLoginConfig';
 import { getLoginRedirect } from '../../hooks/useRedirect';
 import Head from '../../components/common/Head';
 
@@ -29,32 +28,21 @@ export default function Login() {
     formState: { errors },
     setError,
   } = formMethods;
-  const loginConfig = useLoginConfig();
   const loginUser = useLoginUser();
 
-  const onSubmit = async (credentials: Credentials) => {
-    loginConfig.mutate(credentials, {
+  const onSubmit = (credentials: Credentials) => {
+    loginUser.mutate(credentials, {
       onSuccess: (data) => {
-        if (data.is2FAEnabled) {
-          navigate(`/login/2fa${search}`, { state: { credentials } });
-        } else {
-          loginUser.mutate(credentials, {
-            onSuccess: (data) => {
-              setToken(data.accessToken);
-              setRefreshToken(data.refreshToken);
-              navigate(getLoginRedirect(data.accessToken, search));
-            },
-            onError: async (error) => {
-              const errors = parseError(error);
-              setError('root.serverError', {
-                message: errors[0].message,
-              });
-            },
-          });
-        }
+        setToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        navigate(getLoginRedirect(data.accessToken, search));
       },
-      onError: async (error) => {
+      onError: (error) => {
         const errors = parseError(error);
+        if (errors.some((e) => e.name === 'otp_required')) {
+          navigate(`/login/2fa${search}`, { state: { credentials } });
+          return;
+        }
         setError('root.serverError', {
           message: errors[0].message,
         });
@@ -104,7 +92,7 @@ export default function Login() {
                   }}
                 >
                   <Button
-                    loading={loginConfig.isPending || loginUser.isPending}
+                    loading={loginUser.isPending}
                     type="submit"
                     variant="contained"
                     color="primary"
