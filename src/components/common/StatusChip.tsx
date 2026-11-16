@@ -23,7 +23,7 @@ export default function StatusChip({
         label={chipText}
         sx={(theme) => ({
           backgroundColor: 'transparent',
-          color: getStatusColor(status, theme),
+          ...getStatusColor(status, theme),
           fontWeight: 500,
         })}
       />

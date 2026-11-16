@@ -1,4 +1,3 @@
-import { alpha } from '@mui/material/styles';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { DateTime } from 'luxon';
@@ -76,7 +75,10 @@ function CircleIcon({ children, warning = false }: { children: ReactNode; warnin
       sx={(theme) => ({
         width: 44,
         height: 44,
-        bgcolor: alpha(warning ? theme.palette.warning.main : theme.palette.primary.main, 0.1),
+        bgcolor: theme.alpha(
+          warning ? theme.vars.palette.warning.main : theme.vars.palette.primary.main,
+          0.1,
+        ),
         color: warning ? 'warning.main' : 'primary.main',
         flexShrink: 0,
       })}

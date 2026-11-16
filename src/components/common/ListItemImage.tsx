@@ -34,7 +34,7 @@ export default function ListItemImage({
       variant="outlined"
       sx={(theme) => ({
         position: 'relative',
-        outline: isActive ? `2px solid ${theme.palette.primary.dark}` : undefined,
+        outline: isActive ? `2px solid ${theme.vars.palette.primary.dark}` : undefined,
         outlineOffset: '-2px',
         aspectRatio: 0.7,
       })}
@@ -125,7 +125,7 @@ export default function ListItemImage({
             position: 'absolute',
             inset: 0,
             '&:focus-visible': {
-              outline: `2px solid ${theme.palette.primary.main}`,
+              outline: `2px solid ${theme.vars.palette.primary.main}`,
               outlineOffset: '-2px',
             },
           })}

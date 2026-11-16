@@ -9,9 +9,9 @@ export default function ScoreChip({ score }: { score: number }) {
       sx={(theme) => ({
         backgroundColor: 'transparent',
         fontWeight: 500,
-        color: score > 0 ? theme.palette.primary.dark : theme.palette.text.primary,
+        color: score > 0 ? theme.vars.palette.primary.dark : theme.vars.palette.text.primary,
         ...theme.applyStyles('dark', {
-          color: score > 0 ? theme.palette.primary.light : theme.palette.text.primary,
+          color: score > 0 ? theme.vars.palette.primary.light : theme.vars.palette.text.primary,
         }),
       })}
     />

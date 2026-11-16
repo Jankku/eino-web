@@ -62,7 +62,7 @@ export default function Bulletins({ drawerWidth }: BulletinsProps) {
           sx={{
             '&.MuiAlert-filled.MuiAlert-colorInfo': {
               ...theme.applyStyles('dark', {
-                backgroundColor: theme.palette.background.default,
+                backgroundColor: theme.vars.palette.background.default,
               }),
             },
           }}

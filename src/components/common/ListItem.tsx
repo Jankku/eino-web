@@ -50,7 +50,7 @@ export default function ListItem({
       variant={lighten ? 'elevation' : 'outlined'}
       sx={(theme) => ({
         position: 'relative',
-        outline: isActive ? `2px solid ${theme.palette.primary.dark}` : undefined,
+        outline: isActive ? `2px solid ${theme.vars.palette.primary.dark}` : undefined,
         outlineOffset: '-2px',
       })}
     >
@@ -133,7 +133,7 @@ export default function ListItem({
             position: 'absolute',
             inset: 0,
             '&:focus-visible': {
-              outline: `2px solid ${theme.palette.primary.main}`,
+              outline: `2px solid ${theme.vars.palette.primary.main}`,
               outlineOffset: '-2px',
             },
           })}

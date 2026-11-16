@@ -97,11 +97,11 @@ export function UserInfo({
                     sx={(theme) => ({
                       width: { xs: 128, sm: 110 },
                       height: { xs: 128, sm: 110 },
-                      backgroundColor: theme.palette.grey[300],
-                      color: theme.palette.grey[500],
+                      backgroundColor: theme.vars.palette.grey[300],
+                      color: theme.vars.palette.grey[500],
                       ...theme.applyStyles('dark', {
-                        backgroundColor: theme.palette.grey[800],
-                        color: theme.palette.grey[600],
+                        backgroundColor: theme.vars.palette.grey[800],
+                        color: theme.vars.palette.grey[600],
                       }),
                     })}
                   ></Avatar>
@@ -136,7 +136,7 @@ export function UserInfo({
                       component="span"
                       sx={(theme) => ({
                         paddingLeft: '4px',
-                        color: theme.palette.info.main,
+                        color: theme.vars.palette.info.main,
                         display: 'flex',
                         alignContent: 'center',
                       })}

@@ -76,9 +76,6 @@ const theme = createTheme({
         }),
       },
     },
-    MuiCssBaseline: {
-      styleOverrides: 'fonts.css',
-    },
     MuiButton: {
       styleOverrides: {
         contained: ({ theme }) =>
@@ -107,12 +104,12 @@ const theme = createTheme({
     },
     MuiMenuItem: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           textDecoration: 'none',
-          color: 'palette.text.primary',
+          color: theme.vars.palette.text.primary,
           margin: '0.5em 0em',
           borderRadius: 6,
-        },
+        }),
       },
     },
     MuiChip: {
@@ -135,7 +132,7 @@ const theme = createTheme({
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <StyledEngineProvider injectFirst>
-      <MuiThemeProvider theme={theme} defaultMode="dark" noSsr forceThemeRerender>
+      <MuiThemeProvider theme={theme} defaultMode="dark" noSsr>
         <CssBaseline enableColorScheme />
         {children}
       </MuiThemeProvider>

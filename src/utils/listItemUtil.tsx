@@ -25,21 +25,22 @@ export function getStatusIcon(status: string, color?: string) {
 }
 
 export function getStatusColor(status: string, theme: Theme) {
-  const { palette, vars } = theme;
-  const isDark = palette.mode === 'dark';
-  const variant = isDark ? 'light' : 'dark';
+  const { vars } = theme;
+  const colors = (light: string, dark: string) => ({
+    color: light,
+    ...theme.applyStyles('dark', { color: dark }),
+  });
   switch (status) {
     case 'reading':
-      return vars.palette.primary[variant];
     case 'watching':
-      return vars.palette.primary[variant];
+      return colors(vars.palette.primary.dark, vars.palette.primary.light);
     case 'completed':
-      return vars.palette.success[variant];
+      return colors(vars.palette.success.dark, vars.palette.success.light);
     case 'on-hold':
-      return isDark ? vars.palette.warning[variant] : 'text.primary';
+      return colors(vars.palette.text.primary, vars.palette.warning.light);
     case 'dropped':
-      return vars.palette.error[variant];
+      return colors(vars.palette.error.dark, vars.palette.error.light);
     case 'planned':
-      return vars.palette.text.primary;
+      return { color: vars.palette.text.primary };
   }
 }

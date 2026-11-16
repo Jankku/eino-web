@@ -85,9 +85,9 @@ export default function About() {
                 sx={(theme) => ({
                   fontFamily: 'Pacifico, cursive',
                   fontSize: '64px',
-                  color: theme.palette.common.black,
+                  color: theme.vars.palette.common.black,
                   ...theme.applyStyles('dark', {
-                    color: theme.palette.common.white,
+                    color: theme.vars.palette.common.white,
                   }),
                 })}
               >

@@ -62,7 +62,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
           <path
             d={`M ${left} ${top} V ${bottom} H ${width - 12}`}
             fill="none"
-            stroke={theme.palette.divider}
+            style={{ stroke: theme.vars.palette.divider }}
           />
           {axis.ticks.map((tick) => (
             <text
@@ -72,7 +72,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
               textAnchor="end"
               dominantBaseline="middle"
               fontSize={12}
-              fill={theme.palette.text.secondary}
+              style={{ fill: theme.vars.palette.text.secondary }}
             >
               {formatter.format(tick)}
             </text>
@@ -83,13 +83,19 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
             const center = x + columnWidth / 2;
             return (
               <g key={label}>
-                <line x1={x} x2={x} y1={top} y2={bottom} stroke={theme.palette.divider} />
+                <line
+                  x1={x}
+                  x2={x}
+                  y1={top}
+                  y2={bottom}
+                  style={{ stroke: theme.vars.palette.divider }}
+                />
                 <rect
                   x={x + columnWidth * 0.14}
                   y={y(count)}
                   width={columnWidth * 0.72}
                   height={bottom - y(count)}
-                  fill={theme.palette.primary.main}
+                  style={{ fill: theme.vars.palette.primary.main }}
                 />
                 {count > 0 ? (
                   <text
@@ -97,7 +103,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
                     y={y(count) - 8}
                     textAnchor="middle"
                     fontSize={14}
-                    fill={theme.palette.text.primary}
+                    style={{ fill: theme.vars.palette.text.primary }}
                   >
                     {formatter.format(count)}
                   </text>
@@ -107,7 +113,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
                   y={bottom + 20}
                   textAnchor="middle"
                   fontSize={12}
-                  fill={theme.palette.text.secondary}
+                  style={{ fill: theme.vars.palette.text.secondary }}
                 >
                   {label}
                 </text>
@@ -120,7 +126,7 @@ export function BarChart({ labels, data, onClick }: BarChartProps) {
             textAnchor="middle"
             fontSize={12}
             fontWeight={600}
-            fill={theme.palette.text.primary}
+            style={{ fill: theme.vars.palette.text.primary }}
           >
             Score
           </text>

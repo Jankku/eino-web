@@ -6,7 +6,7 @@ import {
   DialogContent,
   Stack,
   Typography,
-  useTheme,
+  useColorScheme,
 } from '@mui/material';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { getShareUrl } from '../../utils/shareUtil';
@@ -25,9 +25,9 @@ type ShareDialogProps = {
 export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) {
   const queryClient = useQueryClient();
   const { showErrorSnackbar } = useCustomSnackbar();
-  const { palette } = useTheme();
+  const appTheme = useColorScheme().colorScheme ?? 'dark';
   const [themeOverride, setThemeOverride] = useState<'app' | ShareTheme>('app');
-  const shareTheme = themeOverride === 'app' ? palette.mode : themeOverride;
+  const shareTheme = themeOverride === 'app' ? appTheme : themeOverride;
   const shareProfileQuery = useShareprofile(visible, shareTheme);
   const shareId = shareProfileQuery?.data;
   const shareUrl = getShareUrl(shareId);
@@ -76,7 +76,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
               }
             }}
           >
-            <option value="app">App theme ({palette.mode === 'light' ? 'Light' : 'Dark'})</option>
+            <option value="app">App theme ({appTheme === 'light' ? 'Light' : 'Dark'})</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
           </SmallSelect>

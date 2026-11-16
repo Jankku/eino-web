@@ -32,18 +32,18 @@ export default function DeleteUserDialog({
           sx={(theme) =>
             part.added
               ? {
-                  backgroundColor: theme.palette.success.light,
-                  color: theme.palette.success.contrastText,
+                  backgroundColor: theme.vars.palette.success.light,
+                  color: theme.vars.palette.success.contrastText,
                   ...theme.applyStyles('dark', {
-                    backgroundColor: theme.palette.success.dark,
+                    backgroundColor: theme.vars.palette.success.dark,
                   }),
                 }
               : part.removed
                 ? {
-                    backgroundColor: theme.palette.error.light,
-                    color: theme.palette.error.contrastText,
+                    backgroundColor: theme.vars.palette.error.light,
+                    color: theme.vars.palette.error.contrastText,
                     ...theme.applyStyles('dark', {
-                      backgroundColor: theme.palette.error.dark,
+                      backgroundColor: theme.vars.palette.error.dark,
                     }),
                   }
                 : {}
