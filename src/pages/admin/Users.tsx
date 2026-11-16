@@ -12,6 +12,7 @@ import {
   GridCellParams,
   GridInitialState,
 } from '@mui/x-data-grid';
+import LogoutIcon from '@mui/icons-material/Logout';
 import AdminTableFrame from '../../components/admin/AdminTableFrame';
 import { User, useUsers } from '../../data/admin/useUsers';
 import { useState } from 'react';
@@ -28,6 +29,8 @@ import { updateUserSchema, useUpdateUser } from '../../data/admin/useUpdateUser'
 import Head from '../../components/common/Head';
 import DeleteUserDialog from '../../components/admin/DeleteUserDialog';
 import { useChangeUserState } from '../../data/admin/useChangeUserState';
+import RevokeSessionsDialog from '../../components/admin/RevokeSessionsDialog';
+import TooltipActionsCellItem from '../../components/admin/TooltipActionsCellItem';
 
 const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -55,6 +58,16 @@ const initialState: GridInitialState = {
 
 const getRowId = (row: User) => row.user_id;
 
+const getRevokeSessionsAction = (id: GridRowId, onClick: (id: GridRowId) => void) => (
+  <TooltipActionsCellItem
+    key="revoke-sessions"
+    icon={<LogoutIcon />}
+    label="Revoke sessions"
+    color="inherit"
+    onClick={() => onClick(id)}
+  />
+);
+
 export default function Users() {
   const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
   const pageParams = useServerPagination(25);
@@ -65,6 +78,7 @@ export default function Users() {
   const toggleUserState = useChangeUserState();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [rowIdToDelete, setRowIdToDelete] = useState<GridRowId>();
+  const [rowIdToRevoke, setRowIdToRevoke] = useState<GridRowId>();
 
   const processRowUpdate = (newRow: User, oldRow: User) => {
     const parsedUser = updateUserSchema.parse(newRow);
@@ -210,10 +224,13 @@ export default function Users() {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 120,
+      width: 150,
       hideSortIcons: true,
       cellClassName: 'actions',
-      getActions: ({ id }) => getRowActions(id, rowModesModel, setRowModesModel, setRowIdToDelete),
+      getActions: ({ id }) =>
+        getRowActions(id, rowModesModel, setRowModesModel, setRowIdToDelete, [
+          getRevokeSessionsAction(id, setRowIdToRevoke),
+        ]),
     },
   ];
 
@@ -257,6 +274,12 @@ export default function Users() {
         userId={rowIdToDelete as string}
         username={data.find((row) => row.user_id === rowIdToDelete)?.username as string}
         onClose={() => setRowIdToDelete(undefined)}
+      />
+      <RevokeSessionsDialog
+        visible={!!rowIdToRevoke}
+        userId={rowIdToRevoke as string}
+        username={data.find((row) => row.user_id === rowIdToRevoke)?.username as string}
+        onClose={() => setRowIdToRevoke(undefined)}
       />
     </>
   );

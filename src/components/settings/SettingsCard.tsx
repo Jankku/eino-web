@@ -30,7 +30,7 @@ export default function SettingsCard({ actionsAsRow, title, message, actions }: 
             {message}
           </Typography>
           {actions ? (
-            <Stack direction="row" sx={{ gap: 1 }}>
+            <Stack direction="row" sx={{ gap: 1, flexShrink: 0 }}>
               {actions}
             </Stack>
           ) : undefined}

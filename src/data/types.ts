@@ -20,3 +20,8 @@ export type Result = {
   name: string;
   message: string;
 };
+
+export type ResultWithTokens = Result & {
+  accessToken: string;
+  refreshToken: string;
+};

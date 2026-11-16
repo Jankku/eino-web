@@ -1,20 +1,17 @@
-import type { Dispatch, SetStateAction } from 'react';
-import {
-  GridActionsCellItem,
-  GridRowModes,
-  type GridRowId,
-  type GridRowModesModel,
-} from '@mui/x-data-grid';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import { GridRowModes, type GridRowId, type GridRowModesModel } from '@mui/x-data-grid';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
+import TooltipActionsCellItem from './TooltipActionsCellItem';
 
 export function getRowActions(
   id: GridRowId,
   rowModesModel: GridRowModesModel,
   setRowModesModel: Dispatch<SetStateAction<GridRowModesModel>>,
   onDelete: (id: GridRowId) => void,
+  extraActions: ReactElement[] = [],
 ) {
   const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
@@ -39,14 +36,14 @@ export function getRowActions(
 
   if (isInEditMode) {
     return [
-      <GridActionsCellItem
+      <TooltipActionsCellItem
         key={0}
         icon={<SaveIcon />}
         label="Save"
         color="primary"
         onClick={handleSaveClick(id)}
       />,
-      <GridActionsCellItem
+      <TooltipActionsCellItem
         key={2}
         icon={<CancelIcon />}
         label="Cancel"
@@ -58,7 +55,7 @@ export function getRowActions(
   }
 
   return [
-    <GridActionsCellItem
+    <TooltipActionsCellItem
       key={0}
       icon={<EditIcon />}
       label="Edit"
@@ -66,12 +63,13 @@ export function getRowActions(
       color="inherit"
       onClick={handleEditClick(id)}
     />,
-    <GridActionsCellItem
+    <TooltipActionsCellItem
       key={1}
       icon={<DeleteIcon />}
       label="Delete"
       color="inherit"
       onClick={handleDeleteClick(id)}
     />,
+    ...extraActions,
   ];
 }

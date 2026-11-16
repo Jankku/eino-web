@@ -8,11 +8,20 @@ import { movieStatus } from '../models/movieStatus';
 import { Book } from '../models/book';
 import { Movie } from '../models/movie';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import { useNavigate } from 'react-router';
+import { HTTPError } from 'ky';
+import { useLogoutAll } from '../data/auth/useLogoutAll';
+import { useDoubleCheck } from '../hooks/useDoubleCheck';
+import { parseError } from '../utils/zodUtil';
 
 export default function Settings() {
   const bookStatusId = useId();
   const movieStatusId = useId();
-  const { showSuccessSnackbar } = useCustomSnackbar();
+  const navigate = useNavigate();
+  const { showSuccessSnackbar, showErrorSnackbar } = useCustomSnackbar();
+  const logoutAll = useLogoutAll();
+  const { doubleCheck: confirmLogoutAll, getButtonProps: getLogoutAllButtonProps } =
+    useDoubleCheck();
   const [newBookStatus, setNewBookStatus] = useLocalStorage<Book['status']>(
     'newBookStatus',
     'planned',
@@ -26,6 +35,20 @@ export default function Settings() {
     localStorage.removeItem('closedBulletins');
     window.dispatchEvent(new Event('storage'));
     showSuccessSnackbar('Closed bulletins cleared');
+  };
+
+  const onLogoutAll = () => {
+    logoutAll.mutate(undefined, {
+      onSuccess: (message) => {
+        showSuccessSnackbar(message);
+        // The current tokens are revoked too, so finish with the normal logout.
+        navigate('/logout');
+      },
+      onError: async (error) => {
+        const errors = await parseError(error as HTTPError);
+        showErrorSnackbar(errors[0].message);
+      },
+    });
   };
 
   return (
@@ -83,6 +106,20 @@ export default function Settings() {
                 </Select>
               </FormControl>
             </>
+          }
+        />
+        <SettingsCard
+          title="Log out of all devices"
+          message="End every session of your account, including this one. You need to log in again on each device."
+          actions={
+            <Button
+              color="secondary"
+              variant="contained"
+              loading={logoutAll.isPending}
+              {...getLogoutAllButtonProps({ onClick: onLogoutAll })}
+            >
+              {confirmLogoutAll ? 'You sure?' : 'Log out all'}
+            </Button>
           }
         />
       </Stack>
