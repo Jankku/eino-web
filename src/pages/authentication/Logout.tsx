@@ -1,7 +1,7 @@
 import { useToken } from '../../hooks/useToken';
 import { Navigate } from 'react-router';
 import { useEffect } from 'react';
-import { clearQueryClientChannel } from '../../App';
+import { clearQueryClientChannel } from '../../utils/queryClientChannel';
 
 export default function Logout() {
   const { removeTokens } = useToken();

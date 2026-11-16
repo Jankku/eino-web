@@ -10,6 +10,7 @@ import PageBoundary from './components/common/PageBoundary';
 import Logout from './pages/authentication/Logout';
 import Error404 from './components/errors/Error404';
 import RedirectAuthenticated from './components/common/RedirectAuthenticated';
+import { clearQueryClientChannel } from './utils/queryClientChannel';
 
 const Register = lazy(() => import('./pages/authentication/Register'));
 const Login = lazy(() => import('./pages/authentication/Login'));
@@ -31,11 +32,6 @@ const Users = lazy(() => import('./pages/admin/Users'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const Bulletins = lazy(() => import('./pages/admin/Bulletins'));
 const DiscordAudit = lazy(() => import('./pages/admin/DiscordAudit'));
-
-export const clearQueryClientChannel = {
-  name: 'queryClientChannel',
-  message: 'clearQueryClient',
-};
 
 export default function App() {
   const { showErrorSnackbar } = useCustomSnackbar();
