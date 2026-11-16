@@ -41,7 +41,7 @@ export const bulletinSchema = z.object({
 
 export type Bulletin = z.infer<typeof bulletinSchema>;
 
-export const bulletinDefaults: Bulletin = {
+export const getBulletinDefaults = (): Bulletin => ({
   title: '',
   message: '',
   name: '',
@@ -54,4 +54,4 @@ export const bulletinDefaults: Bulletin = {
   end_date: DateTime.now()
     .plus(Duration.fromObject({ minutes: 1 }))
     .toISO(),
-};
+});

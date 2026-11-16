@@ -5,7 +5,7 @@ import checker from 'vite-plugin-checker';
 import compress from 'vite-plugin-compression';
 import * as child from 'child_process';
 
-const commitHash = child.execSync('git rev-parse --short HEAD').toString();
+const commitHash = child.execSync('git rev-parse --short HEAD').toString().trim();
 
 export default defineConfig(() => ({
   define: {

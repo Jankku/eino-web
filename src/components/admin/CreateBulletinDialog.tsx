@@ -18,7 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Bulletin,
   bulletinConditions,
-  bulletinDefaults,
+  getBulletinDefaults,
   bulletinSchema,
   bulletinTypes,
   bulletinVisibilities,
@@ -46,7 +46,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
   const { showSuccessSnackbar } = useCustomSnackbar();
   const createBulletin = useCreateBulletin();
   const formMethods = useForm({
-    defaultValues: bulletinDefaults,
+    defaultValues: getBulletinDefaults(),
     resolver: zodResolver(bulletinSchema),
   });
   const {
@@ -91,14 +91,19 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
 
   const handleClose = () => {
     onClose();
-    reset(bulletinDefaults);
     setSelectedItem([]);
     setSearchTerm('');
     setIsOpen(false);
   };
 
   return (
-    <BaseDialog maxWidth="xs" title="Create bulletin" open={visible} onClose={handleClose}>
+    <BaseDialog
+      maxWidth="xs"
+      title="Create bulletin"
+      open={visible}
+      onClose={handleClose}
+      slotProps={{ transition: { onEnter: () => reset(getBulletinDefaults()) } }}
+    >
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ pt: 0 }}>
