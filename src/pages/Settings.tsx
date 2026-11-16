@@ -9,7 +9,6 @@ import { Book } from '../models/book';
 import { Movie } from '../models/movie';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useNavigate } from 'react-router';
-import { HTTPError } from 'ky';
 import { useLogoutAll } from '../data/auth/useLogoutAll';
 import { useDoubleCheck } from '../hooks/useDoubleCheck';
 import { parseError } from '../utils/zodUtil';
@@ -45,7 +44,7 @@ export default function Settings() {
         navigate('/logout');
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         showErrorSnackbar(errors[0].message);
       },
     });

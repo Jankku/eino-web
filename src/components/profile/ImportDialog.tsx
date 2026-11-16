@@ -17,7 +17,6 @@ import {
   ImportPreview,
   readEinoImportFile,
 } from '../../utils/importUtil';
-import { HTTPError } from 'ky';
 import Dropzone from './Dropzone';
 
 type ImportDialogProps = {
@@ -77,7 +76,7 @@ export default function ImportDialog({ visible, closeDialog }: ImportDialogProps
         resetState();
       },
       onError: async (error) => {
-        const parseErrors = await parseError(error as HTTPError);
+        const parseErrors = parseError(error);
         setError('root.serverError', {
           message: parseErrors[0].message,
         });

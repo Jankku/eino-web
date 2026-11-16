@@ -3,7 +3,6 @@ import { Button, DialogContent, Typography } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useDeleteUser } from '../../data/admin/useDeleteUser';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { HTTPError } from 'ky';
 import { parseError } from '../../utils/zodUtil';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -38,7 +37,7 @@ export default function DeleteUserDialog({
         handleClose();
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

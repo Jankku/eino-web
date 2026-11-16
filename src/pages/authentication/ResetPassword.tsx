@@ -5,7 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import { parseError, zodFields } from '../../utils/zodUtil';
-import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { ResetPasswordBody, useResetPassword } from '../../data/auth/useResetPassword';
@@ -48,7 +47,7 @@ export default function ResetPassword() {
         showSuccessSnackbar(message);
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

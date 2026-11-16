@@ -9,7 +9,6 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
-import { HTTPError } from 'ky';
 import TextField from '../form/TextField';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 
@@ -61,7 +60,7 @@ function DeleteAccountDialog({ is2FAEnabled, visible, closeDialog }: DeleteAccou
         closeDialog();
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

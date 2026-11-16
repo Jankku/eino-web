@@ -19,7 +19,6 @@ import { useState } from 'react';
 import { getProfilePictureUrl } from '../../utils/profileUtil';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { parseError } from '../../utils/zodUtil';
-import { HTTPError } from 'ky';
 import {
   booleanFormatter,
   dateToISOStringParser,
@@ -87,7 +86,7 @@ export default function Users() {
         showSuccessSnackbar(message);
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         showErrorSnackbar(errors[0].message);
       },
     });
@@ -109,7 +108,7 @@ export default function Users() {
             showSuccessSnackbar(message);
           },
           onError: async (error) => {
-            const errors = await parseError(error as HTTPError);
+            const errors = parseError(error);
             showErrorSnackbar(errors[0].message);
           },
         },

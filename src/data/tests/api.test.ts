@@ -57,7 +57,7 @@ describe('api auth interceptor', () => {
     const error = await api.get('api/v2/admin/users').json().catch((e: unknown) => e);
 
     expect(error).toBeInstanceOf(HTTPError);
-    expect(await parseError(error)).toEqual([{ name: 'forbidden', message: 'Forbidden' }]);
+    expect(parseError(error)).toEqual([{ name: 'forbidden', message: 'Forbidden' }]);
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
@@ -85,7 +85,7 @@ describe('api auth interceptor', () => {
 
 describe('parseError', () => {
   it('returns a fallback error for non-HTTP errors', async () => {
-    const errors = await parseError(new TypeError('Failed to fetch'));
+    const errors = parseError(new TypeError('Failed to fetch'));
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toMatch(/could not reach the server/i);
   });

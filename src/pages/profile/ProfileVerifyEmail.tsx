@@ -7,7 +7,6 @@ import TextField from '../../components/form/TextField';
 import { useState } from 'react';
 import { useSendEmailConfirmation } from '../../data/profile/useSendEmailConfirmation';
 import ErrorMessage from '../../components/authentication/ErrorMessage';
-import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useVerifyEmail } from '../../data/profile/useVerifyEmail';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
@@ -43,7 +42,7 @@ export default function ProfileVerifyEmail() {
         setShowOtpField(true);
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });
@@ -60,7 +59,7 @@ export default function ProfileVerifyEmail() {
         showSuccessSnackbar('Email verified');
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

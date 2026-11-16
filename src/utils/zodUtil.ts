@@ -54,11 +54,7 @@ export type ApiError = z.infer<typeof errorSchema>['errors'][number];
 
 const fallbackError = (message: string): ApiError[] => [{ name: 'unknown_error', message }];
 
-/**
- * Extracts API errors from a request error. Always returns at least one error,
- * falling back to a generic message for network errors, timeouts and unexpected responses.
- */
-export async function parseError(error: unknown): Promise<ApiError[]> {
+export function parseError(error: unknown): ApiError[] {
   if (!isHTTPError(error)) {
     return fallbackError('Could not reach the server. Please check your connection and try again.');
   }

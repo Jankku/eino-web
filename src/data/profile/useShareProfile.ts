@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { isHTTPError } from 'ky';
 import { api } from '../api';
 import { ApiResponse } from '../types';
 
@@ -18,4 +19,6 @@ export const useShareprofile = (visible: boolean, theme: ShareTheme) =>
     queryFn: ({ signal }) => shareProfileQuery(theme, signal),
     staleTime: 0,
     refetchOnWindowFocus: false,
+    retry: (failureCount, error) =>
+      !(isHTTPError(error) && error.response.status < 500) && failureCount < 2,
   });

@@ -99,7 +99,7 @@ export default function ProfilePictureDialog({
   const showPictureError = async (error: unknown) => {
     let message = 'Could not update the profile picture. Please try again.';
     if (error instanceof HTTPError) {
-      const errors = await parseError(error).catch(() => []);
+      const errors = parseError(error);
       message = errors[0]?.message || message;
     } else if (error instanceof Error) {
       message = error.message || message;

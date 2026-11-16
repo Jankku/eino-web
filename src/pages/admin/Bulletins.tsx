@@ -23,7 +23,6 @@ import { bulletinVisibilities, DbBulletin } from '../../models/bulletin';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { updateBulletinSchema, useUpdateBulletin } from '../../data/admin/useUpdateBulletin';
 import { parseError } from '../../utils/zodUtil';
-import { HTTPError } from 'ky';
 
 const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -74,7 +73,7 @@ export default function Bulletins() {
         showSuccessSnackbar(message);
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         showErrorSnackbar(errors[0].message);
       },
     });

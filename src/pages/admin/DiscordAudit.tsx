@@ -17,7 +17,6 @@ import {
   Typography,
   capitalize,
 } from '@mui/material';
-import { HTTPError } from 'ky';
 import Head from '../../components/common/Head';
 import {
   DiscordAuditSettings,
@@ -25,15 +24,14 @@ import {
   useUpdateDiscordAudit,
 } from '../../data/admin/useDiscordAudit';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { errorSchema } from '../../utils/zodUtil';
+import { parseError } from '../../utils/zodUtil';
 import { underscoreToSpace } from '../../utils/stringUtil';
 import { dateValueFormatter } from '../../utils/tableUtils';
 
 function errorMessage(error: unknown) {
-  const parsed = errorSchema.safeParse(error instanceof HTTPError ? error.data : error);
-  return parsed.success && parsed.data.errors.length
-    ? parsed.data.errors.map(({ message }) => message).join(' · ')
-    : 'Something went wrong. Please try again.';
+  return parseError(error)
+    .map(({ message }) => message)
+    .join(' · ');
 }
 
 const actionLabel = (action: string) => {

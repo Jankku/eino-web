@@ -11,7 +11,6 @@ import PasswordStrengthMeter from '../../components/authentication/PasswordStren
 import { usePasswordStrength } from '../../data/auth/usePasswordStrength';
 import { useDebounce } from '@uidotdev/usehooks';
 import { RegisterRequest, registerSchema } from '../../data/auth/auth.schema';
-import { HTTPError } from 'ky';
 import Head from '../../components/common/Head.tsx';
 
 export default function Register() {
@@ -42,7 +41,7 @@ export default function Register() {
     registerUser.mutate(credentials, {
       onSuccess: () => navigate('/login'),
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

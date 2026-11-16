@@ -9,7 +9,6 @@ import TextField from '../../components/form/TextField';
 import PasswordField from '../../components/form/PasswordField';
 import { parseError } from '../../utils/zodUtil';
 import { Credentials, credentialsSchema } from '../../data/auth/auth.schema';
-import { HTTPError } from 'ky';
 import { useLoginConfig } from '../../data/auth/useLoginConfig';
 import { getLoginRedirect } from '../../hooks/useRedirect';
 import Head from '../../components/common/Head';
@@ -46,7 +45,7 @@ export default function Login() {
               navigate(getLoginRedirect(data.accessToken, search));
             },
             onError: async (error) => {
-              const errors = await parseError(error as HTTPError);
+              const errors = parseError(error);
               setError('root.serverError', {
                 message: errors[0].message,
               });
@@ -55,7 +54,7 @@ export default function Login() {
         }
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

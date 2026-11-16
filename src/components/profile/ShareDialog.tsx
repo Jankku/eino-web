@@ -16,6 +16,7 @@ import ky from 'ky';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import SmallSelect from '../common/SmallSelect';
+import { parseError } from '../../utils/zodUtil';
 
 type ShareDialogProps = {
   visible: boolean;
@@ -33,6 +34,7 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
   const shareUrl = getShareUrl(shareId);
 
   const isError = shareProfileQuery.isError;
+  const errorMessage = isError ? parseError(shareProfileQuery.error)[0].message : null;
   const isLoading = shareProfileQuery.isPending || shareProfileQuery.isFetching;
   const isActionDisabled = isError || isLoading || !shareId;
 
@@ -99,7 +101,11 @@ export default function ShareDialog({ visible, closeDialog }: ShareDialogProps) 
               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
             />
           ) : null}
-          {isError ? <Typography component="p">Failed to load image</Typography> : null}
+          {isError ? (
+            <Typography component="p" color="text.secondary" sx={{ textAlign: 'center' }}>
+              {errorMessage}
+            </Typography>
+          ) : null}
         </Box>
       </DialogContent>
       <DialogFooter>

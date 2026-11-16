@@ -10,7 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import ErrorMessage from '../authentication/ErrorMessage';
-import { HTTPError } from 'ky';
 import { ProfileExport } from '../../data/profile/profile.types';
 import Checkbox from '../form/Checkbox';
 
@@ -73,7 +72,7 @@ export default function ExportDialog({ visible, closeDialog }: ExportDialogProps
         downloadJsonExport(data);
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

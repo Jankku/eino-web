@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '../../components/form/TextField';
 import { parseError, zodFields } from '../../utils/zodUtil';
 import { credentialsSchema } from '../../data/auth/auth.schema';
-import { HTTPError } from 'ky';
 import { z } from 'zod';
 import { useToken } from '../../hooks/useToken';
 import { getLoginRedirect } from '../../hooks/useRedirect';
@@ -55,7 +54,7 @@ export default function LoginVerify2FA() {
           navigate(getLoginRedirect(data.accessToken, search), { replace: true });
         },
         onError: async (error) => {
-          const errors = await parseError(error as HTTPError);
+          const errors = parseError(error);
           setError('root.serverError', {
             message: errors[0].message,
           });

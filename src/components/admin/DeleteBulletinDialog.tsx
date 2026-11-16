@@ -5,7 +5,6 @@ import ErrorMessage from '../authentication/ErrorMessage';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
 import { useForm } from 'react-hook-form';
 import { parseError } from '../../utils/zodUtil';
-import { HTTPError } from 'ky';
 import { useDeleteBulletin } from '../../data/admin/useDeleteBulletin';
 
 type DeleteBulletinDialogProps = {
@@ -43,7 +42,7 @@ export default function DeleteBulletinDialog({
         handleClose();
       },
       onError: async (error) => {
-        const errors = await parseError(error as HTTPError);
+        const errors = parseError(error);
         setError('root.serverError', {
           message: errors[0].message,
         });

@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import BaseDialog from '../common/BaseDialog';
 import { useCustomSnackbar } from '../../hooks/useCustomSnackbar';
-import { HTTPError } from 'ky';
 import { parseError } from '../../utils/zodUtil';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import ErrorMessage from '../authentication/ErrorMessage';
@@ -80,7 +79,7 @@ export default function CreateBulletinDialog({ visible, onClose }: CreateBulleti
           handleClose();
         },
         onError: async (error) => {
-          const errors = await parseError(error as HTTPError);
+          const errors = parseError(error);
           setError('root.serverError', {
             message: errors[0].message,
           });
