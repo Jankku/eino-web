@@ -56,15 +56,6 @@ export default function Settings() {
       <h1>Settings</h1>
       <Stack spacing={3}>
         <SettingsCard
-          title="Clear closed bulletins"
-          message="If you accidentally closed a bulletin, you can make it visible again."
-          actions={
-            <Button color="secondary" variant="contained" onClick={clearClosedBulletins}>
-              Clear
-            </Button>
-          }
-        />
-        <SettingsCard
           actionsAsRow
           title="Default status"
           message="Change the default status for new books and movies."
@@ -105,6 +96,15 @@ export default function Settings() {
                 </Select>
               </FormControl>
             </>
+          }
+        />
+        <SettingsCard
+          title="Clear closed bulletins"
+          message="If you accidentally closed a bulletin, you can make it visible again."
+          actions={
+            <Button color="secondary" variant="contained" onClick={clearClosedBulletins}>
+              Clear
+            </Button>
           }
         />
         <SettingsCard
