@@ -1,5 +1,6 @@
 import { Typography, Stack } from '@mui/material';
 import { stringOrPlaceholder } from '../../utils/stringUtil';
+import TruncatedText from './TruncatedText';
 
 type DetailItemProps = {
   title: string;
@@ -13,17 +14,17 @@ export default function DetailItem({ title, value, multiline }: DetailItemProps)
       <Typography component="dt" variant="body1" sx={{ fontWeight: 500, minWidth: '6rem' }}>
         {stringOrPlaceholder(title)}
       </Typography>
-      <Typography
+      <TruncatedText
         component="dd"
         variant="body2"
-        noWrap={!multiline}
+        multiline={multiline}
         sx={{
           minWidth: 0,
           alignSelf: 'center',
         }}
       >
         {stringOrPlaceholder(value)}
-      </Typography>
+      </TruncatedText>
     </Stack>
   );
 }
