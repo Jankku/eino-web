@@ -26,6 +26,8 @@ type ListItemProps = {
   to?: string;
   lighten?: boolean;
   navigationState?: ItemNavigationState;
+  ref?: React.Ref<HTMLLIElement>;
+  'data-index'?: number;
 };
 
 export default function ListItem({
@@ -38,6 +40,8 @@ export default function ListItem({
   to,
   lighten,
   navigationState,
+  ref,
+  'data-index': dataIndex,
 }: ListItemProps) {
   const location = useLocation();
   const { mode } = useColorScheme();
@@ -46,6 +50,8 @@ export default function ListItem({
 
   return (
     <Card
+      ref={ref}
+      data-index={dataIndex}
       component="li"
       variant={lighten ? 'elevation' : 'outlined'}
       sx={(theme) => ({

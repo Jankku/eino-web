@@ -1,4 +1,4 @@
-import { Card, CardContent, CircularProgress, ImageList, Typography, Stack } from '@mui/material';
+import { Card, CardContent, Typography, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { StatsStatusTable } from './StatsStatusTable';
 import { BarChart } from './BarChart';
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import ItemListDialog from '../ItemListDialog';
 import { getProgressValues } from '../../../utils/chartUtils';
 import { useBooks } from '../../../data/books/useBooks';
-import ListItem from '../../common/ListItem';
 import { useToggle } from '@uidotdev/usehooks';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 
@@ -25,7 +24,7 @@ export function BookStats({ stats }: BookStatsProps) {
   const isMobile = useIsMobile();
   const [listDialogOpen, toggleListDialog] = useToggle(false);
   const [selectedScore, setSelectedScore] = useState<number>();
-  const { data, isLoading, isSuccess } = useBooks({
+  const { data, isLoading } = useBooks({
     enabled: listDialogOpen && selectedScore !== undefined,
     status: 'all',
     filter: `score:=:${selectedScore}`,
@@ -81,31 +80,17 @@ export function BookStats({ stats }: BookStatsProps) {
         title={`Books with score ${selectedScore}`}
         visible={listDialogOpen}
         closeDialog={toggleListDialog}
-      >
-        {isLoading ? (
-          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Stack>
-        ) : null}
-        {!isLoading && data?.length ? (
-          <ImageList cols={1} gap={12} sx={{ p: 1 }}>
-            {data?.map((book) => (
-              <ListItem
-                lighten
-                to={`/books/${book.book_id}`}
-                key={book.book_id}
-                title={book.title}
-                detailText={book.author}
-                status={book.status}
-                score={book.score}
-                itemId={book.book_id}
-                imageUrl={book.image_url}
-              />
-            ))}
-          </ImageList>
-        ) : undefined}
-        {isSuccess && data?.length === 0 ? <Typography>List empty</Typography> : null}
-      </ItemListDialog>
+        isLoading={isLoading}
+        items={data?.map((book) => ({
+          id: book.book_id,
+          to: `/books/${book.book_id}`,
+          title: book.title,
+          detailText: book.author,
+          status: book.status,
+          score: book.score,
+          imageUrl: book.image_url,
+        }))}
+      />
     </>
   );
 }

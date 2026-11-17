@@ -1,4 +1,4 @@
-import { Card, CardContent, CircularProgress, ImageList, Typography, Stack } from '@mui/material';
+import { Card, CardContent, Typography, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { StatsStatusTable } from './StatsStatusTable';
 import { BarChart } from './BarChart';
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import ItemListDialog from '../ItemListDialog';
 import { getProgressValues } from '../../../utils/chartUtils';
 import { useMovies } from '../../../data/movies/useMovies';
-import ListItem from '../../common/ListItem';
 import { useToggle } from '@uidotdev/usehooks';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { formatWatchTime } from '../../../utils/profileUtil';
@@ -24,7 +23,7 @@ export function MovieStats({ stats }: MovieStatsProps) {
   const isMobile = useIsMobile();
   const [listDialogOpen, toggleListDialog] = useToggle(false);
   const [selectedScore, setSelectedScore] = useState<number>();
-  const { data, isLoading, isSuccess } = useMovies({
+  const { data, isLoading } = useMovies({
     enabled: listDialogOpen && selectedScore !== undefined,
     status: 'all',
     filter: `score:=:${selectedScore}`,
@@ -80,31 +79,17 @@ export function MovieStats({ stats }: MovieStatsProps) {
         title={`Movies with score ${selectedScore}`}
         visible={listDialogOpen}
         closeDialog={toggleListDialog}
-      >
-        {isLoading ? (
-          <Stack direction="row" sx={{ flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Stack>
-        ) : null}
-        {!isLoading && data?.length ? (
-          <ImageList cols={1} gap={12}>
-            {data?.map((movie) => (
-              <ListItem
-                lighten
-                to={`/movies/${movie.movie_id}`}
-                key={movie.movie_id}
-                title={movie.title}
-                detailText={movie.director}
-                status={movie.status}
-                score={movie.score}
-                itemId={movie.movie_id}
-                imageUrl={movie.image_url}
-              />
-            ))}
-          </ImageList>
-        ) : undefined}
-        {isSuccess && data?.length === 0 ? <Typography>List empty</Typography> : null}
-      </ItemListDialog>
+        isLoading={isLoading}
+        items={data?.map((movie) => ({
+          id: movie.movie_id,
+          to: `/movies/${movie.movie_id}`,
+          title: movie.title,
+          detailText: movie.director,
+          status: movie.status,
+          score: movie.score,
+          imageUrl: movie.image_url,
+        }))}
+      />
     </>
   );
 }
