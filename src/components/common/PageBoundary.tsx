@@ -11,7 +11,7 @@ function Wait({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setReady(true);
-    }, 1000);
+    }, 300);
 
     return () => {
       clearTimeout(timeout);

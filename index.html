@@ -12,6 +12,60 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <title>Eino</title>
+    <link
+      rel="preload"
+      href="/src/fonts/roboto/v29/KFOmCnqEu92Fr1Mu4mxK.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/fonts/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/fonts/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/fonts/pacifico/v21/FwZY7-Qmy14u9lezJ-6H6Mk.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script>
+      (function () {
+        var mode = "dark";
+        try {
+          mode = localStorage.getItem("mui-mode") || "dark";
+        } catch (e) {}
+        if (mode === "system") {
+          mode = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        document.documentElement.classList.add(
+          mode === "light" ? "light" : "dark",
+        );
+      })();
+    </script>
+    <style>
+      html.dark {
+        color-scheme: dark;
+        background-color: #191b21;
+      }
+      html.light {
+        color-scheme: light;
+        background-color: #edf8ff;
+      }
+    </style>
     <script
       defer
       data-domain="eino.jankku.fi"
