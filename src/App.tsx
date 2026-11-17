@@ -48,7 +48,7 @@ export default function App() {
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000, // 60 seconds
-            retry: 2,
+            retry: false, // ky already retries transient errors
           },
         },
       }),
